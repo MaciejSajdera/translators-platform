@@ -19,7 +19,7 @@ $color__border-button-hover: #ccc #bbb #aaa;
 $color__border-button-focus: #aaa #bbb #bbb;
 $color__border-input: #ccc;
 $color__border-abbr: #666;
-
+$color__border-element: #e0e0e0;
 
 /* TYPOGRAPHY */
 $font__main: sans-serif;
@@ -28,7 +28,6 @@ $font__pre: "Courier 10 Pitch", courier, monospace;
 $font__line-height-body: 1.5;
 $font__line-height-pre: 1.6;
 
-
 /* STRUCTURE */
 $size__site-main: 100%;
 $size__site-sidebar: 25%;
@@ -36,3 +35,7 @@ $size__site-sidebar: 25%;
 /* RWD */
 $break__medium: 40.063em;
 $break__large: 64.063em;
+
+/* BOX-SHADOWS */
+$box-shadow_standard: 0 0px 15px 5px rgb(0 0 0 / 10%),
+	0 0px 6px 0px rgb(0 0 0 / 5%);

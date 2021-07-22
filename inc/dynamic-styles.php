@@ -2,13 +2,13 @@
 /**
  * Styles generated based on customizer options.
  *
- * @package _s
+ * @package ptsk
  */
 
 /**
  * Make an array that is [selector][property] = value and parse it to CSS syntax
  */
-function _s_dynamic_styles() {
+function ptsk_dynamic_styles() {
 
 	$css = [
 		'body' => [

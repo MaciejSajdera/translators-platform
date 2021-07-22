@@ -21,19 +21,14 @@ input[type="submit"] {
 
 /* FIELDS */
 
-textarea {
-	padding-left: 3px;
-	width: 100%;
-}
-
 input[type="text"],
 input[type="email"],
 input[type="url"],
 input[type="password"],
-input[type="search"] {
-	padding: 3px;
+input[type="search"],
+textarea {
+	padding: 10px;
 }
-
 
 input[type="text"],
 input[type="email"],
@@ -49,4 +44,29 @@ textarea {
 	&:focus {
 		color: $color__text-input-focus;
 	}
+}
+
+#basic_user_data_form {
+	p {
+		display: flex;
+		flex-flow: column;
+	}
+}
+
+input[type="submit"] {
+	font-size: 1rem;
+	cursor: pointer;
+}
+
+input[type="checkbox"] {
+	cursor: pointer;
+	width: 1.25rem;
+	height: 1.25rem;
+	margin-right: 1rem;
+}
+
+label {
+	display: flex;
+	align-items: center;
+	cursor: pointer;
 }

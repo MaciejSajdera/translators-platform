@@ -45,3 +45,67 @@
 .bypostauthor {
 	display: block;
 }
+
+.site-content,
+.site-header {
+	padding: 0 7.5%;
+}
+
+.site-main__coming-soon {
+	min-height: 100vh;
+	display: flex;
+	flex-flow: column;
+	justify-content: center;
+	align-items: center;
+
+	.wrapper {
+		max-width: 90%;
+	}
+
+	.custom-logo-link {
+		display: initial;
+
+		img {
+			box-shadow: $box-shadow_standard;
+		}
+	}
+
+	h1 {
+		text-align: center;
+		font-size: 32px;
+		font-weight: 200;
+	}
+
+	.social-media {
+		position: absolute;
+		bottom: 5%;
+		left: 50%;
+		transform: translateX(-50%);
+		display: flex;
+		flex-flow: column;
+
+		p {
+			text-align: center;
+			margin: 1rem;
+		}
+	}
+
+	.social-media-icons {
+		display: flex;
+
+		.icon {
+			height: 30px;
+			width: 30px;
+		}
+	}
+}
+
+article.translator {
+	border: 1px solid #ccc;
+
+	.post-thumbnail {
+		img {
+			max-width: 300px;
+		}
+	}
+}

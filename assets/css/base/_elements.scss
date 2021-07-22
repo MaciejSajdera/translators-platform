@@ -10,7 +10,6 @@ html {
 	box-sizing: border-box;
 }
 
-
 body {
 	background: $color__background-body; // Fallback for when there is no custom background color defined.
 }
@@ -40,7 +39,6 @@ img {
 figure {
 	margin: 1em 0; // Extra wide images within figure tags don't overflow the content area.
 }
-
 
 /* LINKS */
 a {
@@ -100,4 +98,202 @@ dd {
 table {
 	margin: 0 0 1.5em;
 	width: 100%;
+}
+
+.my-preloader {
+	height: 100vh;
+	position: fixed;
+	width: 100vw;
+	background: white;
+	z-index: 99999;
+	display: flex;
+	flex-flow: column;
+	justify-content: center;
+	align-items: center;
+	transition: all 0.3s ease-in;
+	opacity: 1;
+
+	.preloader-content {
+		align-items: center;
+		display: flex;
+		height: 10em;
+		width: 10em;
+		animation: mymove 1.5s infinite;
+
+		@media screen and (min-width: 992px) {
+			height: 15em;
+			width: 15em;
+		}
+	}
+}
+
+@keyframes mymove {
+	0% {
+		transform: scale(1.1);
+		opacity: 0;
+	}
+
+	50% {
+		opacity: 1;
+		transform: scale(1);
+	}
+
+	100% {
+		transform: scale(1.1);
+		opacity: 0;
+	}
+}
+
+.my-preloader-off {
+	opacity: 0;
+}
+
+.my-preloader-none {
+	display: none;
+}
+
+// .site {
+// 	opacity: 0;
+// 	transition: all 0.3s ease-in;
+// }
+
+.page-loaded {
+	opacity: 1 !important;
+}
+
+.cookie-law-notification {
+	z-index: 10000000;
+	opacity: 0;
+	transition: all 0.3s ease-in 0s;
+	position: fixed;
+	width: 100%;
+	bottom: 0%;
+	left: 50%;
+	transform: translate(-50%, 100%);
+	padding: 1em 5em;
+	border-radius: 0;
+	border-top-left-radius: 10px;
+	border-top-right-radius: 10px;
+	background: $color__background-body;
+	border: 1px solid rgba(0, 0, 0, 0.15);
+	font-size: 15px;
+	box-shadow: rgba(23, 43, 99, 0.4) 0px 7px 28px;
+	display: none;
+	justify-content: space-between;
+	align-items: center;
+	flex-flow: row-reverse;
+
+	@media screen and (max-width: 992px) {
+		border-radius: 0;
+		max-width: 100%;
+		width: 100%;
+		right: 0;
+		bottom: 0;
+		flex-flow: column-reverse;
+		padding: 1em;
+	}
+}
+
+.cookies-notification-on {
+	display: flex;
+	opacity: 1;
+	animation: cookieInfoUp 1s forwards;
+	transition: all 0.3s ease-in-out;
+
+	@keyframes cookieInfoUp {
+		0% {
+			transform: translate(-50%, 100%);
+			opacity: 0;
+		}
+
+		90% {
+			transform: translate(-50%, 0%);
+			opacity: 1;
+		}
+
+		100% {
+			transform: translate(-50%, 0%);
+			opacity: 1;
+		}
+	}
+}
+
+.cookies-notification-off {
+	display: none;
+}
+
+.cookie-law-accepted {
+	transform: translate(-50%, 100%) !important;
+	opacity: 0 !important;
+}
+
+.cookie-law-notification a {
+	font-size: 15px;
+	text-decoration: none;
+	border-bottom: 1px solid rgba(0, 0, 0, 0.5);
+}
+
+.cookie-law-notification p {
+	margin: 0;
+	color: black;
+
+	@media screen and (max-width: 992px) {
+		text-align: center;
+	}
+}
+
+.cookie-law-notification button {
+	align-self: center;
+	line-height: 40px;
+	height: 40px;
+	white-space: nowrap;
+	color: #fff;
+	background-color: #012241d8;
+	border: none;
+	// opacity: 0.6;
+	font-size: 12px;
+	font-weight: 600;
+	cursor: pointer;
+	border-radius: 50px;
+	margin: auto 2em;
+	transition: all 0.3s ease-in-out;
+	padding: 0 2em !important;
+
+	&:focus,
+	&:active {
+		outline: none;
+	}
+
+	@media screen and (max-width: 992px) {
+		margin: 1em auto auto;
+	}
+}
+.cookie-law-notification button:hover {
+	opacity: 1;
+}
+
+.social-media-icons {
+	.icon {
+		background-size: contain;
+		background-position: center;
+		background-repeat: no-repeat;
+		display: block;
+
+		height: 50px;
+		width: 50px;
+		margin: 1rem;
+		transition: all 0.3s ease-in-out;
+
+		&:hover {
+			transform: scale(1.1);
+		}
+	}
+
+	.facebook-icon {
+		background-image: url(../dist/svg/facebook.svg);
+	}
+
+	.instagram-icon {
+		background-image: url(../dist/svg/instagram.svg);
+	}
 }

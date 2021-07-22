@@ -1,6 +1,6 @@
 [
   {
-    "domain": "__url__",
+    "domain": "http://ptsk.local/",
     "path": "/",
     "name": "yourCookieName",
     "value": "yourCookieValue",

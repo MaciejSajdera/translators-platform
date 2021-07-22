@@ -1,0 +1,15 @@
+.site-header {
+	&__wrapper {
+		display: flex;
+		justify-content: space-between;
+		align-items: center;
+	}
+
+	.site-branding {
+		.site-title {
+			p {
+				margin: 0;
+			}
+		}
+	}
+}

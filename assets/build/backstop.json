@@ -18,7 +18,7 @@
     {
       "label": "Header",
       "cookiePath": "assets/build/cookies.json",
-      "url": "__url__",
+      "url": "http://ptsk.local/",
       "referenceUrl": "",
       "readyEvent": "",
       "readySelector": "",

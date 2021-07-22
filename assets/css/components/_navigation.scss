@@ -1,16 +1,25 @@
 /* MENUS */
 
 .main-navigation {
-	clear: both;
 	display: block;
-	float: left;
-	width: 100%;
 
 	ul {
 		display: none;
 		list-style: none;
 		margin: 0;
 		padding-left: 0;
+
+		li {
+			@media screen and (min-width: 992px) {
+				margin-right: 1em;
+			}
+
+			&:last-of-type {
+				@media screen and (min-width: 992px) {
+					margin-right: 0;
+				}
+			}
+		}
 
 		ul {
 			box-shadow: 0 3px 3px rgba(0, 0, 0, 0.2);
@@ -90,7 +99,6 @@
 .comment-navigation,
 .posts-navigation,
 .post-navigation {
-
 	.site-main & {
 		margin: 0 0 1.5em;
 		overflow: hidden;

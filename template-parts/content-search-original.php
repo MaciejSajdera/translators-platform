@@ -10,27 +10,8 @@
 ?>
 
 <article id="post-<?php the_ID(); ?>" <?php post_class(); ?>>
-
-		<?php ptsk_post_thumbnail(); ?>
-
-
 	<header class="entry-header">
-		
-		<?php
-
-
-		echo get_the_title();
-
-		$translator_first_name = get_field("translator_first_name");
-		$translator_last_name = get_field("translator_last_name");
-
-		echo '<h2 class="entry-title">'.$translator_first_name.' '. $translator_last_name.'</h2>';
-		
-		echo get_field("translator_bio_acf");
-
-		echo '<a href="'.get_permalink().'" rel="bookmark">Więcej</a>';
-		
-		?>
+		<?php the_title( sprintf( '<h2 class="entry-title"><a href="%s" rel="bookmark">', esc_url( get_permalink() ) ), '</a></h2>' ); ?>
 
 		<?php if ( 'post' === get_post_type() ) : ?>
 		<div class="entry-meta">
@@ -42,7 +23,7 @@
 		<?php endif; ?>
 	</header><!-- .entry-header -->
 
-
+	<?php ptsk_post_thumbnail(); ?>
 
 	<div class="entry-summary">
 		<?php the_excerpt(); ?>

@@ -167,7 +167,7 @@ if ( process.env.sync ) {
 	 * @link https://laravel.com/docs/5.6/mix#browsersync-reloading
 	 */
 	mix.browserSync( {
-		proxy : '__url__',
+		proxy : 'http://ptsk.local/',
 		files : [
 			'dist/**/*',
 			'./**/*.php',

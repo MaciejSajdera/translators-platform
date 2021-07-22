@@ -14,12 +14,9 @@
 		<?php ptsk_post_thumbnail(); ?>
 
 
-	<header class="entry-header">
+	<header class="entry-header placek">
 		
 		<?php
-
-
-		echo get_the_title();
 
 		$translator_first_name = get_field("translator_first_name");
 		$translator_last_name = get_field("translator_last_name");
