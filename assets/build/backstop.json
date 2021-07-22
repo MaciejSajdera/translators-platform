@@ -18,7 +18,7 @@
     {
       "label": "Header",
       "cookiePath": "assets/build/cookies.json",
-      "url": "http://ptsk.local/",
+      "url": "http://pstk.local/",
       "referenceUrl": "",
       "readyEvent": "",
       "readySelector": "",
@@ -28,12 +28,10 @@
       "hoverSelector": "",
       "clickSelector": "",
       "postInteractionWait": 0,
-      "selectors": [
-        "#masthead"
-      ],
+      "selectors": ["#masthead"],
       "selectorExpansion": true,
       "expect": 0,
-      "misMatchThreshold" : 0.1,
+      "misMatchThreshold": 0.1,
       "requireSameDimensions": true
     }
   ],

@@ -22,17 +22,17 @@ modules:
       domain: "%TEST_SITE_WP_DOMAIN%"
       adminEmail: "%TEST_SITE_ADMIN_EMAIL%"
       title: "Test WpBrowser"
-      theme: ptsk
-      plugins: ['']
-      activatePlugins: ['']
+      theme: pstk
+      plugins: [""]
+      activatePlugins: [""]
 env:
-    gitlab:
-        modules:
-            config:
-                WPLoader:
-                    wpRootFolder: '/var/www/html'
-                    dbName: 'wordpress'
-                    dbHost: 'mysql'
-                    dbUser: 'root'
-                    dbPassword: 'secret'
-                    domain: 'localhost'
+  gitlab:
+    modules:
+      config:
+        WPLoader:
+          wpRootFolder: "/var/www/html"
+          dbName: "wordpress"
+          dbHost: "mysql"
+          dbUser: "root"
+          dbPassword: "secret"
+          domain: "localhost"

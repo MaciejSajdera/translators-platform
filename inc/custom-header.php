@@ -8,39 +8,39 @@
  *
  * @link https://developer.wordpress.org/themes/functionality/custom-headers/
  *
- * @package ptsk
+ * @package pstk
  */
 
 /**
  * Set up the WordPress core custom header feature.
  *
- * @uses ptsk_header_style()
+ * @uses pstk_header_style()
  */
-function ptsk_custom_header_setup() {
+function pstk_custom_header_setup() {
 	add_theme_support(
 		'custom-header',
 		apply_filters(
-			'ptsk_custom_header_args',
+			'pstk_custom_header_args',
 			array(
 				'default-image'      => '',
 				'default-text-color' => '000000',
 				'width'              => 1000,
 				'height'             => 250,
 				'flex-height'        => true,
-				'wp-head-callback'   => 'ptsk_header_style',
+				'wp-head-callback'   => 'pstk_header_style',
 			)
 		)
 	);
 }
-add_action( 'after_setup_theme', 'ptsk_custom_header_setup' );
+add_action( 'after_setup_theme', 'pstk_custom_header_setup' );
 
-if ( ! function_exists( 'ptsk_header_style' ) ) :
+if ( ! function_exists( 'pstk_header_style' ) ) :
 	/**
 	 * Styles the header image and text displayed on the blog.
 	 *
-	 * @see ptsk_custom_header_setup().
+	 * @see pstk_custom_header_setup().
 	 */
-	function ptsk_header_style() {
+	function pstk_header_style() {
 		$header_text_color = get_header_textcolor();
 
 		/*

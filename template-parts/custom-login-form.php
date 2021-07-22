@@ -2,7 +2,9 @@
 <div class="custom-login-form__container">
 
     <div class="login-branding">
-        <a href="#" class="login-logo">PTSK Logo</a>
+        <div class="login-logo">
+            <img height="auto" width="50" src="<?php echo get_site_icon_url() ?>" />
+        </div>
     </div>
 
     <div class="login-form">

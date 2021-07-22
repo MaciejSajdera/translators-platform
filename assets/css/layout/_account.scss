@@ -87,6 +87,15 @@
 				margin: 1rem auto;
 			}
 		}
+
+		.login-logo {
+			display: flex;
+			width: 100%;
+			justify-content: center;
+			align-items: center;
+
+			padding: 1em;
+		}
 	}
 
 	&__our-mission {

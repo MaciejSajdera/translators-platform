@@ -73,7 +73,7 @@ get_header();
 
 						echo '<div class="account__side-menu">';
 
-							ptsk_post_thumbnail($user_post_id);
+							pstk_post_thumbnail($user_post_id);
 
 							echo misha_uploader_callback($user_post_id);
 
