@@ -7,6 +7,7 @@
  */
 
 get_header();
+do_action("my_test_action");
 ?>
 
 	<div id="primary" class="content-area">
@@ -37,8 +38,6 @@ get_header();
 
 			</div>
 
-
-			
 			<?php
 		} else {
 
@@ -69,43 +68,88 @@ get_header();
 					 return;
 				} else {
 
+					// print_r($_POST);
+
 					echo '<div class="account__container">';
 
 						echo '<div class="account__side-menu">';
 
-							pstk_post_thumbnail($user_post_id);
+							echo '<div class="profile-pricture__wrapper">';
 
-							echo misha_uploader_callback($user_post_id);
+								if(wp_get_attachment_image_url(get_post_thumbnail_id($user_post_id))) {
+									pstk_post_thumbnail($user_post_id);
+								} else {
+									echo '<div class="post-thumbnail">';
+									echo '<img src="'.get_avatar_url($current_user_id).'">';
+									echo '</div>';
+								}
+
+								echo misha_uploader_callback($user_post_id);
+
+							echo '</div>';
 
 							echo '<h3 class="account__user-name">'.$translator_first_name.' '.$translator_last_name.'</h3>';
 
-						echo '</div>';
+							 echo '<div class="account__navigation">';
 
+								echo '<ul>';
+
+									echo '<li><a href="#" data-profile-section="profile-section-1">Edycja Profilu</a></li>';
+									echo '<li><a href="#" data-profile-section="profile-section-2">Ustawienia</a></li>';
+									echo '<li><a href="#" data-profile-section="profile-section-3">Płatności</a></li>';
+									echo '<li><a href="#" data-profile-section="profile-section-4">Materiały tylko dla członków PSTK</a></li>';
+
+								echo '</ul>';
+
+							 echo '</div>';
+
+						echo '</div>';
 
 						echo '<div class="account__main">';
 
-							echo '<div class="account__welcome-message">';
+							echo '<div id="profile-section-1" class="profile-section profile-section--active account__edit-profile">';
+
+								echo '<div class="account__welcome-message account__header">';
 
 								$user_nickname = $current_user->user_login;
 
-								echo '<h1>Cześć '.$user_nickname.'</h1>';
+								echo '<p>Cześć '.$user_nickname.'</p>';
+
+								echo '</div>';
+
+								echo '<div class="account__basic-info info-box">';
+
+									echo '<div><p class="info-box__header">Podstawowe dane</p></div>';
+
+								echo '</div>';
+
+								echo '<div class="edit-account__basic-info info-box">';
+
+									echo '<div><p class="info-box__header">Podstawowe dane - edycja</p></div>';
+
+									echo basic_user_data_form();
+
+								echo '</div>';
 
 							echo '</div>';
 
-							echo '<div class="account__basic-info info-box">';
+							echo '<div id="profile-section-2" class="profile-section profile-section--not-active account__settings">';
 
-								echo '<div><p class="info-box__header">Podstawowe dane</p></div>';
+								echo '<div class="account__header">';
+								
+								echo '<p>Edycja ustawień</p>';
+								
+								echo '</div>';
+
+								echo '<div class="info-box">';
+
+									echo '<div><p class="info-box__header">Adres e-mail</p></div>';
+									echo '<div><p class="info-box__subheader">Adres ten wyświetla się na profilu i służy do logowania do konta PSTK</p></div>';
+
+								echo '</div>';
 
 							echo '</div>';
 
-
-							echo '<div class="edit-account__basic-info info-box">';
-
-								echo '<div><p class="info-box__header">Podstawowe dane - edycja</p></div>';
-
-								echo do_shortcode("[display_basic_user_data_form]");
-
-							echo '</div>';
 
 						echo '</div>';
 

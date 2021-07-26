@@ -8,7 +8,7 @@ $wordpress_upload_dir = wp_upload_dir();
 // $wordpress_upload_dir['url'] the absolute URL to the same folder, actually we do not need it, just to show the link to file
 $i = 1; // number of tries when the file with the same name is already exists
 
-$profilepicture = $_FILES['profilepicture'];
+$profilepicture = $_FILES['profile-picture__input'];
 $new_file_path = $wordpress_upload_dir['path'] . '/' . $profilepicture['name'];
 
 $new_file_mime = mime_content_type( $profilepicture['tmp_name'] );

@@ -21,19 +21,6 @@
 		border: 1px solid $color__border-element;
 		padding: 1em;
 
-		.post-thumbnail {
-			display: flex;
-			justify-content: center;
-			align-items: center;
-
-			img {
-				border-radius: 100%;
-				height: 250px;
-				width: 250px;
-				object-fit: contain;
-			}
-		}
-
 		@media screen and (min-width: 992px) {
 			width: 25%;
 		}
@@ -52,10 +39,40 @@
 		}
 	}
 
-	&__welcome-message {
-		h1 {
+	&__header {
+		p {
 			font-size: 2.5rem;
 		}
+	}
+
+	&__navigation {
+		ul {
+			margin: 0;
+			padding: 0;
+			list-style: none;
+		}
+
+		li {
+			padding: 0.5em;
+		}
+
+		a {
+			text-decoration: none;
+			display: block;
+			text-align: center;
+		}
+	}
+
+	.profile-section--active {
+	}
+
+	.profile-section--not-active {
+		position: absolute;
+		z-index: -10;
+		opacity: 0;
+	}
+
+	&__welcome-message {
 	}
 }
 
@@ -93,7 +110,6 @@
 			width: 100%;
 			justify-content: center;
 			align-items: center;
-
 			padding: 1em;
 		}
 	}
@@ -118,5 +134,151 @@
 		display: flex;
 		align-items: center;
 		margin-bottom: 0.5em;
+	}
+}
+
+$profile_picture_top_distance: 4rem;
+$profile_picture_height: 175px;
+$profile_picture_width: 175px;
+
+.profile-pricture {
+	&__wrapper {
+		position: relative;
+
+		.post-thumbnail {
+			position: absolute;
+			left: 50%;
+			width: 100%;
+			top: $profile_picture_top_distance;
+			transform: translateX(-50%);
+			// z-index: 1;
+
+			display: flex;
+			justify-content: center;
+			align-items: center;
+
+			img {
+				border-radius: 100%;
+				height: $profile_picture_height;
+				width: $profile_picture_width;
+				object-fit: contain;
+			}
+		}
+
+		form#upload-profile-picture {
+			display: flex;
+			flex-flow: column;
+			padding-top: $profile_picture_top_distance;
+
+			input[type="submit"] {
+				transform: translateY(-100%);
+				opacity: 0;
+				transition: 0.3s ease-in-out;
+			}
+
+			input[type="submit"].reveal-button {
+				transform: translateY(0%);
+				opacity: 1;
+			}
+		}
+
+		.file-input {
+			&__label {
+				display: flex;
+				justify-content: center;
+				align-items: center;
+
+				.input-preview__wrapper {
+					position: relative;
+					border-radius: 100%;
+					overflow: hidden;
+					border: 1px solid $color__border-element;
+
+					&:before {
+						content: "";
+						display: block;
+						position: absolute;
+						height: 100%;
+						width: 100%;
+						background-color: transparent;
+						transition: all 0.2s ease-in-out;
+					}
+
+					&:after {
+						content: "";
+						background-image: url(../dist/svg/add_photo_white.svg);
+						background-size: contain;
+						background-repeat: no-repeat;
+						background-position: center;
+						width: 35px;
+						height: 35px;
+						display: block;
+						position: absolute;
+						left: 50%;
+						top: 50%;
+						transform: translate(-50%, -50%);
+						color: white;
+						z-index: 2;
+						opacity: 0;
+						transition: all 0.2s ease-in-out;
+					}
+
+					&:hover {
+						&:before {
+							background-color: rgba(50, 50, 50, 0.25);
+						}
+
+						&:after {
+							opacity: 1;
+						}
+					}
+				}
+
+				.has-image {
+					&:before {
+						background-color: rgba(50, 50, 50, 0.25);
+					}
+				}
+
+				.input-preview {
+					display: flex;
+					background-color: transparent;
+					transition: all 0.2s ease-in-out;
+					height: $profile_picture_height;
+					width: $profile_picture_width;
+					object-fit: contain;
+				}
+
+				.input-preview__src {
+					display: none;
+
+					&::-webkit-file-upload-button {
+						visibility: hidden;
+					}
+				}
+
+				// .input-preview::after {
+				// 	position: absolute;
+				// 	top: 50%;
+				// 	left: 0;
+				// 	width: 100%;
+				// 	text-align: center;
+				// 	transform: translateY(50%);
+				// 	// content: "Choose a file...";
+				// 	font-style: italic;
+				// 	font-size: 1em;
+				// }
+
+				// .has-image {
+				// 	z-index: 2;
+				// 	background-color: $color__background-body;
+				// }
+
+				// .has-image::after {
+				// 	content: "Choose another file...";
+				// 	color: white;
+				// }
+			}
+		}
 	}
 }

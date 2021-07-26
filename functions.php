@@ -129,6 +129,8 @@ function pstk_widgets_init() {
 }
 add_action( 'widgets_init', 'pstk_widgets_init' );
 
+
+
 /**
  * Enqueue scripts and styles.
  */
@@ -140,6 +142,10 @@ function pstk_scripts() {
 	// wp_add_inline_style( 'pstk-style', $custom_css );
 
 	wp_enqueue_script( 'pstk-app', get_template_directory_uri() . '/dist/js/main.js', array(), '', true );
+
+	if (is_page(18)) {
+		wp_enqueue_script( 'pstk-user-profile', get_template_directory_uri() . '/dist/js/user-profile.js', array(), '', true );
+	}
 
 	if ( is_singular() && comments_open() && get_option( 'thread_comments' ) ) {
 		wp_enqueue_script( 'comment-reply' );
@@ -311,8 +317,6 @@ function vicode_add_new_user() {
 }
 add_action('init', 'vicode_add_new_user');
 
-
-
 /* Creates custom post every time new user registers */
 
 function create_post_for_user( $user_id ) {
@@ -328,7 +332,7 @@ function create_post_for_user( $user_id ) {
         // Create a new post
         $user_post = array(
             'post_title'   => $user_info->nickname,
-            'post_status'  => 'publish', // <- here is to publish
+            'post_status'  => 'private', 
             'post_type'    => 'translator', // <- change to your cpt
         );
         // Insert the post into the database
@@ -366,11 +370,11 @@ function vicode_register_messages() {
 }
 
 // basic_user_data_form shortcode
-function show_basic_user_data_form() {
-		$output = basic_user_data_form();
-		return $output;
-}
-add_shortcode('display_basic_user_data_form', 'show_basic_user_data_form');
+// function show_basic_user_data_form() {
+// 		$output = basic_user_data_form();
+// 		return $output;
+// }
+// add_shortcode('display_basic_user_data_form', 'show_basic_user_data_form');
 
 // Add basic user data form
 function basic_user_data_form() {
@@ -496,9 +500,13 @@ function basic_user_data_form() {
 					?>
 				</p>
 
+				<p class="status"></p>
+
 				<p>
-					<input type="hidden" name="vicode_csrf" value="<?php echo wp_create_nonce('basic_user_data_form-csrf'); ?>"/>
+<!-- 
+					<input type="hidden" name="vicode_csrf" value="<?php echo wp_create_nonce('basic_user_data_form-csrf'); ?>"/> -->
 					<input type="submit" value="<?php _e('Zaktualizuj informacje o sobie'); ?>"/>
+					<?php wp_nonce_field( 'ajax-basic-user-data-nonce', 'security' ); ?>
 				</p>
 
 			</fieldset>
@@ -632,18 +640,86 @@ function basic_user_data_form_messages() {
 	}	
 }
 
+//Ajaxify basic user data form
+
+function ajax_basic_user_data_init(){
+
+    wp_register_script('ajax-basic-user-data-script', get_template_directory_uri() . '/assets/js/ajax-basic-user-data-script.js', array('jquery') ); 
+
+    wp_localize_script( 'ajax-basic-user-data-script', 'ajax_basic_user_data_object', array( 
+		'ajaxurl' => site_url() . '/wp-admin/admin-ajax.php', // WordPress AJAX
+        'redirecturl' => get_permalink(18),
+        'loadingmessage' => __('Sending user info, please wait...')
+    ));
+
+	wp_enqueue_script('ajax-basic-user-data-script');
+
+	// add_action( 'wp_ajax_ajax_add_basic_user_data', 'ajax_add_basic_user_data' );
+
+    // Enable the user with no privileges to run ajax_login() in AJAX
+    add_action( 'wp_ajax_nopriv_ajax_add_basic_user_data', 'ajax_add_basic_user_data' );
+
+}
+
+// print_r(get_page_template_slug());
+
+$tmp = get_page_template_slug(18); // provide page/post ID
+
+/* TO DO: PREVENT THIS ACTION INIT ON PAGES OTHER THEN USER ACCOUNT */
+
+if(is_user_logged_in() && 'user-account-page-template.php' == $tmp) {
+    // enqueue scripts here
+	    add_action('init', 'ajax_basic_user_data_init');
+}
+
+function ajax_add_basic_user_data(){
+
+	print_r('ajax send?');
+
+    // First check the nonce, if it fails the function will break
+    check_ajax_referer( 'ajax-basic-user-data-nonce', 'security' );
+
+    // Nonce is checked, get the POST data and sign user on
+    $info = array();
+
+	$info['user_first_name'] = $_POST["user_first_name"];	
+	// $info['user_last_name']		= $_POST["user_last_name"];	
+	// $info['user_bio']		= $_POST["user_bio"];
+	// $info['user_languages_array']		= $_POST["user_languages"];
+	// $info['user_specializations_array']		= $_POST["user_specializations"];
+
+    if ( is_wp_error() ){
+        echo json_encode(array('loggedin'=>false, 'message'=>__('error ajax')));
+    } else {
+        echo json_encode(array('loggedin'=>true, 'message'=>__('Login successful, redirecting...')));
+    }
+
+    die();
+}
 
 /* https://rudrastyh.com/wordpress/how-to-add-images-to-media-library-from-uploaded-files-programmatically.html */
 
 add_shortcode( 'misha_uploader', 'misha_uploader_callback' );
 
-function misha_uploader_callback($user_post_id){
-	return '<form action="' . get_stylesheet_directory_uri() . '/process_upload.php" method="post" enctype="multipart/form-data">
-	Your Photo: <input type="file" name="profilepicture" size="25" required />
-	<input type="hidden" name="post_id" id="post_id" value="'.$user_post_id.'"><br>
-	<input type="submit" name="submit" value="Submit" />
-	</form>';
+function misha_uploader_callback($user_post_id) {
+	return '<form id="upload-profile-picture" action="' . get_stylesheet_directory_uri() . '/process_upload.php" method="post" enctype="multipart/form-data">
+
+				<label class="file-input__label">
+
+					<div class="input-preview__wrapper">
+						<img class="input-preview">
+					</div>
+
+					<input type="file" id="profile-picture__input" name="profile-picture__input" class="custom-file-input input-preview__src" size="25" accept=".png,.jpg,.jpeg" required />
+
+				</label>
+
+				<input type="hidden" name="post_id" id="post_id" value="'.$user_post_id.'"><br>
+				<input type="submit" name="submit" value="Zaktualizuj zdjęcie" />
+			</form>';
 }
+
+// <span class="file-input__button-text">Wybierz zdjęcie</span>
 
 function redirect_login_page() {
 	$login_page  = get_permalink(18);
