@@ -402,7 +402,7 @@ function basic_user_data_form() {
 		// show any error messages after form submission
 		basic_user_data_form_messages(); ?>
 		
-		<form name="basic_user_data_form" id="basic_user_data_form" class="vicode_form" action="" method="POST">
+		<form name="basic_user_data_form" id="basic_user_data_form" class="vicode_form" action="test" method="POST">
 
 			<fieldset>
 
