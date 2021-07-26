@@ -144,13 +144,27 @@ function pstk_scripts() {
 	wp_enqueue_script( 'pstk-app', get_template_directory_uri() . '/dist/js/main.js', array(), '', true );
 
 	if (is_page(18)) {
+
+		wp_enqueue_script('jquery');
+		
 		wp_enqueue_script( 'pstk-user-profile', get_template_directory_uri() . '/dist/js/user-profile.js', array(), '', true );
+
+		wp_register_script('ajax_basic_user_data_script', get_template_directory_uri() . '/assets/js/ajax-basic-user-data-script.js', array('jquery') ); 
+
+		wp_localize_script('ajax_basic_user_data_script', 'ajax_basic_user_data_script_params', 
+		array(
+			'ajaxurl' => admin_url('admin-ajax.php'), 
+		)
+		);
+	
+		wp_enqueue_script('ajax_basic_user_data_script');
 	}
 
 	if ( is_singular() && comments_open() && get_option( 'thread_comments' ) ) {
 		wp_enqueue_script( 'comment-reply' );
 	}
 }
+
 add_action( 'wp_enqueue_scripts', 'pstk_scripts' );
 
 function wpb_add_google_fonts() {
@@ -640,62 +654,118 @@ function basic_user_data_form_messages() {
 	}	
 }
 
-//Ajaxify basic user data form
+//Ajaxify basic user data form https://support.advancedcustomfields.com/forums/topic/use-update_field-with-ajax/
 
-function ajax_basic_user_data_init(){
 
-    wp_register_script('ajax-basic-user-data-script', get_template_directory_uri() . '/assets/js/ajax-basic-user-data-script.js', array('jquery') ); 
+function add_basic_user_data_with_ajax() {
+	
 
-    wp_localize_script( 'ajax-basic-user-data-script', 'ajax_basic_user_data_object', array( 
-		'ajaxurl' => site_url() . '/wp-admin/admin-ajax.php', // WordPress AJAX
-        'redirecturl' => get_permalink(18),
-        'loadingmessage' => __('Sending user info, please wait...')
-    ));
+	$current_user = wp_get_current_user();
+	
+	$current_user_nickname = $current_user->user_login;
 
-	wp_enqueue_script('ajax-basic-user-data-script');
+	$user_id = get_current_user_id();
 
-	// add_action( 'wp_ajax_ajax_add_basic_user_data', 'ajax_add_basic_user_data' );
+	//Get ID of the current user post
+	$user_post_title = $current_user_nickname; 
 
-    // Enable the user with no privileges to run ajax_login() in AJAX
-    add_action( 'wp_ajax_nopriv_ajax_add_basic_user_data', 'ajax_add_basic_user_data' );
+	if ( $post = get_page_by_path( $user_post_title, OBJECT, 'translator' ) )
+		$user_post_id = $post->ID;
+	else
+		$user_post_id = 0;
 
-}
+    if ( wp_verify_nonce($_POST['basic_user_data_form_csrf'], 'basic_user_data_form-csrf')) {
 
-// print_r(get_page_template_slug());
+		// Save/Update values to user meta data or user post
 
-$tmp = get_page_template_slug(18); // provide page/post ID
+		$user_first_name		= $_POST["user_first_name"];
+		$user_last_name		= $_POST["user_last_name"];
+		$user_bio		= $_POST["user_bio"];	
+		$user_languages_array		= $_POST["user_languages"];
+		$user_specializations_array		= $_POST["user_specializations"];
 
-/* TO DO: PREVENT THIS ACTION INIT ON PAGES OTHER THEN USER ACCOUNT */
+		if (isset( $user_first_name )) {
 
-if(is_user_logged_in() && 'user-account-page-template.php' == $tmp) {
-    // enqueue scripts here
-	    add_action('init', 'ajax_basic_user_data_init');
-}
+			//Update User meta data
+			update_user_meta( $user_id, 'first_name', $user_first_name);
+			//Update ACF field for user post
+			update_field( "translator_first_name", $user_first_name, $user_post_id );
+		}
 
-function ajax_add_basic_user_data(){
+		if (isset( $user_last_name )) {
+	
+			//Update User meta data
+			update_user_meta( $user_id, 'last_name', $user_last_name);
+			//Update ACF field for user post
+			update_field( "translator_last_name", $user_last_name, $user_post_id );
+		}
 
-	print_r('ajax send?');
 
-    // First check the nonce, if it fails the function will break
-    check_ajax_referer( 'ajax-basic-user-data-nonce', 'security' );
+		if (isset( $user_bio )) {
+			
+			//Update User meta data
+			update_user_meta( $user_id, 'description', $user_bio);
+			//Update ACF field for user post
+			update_field( "translator_bio_acf", $user_bio, $user_post_id );
+		}
 
-    // Nonce is checked, get the POST data and sign user on
-    $info = array();
+		if ( isset( $user_languages_array )) {
+			
+			//clears previous values
+			wp_set_post_terms( $user_post_id, null, 'translator_language' );
 
-	$info['user_first_name'] = $_POST["user_first_name"];	
-	// $info['user_last_name']		= $_POST["user_last_name"];	
-	// $info['user_bio']		= $_POST["user_bio"];
-	// $info['user_languages_array']		= $_POST["user_languages"];
-	// $info['user_specializations_array']		= $_POST["user_specializations"];
+			//sets updated values
+			wp_set_post_terms( $user_post_id, $user_languages_array, 'translator_language' );
 
-    if ( is_wp_error() ){
-        echo json_encode(array('loggedin'=>false, 'message'=>__('error ajax')));
-    } else {
-        echo json_encode(array('loggedin'=>true, 'message'=>__('Login successful, redirecting...')));
-    }
+		}
+
+		// if all user_languages checkboxes are marked as false and the form is submitted
+
+		if ( !isset( $user_languages_array ) && isset( $user_first_name ) ) {
+			
+			$user_languages_array = 0;
+
+			//clears previous values
+			wp_set_post_terms( $user_post_id, null, 'translator_language' );
+
+			//sets updated values
+			wp_set_post_terms( $user_post_id, $user_languages_array, 'translator_language' );
+
+		}
+
+		if ( isset( $user_specializations_array )) {
+			
+			//clears previous values
+			wp_set_post_terms( $user_post_id, null, 'translator_specialization' );
+
+			//sets updated values
+			wp_set_post_terms( $user_post_id, $user_specializations_array, 'translator_specialization' );
+
+		}
+
+		// if all user__specialization checkboxes are marked as false and the form is submitted
+
+		if ( !isset( $user_specializations_array ) && isset( $user_first_name ) ) {
+	
+			$user_languages_array = 0;
+
+			//clears previous values
+			wp_set_post_terms( $user_post_id, null, 'translator_specialization' );
+
+			//sets updated values
+			wp_set_post_terms( $user_post_id, $user_languages_array, 'translator_specialization' );
+
+		}
+
+  	}
 
     die();
+
 }
+
+add_action( 'wp_ajax_nopriv_add_basic_user_data_with_ajax',  'add_basic_user_data_with_ajax' );
+add_action( 'wp_ajax_add_basic_user_data_with_ajax','add_basic_user_data_with_ajax' );
+
 
 /* https://rudrastyh.com/wordpress/how-to-add-images-to-media-library-from-uploaded-files-programmatically.html */
 
@@ -718,6 +788,7 @@ function misha_uploader_callback($user_post_id) {
 				<input type="submit" name="submit" value="Zaktualizuj zdjęcie" />
 			</form>';
 }
+
 
 // <span class="file-input__button-text">Wybierz zdjęcie</span>
 

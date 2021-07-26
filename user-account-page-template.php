@@ -123,11 +123,17 @@ do_action("my_test_action");
 
 								echo '</div>';
 
-								echo '<div class="edit-account__basic-info info-box">';
+								echo '<div class="edit-account__basic-info info-box ajax-content-wrapper">';
 
 									echo '<div><p class="info-box__header">Podstawowe dane - edycja</p></div>';
 
 									echo basic_user_data_form();
+
+									echo '<div class="my-ajax-loader">';
+
+											echo '<div class="my-ajax-loader__spinner"></div>';
+										
+									echo '</div>';
 
 								echo '</div>';
 
