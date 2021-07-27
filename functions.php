@@ -149,15 +149,19 @@ function pstk_scripts() {
 		
 		wp_enqueue_script( 'pstk-user-profile', get_template_directory_uri() . '/dist/js/user-profile.js', array(), '', true );
 
-		wp_register_script('ajax_basic_user_data_script', get_template_directory_uri() . '/assets/js/ajax-basic-user-data-script.js', array('jquery') ); 
+		wp_register_script('ajax_forms', get_template_directory_uri() . '/assets/js/ajax-forms.js', array('jquery') ); 
 
-		wp_localize_script('ajax_basic_user_data_script', 'ajax_basic_user_data_script_params', 
-		array(
-			'ajaxurl' => admin_url('admin-ajax.php'), 
-		)
+		wp_localize_script('ajax_forms', 'ajax_forms_params', 
+			array(
+				'ajaxurl' => admin_url('admin-ajax.php'), 
+				'nonce' => wp_create_nonce('ajax-nonce'),
+				'basic_user_data_form' => '#basic_user_data_form',
+				'about_user_data_form' => '#about_user_data_form',
+				'contact_user_data_form' => '#contact_user_data_form'
+			)
 		);
 	
-		wp_enqueue_script('ajax_basic_user_data_script');
+		wp_enqueue_script('ajax_forms');
 	}
 
 	if ( is_singular() && comments_open() && get_option( 'thread_comments' ) ) {
@@ -172,6 +176,11 @@ function wpb_add_google_fonts() {
 }
 add_action( 'wp_enqueue_scripts', 'wpb_add_google_fonts' );
 
+
+add_action( 'set_logged_in_cookie', 'my_update_cookie' );
+function my_update_cookie( $logged_in_cookie ){
+    $_COOKIE[LOGGED_IN_COOKIE] = $logged_in_cookie;
+}
 
 // remove admin bar for all users except administrators
 add_action('after_setup_theme', 'remove_admin_bar');
@@ -390,7 +399,9 @@ function vicode_register_messages() {
 // }
 // add_shortcode('display_basic_user_data_form', 'show_basic_user_data_form');
 
-// Add basic user data form
+
+
+/* ADD BASIC USER DATA FORM */
 function basic_user_data_form() {
 
 	$current_user = wp_get_current_user();
@@ -416,7 +427,7 @@ function basic_user_data_form() {
 		// show any error messages after form submission
 		basic_user_data_form_messages(); ?>
 		
-		<form name="basic_user_data_form" id="basic_user_data_form" class="vicode_form" action="test" method="POST">
+		<form name="basic_user_data_form" id="basic_user_data_form" class="vicode_form" action="" method="POST">
 
 			<fieldset>
 
@@ -436,7 +447,12 @@ function basic_user_data_form() {
 				</p>
 
 				<p>
-					<label for="user_languages"><?php _e('Języki'); ?></label>
+
+					<?php
+					$translator_languages_taxonomy = get_taxonomy( 'translator_language' );
+					?>
+
+					<label for="user_languages"><?php echo $translator_languages_taxonomy->label ?></label>
 
 					<?php
 					
@@ -478,7 +494,12 @@ function basic_user_data_form() {
 
 
 				<p>
-					<label for="user_specializations"><?php _e('Specjalizacje'); ?></label>
+
+					<?php
+						$translator_specializations_taxonomy = get_taxonomy( 'translator_specialization' );
+					?>
+
+					<label for="user_specializations"><?php echo $translator_specializations_taxonomy->label ?></label>
 
 					<?php
 					
@@ -517,10 +538,9 @@ function basic_user_data_form() {
 				<p class="status"></p>
 
 				<p>
-<!-- 
-					<input type="hidden" name="vicode_csrf" value="<?php echo wp_create_nonce('basic_user_data_form-csrf'); ?>"/> -->
+
 					<input type="submit" value="<?php _e('Zaktualizuj informacje o sobie'); ?>"/>
-					<?php wp_nonce_field( 'ajax-basic-user-data-nonce', 'security' ); ?>
+					<?php wp_nonce_field( "add_basic_user_data", "add_basic_user_data_nonce" ); ?>
 				</p>
 
 			</fieldset>
@@ -530,108 +550,108 @@ function basic_user_data_form() {
 }
 
 // Save Basic user data form information
-function add_basic_user_data() {
+// function add_basic_user_data() {
 
-	$current_user = wp_get_current_user();
+// 	$current_user = wp_get_current_user();
 	
-	$current_user_nickname = $current_user->user_login;
+// 	$current_user_nickname = $current_user->user_login;
 
-    if ( isset( $_POST["user_first_name"] ) || isset( $_POST["user_last_name"]) || isset( $_POST["user_bio"] ) || isset( $_POST["user_languages"] ) || isset( $_POST["user_specializations"] ) && wp_verify_nonce($_POST['basic_user_data_form_csrf'], 'basic_user_data_form-csrf')) {
+//     if ( isset( $_POST['add_basic_user_data_nonce'] ) && wp_verify_nonce($_POST['add_basic_user_data_nonce'], 'add_basic_user_data')) {
 
-		$user_id = get_current_user_id();
+// 		$user_id = get_current_user_id();
 
-		//Get ID of the current user post
-		$user_post_title = $current_user_nickname; 
+// 		//Get ID of the current user post
+// 		$user_post_title = $current_user_nickname; 
 
-		if ( $post = get_page_by_path( $user_post_title, OBJECT, 'translator' ) )
-			$user_post_id = $post->ID;
-		else
-			$user_post_id = 0;
+// 		if ( $post = get_page_by_path( $user_post_title, OBJECT, 'translator' ) )
+// 			$user_post_id = $post->ID;
+// 		else
+// 			$user_post_id = 0;
 
-		// Save/Update values to user meta data or user post
+// 		// Save/Update values to user meta data or user post
 
-		if (isset( $_POST["user_first_name"] )) {
-			$user_first_name		= $_POST["user_first_name"];	
+// 		if (isset( $_POST["user_first_name"] )) {
+// 			$user_first_name		= $_POST["user_first_name"];	
 
-			//Update User meta data
-			update_user_meta( $user_id, 'first_name', $user_first_name);
-			//Update ACF field for user post
-			update_field( "translator_first_name", $user_first_name, $user_post_id );
-		}
+// 			//Update User meta data
+// 			update_user_meta( $user_id, 'first_name', $user_first_name);
+// 			//Update ACF field for user post
+// 			update_field( "translator_first_name", $user_first_name, $user_post_id );
+// 		}
 
-		if (isset( $_POST["user_last_name"] )) {
-			$user_last_name		= $_POST["user_last_name"];	
+// 		if (isset( $_POST["user_last_name"] )) {
+// 			$user_last_name		= $_POST["user_last_name"];	
 			
-			//Update User meta data
-			update_user_meta( $user_id, 'last_name', $user_last_name);
-			//Update ACF field for user post
-			update_field( "translator_last_name", $user_last_name, $user_post_id );
-		}
+// 			//Update User meta data
+// 			update_user_meta( $user_id, 'last_name', $user_last_name);
+// 			//Update ACF field for user post
+// 			update_field( "translator_last_name", $user_last_name, $user_post_id );
+// 		}
 
 
-		if (isset( $_POST["user_bio"] )) {
-			$user_bio		= $_POST["user_bio"];
-			update_user_meta( $user_id, 'description', $user_bio);
-			//Update ACF field for user post
-			update_field( "translator_bio_acf", $user_bio, $user_post_id );
-		}
+// 		if (isset( $_POST["user_bio"] )) {
+// 			$user_bio		= $_POST["user_bio"];
+// 			update_user_meta( $user_id, 'description', $user_bio);
+// 			//Update ACF field for user post
+// 			update_field( "translator_bio_acf", $user_bio, $user_post_id );
+// 		}
 
-		if ( isset( $_POST["user_languages"] )) {
-			$user_languages_array		= $_POST["user_languages"];
-			// update_user_meta( $user_id, '_user_languages', $user_languages_array);
+// 		if ( isset( $_POST["user_languages"] )) {
+// 			$user_languages_array		= $_POST["user_languages"];
+// 			// update_user_meta( $user_id, '_user_languages', $user_languages_array);
 
-			//clears previous values
-			wp_set_post_terms( $user_post_id, null, 'translator_language' );
+// 			//clears previous values
+// 			wp_set_post_terms( $user_post_id, null, 'translator_language' );
 
-			//sets updated values
-			wp_set_post_terms( $user_post_id, $user_languages_array, 'translator_language' );
+// 			//sets updated values
+// 			wp_set_post_terms( $user_post_id, $user_languages_array, 'translator_language' );
 
-		}
+// 		}
 
-		// if all user_languages checkboxes are marked as false and the form is submitted
+// 		// if all user_languages checkboxes are marked as false and the form is submitted
 
-		if ( !isset( $_POST["user_languages"] ) && isset( $_POST["user_first_name"] ) ) {
+// 		if ( !isset( $_POST["user_languages"] ) && isset( $_POST["user_first_name"] ) ) {
 			
-			$user_languages_array = 0;
-			// update_user_meta( $user_id, '_user_languages', $user_languages_array);
+// 			$user_languages_array = 0;
+// 			// update_user_meta( $user_id, '_user_languages', $user_languages_array);
 
-			//clears previous values
-			wp_set_post_terms( $user_post_id, null, 'translator_language' );
+// 			//clears previous values
+// 			wp_set_post_terms( $user_post_id, null, 'translator_language' );
 
-			//sets updated values
-			wp_set_post_terms( $user_post_id, $user_languages_array, 'translator_language' );
+// 			//sets updated values
+// 			wp_set_post_terms( $user_post_id, $user_languages_array, 'translator_language' );
 
-		}
+// 		}
 
-		if ( isset( $_POST["user_specializations"] )) {
-			$user_specializations_array		= $_POST["user_specializations"];
+// 		if ( isset( $_POST["user_specializations"] )) {
+// 			$user_specializations_array		= $_POST["user_specializations"];
 
-			//clears previous values
-			wp_set_post_terms( $user_post_id, null, 'translator_specialization' );
+// 			//clears previous values
+// 			wp_set_post_terms( $user_post_id, null, 'translator_specialization' );
 
-			//sets updated values
-			wp_set_post_terms( $user_post_id, $user_specializations_array, 'translator_specialization' );
+// 			//sets updated values
+// 			wp_set_post_terms( $user_post_id, $user_specializations_array, 'translator_specialization' );
 
-		}
+// 		}
 
-		// if all user__specialization checkboxes are marked as false and the form is submitted
+// 		// if all user__specialization checkboxes are marked as false and the form is submitted
 
-		if ( !isset( $_POST["user_specializations"] ) && isset( $_POST["user_first_name"] ) ) {
+// 		if ( !isset( $_POST["user_specializations"] ) && isset( $_POST["user_first_name"] ) ) {
 	
-			$user_languages_array = 0;
-			// update_user_meta( $user_id, '_user_languages', $user_languages_array);
+// 			$user_languages_array = 0;
+// 			// update_user_meta( $user_id, '_user_languages', $user_languages_array);
 
-			//clears previous values
-			wp_set_post_terms( $user_post_id, null, 'translator_specialization' );
+// 			//clears previous values
+// 			wp_set_post_terms( $user_post_id, null, 'translator_specialization' );
 
-			//sets updated values
-			wp_set_post_terms( $user_post_id, $user_languages_array, 'translator_specialization' );
+// 			//sets updated values
+// 			wp_set_post_terms( $user_post_id, $user_languages_array, 'translator_specialization' );
 
-		}
+// 		}
 
-  	}
-}
-add_action('init', 'add_basic_user_data');
+//   	}
+// }
+// add_action('init', 'add_basic_user_data');
 
 
 // used for tracking error messages
@@ -659,6 +679,9 @@ function basic_user_data_form_messages() {
 
 function add_basic_user_data_with_ajax() {
 	
+	// print_r($_POST);
+
+	print_r(json_encode($_POST));
 
 	$current_user = wp_get_current_user();
 	
@@ -669,12 +692,15 @@ function add_basic_user_data_with_ajax() {
 	//Get ID of the current user post
 	$user_post_title = $current_user_nickname; 
 
-	if ( $post = get_page_by_path( $user_post_title, OBJECT, 'translator' ) )
+	if ( $post = get_page_by_path( $user_post_title, OBJECT, 'translator' ) ) {
 		$user_post_id = $post->ID;
-	else
+	} else {
 		$user_post_id = 0;
+	}
 
-    if ( wp_verify_nonce($_POST['basic_user_data_form_csrf'], 'basic_user_data_form-csrf')) {
+	if ( ! wp_verify_nonce( $_POST["add_basic_user_data_nonce"], "add_basic_user_data") ) {
+		die ( 'Busted!');
+	}
 
 		// Save/Update values to user meta data or user post
 
@@ -757,8 +783,6 @@ function add_basic_user_data_with_ajax() {
 
 		}
 
-  	}
-
     die();
 
 }
@@ -766,6 +790,380 @@ function add_basic_user_data_with_ajax() {
 add_action( 'wp_ajax_nopriv_add_basic_user_data_with_ajax',  'add_basic_user_data_with_ajax' );
 add_action( 'wp_ajax_add_basic_user_data_with_ajax','add_basic_user_data_with_ajax' );
 
+
+/* ADD ABOUT USER DATA FORM */
+function about_user_data_form() {
+
+	$current_user = wp_get_current_user();
+
+	//Get ID of the current user post
+	$current_user_nickname = $current_user->user_login;
+	$user_post_title = $current_user_nickname; 
+
+	if ( $post = get_page_by_path( $user_post_title, OBJECT, 'translator' ) )
+		$user_post_id = $post->ID;
+	else
+		$user_post_id = 0;
+
+		// var_dump($current_user_languages_array_terms);
+
+	ob_start(); ?>	
+
+		<?php 
+		// show any error messages after form submission
+		about_user_data_form_messages(); ?>
+		
+		<form name="about_user_data_form" id="about_user_data_form" class="vicode_form" action="" method="POST">
+
+			<fieldset>
+
+				<p>
+					<textarea form="about_user_data_form" name="user_about" id="user_about" class="user_about" type="text" maxlength="300"><?php echo get_field("translator_about", $user_post_id) ?></textarea>
+					<label for="user_about">0/300</label>
+				</p>
+
+				<p>
+					<input type="submit" value="<?php _e('Zaktualizuj informacje o sobie'); ?>"/>
+					<?php wp_nonce_field( 'add_about_user_data', 'add_about_user_data_nonce' ); ?>
+				</p>
+
+			</fieldset>
+		</form>
+	<?php
+	return ob_get_clean();
+}
+
+// Save Basic user data form information
+// function add_about_user_data() {
+
+// 	$current_user = wp_get_current_user();
+	
+// 	$current_user_nickname = $current_user->user_login;
+
+// 	if ( ! wp_verify_nonce( $_POST["add_about_user_data_nonce"], "add_about_user_data") ) {
+// 		die ( 'Busted!');
+// 	}
+
+// 		$user_about = $_POST["user_about"];
+
+// 		$user_id = get_current_user_id();
+
+// 		//Get ID of the current user post
+// 		$user_post_title = $current_user_nickname; 
+
+// 		if ( $post = get_page_by_path( $user_post_title, OBJECT, 'translator' ) )
+// 			$user_post_id = $post->ID;
+// 		else
+// 			$user_post_id = 0;
+
+// 		// Save/Update values to user meta data or user post
+
+//         //Update ACF field for user post
+//         update_field( "translator_about", $user_about, $user_post_id );
+		
+//   	die();
+// }
+// add_action('init', 'add_about_user_data');
+
+
+// used for tracking error messages
+function about_user_data_form_errors(){
+    static $wp_error; // global variable handle
+    return isset($wp_error) ? $wp_error : ($wp_error = new WP_Error(null, null, null));
+}
+
+
+// displays error messages from form submissions
+function about_user_data_form_messages() {
+	if($codes = about_user_data_form_errors()->get_error_codes()) {
+		echo '<div class="vicode_errors">';
+		    // Loop error codes and display errors
+		   foreach($codes as $code){
+		        $message = about_user_data_form_errors()->get_error_message($code);
+		        echo '<span class="error"><strong>' . __('Error') . '</strong>: ' . $message . '</span><br/>';
+		    }
+		echo '</div>';
+	}	
+}
+
+//Ajaxify about user data form https://support.advancedcustomfields.com/forums/topic/use-update_field-with-ajax/
+
+
+function add_about_user_data_with_ajax() {
+
+	print_r(json_encode($_POST));
+	
+	$current_user = wp_get_current_user();
+	
+	$current_user_nickname = $current_user->user_login;
+
+    $user_about		= $_POST["user_about"];
+
+	if ( ! wp_verify_nonce( $_POST["add_about_user_data_nonce"], "add_about_user_data") ) {
+		die ( 'Busted!');
+	}
+
+		$user_id = get_current_user_id();
+
+		//Get ID of the current user post
+		$user_post_title = $current_user_nickname; 
+
+		if ( $post = get_page_by_path( $user_post_title, OBJECT, 'translator' ) )
+			$user_post_id = $post->ID;
+		else
+			$user_post_id = 0;
+
+		// Save/Update values to user meta data or user post
+
+        //Update ACF field for user post
+        update_field( "translator_about", $user_about, $user_post_id );
+		
+    die();
+
+}
+
+add_action( 'wp_ajax_nopriv_add_about_user_data_with_ajax',  'add_about_user_data_with_ajax' );
+add_action( 'wp_ajax_add_about_user_data_with_ajax','add_about_user_data_with_ajax' );
+
+
+/* ADD CONTACT USER DATA FORM */
+
+function contact_user_data_form() {
+
+	$current_user = wp_get_current_user();
+
+	//Get ID of the current user post
+	$current_user_nickname = $current_user->user_login;
+	$user_post_title = $current_user_nickname; 
+
+
+
+	if ( $post = get_page_by_path( $user_post_title, OBJECT, 'translator' ) )
+		$user_post_id = $post->ID;
+	else
+		$user_post_id = 0;
+
+	$current_user_localizations_array_terms = wp_get_post_terms($user_post_id, 'translator_localization', array('fields' => 'names'));
+
+		// var_dump($current_user_localizations_array_terms);
+
+	ob_start(); ?>	
+
+		<?php 
+		// show any error messages after form submission
+		contact_user_data_form_messages(); ?>
+		
+		<form name="contact_user_data_form" id="contact_user_data_form" class="vicode_form" action="" method="POST">
+
+			<fieldset>
+
+				<p>
+
+					<?php
+						$translator_specializations_taxonomy = get_taxonomy( 'translator_localization' );
+					?>
+
+					<label for="user_localizations"><?php echo $translator_specializations_taxonomy->label ?></label>
+
+					<?php
+					
+						$translator_localizations = get_terms( array(
+							'taxonomy' => 'translator_localization',
+							'hide_empty' => false,
+							'orderby'    => 'ID', 
+						) );
+
+						if ( $translator_localizations ) {
+
+							//only 3 first
+
+							foreach( array_slice($translator_localizations, 0, 3) as $term ) :
+
+								echo '<div class="info-box__checkbox-wrapper">';
+
+								echo '<label>';
+								
+									?>
+									<input name="user_localizations[]" id="user_localizations" class="user_localizations" type="checkbox" value="<?php echo $term->name ?>"
+									<?php
+									 if ($current_user_localizations_array_terms && in_array($term->name, $current_user_localizations_array_terms)) { echo "checked"; } ?>/>
+									<?php
+
+								echo $term->name;
+
+								echo '</label>';
+
+								echo '</div>';
+	
+							endforeach;
+
+
+							//only custom ones added by this user
+							//dont include 3 first ones
+
+							foreach( array_slice($translator_localizations, 3) as $term ) :
+
+								if ($current_user_localizations_array_terms && in_array($term->name, $current_user_localizations_array_terms)) {
+
+									echo '<div class="info-box__checkbox-wrapper">';
+
+									echo '<label>';
+									
+										?>
+										<input name="user_localizations[]" id="user_localizations" class="user_localizations" type="checkbox" value="<?php echo $term->name ?>" checked/>
+										<?php
+	
+									echo $term->name;
+	
+									echo '</label>';
+	
+									echo '</div>';
+
+								}
+
+							endforeach;
+
+						};
+						
+					?>
+
+					<div class="repeater-input__holder">
+
+						<button class="repeater-input__add-button">+</button>
+
+						<div class="repeater-input__wrapper">
+
+							<input name="user_localizations[]" id="user_localizations" class="user_localizations user_localizations__repeater" type="text" value="" />
+
+						</div>
+
+					</div>
+
+				</p>
+
+				<p>
+					<input type="submit" value="<?php _e('Zaktualizuj informacje o sobie'); ?>"/>
+					<?php wp_nonce_field( 'add_contact_user_data', 'add_contact_user_data_nonce' ); ?>
+				</p>
+
+			</fieldset>
+		</form>
+	<?php
+	return ob_get_clean();
+}
+
+// Save Basic user data form information
+// function add_about_user_data() {
+
+// 	$current_user = wp_get_current_user();
+	
+// 	$current_user_nickname = $current_user->user_login;
+
+// 	if ( ! wp_verify_nonce( $_POST["add_about_user_data_nonce"], "add_about_user_data") ) {
+// 		die ( 'Busted!');
+// 	}
+
+// 		user_localizations = $_POST["user_about"];
+
+// 		$user_id = get_current_user_id();
+
+// 		//Get ID of the current user post
+// 		$user_post_title = $current_user_nickname; 
+
+// 		if ( $post = get_page_by_path( $user_post_title, OBJECT, 'translator' ) )
+// 			$user_post_id = $post->ID;
+// 		else
+// 			$user_post_id = 0;
+
+// 		// Save/Update values to user meta data or user post
+
+//         //Update ACF field for user post
+//         update_field( "translator_about", user_localizations, $user_post_id );
+		
+//   	die();
+// }
+// add_action('init', 'add_about_user_data');
+
+
+// used for tracking error messages
+function contact_user_data_form_errors(){
+    static $wp_error; // global variable handle
+    return isset($wp_error) ? $wp_error : ($wp_error = new WP_Error(null, null, null));
+}
+
+
+// displays error messages from form submissions
+function contact_user_data_form_messages() {
+	if($codes = contact_user_data_form_errors()->get_error_codes()) {
+		echo '<div class="vicode_errors">';
+		    // Loop error codes and display errors
+		   foreach($codes as $code){
+		        $message = contact_user_data_form_errors()->get_error_message($code);
+		        echo '<span class="error"><strong>' . __('Error') . '</strong>: ' . $message . '</span><br/>';
+		    }
+		echo '</div>';
+	}	
+}
+
+//Ajaxify about user data form https://support.advancedcustomfields.com/forums/topic/use-update_field-with-ajax/
+
+
+function add_contact_user_data_with_ajax() {
+
+	print_r(json_encode($_POST));
+	
+	$current_user = wp_get_current_user();
+	
+	$current_user_nickname = $current_user->user_login;
+
+    $user_localizations		= $_POST["user_localizations"];
+
+	if ( ! wp_verify_nonce( $_POST["add_contact_user_data_nonce"], "add_contact_user_data") ) {
+		die ( 'Busted!');
+	}
+
+		$user_id = get_current_user_id();
+
+		//Get ID of the current user post
+		$user_post_title = $current_user_nickname; 
+
+		if ( $post = get_page_by_path( $user_post_title, OBJECT, 'translator' ) )
+			$user_post_id = $post->ID;
+		else
+			$user_post_id = 0;
+
+		// Save/Update values to user meta data or user post
+
+		if ( isset( $user_localizations )) {
+			
+			//clears previous values
+			wp_set_post_terms( $user_post_id, null, 'translator_localization' );
+
+			//sets updated values
+			wp_set_post_terms( $user_post_id, $user_localizations, 'translator_localization' );
+
+		}
+
+		// if all user__specialization checkboxes are marked as false and the form is submitted
+
+		// if ( !isset( $user_localizations ) ) {
+	
+		// 	$user_languages_array = 0;
+
+		// 	//clears previous values
+		// 	wp_set_post_terms( $user_post_id, null, 'translator_specialization' );
+
+		// 	//sets updated values
+		// 	wp_set_post_terms( $user_post_id, $user_languages_array, 'translator_specialization' );
+
+		// }
+		
+    die();
+
+}
+
+add_action( 'wp_ajax_nopriv_add_contact_user_data_with_ajax',  'add_contact_user_data_with_ajax' );
+add_action( 'wp_ajax_add_contact_user_data_with_ajax','add_contact_user_data_with_ajax' );
 
 /* https://rudrastyh.com/wordpress/how-to-add-images-to-media-library-from-uploaded-files-programmatically.html */
 

@@ -26,7 +26,7 @@ get_header();
 				https://codepen.io/elmahdim/embed/hlmri?height=565&theme-id=0&slug-hash=hlmri&default-tab=result&user=elmahdim&embed-version=2&pen-title=Dropdown%20with%20Multiple%20checkbox%20select%20with%20jQuery -->
 
 				<?php
-					echo do_shortcode( '[searchandfilter types="checkbox,checkbox" hide_empty="0,0,0" fields="translator_language,translator_specialization,city" ]' );
+					echo do_shortcode( '[searchandfilter types="checkbox,checkbox,checkbox" hide_empty="0,0,0" fields="translator_language,translator_specialization,translator_localization" ]' );
 				?>
 
 			</div>
