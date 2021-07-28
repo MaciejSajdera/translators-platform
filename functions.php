@@ -153,11 +153,11 @@ function pstk_scripts() {
 
 		wp_localize_script('ajax_forms', 'ajax_forms_params', 
 			array(
-				'ajaxurl' => admin_url('admin-ajax.php'), 
-				'nonce' => wp_create_nonce('ajax-nonce'),
+				'ajaxurl' => admin_url('admin-ajax.php'),
 				'basic_user_data_form' => '#basic_user_data_form',
 				'about_user_data_form' => '#about_user_data_form',
-				'contact_user_data_form' => '#contact_user_data_form'
+				'contact_user_data_form' => '#contact_user_data_form',
+				'upload_profile_picture_form' => '#upload_profile_picture_form',
 			)
 		);
 	
@@ -248,7 +248,7 @@ function vicode_registration_fields() {
 				</p>
 				<p>
 					<input type="hidden" name="vicode_csrf" value="<?php echo wp_create_nonce('vicode-csrf'); ?>"/>
-					<input type="submit" value="<?php _e('Register Your Account'); ?>"/>
+					<input type="submit" name="register_new_account" value="<?php _e('Register Your Account'); ?>"/>
 				</p>
 		</form>
 	<?php
@@ -539,7 +539,7 @@ function basic_user_data_form() {
 
 				<p>
 
-					<input type="submit" value="<?php _e('Zaktualizuj informacje o sobie'); ?>"/>
+					<input type="submit" name="submit_basic_user_data" value="<?php _e('Zaktualizuj informacje o sobie'); ?>"/>
 					<?php wp_nonce_field( "add_basic_user_data", "add_basic_user_data_nonce" ); ?>
 				</p>
 
@@ -679,10 +679,6 @@ function basic_user_data_form_messages() {
 
 function add_basic_user_data_with_ajax() {
 	
-	// print_r($_POST);
-
-	print_r(json_encode($_POST));
-
 	$current_user = wp_get_current_user();
 	
 	$current_user_nickname = $current_user->user_login;
@@ -698,8 +694,11 @@ function add_basic_user_data_with_ajax() {
 		$user_post_id = 0;
 	}
 
+	$error_array = array();
+
 	if ( ! wp_verify_nonce( $_POST["add_basic_user_data_nonce"], "add_basic_user_data") ) {
-		die ( 'Busted!');
+		// array_push($error_array, "Nonce mismatched!");
+		die ( 'Nonce mismatched!');
 	}
 
 		// Save/Update values to user meta data or user post
@@ -783,6 +782,11 @@ function add_basic_user_data_with_ajax() {
 
 		}
 
+
+		$_POST['errors'] = $error_array;
+
+		print_r(json_encode($_POST));
+
     die();
 
 }
@@ -823,7 +827,7 @@ function about_user_data_form() {
 				</p>
 
 				<p>
-					<input type="submit" value="<?php _e('Zaktualizuj informacje o sobie'); ?>"/>
+					<input type="submit" name="submit_about_user_data" value="<?php _e('Zaktualizuj informacje o sobie'); ?>"/>
 					<?php wp_nonce_field( 'add_about_user_data', 'add_about_user_data_nonce' ); ?>
 				</p>
 
@@ -841,7 +845,7 @@ function about_user_data_form() {
 // 	$current_user_nickname = $current_user->user_login;
 
 // 	if ( ! wp_verify_nonce( $_POST["add_about_user_data_nonce"], "add_about_user_data") ) {
-// 		die ( 'Busted!');
+// 		die ( 'Nonce mismatched!');
 // 	}
 
 // 		$user_about = $_POST["user_about"];
@@ -900,7 +904,7 @@ function add_about_user_data_with_ajax() {
     $user_about		= $_POST["user_about"];
 
 	if ( ! wp_verify_nonce( $_POST["add_about_user_data_nonce"], "add_about_user_data") ) {
-		die ( 'Busted!');
+		die ( 'Nonce mismatched!');
 	}
 
 		$user_id = get_current_user_id();
@@ -1027,22 +1031,30 @@ function contact_user_data_form() {
 						
 					?>
 
-					<div class="repeater-input__holder">
+					<div class="repeater__holder">
 
-						<button class="repeater-input__add-button">+</button>
+						<button class="repeater__button repeater__button--add">+</button>
 
-						<div class="repeater-input__wrapper">
+						<div class="repeater__field-wrapper">
 
-							<input name="user_localizations[]" id="user_localizations" class="user_localizations user_localizations__repeater" type="text" value="" />
+							<div class="repeater__field">
+
+								<input name="user_localizations[]" id="user_localizations" class="user_localizations user_localizations__repeater" placeholder="Dodaj inną lokalizację" type="text" value="" />
+
+								<button class="repeater__button repeater__button--delete">-</button>
+
+							</div>
 
 						</div>
+
+
 
 					</div>
 
 				</p>
 
 				<p>
-					<input type="submit" value="<?php _e('Zaktualizuj informacje o sobie'); ?>"/>
+					<input type="submit" name="submit_contact_user_data" value="<?php _e('Zaktualizuj informacje o sobie'); ?>"/>
 					<?php wp_nonce_field( 'add_contact_user_data', 'add_contact_user_data_nonce' ); ?>
 				</p>
 
@@ -1060,7 +1072,7 @@ function contact_user_data_form() {
 // 	$current_user_nickname = $current_user->user_login;
 
 // 	if ( ! wp_verify_nonce( $_POST["add_about_user_data_nonce"], "add_about_user_data") ) {
-// 		die ( 'Busted!');
+// 		die ( 'Nonce mismatched!');
 // 	}
 
 // 		user_localizations = $_POST["user_about"];
@@ -1119,7 +1131,7 @@ function add_contact_user_data_with_ajax() {
     $user_localizations		= $_POST["user_localizations"];
 
 	if ( ! wp_verify_nonce( $_POST["add_contact_user_data_nonce"], "add_contact_user_data") ) {
-		die ( 'Busted!');
+		die ( 'Nonce mismatched!');
 	}
 
 		$user_id = get_current_user_id();
@@ -1167,10 +1179,19 @@ add_action( 'wp_ajax_add_contact_user_data_with_ajax','add_contact_user_data_wit
 
 /* https://rudrastyh.com/wordpress/how-to-add-images-to-media-library-from-uploaded-files-programmatically.html */
 
-add_shortcode( 'misha_uploader', 'misha_uploader_callback' );
+// add_shortcode( 'profile_picture_uploader', 'profile_picture_uploader_callback' );
 
-function misha_uploader_callback($user_post_id) {
-	return '<form id="upload-profile-picture" action="' . get_stylesheet_directory_uri() . '/process_upload.php" method="post" enctype="multipart/form-data">
+function profile_picture_uploader($user_post_id) {
+
+	ob_start(); 
+
+		// show any error messages after form submission
+		profile_picture_uploader_form_messages();
+
+		$stylesheet_directory_uri = get_stylesheet_directory_uri();
+		?>
+
+	<form id="upload_profile_picture_form" method="post" enctype="multipart/form-data">
 
 				<label class="file-input__label">
 
@@ -1182,10 +1203,138 @@ function misha_uploader_callback($user_post_id) {
 
 				</label>
 
-				<input type="hidden" name="post_id" id="post_id" value="'.$user_post_id.'"><br>
-				<input type="submit" name="submit" value="Zaktualizuj zdjęcie" />
-			</form>';
+				<input type="hidden" name="post_id" id="post_id" value="<?php echo $user_post_id ?>"><br>
+				<?php wp_nonce_field( "add_profile_picture", "add_profile_picture_nonce" ); ?>
+				<input type="submit" name="submit_profile_picture" value="Zaktualizuj zdjęcie" />
+	</form>
+
+	<?php
+	return ob_get_clean();
 }
+
+// used for tracking error messages
+function profile_picture_uploader_form_errors(){
+    static $wp_error; // global variable handle
+    return isset($wp_error) ? $wp_error : ($wp_error = new WP_Error(null, null, null));
+}
+
+
+// displays error messages from form submissions
+function profile_picture_uploader_form_messages() {
+	if($codes = basic_user_data_form_errors()->get_error_codes()) {
+		echo '<div class="vicode_errors">';
+		    // Loop error codes and display errors
+		   foreach($codes as $code){
+		        $message = profile_picture_uploader_form_errors()->get_error_message($code);
+		        echo '<span class="error"><strong>' . __('Error') . '</strong>: ' . $message . '</span><br/>';
+		    }
+		echo '</div>';
+	}	
+}
+
+
+/**
+ * Handles the file upload request.
+ */
+function handle_profile_picture_upload() {
+
+	//Stop immidiately if form is not submitted
+	// if ( ! isset( $_POST['submit_profile_picture'] ) ) {
+	// 	return;
+	// }
+
+	// Verify nonce
+	if ( ! wp_verify_nonce( $_POST['add_profile_picture_nonce'], 'add_profile_picture' ) ) {
+		wp_die( esc_html__( 'Nonce mismatched', 'theme-text-domain' ) );
+	}
+
+	// Throws a message if no file is selected
+	if ( ! $_FILES['profile-picture__input']['name'] ) {
+		wp_die( esc_html__( 'Please choose a file', 'theme-text-domain' ) );
+	}
+
+	$new_file_mime = mime_content_type( $_FILES['profile-picture__input']['tmp_name'] );
+
+	if( !in_array( $new_file_mime, get_allowed_mime_types() ) )
+	die( 'WordPress doesn\'t allow this type of uploads.' );
+
+	// $allowed_extensions = array( 'jpg', 'jpeg', 'png' );
+	// $file_type = wp_check_filetype( $_FILES['profile-picture__input'] );
+	// $file_extension = $file_type['ext'];
+
+	// // Check for valid file extension
+	// if ( ! in_array( $file_extension, $allowed_extensions ) ) {
+	// 	die("Invalid file extension, only allowe");
+	// 	error_log ( esc_html__( 'Invalid file extension, only allowed: %s', 'theme-text-domain' ), implode( ', ', $allowed_extensions ));
+	// 	wp_die( sprintf(  esc_html__( 'Invalid file extension, only allowed: %s', 'theme-text-domain' ), implode( ', ', $allowed_extensions ) ) );
+	// }
+
+	// $file_name = preg_replace('/\s+/', '-', $_FILES["file"]["name"]);
+
+	$file_size = $_FILES['profile-picture__input']['size'];
+	$allowed_file_size = 3145728; // Here we are setting the file size limit to 3MB
+
+	// Check for file size limit
+	if ( $file_size >= $allowed_file_size ) {
+		wp_die( sprintf( esc_html__( 'File size limit exceeded, file size should be smaller than %d KB', 'theme-text-domain' ), $allowed_file_size / 1000 ) );
+	}
+
+	// These files need to be included as dependencies when on the front end.
+	require_once( ABSPATH . 'wp-admin/includes/image.php' );
+	require_once( ABSPATH . 'wp-admin/includes/file.php' );
+	require_once( ABSPATH . 'wp-admin/includes/media.php' );
+
+	// Get post_id
+	$post_id = $_POST['post_id'];
+
+	// Let WordPress handle the upload.
+	// Remember, 'wpcfu_file' is the name of our file input in our form above.
+	// Here post_id is 0 because we are not going to attach the media to any post.
+	$attachment_id = media_handle_upload( 'profile-picture__input', $post_id );
+
+	set_post_thumbnail( $post_id, $attachment_id );
+
+	if ( is_wp_error( $attachment_id ) ) {
+		// There was an error uploading the image.
+		wp_die( $attachment_id->get_error_message() );
+	} else {
+		// We will redirect the user to the attachment page after uploading the file successfully.
+		wp_redirect( get_the_permalink(18) );
+		exit;
+	}
+
+	die();
+}
+
+/**
+ * Hook the function that handles the file upload request.
+ */
+// add_action( 'init', 'handle_profile_picture_upload' );
+
+add_action( 'wp_ajax_nopriv_handle_profile_picture_upload',  'handle_profile_picture_upload' );
+add_action( 'wp_ajax_handle_profile_picture_upload','handle_profile_picture_upload' );
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 // <span class="file-input__button-text">Wybierz zdjęcie</span>
@@ -1199,6 +1348,7 @@ function redirect_login_page() {
 	  exit;
 	}
 }
+
 add_action('init','redirect_login_page');
 
 function redirect_nonadmin_users_after_login() {
@@ -1235,6 +1385,17 @@ function logout_page() {
 }
 add_action('wp_logout','logout_page');
 
+/**
+ * Block wp-admin access for non-admins
+ */
+function block_wp_admin() {
+	$login_page  = get_permalink(18);
+	if ( is_admin() && ! current_user_can( 'administrator' ) && ! ( defined( 'DOING_AJAX' ) && DOING_AJAX ) ) {
+		wp_safe_redirect( $login_page );
+		exit;
+	}
+}
+add_action( 'admin_init', 'block_wp_admin' );
 
 //Exclude pages from WordPress Search
 // if (!is_admin()) {

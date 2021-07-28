@@ -64,7 +64,7 @@ input[type="checkbox"] {
 
 $repeater_input_height: 46px;
 
-.repeater-input {
+.repeater {
 	&__holder {
 		padding-left: calc(#{$checkbox_width} + #{$checkbox_margin-right});
 		position: relative;
@@ -84,10 +84,8 @@ $repeater_input_height: 46px;
 		}
 	}
 
-	&__add-button {
-		position: absolute;
+	&__button {
 		bottom: calc((#{$repeater_input_height} - #{$checkbox_height}) / 2);
-		left: 0;
 		cursor: pointer;
 		width: $checkbox_width;
 		height: $checkbox_height;
@@ -95,6 +93,15 @@ $repeater_input_height: 46px;
 		border: 0;
 		padding: 0;
 		font-size: 22px;
+
+		&--add {
+			position: absolute;
+			left: 0;
+		}
+
+		&--delete {
+			right: 0;
+		}
 	}
 }
 

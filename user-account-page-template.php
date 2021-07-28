@@ -76,17 +76,25 @@ do_action("my_test_action");
 
 						echo '<div class="account__side-menu">';
 
-							echo '<div class="profile-pricture__wrapper">';
+							echo '<div class="profile-pricture__wrapper ajax-content-wrapper">';
 
 								if(wp_get_attachment_image_url(get_post_thumbnail_id($user_post_id))) {
 									pstk_post_thumbnail($user_post_id);
 								} else {
 									echo '<div class="post-thumbnail">';
-									echo '<img src="'.get_avatar_url($current_user_id).'">';
+									echo '<img src="'.get_stylesheet_directory_uri(). '/dist/dist/img/avatarplaceholder.jpg">';
+									
+									
 									echo '</div>';
 								}
 
-								echo misha_uploader_callback($user_post_id);
+								echo profile_picture_uploader($user_post_id);
+
+								echo '<div class="my-ajax-loader">';
+
+									echo '<div class="my-ajax-loader__spinner"></div>';
+						
+								echo '</div>';
 
 							echo '</div>';
 

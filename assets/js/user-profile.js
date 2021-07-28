@@ -56,8 +56,6 @@ document.addEventListener("DOMContentLoaded", () => {
 					".button__edit-account-content"
 				).dataset.profileEdit;
 
-				console.log(editBoxId);
-
 				let editBox = document.querySelector(`#${editBoxId}`);
 				let contentBox = this.closest(".account__box-container").querySelector(
 					".content-box"
@@ -72,31 +70,44 @@ document.addEventListener("DOMContentLoaded", () => {
 	}
 
 	const allRepeaterAddInputButtons = document.querySelectorAll(
-		".repeater-input__add-button"
+		".repeater__button--add"
 	);
 
 	if (allRepeaterAddInputButtons) {
-		const makeAddingInputsRepeatable = () => {
-			allRepeaterAddInputButtons.forEach(button => {
-				button.addEventListener("click", function(e) {
-					e.preventDefault();
+		allRepeaterAddInputButtons.forEach(button => {
+			button.addEventListener("click", function(e) {
+				e.preventDefault();
 
-					const container = this.parentNode.querySelector(
-						".repeater-input__wrapper"
-					);
+				const container = this.parentNode.querySelector(
+					".repeater__field-wrapper"
+				);
 
-					let clonedInput = this.parentNode.querySelector("INPUT").cloneNode();
+				let clonedInput = this.parentNode
+					.querySelector(".repeater__field")
+					.cloneNode(true);
 
-					container.appendChild(clonedInput);
-				});
+				container.appendChild(clonedInput);
 			});
-		};
+		});
+	}
 
-		makeAddingInputsRepeatable();
+	const allRepeaterDeleteInputButtons = document.querySelectorAll(
+		".repeater__button--delete"
+	);
+
+	function removeRepeaterField(e) {
+		e.preventDefault();
+		this.closest(".repeater__field").remove();
+	}
+
+	if (allRepeaterDeleteInputButtons) {
+		allRepeaterDeleteInputButtons.forEach(button => {
+			button.addEventListener("click", removeRepeaterField);
+		});
 	}
 
 	const uploadProfilePictureForm = document.querySelector(
-		"form#upload-profile-picture"
+		"form#upload_profile_picture_form"
 	);
 
 	if (uploadProfilePictureForm) {

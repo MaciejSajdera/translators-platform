@@ -218,7 +218,7 @@ $profile_picture_width: 175px;
 			}
 		}
 
-		form#upload-profile-picture {
+		form#upload_profile_picture_form {
 			display: flex;
 			flex-flow: column;
 			padding-top: $profile_picture_top_distance;
@@ -245,7 +245,6 @@ $profile_picture_width: 175px;
 					position: relative;
 					border-radius: 100%;
 					overflow: hidden;
-					border: 1px solid $color__border-element;
 
 					&:before {
 						content: "";
@@ -254,6 +253,8 @@ $profile_picture_width: 175px;
 						width: 100%;
 						background-color: transparent;
 						transition: all 0.2s ease-in-out;
+						border: 1px solid $color__border-element;
+						border-radius: 100%;
 					}
 
 					&:after {

@@ -31,6 +31,7 @@ jQuery(document).ready(function($) {
 
 			success: function(data) {
 				console.log("SUCCESS!");
+				console.log(data);
 				console.log(JSON.parse(data));
 
 				const dataJSON = JSON.parse(data);
@@ -158,6 +159,59 @@ jQuery(document).ready(function($) {
 			error: function(err) {
 				console.log("FAILURE");
 				console.log(err);
+			}
+		});
+	});
+
+	/* 	Upload profile picture Form */
+
+	var uploadProfilePictureForm = ajax_forms_params.upload_profile_picture_form;
+
+	$(uploadProfilePictureForm).submit(function(event) {
+		event.preventDefault();
+
+		const submitButton = this.querySelector("input[type='submit']");
+		submitButton.classList.remove("reveal-button");
+		const uploadPicturePreview = this.querySelector(".input-preview__wrapper");
+
+		const thisAjaxLoader = this.closest(".ajax-content-wrapper").querySelector(
+			".my-ajax-loader"
+		);
+
+		var formData = new FormData($(this)[0]);
+
+		$.ajax({
+			url: ajaxurl + "?action=handle_profile_picture_upload",
+			type: "post",
+			data: formData,
+			async: true,
+			cache: false,
+			contentType: false,
+			enctype: "multipart/form-data",
+			processData: false,
+
+			beforeSend: function() {
+				// Before we send the request, remove the .hidden class from the spinner and default to inline-block.
+				thisAjaxLoader.classList.add("my-ajax-loader--active");
+			},
+
+			complete: function() {
+				thisAjaxLoader.classList.remove("my-ajax-loader--active");
+				uploadPicturePreview.classList.remove("has-image");
+			},
+
+			success: function(data) {
+				console.log("SUCCESS!");
+
+				// const dataJSON = JSON.parse(data);
+				// console.log(dataJSON);
+
+				return data;
+			},
+			error: function(jqXHR, textStatus, errorThrown) {
+				console.log(jqXHR);
+				console.log(textStatus);
+				console.log(errorThrown);
 			}
 		});
 	});
