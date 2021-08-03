@@ -47,8 +47,6 @@ document.addEventListener("DOMContentLoaded", () => {
 		".edit-box input[type='submit']"
 	);
 
-	console.log(allButtonsSaveAccountContent);
-
 	if (allButtonsSaveAccountContent) {
 		allButtonsSaveAccountContent.forEach(button => {
 			button.addEventListener("click", function() {
@@ -69,42 +67,51 @@ document.addEventListener("DOMContentLoaded", () => {
 		});
 	}
 
-	const allRepeaterAddInputButtons = document.querySelectorAll(
-		".repeater__button--add"
-	);
+	//Node repeater
 
-	if (allRepeaterAddInputButtons) {
-		allRepeaterAddInputButtons.forEach(button => {
-			button.addEventListener("click", function(e) {
-				e.preventDefault();
+	const allRepeaterHolders = document.querySelectorAll(".repeater__holder");
 
-				const container = this.parentNode.querySelector(
-					".repeater__field-wrapper"
-				);
+	if (allRepeaterHolders) {
+		allRepeaterHolders.forEach(holder => {
+			holder.addEventListener("click", function(e) {
+				if (e.target.classList.contains("repeater__button--add")) {
+					e.preventDefault();
 
-				let clonedInput = this.parentNode
-					.querySelector(".repeater__field")
-					.cloneNode(true);
+					const container = this.parentNode.querySelector(
+						".repeater__field-wrapper"
+					);
 
-				container.appendChild(clonedInput);
+					let clonedField = this.parentNode
+						.querySelector(".repeater__field")
+						.cloneNode(true);
+
+					let deleteFieldButton = document.createElement("BUTTON");
+
+					deleteFieldButton.classList.add(
+						"repeater__button",
+						"repeater__button--delete"
+					);
+
+					deleteFieldButton.innerText = "-";
+
+					clonedField.appendChild(deleteFieldButton);
+
+					let clonedFieldInput = clonedField.querySelector("INPUT");
+
+					clonedFieldInput ? (clonedFieldInput.value = "") : "";
+
+					container.appendChild(clonedField);
+				}
+
+				if (e.target.classList.contains("repeater__button--delete")) {
+					e.preventDefault();
+					e.target.closest(".repeater__field").remove();
+				}
 			});
 		});
 	}
 
-	const allRepeaterDeleteInputButtons = document.querySelectorAll(
-		".repeater__button--delete"
-	);
-
-	function removeRepeaterField(e) {
-		e.preventDefault();
-		this.closest(".repeater__field").remove();
-	}
-
-	if (allRepeaterDeleteInputButtons) {
-		allRepeaterDeleteInputButtons.forEach(button => {
-			button.addEventListener("click", removeRepeaterField);
-		});
-	}
+	//New profile picture sneakpeak when uploading file
 
 	const uploadProfilePictureForm = document.querySelector(
 		"form#upload_profile_picture_form"
@@ -144,16 +151,33 @@ document.addEventListener("DOMContentLoaded", () => {
 		};
 	}
 
-	const aboutUserForm = document.querySelector("#about_user_data_form");
+	//Character limit counter for all textareas with "maxlength" attribute
 
-	if (aboutUserForm) {
-		const aboutUserTextarea = aboutUserForm.querySelector("TEXTAREA");
-		const aboutUserTextareaLabel = aboutUserForm.querySelector("LABEL");
+	const allTextareas = document.querySelectorAll("TEXTAREA");
 
-		aboutUserTextareaLabel.innerHTML = `${aboutUserTextarea.value.length}/300`;
+	const allTextareasWithMaxLength = [];
 
-		aboutUserTextarea.addEventListener("input", function(e) {
-			aboutUserTextareaLabel.innerHTML = `${this.value.length}/300`;
+	[...allTextareas].filter(textarea => {
+		textarea.getAttribute("maxlength")
+			? allTextareasWithMaxLength.push(textarea)
+			: "";
+	});
+
+	if (allTextareasWithMaxLength) {
+		allTextareasWithMaxLength.forEach(textarea => {
+			let thisTextareaForm = textarea.closest("FORM");
+			let thisTextareaLabel = thisTextareaForm.querySelector("LABEL");
+			let thisTextareaMaxlength = textarea.getAttribute("maxlength");
+
+			thisTextareaLabel
+				? (thisTextareaLabel.innerHTML = `${textarea.value.length}/${thisTextareaMaxlength}`)
+				: "";
+
+			thisTextareaLabel
+				? textarea.addEventListener("input", function(e) {
+						thisTextareaLabel.innerHTML = `${this.value.length}/${thisTextareaMaxlength}`;
+				  })
+				: "";
 		});
 	}
 });

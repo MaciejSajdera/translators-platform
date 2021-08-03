@@ -334,3 +334,15 @@ $profile_picture_width: 175px;
 		}
 	}
 }
+
+#contact-info-container {
+	.wrapper-flex-drow-mcol {
+		margin: 2rem 0;
+
+		&__first-element {
+			@media screen and (min-width: 992px) {
+				width: 150px;
+			}
+		}
+	}
+}

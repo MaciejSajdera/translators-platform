@@ -338,6 +338,9 @@ table {
 .button {
 	cursor: pointer;
 
+	&__go-back {
+	}
+
 	&__edit-account-content {
 		content: "";
 		position: absolute;

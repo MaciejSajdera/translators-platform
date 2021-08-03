@@ -7,8 +7,10 @@
  */
 
 get_header();
-do_action("my_test_action");
+
 ?>
+
+	
 
 	<div id="primary" class="content-area">
 		<main id="main" class="site-main account">
@@ -151,7 +153,15 @@ do_action("my_test_action");
 
 										echo '<div class="info-box__subbox">';
 
-											echo '<p id="user_bio_text" class="info-box__content">'.get_field('translator_bio_acf').'</p>';
+											if (strlen(get_field('translator_bio_acf')) > 0) {
+												$translator_bio = get_field('translator_bio_acf');
+												$placeholder_mode = '';
+											} else {
+												$translator_bio = 'Napisz jedno zdanie o sobie';
+												$placeholder_mode = 'placeholder_mode';
+											}
+
+											echo '<p id="user_bio_text" class="info-box__content '.$placeholder_mode.'">'.$translator_bio.'</p>';
 
 										echo '</div>';
 										
@@ -254,7 +264,15 @@ do_action("my_test_action");
 
 										echo '<div class="info-box__subbox">';
 
-											echo '<p id="user_about_text" class="info-box__content">'.get_field("translator_about").'</p>';
+											if (strlen(get_field("translator_about")) > 0) {
+												$translator_about = get_field("translator_about");
+												$placeholder_mode = '';
+											} else {
+												$translator_about = 'Napisz o sobie kilka zdań, które pozwolą potencjalnym klientom poznać Cię z najlepszej strony, zrozumieć, w czym masz doświadczenie i co Cię wyróżnia.';
+												$placeholder_mode = 'placeholder_mode';
+											}
+
+											echo '<p id="user_about_text" class="info-box__content '.$placeholder_mode.'">'.$translator_about.'</p>';
 
 										echo '</div>';
 
@@ -277,7 +295,7 @@ do_action("my_test_action");
 
 								/* CONTACT INFO CONTAINER */
 
-								echo '<div class="account__box-container ajax-content-wrapper">';
+								echo '<div id="contact-info-container" class="account__box-container ajax-content-wrapper">';
 
 								/* EDIT BUTTON */
 								
@@ -296,38 +314,89 @@ do_action("my_test_action");
 								echo '<div class="content-box info-box ajax-content-wrapper">';
 								
 									echo '<div><p class="info-box__header">Dane kontaktowe</p></div>';
-								
+
 									echo '<div class="info-box__subbox">';
 
-									echo 'Inne Lokalizacje';
+											
 
-									echo '</br>';
+											if (strlen(get_field("translator_contact_phone")) > 0) {
+												$translator_contact_phone = get_field("translator_contact_phone");
+												$placeholder_mode = '';
+											} else {
+												$translator_contact_phone = '+48 123 456 789';
+												$placeholder_mode = 'placeholder_mode';
+											}
+
+
+										echo '<p id="user_contact_phone_text" class="info-box__content '.$placeholder_mode.'">'.$translator_contact_phone.'</p>';
+
+									echo '</div>';
+
+									echo '<div class="info-box__subbox">';
+
+											if (strlen(get_field("translator_contact_email")) > 0) {
+												$translator_contact_email = get_field("translator_contact_email");
+												$placeholder_mode = '';
+											} else {
+												$translator_contact_email = 'przykladowy@mail.pl';
+												$placeholder_mode = 'placeholder_mode';
+											}
+
+										echo '<p id="user_contact_email_text" class="info-box__content '.$placeholder_mode.'">'.$translator_contact_email.'</p>';
+
+									echo '</div>';
+
+									echo '<div class="info-box__subbox">';
 
 									$translator_localizations_taxonomy = get_taxonomy( 'translator_localization' );
+
+									//Exclude #user_city from being displayed in the list
+
+									if (get_field("translator_city") && strlen(get_field("translator_city")) > 0) {
+										$excluded_term = get_term_by( 'name', get_field("translator_city"), 'translator_localization' );
+										$excluded_term_ID = $excluded_term->term_id;
+									} else {
+										$excluded_term_ID = false;
+									}
 
 									$translator_localizations = get_terms( array(
 										'taxonomy' => 'translator_localization',
 										'hide_empty' => false,
+										'orderby'    => 'ID',
+										'exclude' => ($excluded_term_ID),
 									) );
 
 									$current_user_localizations_array_terms = wp_get_post_terms($user_post_id, 'translator_localization', array('fields' => 'names'));
 
 									echo '<p class="info-box__subbox-header">'.$translator_localizations_taxonomy->label.'</p>';
 
-									echo '<p id="user_localizations_text" class="info-box__content">';
+									echo '<div class="wrapper-flex-drow-mcol">';
 
-									if ( $translator_localizations ) {
-										foreach( $translator_localizations as $term ) :
-												if ($current_user_localizations_array_terms && in_array($term->name, $current_user_localizations_array_terms)) {
-													echo $term->name;
-													echo ", ";
-												} 
-										endforeach;
-									}
-									
-									echo '</p>';
+										echo '<p class="wrapper-flex-drow-mcol__first-element info-box__content">Miasto zamieszkania</p>';
 
-								echo '</div>';
+										echo '<p id="user_city_text" class="info-box__content">'.get_field("translator_city").'</p>';
+
+									echo '</div>';
+
+									echo '<div class="wrapper-flex-drow-mcol">';
+
+										echo '<p class="wrapper-flex-drow-mcol__first-element">Inne lokalizacje</p>';
+								
+										echo '<div class="user_localizations__column">';
+
+											if ( $translator_localizations ) {
+												foreach( $translator_localizations as $term ) :
+														if ($current_user_localizations_array_terms && in_array($term->name, $current_user_localizations_array_terms)) {
+															echo '<p class="user_localization info-box__content">'.$term->name.'</p>';
+														} 
+												endforeach;
+											}
+
+										echo '</div>';
+
+									echo '</div>';
+
+									echo '</div>';
 								
 								echo '</div>';
 								
@@ -344,6 +413,133 @@ do_action("my_test_action");
 								echo '</div>';
 
 								/* END OF CONTACT INFO CONTAINER */
+
+
+								/* LINKEDIN INFO CONTAINER */
+
+								echo '<div class="account__box-container ajax-content-wrapper">';
+
+									/* EDIT BUTTON */
+
+									echo '<button data-profile-edit="edit-linkedin-info" class="button button__edit-account-content"></button>';
+
+									/* AJAX LOADER */
+
+									echo '<div class="my-ajax-loader">';
+
+										echo '<div class="my-ajax-loader__spinner"></div>';
+
+									echo '</div>';
+
+									/* CONTENT BOX */
+
+									echo '<div class="content-box info-box ajax-content-wrapper">';
+
+										echo '<div><p class="info-box__header">Profil LinkedIn</p></div>';
+
+										echo '<div class="info-box__subbox">';
+
+											$linkedin_subheader_text = "Wpisz lub wklej link do profilu LinkedIn";
+											$linkedin_subheader_note = "Jeśli nie podasz adresu swojego profilu na LinkedIn, to link do niej nie będzie widoczny na Twoim profilu PSTK.";
+
+											echo '<p class="info-box__content">'.$linkedin_subheader_text.'</p>';
+
+											echo '<p class="info-box__note">'.$linkedin_subheader_note.'</p>';
+
+										echo '</div>';
+
+										echo '<div class="info-box__subbox">';
+
+											if (strlen(get_field("translator_linkedin_link")) > 0) {
+												$translator_linkedin_link = get_field("translator_linkedin_link");
+												$placeholder_mode = '';
+											} else {
+												$translator_linkedin_link = 'linkedin.com/';
+												$placeholder_mode = 'placeholder_mode';
+											}
+
+											echo '<p id="user_linkedin_text" class="info-box__content '.$placeholder_mode.'">'.$translator_linkedin_link.'</p>';
+
+										echo '</div>';
+
+									echo '</div>';
+
+									/* EDIT BOX */
+
+									echo '<div id="edit-linkedin-info" class="edit-box info-box">';
+
+										echo '<div><p class="info-box__header">Profil LinkedIn - edycja</p></div>';
+
+										echo '<div class="info-box__subbox">';
+
+											$linkedin_subheader_text = "Wpisz lub wklej link do profilu LinkedIn";
+											$linkedin_subheader_note = "Jeśli nie podasz adresu swojego profilu na LinkedIn, to link do niej nie będzie widoczny na Twoim profilu PSTK.";
+
+											echo '<p class="info-box__content">'.$linkedin_subheader_text.'</p>';
+
+											echo '<p class="info-box__note">'.$linkedin_subheader_note.'</p>';
+
+										echo '</div>';
+
+										echo linkedin_user_data_form();
+
+									echo '</div>';
+
+								echo '</div>';
+
+								/* END OF LINKEDIN INFO CONTAINER */
+
+								/* work INFO CONTAINER */
+
+								echo '<div class="account__box-container ajax-content-wrapper">';
+
+									/* EDIT BUTTON */
+
+									echo '<button data-profile-edit="edit-work-info" class="button button__edit-account-content"></button>';
+
+									/* AJAX LOADER */
+
+									echo '<div class="my-ajax-loader">';
+
+										echo '<div class="my-ajax-loader__spinner"></div>';
+
+									echo '</div>';
+
+									/* CONTENT BOX */
+
+									echo '<div class="content-box info-box ajax-content-wrapper">';
+
+										echo '<div><p class="info-box__header">Gdzie najczęściej pracuję?</p></div>';
+
+										echo '<div class="info-box__subbox">';
+
+											if (strlen(get_field("translator_work")) > 0) {
+												$translator_work = get_field("translator_work");
+												$placeholder_mode = '';
+											} else {
+												$translator_work = 'Napisz kilka zdań o tym gdzie najczęściej pracujesz';
+												$placeholder_mode = 'placeholder_mode';
+											}
+
+											echo '<p id="user_work_text" class="info-box__content '.$placeholder_mode.'">'.$translator_work.'</p>';
+
+										echo '</div>';
+
+									echo '</div>';
+
+									/* EDIT BOX */
+
+									echo '<div id="edit-work-info" class="edit-box info-box">';
+
+										echo '<div><p class="info-box__header">Gdzie najczęściej pracuję? - edycja</p></div>';
+
+										echo work_user_data_form();
+
+									echo '</div>';
+
+								echo '</div>';
+
+								/* END OF work INFO CONTAINER */
 
 
 							echo '</div>';

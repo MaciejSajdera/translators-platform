@@ -5,13 +5,13 @@
 	}
 
 	.home-search__container {
-		ul {
-			margin: 0;
-			padding: 0;
-		}
-
 		.searchandfilter {
 			margin-top: 2rem;
+
+			ul {
+				margin: 0;
+				padding: 0;
+			}
 
 			label {
 				cursor: pointer;

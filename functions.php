@@ -158,6 +158,8 @@ function pstk_scripts() {
 				'about_user_data_form' => '#about_user_data_form',
 				'contact_user_data_form' => '#contact_user_data_form',
 				'upload_profile_picture_form' => '#upload_profile_picture_form',
+				'linkedin_user_data_form' => '#linkedin_user_data_form',
+				'work_user_data_form' => '#work_user_data_form',
 			)
 		);
 	
@@ -837,39 +839,6 @@ function about_user_data_form() {
 	return ob_get_clean();
 }
 
-// Save Basic user data form information
-// function add_about_user_data() {
-
-// 	$current_user = wp_get_current_user();
-	
-// 	$current_user_nickname = $current_user->user_login;
-
-// 	if ( ! wp_verify_nonce( $_POST["add_about_user_data_nonce"], "add_about_user_data") ) {
-// 		die ( 'Nonce mismatched!');
-// 	}
-
-// 		$user_about = $_POST["user_about"];
-
-// 		$user_id = get_current_user_id();
-
-// 		//Get ID of the current user post
-// 		$user_post_title = $current_user_nickname; 
-
-// 		if ( $post = get_page_by_path( $user_post_title, OBJECT, 'translator' ) )
-// 			$user_post_id = $post->ID;
-// 		else
-// 			$user_post_id = 0;
-
-// 		// Save/Update values to user meta data or user post
-
-//         //Update ACF field for user post
-//         update_field( "translator_about", $user_about, $user_post_id );
-		
-//   	die();
-// }
-// add_action('init', 'add_about_user_data');
-
-
 // used for tracking error messages
 function about_user_data_form_errors(){
     static $wp_error; // global variable handle
@@ -962,6 +931,14 @@ function contact_user_data_form() {
 			<fieldset>
 
 				<p>
+					<label for="user_contact_phone"><?php _e('Numer telefonu'); ?></label>
+					<input name="user_contact_phone" id="user_contact_phone" class="user_contact_phone" type="text" value="<?php echo get_field("translator_contact_phone") ?>"/>
+				</p>
+
+				<p>
+					<label for="user_contact_email"><?php _e('Adres e-mail'); ?></label>
+					<input name="user_contact_email" id="user_contact_email" class="user_contact_email" type="text" value="<?php echo get_field("translator_contact_email") ?>"/>
+				</p>
 
 					<?php
 						$translator_specializations_taxonomy = get_taxonomy( 'translator_localization' );
@@ -969,89 +946,120 @@ function contact_user_data_form() {
 
 					<label for="user_localizations"><?php echo $translator_specializations_taxonomy->label ?></label>
 
-					<?php
-					
-						$translator_localizations = get_terms( array(
-							'taxonomy' => 'translator_localization',
-							'hide_empty' => false,
-							'orderby'    => 'ID', 
-						) );
+					<div class="wrapper-flex-drow-mcol">
 
-						if ( $translator_localizations ) {
+						<p class="wrapper-flex-drow-mcol__first-element">Miasto zamieszkania</p>
 
-							//only 3 first
+						<input name="user_city" id="user_city" class="user_city_input" placeholder="Nazwa miasta" type="text" value="<?php echo get_field("translator_city") ?>"/>
 
-							foreach( array_slice($translator_localizations, 0, 3) as $term ) :
+						<input hidden name="user_localizations[]" id="user_localization_city" class="user_localization_input" placeholder="Nazwa miasta" type="text" value=""/>
 
-								echo '<div class="info-box__checkbox-wrapper">';
-
-								echo '<label>';
-								
-									?>
-									<input name="user_localizations[]" id="user_localizations" class="user_localizations" type="checkbox" value="<?php echo $term->name ?>"
-									<?php
-									 if ($current_user_localizations_array_terms && in_array($term->name, $current_user_localizations_array_terms)) { echo "checked"; } ?>/>
-									<?php
-
-								echo $term->name;
-
-								echo '</label>';
-
-								echo '</div>';
-	
-							endforeach;
+					</div>
 
 
-							//only custom ones added by this user
-							//dont include 3 first ones
+					<div class="wrapper-flex-drow-mcol">
 
-							foreach( array_slice($translator_localizations, 3) as $term ) :
+						<p class="wrapper-flex-drow-mcol__first-element">Inne lokalizacje</p>
 
-								if ($current_user_localizations_array_terms && in_array($term->name, $current_user_localizations_array_terms)) {
+						<div>
+
+						<?php
+
+							if (get_field("translator_city") && strlen(get_field("translator_city")) > 0) {
+								$excluded_term = get_term_by( 'name', get_field("translator_city"), 'translator_localization' );
+								$excluded_term_ID = $excluded_term->term_id;
+							} else {
+								$excluded_term_ID = false;
+							}
+
+							$translator_localizations = get_terms( array(
+								'taxonomy' => 'translator_localization',
+								'hide_empty' => false,
+								'orderby'    => 'ID',
+								'exclude' => ($excluded_term_ID),
+							) );
+
+							if ( $translator_localizations ) {
+
+								//only 3 first
+
+								foreach( array_slice($translator_localizations, 0, 3) as $term ) :
 
 									echo '<div class="info-box__checkbox-wrapper">';
 
 									echo '<label>';
 									
 										?>
-										<input name="user_localizations[]" id="user_localizations" class="user_localizations" type="checkbox" value="<?php echo $term->name ?>" checked/>
+										<input name="user_localizations[]" class="user_localization_input" type="checkbox" value="<?php echo $term->name ?>"
 										<?php
-	
+										if ($current_user_localizations_array_terms && in_array($term->name, $current_user_localizations_array_terms)) { echo "checked"; } ?>/>
+										<?php
+
 									echo $term->name;
-	
+
 									echo '</label>';
-	
+
 									echo '</div>';
+		
+								endforeach;
 
-								}
 
-							endforeach;
+								//only custom ones added by this user
+								//dont include 3 first ones
 
-						};
-						
-					?>
+								foreach( array_slice($translator_localizations, 3) as $term ) :
 
-					<div class="repeater__holder">
+									if ($current_user_localizations_array_terms && in_array($term->name, $current_user_localizations_array_terms)) {
 
-						<button class="repeater__button repeater__button--add">+</button>
+										echo '<div class="info-box__checkbox-wrapper">';
 
-						<div class="repeater__field-wrapper">
+										echo '<label>';
+										
+											?>
+											<input name="user_localizations[]" id="user_localizations" class="user_localizations" type="checkbox" value="<?php echo $term->name ?>" checked/>
+											<?php
+		
+										echo $term->name;
+		
+										echo '</label>';
+		
+										echo '</div>';
 
-							<div class="repeater__field">
+									}
 
-								<input name="user_localizations[]" id="user_localizations" class="user_localizations user_localizations__repeater" placeholder="Dodaj inną lokalizację" type="text" value="" />
+								endforeach;
 
-								<button class="repeater__button repeater__button--delete">-</button>
+								?>
 
-							</div>
+										<div class="repeater__holder">
+
+										<button class="repeater__button repeater__button--add">+</button>
+
+										<div class="repeater__field-wrapper">
+
+											<div class="repeater__field">
+
+												<input name="user_localizations[]" id="user_localizations" class="user_localizations user_localizations__repeater" placeholder="Dodaj inną lokalizację" type="text" value="" />
+
+												<!-- <button class="repeater__button repeater__button--delete">-</button> -->
+
+											</div>
+
+										</div>
+
+										</div>
+
+								<?php
+
+							};
+							
+						?>
 
 						</div>
 
-
-
 					</div>
 
-				</p>
+
 
 				<p>
 					<input type="submit" name="submit_contact_user_data" value="<?php _e('Zaktualizuj informacje o sobie'); ?>"/>
@@ -1128,6 +1136,9 @@ function add_contact_user_data_with_ajax() {
 	
 	$current_user_nickname = $current_user->user_login;
 
+	$user_contact_phone = $_POST["user_contact_phone"];
+	$user_contact_email = $_POST["user_contact_email"];
+	$user_city = $_POST["user_city"];
     $user_localizations		= $_POST["user_localizations"];
 
 	if ( ! wp_verify_nonce( $_POST["add_contact_user_data_nonce"], "add_contact_user_data") ) {
@@ -1145,6 +1156,21 @@ function add_contact_user_data_with_ajax() {
 			$user_post_id = 0;
 
 		// Save/Update values to user meta data or user post
+
+		if ( isset( $user_contact_phone )) {
+			//Update ACF field for user post
+			update_field( "translator_contact_phone", $user_contact_phone, $user_post_id );
+		}
+
+		if ( isset( $user_contact_email )) {
+			//Update ACF field for user post
+			update_field( "translator_contact_email", $user_contact_email, $user_post_id );
+		}
+
+		if ( isset( $user_city )) {
+			//Update ACF field for user post
+			update_field( "translator_city", $user_city, $user_post_id );
+		}
 
 		if ( isset( $user_localizations )) {
 			
@@ -1177,6 +1203,210 @@ function add_contact_user_data_with_ajax() {
 add_action( 'wp_ajax_nopriv_add_contact_user_data_with_ajax',  'add_contact_user_data_with_ajax' );
 add_action( 'wp_ajax_add_contact_user_data_with_ajax','add_contact_user_data_with_ajax' );
 
+//Ajaxify about user data form https://support.advancedcustomfields.com/forums/topic/use-update_field-with-ajax/
+
+/* ADD LINKEDIN USER DATA FORM */
+function linkedin_user_data_form() {
+
+	$current_user = wp_get_current_user();
+
+	//Get ID of the current user post
+	$current_user_nickname = $current_user->user_login;
+	$user_post_title = $current_user_nickname; 
+
+	if ( $post = get_page_by_path( $user_post_title, OBJECT, 'translator' ) )
+		$user_post_id = $post->ID;
+	else
+		$user_post_id = 0;
+
+		// var_dump($current_user_languages_array_terms);
+
+	ob_start(); ?>	
+
+		<?php 
+		// show any error messages after form submission
+		linkedin_user_data_form_messages(); ?>
+		
+		<form name="linkedin_user_data_form" id="linkedin_user_data_form" class="vicode_form" action="" method="POST">
+
+			<fieldset>
+
+				<p>
+					<input name="user_linkedin" id="user_linkedin" class="user_linkedin" type="text" value="<?php echo get_field("translator_linkedin_link", $user_post_id) ?>"></textarea>
+				</p>
+
+				<p>
+					<input type="submit" name="submit_linkedin_user_data" value="<?php _e('Zaktualizuj informacje o sobie'); ?>"/>
+					<?php wp_nonce_field( 'add_linkedin_user_data', 'add_linkedin_user_data_nonce' ); ?>
+				</p>
+
+			</fieldset>
+		</form>
+	<?php
+	return ob_get_clean();
+}
+
+// used for tracking error messages
+function linkedin_user_data_form_errors(){
+	static $wp_error; // global variable handle
+	return isset($wp_error) ? $wp_error : ($wp_error = new WP_Error(null, null, null));
+}
+
+
+// displays error messages from form submissions
+function linkedin_user_data_form_messages() {
+	if($codes = linkedin_user_data_form_errors()->get_error_codes()) {
+		echo '<div class="vicode_errors">';
+			// Loop error codes and display errors
+			foreach($codes as $code){
+				$message = linkedin_user_data_form_errors()->get_error_message($code);
+				echo '<span class="error"><strong>' . __('Error') . '</strong>: ' . $message . '</span><br/>';
+			}
+		echo '</div>';
+	}	
+}
+
+//Ajaxify linkedin user data form https://support.advancedcustomfields.com/forums/topic/use-update_field-with-ajax/
+
+
+function add_linkedin_user_data_with_ajax() {
+
+	print_r(json_encode($_POST));
+	
+	$current_user = wp_get_current_user();
+	
+	$current_user_nickname = $current_user->user_login;
+
+	$user_linkedin		= $_POST["user_linkedin"];
+
+	if ( ! wp_verify_nonce( $_POST["add_linkedin_user_data_nonce"], "add_linkedin_user_data") ) {
+		die ( 'Nonce mismatched!');
+	}
+
+		$user_id = get_current_user_id();
+
+		//Get ID of the current user post
+		$user_post_title = $current_user_nickname; 
+
+		if ( $post = get_page_by_path( $user_post_title, OBJECT, 'translator' ) )
+			$user_post_id = $post->ID;
+		else
+			$user_post_id = 0;
+
+		// Save/Update values to user meta data or user post
+
+		//Update ACF field for user post
+		update_field( "translator_linkedin_link", $user_linkedin, $user_post_id );
+		
+	die();
+
+}
+
+add_action( 'wp_ajax_nopriv_add_linkedin_user_data_with_ajax',  'add_linkedin_user_data_with_ajax' );
+add_action( 'wp_ajax_add_linkedin_user_data_with_ajax','add_linkedin_user_data_with_ajax' );
+
+/* ADD work USER DATA FORM */
+function work_user_data_form() {
+
+	$current_user = wp_get_current_user();
+
+	//Get ID of the current user post
+	$current_user_nickname = $current_user->user_login;
+	$user_post_title = $current_user_nickname; 
+
+	if ( $post = get_page_by_path( $user_post_title, OBJECT, 'translator' ) )
+		$user_post_id = $post->ID;
+	else
+		$user_post_id = 0;
+
+		// var_dump($current_user_languages_array_terms);
+
+	ob_start(); ?>	
+
+		<?php 
+		// show any error messages after form submission
+		work_user_data_form_messages(); ?>
+		
+		<form name="work_user_data_form" id="work_user_data_form" class="vicode_form" action="" method="POST">
+
+			<fieldset>
+
+				<p>
+					<textarea form="work_user_data_form" name="user_work" id="user_work" class="user_work" type="text" maxlength="250"><?php echo get_field("translator_work", $user_post_id) ?></textarea>
+					<label for="user_work">0/250</label>
+				</p>
+
+				<p>
+					<input type="submit" name="submit_work_user_data" value="<?php _e('Zaktualizuj informacje o sobie'); ?>"/>
+					<?php wp_nonce_field( 'add_work_user_data', 'add_work_user_data_nonce' ); ?>
+				</p>
+
+			</fieldset>
+		</form>
+	<?php
+	return ob_get_clean();
+}
+
+// used for tracking error messages
+function work_user_data_form_errors(){
+    static $wp_error; // global variable handle
+    return isset($wp_error) ? $wp_error : ($wp_error = new WP_Error(null, null, null));
+}
+
+
+// displays error messages from form submissions
+function work_user_data_form_messages() {
+	if($codes = work_user_data_form_errors()->get_error_codes()) {
+		echo '<div class="vicode_errors">';
+		    // Loop error codes and display errors
+		   foreach($codes as $code){
+		        $message = work_user_data_form_errors()->get_error_message($code);
+		        echo '<span class="error"><strong>' . __('Error') . '</strong>: ' . $message . '</span><br/>';
+		    }
+		echo '</div>';
+	}	
+}
+
+//Ajaxify work user data form https://support.advancedcustomfields.com/forums/topic/use-update_field-with-ajax/
+
+
+function add_work_user_data_with_ajax() {
+
+	print_r(json_encode($_POST));
+	
+	$current_user = wp_get_current_user();
+	
+	$current_user_nickname = $current_user->user_login;
+
+    $user_work		= $_POST["user_work"];
+
+	if ( ! wp_verify_nonce( $_POST["add_work_user_data_nonce"], "add_work_user_data") ) {
+		die ( 'Nonce mismatched!');
+	}
+
+		$user_id = get_current_user_id();
+
+		//Get ID of the current user post
+		$user_post_title = $current_user_nickname; 
+
+		if ( $post = get_page_by_path( $user_post_title, OBJECT, 'translator' ) )
+			$user_post_id = $post->ID;
+		else
+			$user_post_id = 0;
+
+		// Save/Update values to user meta data or user post
+
+        //Update ACF field for user post
+        update_field( "translator_work", $user_work, $user_post_id );
+		
+    die();
+
+}
+
+add_action( 'wp_ajax_nopriv_add_work_user_data_with_ajax',  'add_work_user_data_with_ajax' );
+add_action( 'wp_ajax_add_work_user_data_with_ajax','add_work_user_data_with_ajax' );
+
+
 /* https://rudrastyh.com/wordpress/how-to-add-images-to-media-library-from-uploaded-files-programmatically.html */
 
 // add_shortcode( 'profile_picture_uploader', 'profile_picture_uploader_callback' );
@@ -1204,8 +1434,8 @@ function profile_picture_uploader($user_post_id) {
 				</label>
 
 				<input type="hidden" name="post_id" id="post_id" value="<?php echo $user_post_id ?>"><br>
-				<?php wp_nonce_field( "add_profile_picture", "add_profile_picture_nonce" ); ?>
 				<input type="submit" name="submit_profile_picture" value="Zaktualizuj zdjęcie" />
+				<?php wp_nonce_field( "handle_profile_picture_upload", "profile_picture_nonce" ); ?>
 	</form>
 
 	<?php
@@ -1244,7 +1474,7 @@ function handle_profile_picture_upload() {
 	// }
 
 	// Verify nonce
-	if ( ! wp_verify_nonce( $_POST['add_profile_picture_nonce'], 'add_profile_picture' ) ) {
+	if ( ! wp_verify_nonce( $_POST['profile_picture_nonce'], 'handle_profile_picture_upload' ) ) {
 		wp_die( esc_html__( 'Nonce mismatched', 'theme-text-domain' ) );
 	}
 
@@ -1253,10 +1483,40 @@ function handle_profile_picture_upload() {
 		wp_die( esc_html__( 'Please choose a file', 'theme-text-domain' ) );
 	}
 
-	$new_file_mime = mime_content_type( $_FILES['profile-picture__input']['tmp_name'] );
+	// $new_file_mime = mime_content_type( $_FILES['profile-picture__input']['tmp_name'] );
+	
 
-	if( !in_array( $new_file_mime, get_allowed_mime_types() ) )
-	die( 'WordPress doesn\'t allow this type of uploads.' );
+	// if( !in_array( $new_file_mime, get_allowed_mime_types() ) ) {
+	// 	die( 'WordPress doesn\'t allow this type of uploads.' );
+	// }
+
+	// if (is_uploaded_file( $_FILES['profile-picture__input']['tmp_name'] )) {
+	// 	    // Notice how to grab MIME type
+	// 		$mime_type = mime_content_type($_FILE['profile-picture__input']['tmp_name']);
+
+	// 		// If you want to allow certain files
+	// 		$allowed_file_types = ['image/png', 'image/jpeg', ];
+	// 		if (! in_array($mime_type, $allowed_file_types)) {
+	// 			// File type is NOT allowed
+	// 			die( 'WordPress doesn\'t allow this type of uploads.' );
+	// 		}
+	// }
+
+	$finfo = new finfo(FILEINFO_MIME_TYPE);
+    if (false === $ext = array_search(
+        $finfo->file($_FILES['profile-picture__input']['tmp_name']),
+        array(
+            'jpg' => 'image/jpeg',
+            'png' => 'image/png',
+            'gif' => 'image/gif',
+        ),
+        true
+    )) {
+		echo '<div class="php-error__wrapper"><div class="php-error__content">Nieprawidłowy format pliku</div></div>';
+		throw new Exception('Exception message');
+        throw new RuntimeException('Invalid file format.');
+    }
+
 
 	// $allowed_extensions = array( 'jpg', 'jpeg', 'png' );
 	// $file_type = wp_check_filetype( $_FILES['profile-picture__input'] );
