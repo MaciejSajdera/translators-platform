@@ -46,23 +46,63 @@ textarea {
 	}
 }
 
-#basic_user_data_form {
-	p {
-		display: flex;
-		flex-flow: column;
-	}
-}
-
 input[type="submit"] {
 	font-size: 1rem;
 	cursor: pointer;
 }
 
+$checkbox_width: 1.25rem;
+$checkbox_height: 1.25rem;
+$checkbox_margin-right: 1rem;
+
 input[type="checkbox"] {
 	cursor: pointer;
-	width: 1.25rem;
-	height: 1.25rem;
-	margin-right: 1rem;
+	width: $checkbox_width;
+	height: $checkbox_height;
+	margin-right: $checkbox_margin-right;
+}
+
+$repeater_input_height: 46px;
+
+.repeater {
+	&__holder {
+		padding-left: calc(#{$checkbox_width} + #{$checkbox_margin-right});
+		position: relative;
+	}
+
+	&__wrapper {
+		display: flex;
+		margin-top: 1rem;
+		flex-flow: column;
+
+		input {
+			height: $repeater_input_height;
+		}
+
+		input:not(:last-child) {
+			margin-bottom: 1rem;
+		}
+	}
+
+	&__button {
+		bottom: calc((#{$repeater_input_height} - #{$checkbox_height}) / 2);
+		cursor: pointer;
+		width: $checkbox_width;
+		height: $checkbox_height;
+		margin-right: $checkbox_margin-right;
+		border: 0;
+		padding: 0;
+		font-size: 22px;
+
+		&--add {
+			position: absolute;
+			left: 0;
+		}
+
+		&--delete {
+			right: 0;
+		}
+	}
 }
 
 label {

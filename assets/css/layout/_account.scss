@@ -35,7 +35,7 @@
 		padding: 3em 4em;
 
 		@media screen and (min-width: 992px) {
-			width: 65%;
+			width: 75%;
 		}
 	}
 
@@ -70,9 +70,74 @@
 		position: absolute;
 		z-index: -10;
 		opacity: 0;
+		display: none;
 	}
 
 	&__welcome-message {
+	}
+
+	&__box-container {
+		position: relative;
+		border: 1px solid black;
+		padding: 3em 4em;
+	}
+
+	.edit-box {
+		display: none;
+	}
+
+	.box {
+		&--active {
+			display: block;
+		}
+
+		&--not-active {
+			display: none;
+		}
+	}
+
+	#edit-about-info {
+		#about_user_data_form {
+			label {
+				justify-content: flex-end;
+			}
+
+			textarea {
+				min-height: 150px;
+			}
+		}
+	}
+}
+
+.info-box {
+	&__header {
+		font-size: 1.5rem;
+	}
+
+	&__subbox {
+		margin-bottom: 3rem;
+
+		&:last-of-type {
+			margin-bottom: 0;
+		}
+	}
+
+	&__subbox-header {
+		font-weight: 700;
+		font-size: 18px;
+	}
+
+	&__checkbox-wrapper {
+		display: flex;
+		align-items: center;
+		margin-bottom: 0.5em;
+	}
+
+	p {
+		display: flex;
+		flex-flow: column;
+		word-break: break-word;
+		margin-top: 0;
 	}
 }
 
@@ -125,18 +190,6 @@
 	}
 }
 
-.info-box {
-	&__header {
-		font-size: 1.5rem;
-	}
-
-	&__checkbox-wrapper {
-		display: flex;
-		align-items: center;
-		margin-bottom: 0.5em;
-	}
-}
-
 $profile_picture_top_distance: 4rem;
 $profile_picture_height: 175px;
 $profile_picture_width: 175px;
@@ -165,7 +218,7 @@ $profile_picture_width: 175px;
 			}
 		}
 
-		form#upload-profile-picture {
+		form#upload_profile_picture_form {
 			display: flex;
 			flex-flow: column;
 			padding-top: $profile_picture_top_distance;
@@ -192,16 +245,16 @@ $profile_picture_width: 175px;
 					position: relative;
 					border-radius: 100%;
 					overflow: hidden;
-					border: 1px solid $color__border-element;
 
 					&:before {
 						content: "";
-						display: block;
 						position: absolute;
 						height: 100%;
 						width: 100%;
 						background-color: transparent;
 						transition: all 0.2s ease-in-out;
+						border: 1px solid $color__border-element;
+						border-radius: 100%;
 					}
 
 					&:after {
@@ -212,7 +265,6 @@ $profile_picture_width: 175px;
 						background-position: center;
 						width: 35px;
 						height: 35px;
-						display: block;
 						position: absolute;
 						left: 50%;
 						top: 50%;
@@ -278,6 +330,18 @@ $profile_picture_width: 175px;
 				// 	content: "Choose another file...";
 				// 	color: white;
 				// }
+			}
+		}
+	}
+}
+
+#contact-info-container {
+	.wrapper-flex-drow-mcol {
+		margin: 2rem 0;
+
+		&__first-element {
+			@media screen and (min-width: 992px) {
+				width: 150px;
 			}
 		}
 	}

@@ -297,3 +297,63 @@ table {
 		background-image: url(../dist/svg/instagram.svg);
 	}
 }
+
+.ajax-content-wrapper {
+	position: relative;
+}
+
+.my-ajax-loader {
+	z-index: -100;
+	opacity: 0;
+	position: absolute;
+	top: 0;
+	left: 0;
+	height: 100%;
+	width: 100%;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	background: rgba(255, 255, 255, 0.5);
+	transition: all 0.3s ease-in-out;
+
+	&--active {
+		z-index: 1;
+		opacity: 1;
+	}
+
+	&__spinner {
+		display: block;
+		margin: auto;
+		width: 50px;
+		height: 50px;
+		background-image: url(../dist/img/spinner.gif);
+		background-size: contain;
+		background-repeat: no-repeat;
+		background-position: center;
+	}
+}
+
+/* BUTTONS */
+
+.button {
+	cursor: pointer;
+
+	&__go-back {
+	}
+
+	&__edit-account-content {
+		content: "";
+		position: absolute;
+		right: 1rem;
+		top: 1rem;
+		z-index: 999;
+		width: 25px;
+		height: 25px;
+		background-image: url(../dist/svg/edit_black.svg);
+		background-size: contain;
+		background-repeat: no-repeat;
+		background-position: center;
+		background-color: transparent;
+		border: 0;
+	}
+}

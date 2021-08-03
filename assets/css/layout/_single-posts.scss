@@ -1,0 +1,13 @@
+.single-translator {
+	article.translator {
+		margin: 4rem 0;
+	}
+
+	&__section {
+		&--1 {
+			display: flex;
+			justify-content: space-between;
+			flex-wrap: wrap;
+		}
+	}
+}

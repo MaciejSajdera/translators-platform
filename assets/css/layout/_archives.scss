@@ -1,0 +1,16 @@
+.archive-translator {
+	article.translator {
+		display: flex;
+		justify-content: space-between;
+		padding: 3em;
+
+		.post-thumbnail {
+			display: block;
+		}
+	}
+
+	&__translator-info-wrapper {
+		display: flex;
+		flex-flow: column;
+	}
+}
