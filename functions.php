@@ -142,6 +142,7 @@ function pstk_scripts() {
 	// wp_add_inline_style( 'pstk-style', $custom_css );
 
 	wp_enqueue_script( 'pstk-app', get_template_directory_uri() . '/dist/js/main.js', array(), '', true );
+	wp_enqueue_script( 'multiselect', get_template_directory_uri() . '/dist/js/multiselect.js', array(), '', true );
 
 	if (is_page(18)) {
 
@@ -164,6 +165,10 @@ function pstk_scripts() {
 		);
 	
 		wp_enqueue_script('ajax_forms');
+	}
+
+	if (is_singular( 'translator' )) {
+		wp_enqueue_script( 'swipers', get_template_directory_uri() . '/dist/js/swipers.js', array(), '', true );
 	}
 
 	if ( is_singular() && comments_open() && get_option( 'thread_comments' ) ) {
@@ -309,7 +314,7 @@ function vicode_add_new_user() {
       
       $errors = vicode_errors()->get_error_messages();
       
-      // if no errors then cretate user
+      // if no errors then create user
       if(empty($errors)) {
           
           $new_user_id = wp_insert_user(array(
@@ -473,7 +478,7 @@ function basic_user_data_form() {
 								echo '<label>';
 
 									?>
-									<input name="user_languages[]" id="user_languages" class="user_languages" type="checkbox" value="<?php echo $term->name ?>"
+									<input name="user_languages[]" class="user_languages" type="checkbox" value="<?php echo $term->name ?>"
 
 									<?php
 									
@@ -519,7 +524,7 @@ function basic_user_data_form() {
 								echo '<label>';
 								
 									?>
-									<input name="user_specializations[]" id="user_specializations" class="user_specializations" type="checkbox" value="<?php echo $term->name ?>"
+									<input name="user_specializations[]" class="user_specializations" type="checkbox" value="<?php echo $term->name ?>"
 									<?php
 									 if ($current_user_specializations_array_terms && in_array($term->name, $current_user_specializations_array_terms)) { echo "checked"; } ?>/>
 									<?php
@@ -1016,7 +1021,7 @@ function contact_user_data_form() {
 										echo '<label>';
 										
 											?>
-											<input name="user_localizations[]" id="user_localizations" class="user_localizations" type="checkbox" value="<?php echo $term->name ?>" checked/>
+											<input name="user_localizations[]" class="user_localizations" type="checkbox" value="<?php echo $term->name ?>" checked/>
 											<?php
 		
 										echo $term->name;
@@ -1611,16 +1616,24 @@ function redirect_login_page() {
 
 add_action('init','redirect_login_page');
 
-function redirect_nonadmin_users_after_login() {
-	if(!is_admin()){
-		$login_page  = get_permalink(18);
+function redirect_users_after_login() {
+	if(!current_user_can( 'manage_options' )){
+		$url  = get_permalink(18);
 		// wp_redirect($login_page);
-		return $login_page;
+		return $url;
 		die; // You have to die here
-	  }
+	}
+
+    if ( current_user_can( 'manage_options' ) ) {
+		$url = esc_url( admin_url( 'edit.php' ) );
+		return $url;
+		die;
+    }
+
 }
-  
-add_filter('login_redirect', 'redirect_nonadmin_users_after_login');
+
+add_filter('login_redirect', 'redirect_users_after_login');
+
 
 function login_failed() {
 	$login_page  = get_permalink(18);
@@ -1667,6 +1680,25 @@ add_action( 'admin_init', 'block_wp_admin' );
 // 	}
 // 	add_filter('pre_get_posts','wpb_search_filter');
 // }
+
+//Search Filter PRO
+
+add_filter('wp_title','search_form_title');
+
+function search_form_title($title){
+ 
+ global $searchandfilter;
+ 
+ if ( $searchandfilter->active_sfid() == 35889)
+ {
+ return 'Search Results';
+ }
+ else
+ {
+ return $title;
+ }
+ 
+}
 
 function footer_copyright() {
 	global $wpdb;

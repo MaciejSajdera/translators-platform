@@ -10,4 +10,10 @@
 			flex-wrap: wrap;
 		}
 	}
+
+	.swiper-container {
+		&--translator-publications {
+			text-align: center;
+		}
+	}
 }

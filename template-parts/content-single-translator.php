@@ -15,7 +15,35 @@
 
 		<div class="single-translator__contact">
 
-			<?php pstk_post_thumbnail(); ?>
+			<?php pstk_post_thumbnail();
+
+			
+			echo '<p>'.get_field('translator_contact_phone').'</p>';
+
+			echo '<p>'.get_field('translator_contact_email').'</p>';
+
+			echo '<p>'.get_field('translator_city').'</p>';
+
+			echo '<p>';
+
+			$translator_localizations = wp_get_object_terms( $post->ID, 'translator_localization' );
+			
+			if ( $translator_localizations ) {
+				foreach( $translator_localizations as $term ) :
+	
+							echo $term->name;
+							echo ", ";
+						
+				endforeach;
+			}
+
+			echo '</p>';
+
+			echo '<p>'.get_field('translator_linkedin_link').'</p>';
+			
+			?>
+
+			
 
 		</div>
 
@@ -117,5 +145,134 @@
 
 	</div>
 	 <!-- end of section-1 -->
+
+	 <div class="single-translator__section single-translator__section--2">
+
+		<div class="wrapper-flex">
+			<h2>
+				Posłuchaj próbki głosu
+			</h2>
+		</div>
+
+	</div>
+	<!-- end of section-2 -->
+
+	<div class="single-translator__section single-translator__section--3">
+
+		<div class="wrapper-flex">
+				<h2>
+					Gdzie najczęściej pracuję?
+				</h2>
+
+				<div class="wrapper-flex">
+					<?php
+
+						echo '<p>';
+						
+							echo get_field("translator_work");
+
+						echo '</p>';
+
+					?>
+				</div>
+		</div>
+
+	</div>
+	<!-- end of section-3 -->
+
+	<div class="single-translator__section single-translator__section--4">
+
+		<div class="wrapper-flex">
+				<h2>
+					Zdjęcia i filmy
+				</h2>
+
+				<div class="wrapper-flex">
+						
+				</div>
+		</div>
+
+	</div>
+	<!-- end of section-4 -->
+
+	<div class="single-translator__section single-translator__section--5">
+
+		<div class="wrapper-flex">
+				<h2>
+					Czy ten tłumacz sprawdzi się na moim wydarzeniu?
+				</h2>
+
+				<div class="wrapper-flex">
+						
+				</div>
+		</div>
+
+	</div>
+	<!-- end of section-5 -->
+
+	<?php
+
+		$translator_tag_full_name = trim($translator_first_name . '-' . $translator_last_name);
+
+		$original_query = $wp_query;
+		$wp_query = null;
+		$args = array('posts_per_page' => -1, 'tag' => $translator_tag_full_name);
+		$wp_query = new WP_Query($args);
+
+		if (have_posts()) :
+	?>
+
+	<div class="single-translator__section single-translator__section--6">
+
+		<div class="wrapper-flex">
+				<h2>
+					Moje publikacje
+				</h2>
+
+				<div class="wrapper-flex">
+
+						<!-- Slider main container -->
+						<div class="swiper-container swiper-container--translator-publications">
+							<!-- Additional required wrapper -->
+							<div class="swiper-wrapper">
+								<!-- Slides -->
+								<?php
+
+										while (have_posts()) : the_post();
+											echo '<div class="swiper-slide">';
+											echo '<a href="'.get_the_permalink().'">'.get_the_title().'</a>';
+											echo '</div>';
+										endwhile;
+
+								?>
+							</div>
+							<!-- If we need pagination -->
+							<div class="swiper-pagination"></div>
+
+							<!-- If we need navigation buttons -->
+							<div class="swiper-button-prev"></div>
+							<div class="swiper-button-next"></div>
+
+						</div>
+
+						<?php
+
+
+
+						$wp_query = null;
+						$wp_query = $original_query;
+						wp_reset_postdata();
+
+						?>
+				</div>
+		</div>
+
+	</div>
+
+	<?php 
+		endif;
+	?>
+	<!-- end of section-6 -->
+
 
 </article><!-- #post-<?php the_ID(); ?> -->

@@ -15,11 +15,11 @@ get_header();
 
 		<div class="breadcrumbs">
 			<p>PSTK > Znajdź tłumacza > Wyniki wyszukiwania</p>
-			<button class="button button__go-back">Powrót</button>
+			<button class="button button__go-back go-back">Powrót</button>
 		</div>
 
 		<?php
-				echo do_shortcode( '[searchandfilter post_types="translator" types="checkbox,checkbox,checkbox" hide_empty="0,0,0" fields="translator_language,translator_specialization,translator_localization" ]' );
+			get_template_part( 'template-parts/searchfilter' );
 		?>
 
 		<?php if ( have_posts() ) : ?>
@@ -31,8 +31,7 @@ get_header();
 				?>
 			</header><!-- .page-header -->
 
-
-			<div class="archive-translator__article-list-wrapper">
+			<div id="search-results-container" class="archive-translator__article-list-wrapper">
 
 				<?php
 
@@ -63,7 +62,6 @@ get_header();
 			get_template_part( 'template-parts/content', 'none' );
 
 		endif;
-
 
 			get_template_part( 'template-parts/blog-new-posts' );
 

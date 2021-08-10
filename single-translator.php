@@ -23,8 +23,8 @@ get_header();
 				echo '<p>PSTK > Znajdź tłumacza > Wyniki wyszukiwania > '.$translator_first_name.' '. $translator_last_name.'</p>';
 
 			?>
-			
-			<button class="button button__go-back">Powrót</button>
+
+			<button class="button button__go-back go-back">Powrót</button>
 		</div>
 
 		<?php

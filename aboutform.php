@@ -1,41 +1,42 @@
-<?php
-/* ADD LINKEDIN USER DATA FORM */
-function linkedin_user_data_form() {
+/* 	User work Form */
 
-	$current_user = wp_get_current_user();
+var workUserDataForm = ajax_forms_params.work_user_data_form;
 
-	//Get ID of the current user post
-	$current_user_nickname = $current_user->user_login;
-	$user_post_title = $current_user_nickname; 
+$(workUserDataForm).submit(function(event) {
+	event.preventDefault();
 
-	if ( $post = get_page_by_path( $user_post_title, OBJECT, 'translator' ) )
-		$user_post_id = $post->ID;
-	else
-		$user_post_id = 0;
+	const thisAjaxLoader = this.closest(".ajax-content-wrapper").querySelector(
+		".my-ajax-loader"
+	);
 
-		// var_dump($current_user_languages_array_terms);
+	$.ajax({
+		url: ajaxurl + "?action=add_work_user_data_with_ajax",
+		type: "post",
+		data: $(workUserDataForm).serialize(),
+		beforeSend: function() {
+			// Before we send the request, remove the .hidden class from the spinner and default to inline-block.
+			thisAjaxLoader.classList.add("my-ajax-loader--active");
+		},
 
-	ob_start(); ?>	
+		complete: function() {
+			thisAjaxLoader.classList.remove("my-ajax-loader--active");
+		},
 
-		<?php 
-		// show any error messages after form submission
-		linkedin_user_data_form_messages(); ?>
-		
-		<form name="linkedin_user_data_form" id="linkedin_user_data_form" class="vicode_form" action="" method="POST">
+		success: function(data) {
+			console.log("SUCCESS!");
+			console.log(data);
 
-			<fieldset>
+			const dataJSON = JSON.parse(data);
 
-				<p>
-					<input name="user_linkedin" id="user_linkedin" class="user_linkedin" type="text"><?php echo get_field("translator_linkedin_link", $user_post_id) ?></textarea>
-				</p>
+			const userworkText = document.querySelector("#user_work_text");
 
-				<p>
-					<input type="submit" name="submit_linkedin_user_data" value="<?php _e('Zaktualizuj informacje o sobie'); ?>"/>
-					<?php wp_nonce_field( 'add_linkedin_user_data', 'add_linkedin_user_data_nonce' ); ?>
-				</p>
+			userworkText.innerText = `${dataJSON.user_work}`;
 
-			</fieldset>
-		</form>
-	<?php
-	return ob_get_clean();
-}
+			return data;
+		},
+		error: function(err) {
+			console.log("FAILURE");
+			console.log(err);
+		}
+	});
+});

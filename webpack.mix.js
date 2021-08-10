@@ -94,6 +94,8 @@ mix
 	.js(`${devPath}/js/main.js`, "js")
 	.js(`${devPath}/js/user-profile.js`, "js")
 	.js(`${devPath}/js/ajax-forms.js`, "js")
+	.js(`${devPath}/js/swipers.js`, "js")
+	.js(`${devPath}/js/multiselect.js`, "js")
 	.js(`${devPath}/js/admin/customizer.js`, "js");
 
 /*

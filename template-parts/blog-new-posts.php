@@ -4,8 +4,9 @@
     $postslist = get_posts( $args );
     foreach ($postslist as $post) :  setup_postdata($post); ?> 
         <div class="tile">
-            <?php the_title(); ?>   
-            <?php the_excerpt(); ?>
+            <?php 
+                echo '<a href="'.get_the_permalink().'">'.get_the_title().'</a>';
+            ?>   
         </div>
     <?php endforeach; ?>
 </div>

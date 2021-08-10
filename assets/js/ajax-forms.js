@@ -5,9 +5,21 @@ jQuery(document).ready(function($) {
 	const closeButton = document.querySelector(".close-button");
 
 	function toggleModal() {
-		modal.classList.contains("show-modal")
-			? modal.classList.remove("show-modal")
-			: modal.classList.add("show-modal");
+		modal.classList.contains("unlock-modal")
+			? modal.classList.remove("unlock-modal")
+			: modal.classList.add("unlock-modal");
+
+		setTimeout(
+			() =>
+				modal.classList.contains("show-modal")
+					? modal.classList.remove("show-modal")
+					: modal.classList.add("show-modal"),
+			10
+		);
+
+		// modal.classList.contains("show-modal")
+		// 	? modal.classList.remove("show-modal")
+		// 	: modal.classList.add("show-modal");
 	}
 
 	function closeModal() {

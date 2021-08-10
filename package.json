@@ -63,5 +63,7 @@
     "stylelint-config-wordpress": "^13.1.0",
     "vue-template-compiler": "^2.5.22"
   },
-  "dependencies": {}
+  "dependencies": {
+    "swiper": "^6.8.1"
+  }
 }
