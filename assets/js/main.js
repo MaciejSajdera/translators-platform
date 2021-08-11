@@ -43,14 +43,14 @@ document.addEventListener("DOMContentLoaded", () => {
 		}
 	};
 
-	const allGoBackLinks = document.querySelectorAll(".go-back");
+	// const allGoBackLinks = document.querySelectorAll(".go-back");
 
-	allGoBackLinks &&
-		allGoBackLinks.forEach(link => {
-			link.addEventListener("click", () => {
-				window.history.back();
-			});
-		});
+	// allGoBackLinks &&
+	// 	allGoBackLinks.forEach(link => {
+	// 		link.addEventListener("click", () => {
+	// 			window.history.back();
+	// 		});
+	// 	});
 
 	const allCheckboxesSwitches = document.querySelectorAll(".options__switch");
 
@@ -75,45 +75,28 @@ document.addEventListener("DOMContentLoaded", () => {
 	// 		console.log(e);
 	// 	});
 
-	document.addEventListener("click", e => {
-		if (
-			e.target.closest("form") &&
-			e.target.closest("form").classList.contains("searchandfilter")
-		) {
-			const allSelect2OpenContainers = document.querySelectorAll(
-				".select2-container--open"
-			);
+	// document.addEventListener("click", e => {
+	// 	if (
+	// 		e.target.closest("form") &&
+	// 		e.target.closest("form").classList.contains("searchandfilter")
+	// 	) {
 
-			console.log(allSelect2OpenContainers);
+	// 		setTimeout(() => {
+	// 			const resultsContainer = document.querySelectorAll(
+	// 				".select2-container--open"
+	// 			)[1];
 
-			const resultsContainer = allSelect2OpenContainers[1];
+	// 			console.log(resultsContainer);
 
-			resultsContainer &&
-			resultsContainer.classList.contains("select2-container--loaded")
-				? resultsContainer.classList.remove("select2-container--loaded")
-				: "";
+	// 			resultsContainer.classList.add("select2-container--loaded");
 
-			setTimeout(() => {
-				// currentSelect = e.target;
+	// 		}, 300);
+	// 	}
+	// });
 
-				// const DOMKids = currentSelect.closest("body").childNodes;
+	const allMultiselectInputs = document.querySelectorAll(
+		'[data-sf-field-input-type="multiselect"]'
+	);
 
-				// console.log(DOMKids);
-
-				// const searchContainer = DOMKids[DOMKids.length - 1];
-
-				resultsContainer.classList.add("select2-container--loaded");
-
-				// if (currentSelect !== searchContainer) {
-				// 	searchContainer.remove();
-				// }
-			}, 300);
-		}
-
-		// if(e.target.classList.map(singleClass => {
-		// 	(console.log(singleClass));
-		// }) {
-
-		// })
-	});
+	console.log(allMultiselectInputs);
 });

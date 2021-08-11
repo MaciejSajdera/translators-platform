@@ -15,7 +15,9 @@ get_header();
 
 		<div class="breadcrumbs">
 			<p>PSTK > Znajdź tłumacza > Wyniki wyszukiwania</p>
-			<button class="button button__go-back go-back">Powrót</button>
+
+			<a href="<?php echo home_url(); ?>" class="button button__go-back go-back">Powrót</a>
+			
 		</div>
 
 		<?php

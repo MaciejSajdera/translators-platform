@@ -100,7 +100,10 @@ article.translator {
 
 	.post-thumbnail {
 		img {
-			max-width: 300px;
+			height: $profile_picture_height;
+			width: $profile_picture_width;
+			border-radius: 100%;
+			object-fit: contain;
 		}
 	}
 }
