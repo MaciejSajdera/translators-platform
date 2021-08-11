@@ -65,9 +65,9 @@ document.addEventListener("DOMContentLoaded", () => {
 			});
 		});
 
-	const searchAndFilterForm = document.querySelector(
-		"form.searchandfilter input[type='submit']"
-	);
+	// const searchAndFilterForm = document.querySelector(
+	// 	"form.searchandfilter input[type='submit']"
+	// );
 
 	// searchAndFilterForm &&
 	// 	searchAndFilterForm.addEventListener("click", e => {
@@ -75,28 +75,84 @@ document.addEventListener("DOMContentLoaded", () => {
 	// 		console.log(e);
 	// 	});
 
-	// document.addEventListener("click", e => {
-	// 	if (
-	// 		e.target.closest("form") &&
-	// 		e.target.closest("form").classList.contains("searchandfilter")
-	// 	) {
+	const searchAndFilterForm = document.querySelector("form.searchandfilter");
 
-	// 		setTimeout(() => {
-	// 			const resultsContainer = document.querySelectorAll(
-	// 				".select2-container--open"
-	// 			)[1];
+	searchAndFilterForm.addEventListener("change", e => {
+		console.log(e);
+	});
 
-	// 			console.log(resultsContainer);
+	setTimeout(() => {
+		const allComboboxes = document.querySelectorAll(
+			'[data-sf-field-input-type="multiselect"]'
+		);
 
-	// 			resultsContainer.classList.add("select2-container--loaded");
+		allComboboxes.forEach(box => {
+			const selectionCounter = document.createElement("SPAN");
+			selectionCounter.classList.add("my-selection-counter");
 
-	// 		}, 300);
-	// 	}
-	// });
+			let boxSelection = box.querySelector(".select2-selection");
+			boxSelection.appendChild(selectionCounter);
 
-	const allMultiselectInputs = document.querySelectorAll(
-		'[data-sf-field-input-type="multiselect"]'
-	);
+			let boxSearchField = box.querySelector(".select2-search__field");
 
-	console.log(allMultiselectInputs);
+			//Dynamic
+			const observer = new MutationObserver(function(mutations) {
+				mutations.forEach(function(mutation) {
+					console.log(mutation);
+
+					if (mutation.type == "attributes") {
+						console.log("attributes changed");
+
+						let allOptionsChosen = box.querySelectorAll(
+							".select2-selection__choice"
+						);
+
+						console.log(allOptionsChosen.length);
+
+						let boxTitle = box.querySelector("H4").innerHTML;
+
+						if (allOptionsChosen.length === 1) {
+							console.log(allOptionsChosen[0].title.trim().split("("));
+							boxSearchField.placeholder = `${
+								allOptionsChosen[0].title.trim().split("(")[0]
+							}`;
+						}
+
+						if (allOptionsChosen.length > 1) {
+							boxSearchField.placeholder = `${boxTitle} (${allOptionsChosen.length})`;
+						}
+					}
+				});
+			});
+
+			observer.observe(boxSelection, {
+				attributes: true //configure it to listen to attribute changes
+			});
+
+			//Static - to display allOptionsChosen counter after form is submitted and page is loaded again
+
+			let allOptionsChosen = box.querySelectorAll(".select2-selection__choice");
+
+			let boxTitle = box.querySelector("H4").innerHTML;
+
+			if (allOptionsChosen.length === 1) {
+				console.log(allOptionsChosen[0].title.trim().split("("));
+				boxSearchField.placeholder = `${
+					allOptionsChosen[0].title.trim().split("(")[0]
+				}`;
+			}
+
+			if (allOptionsChosen.length > 1) {
+				boxSearchField.placeholder = `${boxTitle} (${allOptionsChosen.length})`;
+			}
+		});
+
+		const allSearchFields = document.querySelectorAll(".select2-search__field");
+
+		allSearchFields.forEach(field => {
+			field.addEventListener("focus", e => {
+				console.log(e);
+			});
+		});
+	}, 100);
 });
