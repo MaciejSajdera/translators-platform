@@ -1681,7 +1681,17 @@ add_action( 'admin_init', 'block_wp_admin' );
 // 	add_filter('pre_get_posts','wpb_search_filter');
 // }
 
+//helper functions
+
+// function wpcf_filter_terms_order( $orderby, $query_vars, $taxonomies ) {
+//     return $query_vars['orderby'] == 'term_order' ? 'term_order' : $orderby;
+// }
+
+// add_filter( 'get_terms_orderby', 'wpcf_filter_terms_order', 10, 3 );
+
+
 //Search Filter PRO
+
 
 add_filter('wp_title','search_form_title');
 

@@ -44,6 +44,25 @@
 			?>
 		</p>
 
+		<p>Other cities:
+
+		<?php
+
+			$translator_localizations = wp_get_object_terms( $post->ID, 'translator_localization' );
+			
+			if ( $translator_localizations ) {
+				foreach( $translator_localizations as $term ) :
+	
+							echo $term->name;
+							echo ", ";
+						
+				endforeach;
+			}
+
+			?>
+
+			</p>
+
 		<p>
 
 		<?php
