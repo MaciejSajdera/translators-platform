@@ -182,19 +182,14 @@ document.addEventListener("DOMContentLoaded", () => {
 		});
 	}
 
-	//Gallery
+	//Picture Gallery
 
 	const galleryWrapper = document.querySelector(".my-pictures__wrapper");
-	const allPictureGalleryAttachments = document.querySelectorAll(
-		".my-pictures__gallery-attachment"
-	);
+
 	const imageToGalleryInput = galleryWrapper.querySelector(
 		"#image-to-gallery__input"
 	);
 
-	const allRemovePictureButtons = galleryWrapper.querySelectorAll(
-		".remove-item"
-	);
 	const picturesToDeleteArray = [];
 	const picturesToDeleteInput = document.querySelector("#pictures_to_delete");
 
@@ -202,6 +197,14 @@ document.addEventListener("DOMContentLoaded", () => {
 		if (e.target.classList.contains("my-pictures__gallery-attachment")) {
 			console.log(e.target);
 			e.target.classList.add("my-pictures__gallery-attachment--hovered");
+
+			e.target.addEventListener("mouseleave", e => {
+				e.target.classList.contains("my-pictures__gallery-attachment--hovered")
+					? e.target.classList.remove(
+							"my-pictures__gallery-attachment--hovered"
+					  )
+					: "";
+			});
 		}
 
 		if (e.target.classList.contains("remove-item")) {
@@ -212,13 +215,15 @@ document.addEventListener("DOMContentLoaded", () => {
 					".my-pictures__gallery-attachment"
 				);
 
-				thisPictureWrapper.remove();
-
 				let pictureId = e.target.dataset.id;
 
-				if (pictureId === "clear-input") {
+				if (thisPictureWrapper.id === "newImageInGalleryPlaceholder") {
 					console.log("clear");
 					imageToGalleryInput.value = null;
+					thisPictureWrapper.style.display = "none";
+					thisPictureWrapper.querySelector("IMG").src = null;
+
+					return;
 				}
 
 				if (pictureId) {
@@ -229,51 +234,65 @@ document.addEventListener("DOMContentLoaded", () => {
 					console.log(picturesToDeleteArray);
 					picturesToDeleteInput.value = picturesToDeleteArray;
 				}
+
+				thisPictureWrapper.remove();
 			});
 		}
 	});
 
-	allPictureGalleryAttachments.forEach(pictureWrapper => {
-		// pictureWrapper.addEventListener("mouseenter", e => {
-		// 	pictureWrapper.classList.add("my-pictures__gallery-attachment--hovered");
-		// });
+	//Video Gallery
 
-		pictureWrapper.addEventListener("mouseleave", e => {
-			pictureWrapper.classList.contains(
-				"my-pictures__gallery-attachment--hovered"
-			)
-				? pictureWrapper.classList.remove(
-						"my-pictures__gallery-attachment--hovered"
-				  )
-				: "";
-		});
+	const videosGalleryWrapper = document.querySelector(".my-videos__wrapper");
+
+	const videoToGalleryInput = videosGalleryWrapper.querySelector(
+		"#video-to-gallery__input"
+	);
+
+	const videosToDeleteArray = [];
+	const videosToDeleteInput = document.querySelector("#videos_to_delete");
+
+	videosGalleryWrapper.addEventListener("mouseover", function(e) {
+		if (e.target.classList.contains("my-videos__gallery-attachment")) {
+			console.log(e.target);
+			e.target.classList.add("my-videos__gallery-attachment--hovered");
+
+			e.target.addEventListener("mouseleave", e => {
+				e.target.classList.contains("my-videos__gallery-attachment--hovered")
+					? e.target.classList.remove("my-videos__gallery-attachment--hovered")
+					: "";
+			});
+		}
+
+		if (e.target.classList.contains("remove-item")) {
+			e.target.addEventListener("click", e => {
+				e.preventDefault();
+
+				let thisVideoWrapper = e.target.closest(
+					".my-videos__gallery-attachment"
+				);
+
+				let videoId = e.target.dataset.id;
+
+				if (thisVideoWrapper.id === "newVideoInGalleryPlaceholder") {
+					console.log("clear");
+					videoToGalleryInput.value = null;
+					thisVideoWrapper.style.display = "none";
+					thisVideoWrapper.querySelector("p").innerText = null;
+
+					return;
+				}
+
+				if (videoId) {
+					!videosToDeleteArray.includes(videoId)
+						? videosToDeleteArray.push(videoId)
+						: "";
+
+					console.log(videosToDeleteArray);
+					videosToDeleteInput.value = videosToDeleteArray;
+				}
+
+				thisVideoWrapper.remove();
+			});
+		}
 	});
-
-	// allRemovePictureButtons.forEach(button => {
-	// 	button.addEventListener("click", e => {
-	// 		e.preventDefault();
-
-	// 		let thisPictureWrapper = button.closest(
-	// 			".my-pictures__gallery-attachment"
-	// 		);
-
-	// 		thisPictureWrapper.remove();
-
-	// 		let pictureId = button.dataset.id;
-
-	// 		if (pictureId === "clear-input") {
-	// 			console.log("clear");
-	// 			imageToGalleryInput.value = null;
-	// 		}
-
-	// 		if (pictureId) {
-	// 			!picturesToDeleteArray.includes(pictureId)
-	// 				? picturesToDeleteArray.push(pictureId)
-	// 				: "";
-
-	// 			console.log(picturesToDeleteArray);
-	// 			picturesToDeleteInput.value = picturesToDeleteArray;
-	// 		}
-	// 	});
-	// });
 });

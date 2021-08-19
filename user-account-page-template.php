@@ -156,8 +156,8 @@ get_header();
 
 										echo '<div class="info-box__subbox">';
 
-											if (strlen(get_field('translator_bio_acf')) > 0) {
-												$translator_bio = get_field('translator_bio_acf');
+											if (strlen(get_field('translator_bio')) > 0) {
+												$translator_bio = get_field('translator_bio');
 												$placeholder_mode = '';
 											} else {
 												$translator_bio = 'Napisz jedno zdanie o sobie';
@@ -546,23 +546,9 @@ get_header();
 
 
 
-
-
 								/* PICTURES AND VIDEOS CONTAINER */
 
-								echo '<div class="account__box-container ajax-content-wrapper">';
-
-									/* EDIT BUTTON */
-
-									echo '<button data-profile-edit="edit-gallery-info" class="button button__edit-account-content"></button>';
-
-									/* AJAX LOADER */
-
-									echo '<div class="my-ajax-loader">';
-
-										echo '<div class="my-ajax-loader__spinner"></div>';
-
-									echo '</div>';
+								echo '<div class="account__box-container">';
 
 									/* CONTENT BOX */
 
@@ -572,9 +558,19 @@ get_header();
 
 										echo '<div class="info-box__subbox wrapper-flex-drow-mcol">';
 
+										/* IMAGES GALLERY PANEL */
+
 										$images_to_gallery_array = get_field('translator_gallery');
 
-											echo '<div class="my-pictures__wrapper">';
+											echo '<div class="my-pictures__wrapper ajax-content-wrapper">';
+
+												/* AJAX LOADER */
+
+												echo '<div class="my-ajax-loader">';
+
+													echo '<div class="my-ajax-loader__spinner"></div>';
+		
+												echo '</div>';
 
 												echo '<p class="info-box__subbox-header">Zdjęcia</p>';
 												
@@ -617,11 +613,84 @@ get_header();
 
 											echo '</div>';
 
-											echo '<div class="my-videos__wrapper">';
+											/* VIDEO GALLERY PANEL */
 
-												echo '<p class="info-box__subbox-header ">Filmy</p>';
+											$videos_to_gallery_array = get_field('translator_video_gallery');
 
-												//Video gallery panel
+											echo '<div class="my-videos__wrapper ajax-content-wrapper">';
+
+												/* AJAX LOADER */
+
+												echo '<div class="my-ajax-loader">';
+
+													echo '<div class="my-ajax-loader__spinner"></div>';
+		
+												echo '</div>';
+
+												echo '<p class="info-box__subbox-header">Filmy</p>';
+												
+												echo '<div class="my-videos__gallery">';
+
+												if ($videos_to_gallery_array) {
+
+													$i = 1;
+
+													foreach ($videos_to_gallery_array as $video) :
+
+															$video_link = $video['translator_single_video'];
+
+															if($video_link) {
+
+																$video_id = attachment_url_to_postid($video_link);
+
+																echo '<div class="my-videos__gallery-attachment">';
+
+																	echo '<a class="remove-item" href="#" data-id="'.$i.'"></a>';
+
+																	echo '<svg version="1.1" id="Capa_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
+																	viewBox="0 0 298 298" style="enable-background:new 0 0 298 298;" xml:space="preserve">
+															   		<path d="M298,33c0-13.255-10.745-24-24-24H24C10.745,9,0,19.745,0,33v232c0,13.255,10.745,24,24,24h250c13.255,0,24-10.745,24-24V33
+																   z M91,39h43v34H91V39z M61,259H30v-34h31V259z M61,73H30V39h31V73z M134,259H91v-34h43V259z M123,176.708v-55.417
+																   c0-8.25,5.868-11.302,12.77-6.783l40.237,26.272c6.902,4.519,6.958,11.914,0.056,16.434l-40.321,26.277
+																   C128.84,188.011,123,184.958,123,176.708z M207,259h-43v-34h43V259z M207,73h-43V39h43V73z M268,259h-31v-34h31V259z M268,73h-31V39
+																   h31V73z"/><g></g><g></g><g></g><g></g><g></g><g></g><g></g><g></g><g></g><g></g><g></g><g></g><g></g><g></g><g></g></svg>';
+
+																	$video_name = basename(get_attached_file( $video_id ));
+
+																	echo '<p>'.$video_name.'</p>';
+
+																echo '</div>';
+
+																$i++;
+															} 
+
+													endforeach;
+
+												} else {
+
+													echo '<p>Aktualnie nie masz dodanych żadnych filmów w galerii</p>';
+													
+												};
+
+												echo '</div>';
+
+												echo gallery_video_uploader($user_post_id);
+
+												echo '<div id="newVideoInGalleryPlaceholder" class="my-videos__gallery-attachment" style="display:none;" >';
+
+													echo '<a class="remove-item remove" data-id="clear-input" href="#"></a>';
+
+													echo '<svg version="1.1" id="Capa_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
+													viewBox="0 0 298 298" style="enable-background:new 0 0 298 298;" xml:space="preserve">
+													   <path d="M298,33c0-13.255-10.745-24-24-24H24C10.745,9,0,19.745,0,33v232c0,13.255,10.745,24,24,24h250c13.255,0,24-10.745,24-24V33
+												   z M91,39h43v34H91V39z M61,259H30v-34h31V259z M61,73H30V39h31V73z M134,259H91v-34h43V259z M123,176.708v-55.417
+												   c0-8.25,5.868-11.302,12.77-6.783l40.237,26.272c6.902,4.519,6.958,11.914,0.056,16.434l-40.321,26.277
+												   C128.84,188.011,123,184.958,123,176.708z M207,259h-43v-34h43V259z M207,73h-43V39h43V73z M268,259h-31v-34h31V259z M268,73h-31V39
+												   h31V73z"/><g></g><g></g><g></g><g></g><g></g><g></g><g></g><g></g><g></g><g></g><g></g><g></g><g></g><g></g><g></g></svg>';
+
+													echo '<p></p>';
+
+												echo '</div>';
 
 											echo '</div>';
 
@@ -629,15 +698,6 @@ get_header();
 
 									echo '</div>';
 
-									/* EDIT BOX */
-
-									// echo '<div id="edit-gallery-info" class="edit-box info-box">';
-
-									// 	echo '<div><p class="info-box__header">Zdjęcia i filmy - edycja</p></div>';
-
-									// 	echo gallery_image_uploader($user_post_id);
-
-									// echo '</div>';
 
 								echo '</div>';
 
@@ -684,6 +744,7 @@ get_header();
 													<label for="switch">
 														<input name="user_options_visibility" type="checkbox" class="switch"/>
 													</label>
+													
 
 													<?php
 													

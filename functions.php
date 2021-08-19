@@ -161,7 +161,8 @@ function pstk_scripts() {
 				'upload_profile_picture_form' => '#upload_profile_picture_form',
 				'linkedin_user_data_form' => '#linkedin_user_data_form',
 				'work_user_data_form' => '#work_user_data_form',
-				'upload_image_to_gallery_form' => "#upload_image_to_gallery_form"
+				'upload_image_to_gallery_form' => "#upload_image_to_gallery_form",
+				'upload_video_to_gallery_form' => "#upload_video_to_gallery_form",
 			)
 		);
 	
@@ -392,7 +393,7 @@ function create_post_for_user( $user_id ) {
 
 		update_field( "translator_first_name", $user_first_name, $user_post_id );
 		update_field( "translator_last_name", $user_last_name, $user_post_id );
-		update_field( "translator_id_acf", $user_id, $user_post_id );
+		update_field( "translator_id", $user_id, $user_post_id );
     }
 }
 add_action( 'user_register', 'create_post_for_user', 10, 1 );
@@ -467,7 +468,7 @@ function basic_user_data_form() {
 
 				<p>
 					<label for="user_bio"><?php _e('Bio'); ?></label>
-					<textarea form="basic_user_data_form" name="user_bio" id="user_bio" class="user_bio" type="text"><?php echo get_field("translator_bio_acf", $user_post_id) ?></textarea>
+					<textarea form="basic_user_data_form" name="user_bio" id="user_bio" class="user_bio" type="text"><?php echo get_field("translator_bio", $user_post_id) ?></textarea>
 				</p>
 
 				<p>
@@ -617,7 +618,7 @@ function basic_user_data_form() {
 // 			$user_bio		= $_POST["user_bio"];
 // 			update_user_meta( $user_id, 'description', $user_bio);
 // 			//Update ACF field for user post
-// 			update_field( "translator_bio_acf", $user_bio, $user_post_id );
+// 			update_field( "translator_bio", $user_bio, $user_post_id );
 // 		}
 
 // 		if ( isset( $_POST["user_languages"] )) {
@@ -755,7 +756,7 @@ function add_basic_user_data_with_ajax() {
 			//Update User meta data
 			update_user_meta( $user_id, 'description', $user_bio);
 			//Update ACF field for user post
-			update_field( "translator_bio_acf", $user_bio, $user_post_id );
+			update_field( "translator_bio", $user_bio, $user_post_id );
 		}
 
 		if ( isset( $user_languages_array )) {
@@ -1404,8 +1405,7 @@ function add_work_user_data_with_ajax() {
 	
 	$current_user_nickname = $current_user->user_login;
 
-    $user_work		= $_POST["user_work"];
-
+    $user_work = $_POST["user_work"];
 
 
 	if ( ! wp_verify_nonce( $_POST["add_work_user_data_nonce"], "add_work_user_data") ) {
@@ -1447,8 +1447,6 @@ function profile_picture_uploader($user_post_id) {
 
 		// show any error messages after form submission
 		profile_picture_uploader_form_messages();
-
-		$stylesheet_directory_uri = get_stylesheet_directory_uri();
 		?>
 
 	<form id="upload_profile_picture_form" method="post" enctype="multipart/form-data">
@@ -1459,7 +1457,7 @@ function profile_picture_uploader($user_post_id) {
 						<img class="input-preview" style="">
 					</div>
 
-					<input type="file" id="profile-picture__input" name="profile-picture__input" class="custom-file-input input-preview__src" size="25" accept=".png,.jpg,.jpeg" required />
+					<input type="file" id="profile-picture__input" name="profile-picture__input" class="custom-file-input input-preview__src" accept=".png,.jpg,.jpeg" required />
 
 				</label>
 
@@ -1498,10 +1496,6 @@ function profile_picture_uploader_form_messages() {
  */
 function handle_profile_picture_upload() {
 
-	//Stop immidiately if form is not submitted
-	// if ( ! isset( $_POST['submit_profile_picture'] ) ) {
-	// 	return;
-	// }
 
 	// Verify nonce
 	if ( ! wp_verify_nonce( $_POST['profile_picture_nonce'], 'handle_profile_picture_upload' ) ) {
@@ -1513,24 +1507,6 @@ function handle_profile_picture_upload() {
 		wp_die( esc_html__( 'Please choose a file', 'theme-text-domain' ) );
 	}
 
-	// $new_file_mime = mime_content_type( $_FILES['profile-picture__input']['tmp_name'] );
-	
-
-	// if( !in_array( $new_file_mime, get_allowed_mime_types() ) ) {
-	// 	die( 'WordPress doesn\'t allow this type of uploads.' );
-	// }
-
-	// if (is_uploaded_file( $_FILES['profile-picture__input']['tmp_name'] )) {
-	// 	    // Notice how to grab MIME type
-	// 		$mime_type = mime_content_type($_FILE['profile-picture__input']['tmp_name']);
-
-	// 		// If you want to allow certain files
-	// 		$allowed_file_types = ['image/png', 'image/jpeg', ];
-	// 		if (! in_array($mime_type, $allowed_file_types)) {
-	// 			// File type is NOT allowed
-	// 			die( 'WordPress doesn\'t allow this type of uploads.' );
-	// 		}
-	// }
 
 	$finfo = new finfo(FILEINFO_MIME_TYPE);
     if (false === $ext = array_search(
@@ -1548,39 +1524,23 @@ function handle_profile_picture_upload() {
 		die();
     }
 
-
-	// $allowed_extensions = array( 'jpg', 'jpeg', 'png' );
-	// $file_type = wp_check_filetype( $_FILES['profile-picture__input'] );
-	// $file_extension = $file_type['ext'];
-
-	// // Check for valid file extension
-	// if ( ! in_array( $file_extension, $allowed_extensions ) ) {
-	// 	die("Invalid file extension, only allowe");
-	// 	error_log ( esc_html__( 'Invalid file extension, only allowed: %s', 'theme-text-domain' ), implode( ', ', $allowed_extensions ));
-	// 	wp_die( sprintf(  esc_html__( 'Invalid file extension, only allowed: %s', 'theme-text-domain' ), implode( ', ', $allowed_extensions ) ) );
-	// }
-
-	// $file_name = preg_replace('/\s+/', '-', $_FILES["file"]["name"]);
-
 	$file_size = $_FILES['profile-picture__input']['size'];
 	$allowed_file_size = 3145728; // Here we are setting the file size limit to 3MB
 
 	// Check for file size limit
 	if ( $file_size >= $allowed_file_size ) {
-		wp_die( sprintf( esc_html__( 'File size limit exceeded, file size should be smaller than %d KB', 'theme-text-domain' ), $allowed_file_size / 1000 ) );
+		echo '<div class="modal-notification php-error__wrapper"><div class="php-error__content">'.sprintf( esc_html__( 'Zbyt duży rozmiar pliku, proszę wybrać plik o maksymalnym rozmiarze %d MB', 'theme-text-domain' ), round($allowed_file_size / 1000000) ).'</div></div>';
+		throw new Exception('Exception message');
+		throw new RuntimeException('File size is too big.');
+		die();
+		;
 	}
-
-	// These files need to be included as dependencies when on the front end.
-	require_once( ABSPATH . 'wp-admin/includes/image.php' );
-	require_once( ABSPATH . 'wp-admin/includes/file.php' );
-	require_once( ABSPATH . 'wp-admin/includes/media.php' );
 
 	// Get post_id
 	$post_id = $_POST['post_id'];
 
-	// Let WordPress handle the upload.
-	// Remember, 'wpcfu_file' is the name of our file input in our form above.
-	// Here post_id is 0 because we are not going to attach the media to any post.
+	// upload.
+
 	$attachment_id = media_handle_upload( 'profile-picture__input', $post_id );
 
 	set_post_thumbnail( $post_id, $attachment_id );
@@ -1588,10 +1548,6 @@ function handle_profile_picture_upload() {
 	if ( is_wp_error( $attachment_id ) ) {
 		// There was an error uploading the image.
 		wp_die( $attachment_id->get_error_message() );
-	} else {
-		// We will redirect the user to the attachment page after uploading the file successfully.
-		wp_redirect( get_the_permalink(18) );
-		exit;
 	}
 
 	die();
@@ -1621,7 +1577,7 @@ function gallery_image_uploader($user_post_id) {
 
 				<label class="file-input__label">
 
-					<input type="file" name="image-to-gallery__input" id="image-to-gallery__input" class="custom-file-input input-preview__src" />
+					<input type="file" name="image-to-gallery__input" id="image-to-gallery__input" class="custom-file-input input-preview__src" accept=".png,.jpg,.jpeg" />
 
 				</label>
 
@@ -1629,7 +1585,7 @@ function gallery_image_uploader($user_post_id) {
 
 				<label>
 
-					<input type="hidden" name="pictures_to_delete" id="pictures_to_delete" value="test1"/>
+					<input type="hidden" name="pictures_to_delete" id="pictures_to_delete" value=""/>
 
 				</label>
 
@@ -1663,8 +1619,6 @@ function gallery_image_uploader_form_messages() {
 	}	
 }
 
-
-
 /**
  * Handles the file upload request.
  */
@@ -1688,7 +1642,7 @@ function handle_image_to_gallery_upload() {
 
 		// Check for file size limit
 		if ( $file_size >= $allowed_file_size ) {
-			echo '<div class="modal-notification php-error__wrapper"><div class="php-error__content">'.sprintf( esc_html__( 'File size limit exceeded, file size should be smaller than %d KB', 'theme-text-domain' ), $allowed_file_size / 1000 ).'</div></div>';
+			echo '<div class="modal-notification php-error__wrapper"><div class="php-error__content">'.sprintf( esc_html__( 'Zbyt duży rozmiar pliku, proszę wybrać plik o maksymalnym rozmiarze %d MB', 'theme-text-domain' ), round($allowed_file_size / 1000000) ).'</div></div>';
 			throw new Exception('Exception message');
 			throw new RuntimeException('Invalid file format.');
 			die();
@@ -1718,8 +1672,6 @@ function handle_image_to_gallery_upload() {
 
 	$pictures_to_delete_array = explode(',', $_POST["pictures_to_delete"]);
 
-	// print_r($pictures_to_delete_array);
-	
 	$images_already_in_gallery_array = get_field('translator_gallery', $post_id);
 
 	$images_to_upload = array();
@@ -1735,6 +1687,8 @@ function handle_image_to_gallery_upload() {
 		}
 
 	endforeach;
+
+
 
 	//if file has been attached
 
@@ -1769,11 +1723,212 @@ add_action( 'wp_ajax_handle_image_to_gallery_upload','handle_image_to_gallery_up
 
 
 
+function gallery_video_uploader($user_post_id) {
+
+	ob_start(); 
+
+	// show any error messages after form submission
+	// gallery_video_uploader_form_messages();
+	?>
+
+	<form id="upload_video_to_gallery_form" method="POST" enctype="multipart/form-data">
+
+				<label class="file-input__label">
+
+					<input type="file" name="video-to-gallery__input" id="video-to-gallery__input" class="custom-file-input input-preview__src" accept=".mp4,.mov,.wmv,.mpg" />
+
+				</label>
+
+				<input type="hidden" name="post_id" id="post_id" value="<?php echo $user_post_id ?>"><br>
+
+				<label>
+
+					<input type="hidden" name="videos_to_delete" id="videos_to_delete" value=""/>
+
+				</label>
+
+
+
+				<input type="submit" name="submit_video_to_gallery" value="Zaktualizuj galerię" />
+				<?php wp_nonce_field( "handle_video_to_gallery_upload", "video_to_gallery_nonce" ); ?>
+	</form>
+
+	<?php
+	return ob_get_clean();
+}
+
+
+
+/**
+* Handles the file upload request.
+*/
+function handle_video_to_gallery_upload() {
+
+	// print_r($_FILES);
+
+	// if (!isset( $_POST["submit_video_to_gallery"] )) {
+	// 	return;
+	// }
+
+	// Verify nonce
+	if ( ! wp_verify_nonce( $_POST['video_to_gallery_nonce'], 'handle_video_to_gallery_upload' ) ) {
+		wp_die( esc_html__( 'Nonce mismatched', 'theme-text-domain' ) );
+	}
+
+	//validation
+
+	if ( $_FILES['video-to-gallery__input']['name'] ) {
+
+		require_once(ABSPATH . 'wp-admin/includes/image.php');
+		require_once(ABSPATH . 'wp-admin/includes/file.php');
+		require_once(ABSPATH . 'wp-admin/includes/media.php');
+
+		//validation
+
+		// $_FILES['video-to-gallery__input']['name'] = preg_replace('/\s+/', '-', $_FILES["file"]["name"]);
+
+		$file_size = $_FILES['video-to-gallery__input']['size'];
+		$allowed_file_size = 10145728; // Here we are setting the file size limit to 3MB
+
+		// Check for file size limit
+		if ( $file_size >= $allowed_file_size ) {
+			echo '<div class="modal-notification php-error__wrapper"><div class="php-error__content">'.sprintf( esc_html__( 'Zbyt duży rozmiar pliku, proszę wybrać plik o maksymalnym rozmiarze %d MB', 'theme-text-domain' ), round($allowed_file_size / 1000000) ).'</div></div>';
+			throw new Exception('Exception message');
+			throw new RuntimeException('Invalid file format.');
+			die();
+			;
+		}
+
+		$finfo = new finfo(FILEINFO_MIME_TYPE);
+		if (false === $ext = array_search(
+			$finfo->file($_FILES['video-to-gallery__input']['tmp_name']),
+			array(
+				'mp4' => 'video/mp4',
+				'mov' => 'video/mov',
+				'wmv' => 'video/wmv',
+				'mpg' => 'video/mpg',
+			),
+			true
+		)) {
+			echo '<div class="modal-notification php-error__wrapper"><div class="php-error__content">Nieprawidłowy format pliku</div></div>';
+			throw new Exception('Exception message');
+			throw new RuntimeException('Invalid file format.');
+			die();
+		}
+	}
+
+	// $attachment_ids = array();
+
+	$post_id = $_POST['post_id'];
+
+
+
+	if ($_POST["videos_to_delete"]) {
+
+		$videos_to_delete_array = explode(',', $_POST["videos_to_delete"]);
+
+		foreach ($videos_to_delete_array as $video_to_delete) :
+	
+			delete_row('translator_video_gallery', $video_to_delete, $post_id);
+	
+		endforeach;
+	
+	}
+
+
+	//if file has been attached
+
+	if ( $_FILES['video-to-gallery__input']['name'] ) {
+
+		$uploadedfile = $_FILES['video-to-gallery__input'];
+		$upload_overrides = array( 'test_form' => false );
+		$movefile = wp_handle_upload( $uploadedfile, $upload_overrides );
+
+		if ( $movefile )
+		{
+			  $image_url = $movefile["url"];
+			  $upload_dir = wp_upload_dir();
+			  $image_data = file_get_contents($image_url);
+			  $filename = basename($image_url);
+			  if(wp_mkdir_p($upload_dir['path']))
+				  $file = $upload_dir['path'] . '/' . $filename;
+			  else
+				  $file = $upload_dir['basedir'] . '/' . $filename;
+			  file_put_contents($file, $image_data);
+
+			  $wp_filetype = wp_check_filetype($filename, null );
+
+			  $attachment = array(
+				  'post_mime_type' => $wp_filetype['type'],
+				  'post_title' => sanitize_file_name($filename),
+				  'post_content' => '',
+				  'post_status' => 'inherit'
+			  );
+
+			  $listing_post_id = $post_id ; //your post id to which you want to attach the video
+			  $attach_id = wp_insert_attachment( $attachment, $file, $listing_post_id);
+
+			//   $attach_data = wp_generate_attachment_metadata( $attach_id, $file );
+			//   wp_update_attachment_metadata( $attach_id, $attach_data );
+
+			//   print_r($attach_id);
 
 
 
 
+				$row = array(
+					'translator_single_video' => $attach_id,
+				);
 
+				add_row('translator_video_gallery', $row, $post_id);
+
+
+				$videos_gallery_array = get_field("translator_video_gallery", $post_id);
+
+
+				print_r(count($videos_gallery_array));
+
+			  /*end file uploader*/
+
+
+
+			}
+
+
+		// $attachment_id = media_handle_upload( 'video-to-gallery__input', $post_id );
+
+		// if ( is_wp_error( $attachment_id ) ) {
+		// 	// There was an error uploading the image.
+		// 	wp_die( $attachment_id->get_error_message() );
+		// }
+
+		// array_push($videos_to_upload, $attachment_id);
+
+		// print_r($attachment_id);
+
+	}
+
+		// $row = array(
+		// 	'translator_single_video' => $attachment_id,
+		// );
+
+		// add_row('translator_video_gallery', $row);
+
+		// update_field('translator_gallery', $videos_to_upload, $post_id);
+
+
+
+
+	die();
+}
+
+/**
+* Hook the function that handles the file upload request.
+*/
+// add_action( 'init', 'handle_video_to_gallery_upload' );
+
+add_action( 'wp_ajax_nopriv_handle_video_to_gallery_upload',  'handle_video_to_gallery_upload' );
+add_action( 'wp_ajax_handle_video_to_gallery_upload','handle_video_to_gallery_upload' );
 
 
 

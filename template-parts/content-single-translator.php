@@ -85,7 +85,7 @@
 
 					echo '<p>';
 			
-						echo get_field("translator_bio_acf");
+						echo get_field("translator_bio");
 
 					echo '</p>';
 

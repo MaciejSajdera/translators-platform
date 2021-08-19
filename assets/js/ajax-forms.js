@@ -432,6 +432,8 @@ jQuery(document).ready(function($) {
 			".my-ajax-loader"
 		);
 
+		const imageToGalleryInput = this.querySelector("#image-to-gallery__input");
+
 		// console.log(this);
 
 		var galleryFormData = new FormData(this);
@@ -462,8 +464,9 @@ jQuery(document).ready(function($) {
 
 				// const dataJSON = JSON.parse(data);
 
-				$("#newImageInGalleryPlaceholder")
-					.clone()
+				let newlyAddedImage = $("#newImageInGalleryPlaceholder").clone();
+
+				newlyAddedImage
 					.css("transform", "scale(0)")
 					.css("transition", "all 0.3s ease-in")
 					.appendTo(".my-pictures__gallery")
@@ -478,6 +481,10 @@ jQuery(document).ready(function($) {
 				}, 100);
 
 				$("#newImageInGalleryPlaceholder").css("display", "none");
+
+				//clear input
+
+				imageToGalleryInput.value = null;
 
 				return data;
 			},
@@ -510,5 +517,106 @@ jQuery(document).ready(function($) {
 		$("#newImageInGalleryPlaceholder img")
 			.fadeIn(300)
 			.attr("src", URL.createObjectURL(event.target.files[0]));
+	});
+
+	/* 	Upload video to gallery Form */
+
+	var uploadVideoToGalleryForm = ajax_forms_params.upload_video_to_gallery_form;
+
+	$(uploadVideoToGalleryForm).submit(function(event) {
+		event.preventDefault();
+
+		const submitButton = this.querySelector("input[type='submit']");
+		submitButton.classList.remove("reveal-button");
+		const uploadPicturePreview = this.querySelector(".input-preview__wrapper");
+
+		const thisAjaxLoader = this.closest(".ajax-content-wrapper").querySelector(
+			".my-ajax-loader"
+		);
+
+		const videoToGalleryInput = this.querySelector("#video-to-gallery__input");
+
+		// console.log(this);
+
+		var videoGalleryFormData = new FormData(this);
+
+		$.ajax({
+			url: ajaxurl + "?action=handle_video_to_gallery_upload",
+			type: "POST",
+			data: videoGalleryFormData,
+			async: true,
+			cache: false,
+			contentType: false,
+			enctype: "multipart/form-data",
+			processData: false,
+
+			beforeSend: function() {
+				// Before we send the request, remove the .hidden class from the spinner and default to inline-block.
+				thisAjaxLoader.classList.add("my-ajax-loader--active");
+			},
+
+			complete: function() {
+				thisAjaxLoader.classList.remove("my-ajax-loader--active");
+				// uploadPicturePreview.classList.remove("has-image");
+			},
+
+			success: function(data) {
+				console.log("SUCCESS!");
+				console.log(data);
+
+				// const dataJSON = JSON.parse(data);
+
+				// console.log(dataJSON);
+
+				let newlyAddedVideo = $("#newVideoInGalleryPlaceholder").clone();
+
+				newlyAddedVideo
+					.css("transform", "scale(0)")
+					.css("transition", "all 0.3s ease-in")
+					.appendTo(".my-videos__gallery")
+					.attr("id", "newlyAddedVideo");
+
+				setTimeout(function() {
+					$("#newlyAddedVideo .remove-item").attr("data-id", data);
+
+					$("#newlyAddedVideo")
+						.css("transform", "scale(1)")
+						.attr("id", "");
+				}, 100);
+
+				$("#newVideoInGalleryPlaceholder").css("display", "none");
+
+				//clear input
+
+				videoToGalleryInput.value = null;
+
+				return data;
+			},
+			error: function(jqXHR, textStatus, errorThrown) {
+				console.log(jqXHR);
+				console.log(textStatus);
+				console.log(errorThrown);
+
+				let errorMessage = jqXHR.responseText;
+
+				console.log(errorMessage);
+
+				let errorMessageNode = $.parseHTML(errorMessage);
+
+				console.log(errorMessageNode);
+
+				modalMessageHolder.appendChild(errorMessageNode[0]);
+
+				showModal();
+
+				// jsonValue = jQuery.parseJSON( jqXHR.responseText );
+				// console.log(jsonValue.Message);
+			}
+		});
+	});
+
+	$("#video-to-gallery__input").change(function(event) {
+		$("#newVideoInGalleryPlaceholder").fadeIn(300);
+		$("#newVideoInGalleryPlaceholder p").text(event.target.files[0].name);
 	});
 });
