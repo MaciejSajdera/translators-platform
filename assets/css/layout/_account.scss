@@ -190,7 +190,7 @@
 	}
 }
 
-.profile-pricture {
+.profile-picture {
 	&__wrapper {
 		position: relative;
 
@@ -338,6 +338,34 @@
 		&__first-element {
 			@media screen and (min-width: 992px) {
 				width: 150px;
+			}
+		}
+	}
+}
+
+.my-pictures,
+.my-videos {
+	&__wrapper {
+		@media screen and (min-width: 992px) {
+			width: 50%;
+		}
+	}
+}
+
+.my-pictures {
+	&__gallery-attachment {
+		display: flex;
+		position: relative;
+		padding: 1rem;
+
+		&--hovered {
+			.remove-item {
+				position: absolute;
+				right: 0.5rem;
+				top: 0.5rem;
+				width: 20px;
+				height: 20px;
+				background: red;
 			}
 		}
 	}

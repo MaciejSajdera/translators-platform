@@ -75,11 +75,11 @@ document.addEventListener("DOMContentLoaded", () => {
 	// 		console.log(e);
 	// 	});
 
-	const searchAndFilterForm = document.querySelector("form.searchandfilter");
+	// const searchAndFilterForm = document.querySelector("form.searchandfilter");
 
-	searchAndFilterForm.addEventListener("change", e => {
-		console.log(e);
-	});
+	// searchAndFilterForm.addEventListener("change", e => {
+	// 	console.log(e);
+	// });
 
 	setTimeout(() => {
 		const allComboboxes = document.querySelectorAll(

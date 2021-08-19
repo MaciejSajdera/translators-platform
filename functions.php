@@ -161,6 +161,7 @@ function pstk_scripts() {
 				'upload_profile_picture_form' => '#upload_profile_picture_form',
 				'linkedin_user_data_form' => '#linkedin_user_data_form',
 				'work_user_data_form' => '#work_user_data_form',
+				'upload_image_to_gallery_form' => "#upload_image_to_gallery_form"
 			)
 		);
 	
@@ -195,6 +196,22 @@ function remove_admin_bar() {
 if (!current_user_can('administrator') && !is_admin()) {
   show_admin_bar(false);
 }
+}
+
+//helper functions
+
+// function wpcf_filter_terms_order( $orderby, $query_vars, $taxonomies ) {
+//     return $query_vars['orderby'] == 'term_order' ? 'term_order' : $orderby;
+// }
+
+// add_filter( 'get_terms_orderby', 'wpcf_filter_terms_order', 10, 3 );
+
+
+function cmb_get_image_id($image_src) {
+	
+    global $wpdb;
+    $image = $wpdb->get_col($wpdb->prepare("SELECT ID FROM $wpdb->posts WHERE guid='%s';", $image_src )); 
+    return $image[0]; //return the image ID
 }
 
 // user registration login form
@@ -1377,6 +1394,10 @@ function work_user_data_form_messages() {
 
 function add_work_user_data_with_ajax() {
 
+	if ( ! isset( $_POST["user_work"] ) ) {
+		return;
+	}
+
 	print_r(json_encode($_POST));
 	
 	$current_user = wp_get_current_user();
@@ -1384,6 +1405,8 @@ function add_work_user_data_with_ajax() {
 	$current_user_nickname = $current_user->user_login;
 
     $user_work		= $_POST["user_work"];
+
+
 
 	if ( ! wp_verify_nonce( $_POST["add_work_user_data_nonce"], "add_work_user_data") ) {
 		die ( 'Nonce mismatched!');
@@ -1408,6 +1431,8 @@ function add_work_user_data_with_ajax() {
 
 }
 
+// add_action( 'init',  'add_work_user_data_with_ajax' );
+
 add_action( 'wp_ajax_nopriv_add_work_user_data_with_ajax',  'add_work_user_data_with_ajax' );
 add_action( 'wp_ajax_add_work_user_data_with_ajax','add_work_user_data_with_ajax' );
 
@@ -1431,7 +1456,7 @@ function profile_picture_uploader($user_post_id) {
 				<label class="file-input__label">
 
 					<div class="input-preview__wrapper">
-						<img class="input-preview">
+						<img class="input-preview" style="">
 					</div>
 
 					<input type="file" id="profile-picture__input" name="profile-picture__input" class="custom-file-input input-preview__src" size="25" accept=".png,.jpg,.jpeg" required />
@@ -1517,9 +1542,10 @@ function handle_profile_picture_upload() {
         ),
         true
     )) {
-		echo '<div class="php-error__wrapper"><div class="php-error__content">Nieprawidłowy format pliku</div></div>';
+		echo '<div class="modal-notification php-error__wrapper"><div class="php-error__content">Nieprawidłowy format pliku</div></div>';
 		throw new Exception('Exception message');
         throw new RuntimeException('Invalid file format.');
+		die();
     }
 
 
@@ -1580,9 +1606,166 @@ add_action( 'wp_ajax_nopriv_handle_profile_picture_upload',  'handle_profile_pic
 add_action( 'wp_ajax_handle_profile_picture_upload','handle_profile_picture_upload' );
 
 
+function gallery_image_uploader($user_post_id) {
+
+	ob_start(); 
+
+	// show any error messages after form submission
+	gallery_image_uploader_form_messages();
+
+	$stylesheet_directory_uri = get_stylesheet_directory_uri();
+
+	?>
+
+	<form id="upload_image_to_gallery_form" method="POST" enctype="multipart/form-data">
+
+				<label class="file-input__label">
+
+					<input type="file" name="image-to-gallery__input" id="image-to-gallery__input" class="custom-file-input input-preview__src" />
+
+				</label>
+
+				<input type="hidden" name="post_id" id="post_id" value="<?php echo $user_post_id ?>"><br>
+
+				<label>
+
+					<input type="hidden" name="pictures_to_delete" id="pictures_to_delete" value="test1"/>
+
+				</label>
 
 
 
+				<input type="submit" name="submit_image_to_gallery" value="Zaktualizuj galerię" />
+				<?php wp_nonce_field( "handle_image_to_gallery_upload", "image_to_gallery_nonce" ); ?>
+	</form>
+
+	<?php
+	return ob_get_clean();
+}
+
+// used for tracking error messages
+function gallery_image_uploader_form_errors(){
+    static $wp_error; // global variable handle
+    return isset($wp_error) ? $wp_error : ($wp_error = new WP_Error(null, null, null));
+}
+
+
+// displays error messages from form submissions
+function gallery_image_uploader_form_messages() {
+	if($codes = basic_user_data_form_errors()->get_error_codes()) {
+		echo '<div class="vicode_errors">';
+		    // Loop error codes and display errors
+		   foreach($codes as $code){
+		        $message = gallery_image_uploader_form_errors()->get_error_message($code);
+		        echo '<span class="error"><strong>' . __('Error') . '</strong>: ' . $message . '</span><br/>';
+		    }
+		echo '</div>';
+	}	
+}
+
+
+
+/**
+ * Handles the file upload request.
+ */
+function handle_image_to_gallery_upload() {
+
+	// Verify nonce
+	if ( ! wp_verify_nonce( $_POST['image_to_gallery_nonce'], 'handle_image_to_gallery_upload' ) ) {
+		wp_die( esc_html__( 'Nonce mismatched', 'theme-text-domain' ) );
+	}
+
+	//validation
+
+	if ( $_FILES['image-to-gallery__input']['name'] ) {
+
+		//validation
+
+		// $_FILES['image-to-gallery__input']['name'] = preg_replace('/\s+/', '-', $_FILES["file"]["name"]);
+
+		$file_size = $_FILES['image-to-gallery__input']['size'];
+		$allowed_file_size = 3145728; // Here we are setting the file size limit to 3MB
+
+		// Check for file size limit
+		if ( $file_size >= $allowed_file_size ) {
+			echo '<div class="modal-notification php-error__wrapper"><div class="php-error__content">'.sprintf( esc_html__( 'File size limit exceeded, file size should be smaller than %d KB', 'theme-text-domain' ), $allowed_file_size / 1000 ).'</div></div>';
+			throw new Exception('Exception message');
+			throw new RuntimeException('Invalid file format.');
+			die();
+			;
+		}
+
+		$finfo = new finfo(FILEINFO_MIME_TYPE);
+		if (false === $ext = array_search(
+			$finfo->file($_FILES['image-to-gallery__input']['tmp_name']),
+			array(
+				'jpg' => 'image/jpeg',
+				'png' => 'image/png',
+				'gif' => 'image/gif',
+			),
+			true
+		)) {
+			echo '<div class="modal-notification php-error__wrapper"><div class="php-error__content">Nieprawidłowy format pliku</div></div>';
+			throw new Exception('Exception message');
+			throw new RuntimeException('Invalid file format.');
+			die();
+		}
+	}
+
+	// $attachment_ids = array();
+
+	$post_id = $_POST['post_id'];
+
+	$pictures_to_delete_array = explode(',', $_POST["pictures_to_delete"]);
+
+	// print_r($pictures_to_delete_array);
+	
+	$images_already_in_gallery_array = get_field('translator_gallery', $post_id);
+
+	$images_to_upload = array();
+
+	foreach ($images_already_in_gallery_array as $image) :
+
+		$image_id = attachment_url_to_postid($image);
+
+		//if image_id is not in $pictures_to_delete_array dont include it 
+
+		if (!in_array($image_id, $pictures_to_delete_array)) {
+			array_push($images_to_upload, $image_id);
+		}
+
+	endforeach;
+
+	//if file has been attached
+
+	if ( $_FILES['image-to-gallery__input']['name'] ) {
+
+		$attachment_id = media_handle_upload( 'image-to-gallery__input', $post_id );
+
+		if ( is_wp_error( $attachment_id ) ) {
+			// There was an error uploading the image.
+			wp_die( $attachment_id->get_error_message() );
+		}
+	
+		array_push($images_to_upload, $attachment_id);
+
+		print_r($attachment_id);
+
+	}
+
+	update_field('translator_gallery', $images_to_upload, $post_id);
+
+
+	die();
+}
+
+/**
+ * Hook the function that handles the file upload request.
+ */
+// add_action( 'init', 'handle_image_to_gallery_upload' );
+
+add_action( 'wp_ajax_nopriv_handle_image_to_gallery_upload',  'handle_image_to_gallery_upload' );
+add_action( 'wp_ajax_handle_image_to_gallery_upload','handle_image_to_gallery_upload' );
 
 
 
@@ -1681,13 +1864,7 @@ add_action( 'admin_init', 'block_wp_admin' );
 // 	add_filter('pre_get_posts','wpb_search_filter');
 // }
 
-//helper functions
 
-// function wpcf_filter_terms_order( $orderby, $query_vars, $taxonomies ) {
-//     return $query_vars['orderby'] == 'term_order' ? 'term_order' : $orderby;
-// }
-
-// add_filter( 'get_terms_orderby', 'wpcf_filter_terms_order', 10, 3 );
 
 
 //Search Filter PRO
@@ -1730,7 +1907,7 @@ function distance($lat1, $lon1, $lat2, $lon2, $unit) {
 		return $miles;
 	  }
 	}
-  }
+}
 
 function footer_copyright() {
 	global $wpdb;

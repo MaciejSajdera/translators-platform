@@ -8,6 +8,9 @@
 
 get_header();
 
+// var_dump($_POST);
+// echo '<br>';
+// var_dump($_FILES);
 ?>
 
 	
@@ -78,7 +81,7 @@ get_header();
 
 						echo '<div class="account__side-menu">';
 
-							echo '<div class="profile-pricture__wrapper ajax-content-wrapper">';
+							echo '<div class="profile-picture__wrapper ajax-content-wrapper">';
 
 								if(wp_get_attachment_image_url(get_post_thumbnail_id($user_post_id))) {
 									pstk_post_thumbnail($user_post_id);
@@ -542,7 +545,109 @@ get_header();
 								/* END OF work INFO CONTAINER */
 
 
+
+
+
+								/* PICTURES AND VIDEOS CONTAINER */
+
+								echo '<div class="account__box-container ajax-content-wrapper">';
+
+									/* EDIT BUTTON */
+
+									echo '<button data-profile-edit="edit-gallery-info" class="button button__edit-account-content"></button>';
+
+									/* AJAX LOADER */
+
+									echo '<div class="my-ajax-loader">';
+
+										echo '<div class="my-ajax-loader__spinner"></div>';
+
+									echo '</div>';
+
+									/* CONTENT BOX */
+
+									echo '<div class="content-box info-box">';
+
+										echo '<div><p class="info-box__header">Zdjęcia i filmy</p></div>';
+
+										echo '<div class="info-box__subbox wrapper-flex-drow-mcol">';
+
+										$images_to_gallery_array = get_field('translator_gallery');
+
+											echo '<div class="my-pictures__wrapper">';
+
+												echo '<p class="info-box__subbox-header">Zdjęcia</p>';
+												
+												echo '<div class="my-pictures__gallery">';
+
+												if ($images_to_gallery_array) {
+
+													foreach ($images_to_gallery_array as $image) :
+
+															if(wp_get_attachment_image_url(attachment_url_to_postid($image))) {
+
+																echo '<div class="my-pictures__gallery-attachment">';
+
+																	echo '<a class="remove-item" href="#" data-id="'.attachment_url_to_postid($image).'"></a>';
+
+																	echo '<img src="'.wp_get_attachment_image_url(attachment_url_to_postid($image), 'full').'" width="">';
+
+																echo '</div>';
+															} 
+
+													endforeach;
+
+												} else {
+
+													echo '<p>Aktualnie nie masz dodanych żadnych zdjęć do galerii</p>';
+													
+												};
+
+												echo '</div>';
+
+												echo gallery_image_uploader($user_post_id);
+
+												echo '<div id="newImageInGalleryPlaceholder" class="my-pictures__gallery-attachment" style="display:none;" >';
+
+													echo '<a class="remove-item remove" data-id="clear-input" href="#"></a>';
+
+													echo '<img src="" width=""/>';
+
+												echo '</div>';
+
+											echo '</div>';
+
+											echo '<div class="my-videos__wrapper">';
+
+												echo '<p class="info-box__subbox-header ">Filmy</p>';
+
+												//Video gallery panel
+
+											echo '</div>';
+
+										echo '</div>';
+
+									echo '</div>';
+
+									/* EDIT BOX */
+
+									// echo '<div id="edit-gallery-info" class="edit-box info-box">';
+
+									// 	echo '<div><p class="info-box__header">Zdjęcia i filmy - edycja</p></div>';
+
+									// 	echo gallery_image_uploader($user_post_id);
+
+									// echo '</div>';
+
+								echo '</div>';
+
+								/* END OF PICTURES AND VIDEOS CONTAINER */
+
+
+
+
 							echo '</div>';
+							/* END OF profile-section-1 */
 
 							echo '<div id="profile-section-2" class="profile-section profile-section--not-active account__settings">';
 

@@ -124,8 +124,9 @@ document.addEventListener("DOMContentLoaded", () => {
 
 		fileImage.onchange = function() {
 			const originalImage = document.querySelector(
-				".profile-pricture__wrapper img"
+				".profile-picture__wrapper img"
 			);
+
 			const filePreviewWrapper = uploadProfilePictureForm.querySelector(
 				".input-preview__wrapper"
 			);
@@ -180,4 +181,99 @@ document.addEventListener("DOMContentLoaded", () => {
 				: "";
 		});
 	}
+
+	//Gallery
+
+	const galleryWrapper = document.querySelector(".my-pictures__wrapper");
+	const allPictureGalleryAttachments = document.querySelectorAll(
+		".my-pictures__gallery-attachment"
+	);
+	const imageToGalleryInput = galleryWrapper.querySelector(
+		"#image-to-gallery__input"
+	);
+
+	const allRemovePictureButtons = galleryWrapper.querySelectorAll(
+		".remove-item"
+	);
+	const picturesToDeleteArray = [];
+	const picturesToDeleteInput = document.querySelector("#pictures_to_delete");
+
+	galleryWrapper.addEventListener("mouseover", function(e) {
+		if (e.target.classList.contains("my-pictures__gallery-attachment")) {
+			console.log(e.target);
+			e.target.classList.add("my-pictures__gallery-attachment--hovered");
+		}
+
+		if (e.target.classList.contains("remove-item")) {
+			e.target.addEventListener("click", e => {
+				e.preventDefault();
+
+				let thisPictureWrapper = e.target.closest(
+					".my-pictures__gallery-attachment"
+				);
+
+				thisPictureWrapper.remove();
+
+				let pictureId = e.target.dataset.id;
+
+				if (pictureId === "clear-input") {
+					console.log("clear");
+					imageToGalleryInput.value = null;
+				}
+
+				if (pictureId) {
+					!picturesToDeleteArray.includes(pictureId)
+						? picturesToDeleteArray.push(pictureId)
+						: "";
+
+					console.log(picturesToDeleteArray);
+					picturesToDeleteInput.value = picturesToDeleteArray;
+				}
+			});
+		}
+	});
+
+	allPictureGalleryAttachments.forEach(pictureWrapper => {
+		// pictureWrapper.addEventListener("mouseenter", e => {
+		// 	pictureWrapper.classList.add("my-pictures__gallery-attachment--hovered");
+		// });
+
+		pictureWrapper.addEventListener("mouseleave", e => {
+			pictureWrapper.classList.contains(
+				"my-pictures__gallery-attachment--hovered"
+			)
+				? pictureWrapper.classList.remove(
+						"my-pictures__gallery-attachment--hovered"
+				  )
+				: "";
+		});
+	});
+
+	// allRemovePictureButtons.forEach(button => {
+	// 	button.addEventListener("click", e => {
+	// 		e.preventDefault();
+
+	// 		let thisPictureWrapper = button.closest(
+	// 			".my-pictures__gallery-attachment"
+	// 		);
+
+	// 		thisPictureWrapper.remove();
+
+	// 		let pictureId = button.dataset.id;
+
+	// 		if (pictureId === "clear-input") {
+	// 			console.log("clear");
+	// 			imageToGalleryInput.value = null;
+	// 		}
+
+	// 		if (pictureId) {
+	// 			!picturesToDeleteArray.includes(pictureId)
+	// 				? picturesToDeleteArray.push(pictureId)
+	// 				: "";
+
+	// 			console.log(picturesToDeleteArray);
+	// 			picturesToDeleteInput.value = picturesToDeleteArray;
+	// 		}
+	// 	});
+	// });
 });

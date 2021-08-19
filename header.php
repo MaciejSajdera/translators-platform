@@ -29,6 +29,7 @@
 <div class="modal">
     <div class="modal-content">
         <span class="close-button">&times;</span>
+		<div class="modal-message-holder"></div>
     </div>
 </div>
 

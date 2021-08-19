@@ -2,20 +2,14 @@ jQuery(document).ready(function($) {
 	/* 	Modal for displaying errors */
 	const modal = document.querySelector(".modal");
 	const modalContent = modal.querySelector(".modal-content");
+	const modalMessageHolder = modal.querySelector(".modal-message-holder");
 	const closeButton = document.querySelector(".close-button");
 
-	function toggleModal() {
-		modal.classList.contains("unlock-modal")
-			? modal.classList.remove("unlock-modal")
-			: modal.classList.add("unlock-modal");
+	function showModal() {
+		modal.classList.add("unlock-modal");
+		modal.classList.add("show-modal");
 
-		setTimeout(
-			() =>
-				modal.classList.contains("show-modal")
-					? modal.classList.remove("show-modal")
-					: modal.classList.add("show-modal"),
-			10
-		);
+		setTimeout(() => modal.classList.add("show-modal"), 300);
 
 		// modal.classList.contains("show-modal")
 		// 	? modal.classList.remove("show-modal")
@@ -24,11 +18,13 @@ jQuery(document).ready(function($) {
 
 	function closeModal() {
 		modal.classList.remove("show-modal");
+		modal.classList.remove("unlock-modal");
+		modalMessageHolder.innerHTML = "";
 	}
 
 	function windowOnClick(event) {
 		if (event.target === modal && event.target !== closeButton) {
-			toggleModal();
+			closeModal();
 		}
 	}
 
@@ -53,6 +49,9 @@ jQuery(document).ready(function($) {
 		$.ajax({
 			url: ajaxurl + "?action=add_basic_user_data_with_ajax",
 			type: "post",
+			headers: {
+				"Content-Type": "application/x-www-form-urlencoded"
+			},
 			data: $(basicUserDataForm).serialize(),
 			beforeSend: function() {
 				// Before we send the request, remove the .hidden class from the spinner and default to inline-block.
@@ -231,7 +230,6 @@ jQuery(document).ready(function($) {
 								localization !== userCityText.innerText
 						)
 						.forEach(localization => {
-							console.log(typeof localization);
 							const userLocalizationsColumn = document.querySelector(
 								".user_localizations__column"
 							);
@@ -351,6 +349,9 @@ jQuery(document).ready(function($) {
 
 		const submitButton = this.querySelector("input[type='submit']");
 		submitButton.classList.remove("reveal-button");
+		const originalImage = document.querySelector(
+			".profile-picture__wrapper .post-thumbnail img"
+		);
 		const uploadPicturePreview = this.querySelector(".input-preview__wrapper");
 
 		const thisAjaxLoader = this.closest(".ajax-content-wrapper").querySelector(
@@ -359,12 +360,12 @@ jQuery(document).ready(function($) {
 
 		console.log(this);
 
-		var formData = new FormData(this);
+		var profilePictureformData = new FormData(this);
 
 		$.ajax({
 			url: ajaxurl + "?action=handle_profile_picture_upload",
 			type: "POST",
-			data: formData,
+			data: profilePictureformData,
 			async: true,
 			cache: false,
 			contentType: false,
@@ -403,13 +404,111 @@ jQuery(document).ready(function($) {
 
 				console.log(errorMessageNode);
 
-				modalContent.appendChild(errorMessageNode[0]);
+				modalMessageHolder.appendChild(errorMessageNode[0]);
 
-				toggleModal();
+				showModal();
+
+				originalImage.style.opacity = "1";
+				uploadPicturePreview.classList.remove("has-image");
 
 				// jsonValue = jQuery.parseJSON( jqXHR.responseText );
 				// console.log(jsonValue.Message);
 			}
 		});
+	});
+
+	/* 	Upload image to gallery Form */
+
+	var uploadImageToGalleryForm = ajax_forms_params.upload_image_to_gallery_form;
+
+	$(uploadImageToGalleryForm).submit(function(event) {
+		event.preventDefault();
+
+		const submitButton = this.querySelector("input[type='submit']");
+		submitButton.classList.remove("reveal-button");
+		const uploadPicturePreview = this.querySelector(".input-preview__wrapper");
+
+		const thisAjaxLoader = this.closest(".ajax-content-wrapper").querySelector(
+			".my-ajax-loader"
+		);
+
+		// console.log(this);
+
+		var galleryFormData = new FormData(this);
+
+		$.ajax({
+			url: ajaxurl + "?action=handle_image_to_gallery_upload",
+			type: "POST",
+			data: galleryFormData,
+			async: true,
+			cache: false,
+			contentType: false,
+			enctype: "multipart/form-data",
+			processData: false,
+
+			beforeSend: function() {
+				// Before we send the request, remove the .hidden class from the spinner and default to inline-block.
+				thisAjaxLoader.classList.add("my-ajax-loader--active");
+			},
+
+			complete: function() {
+				thisAjaxLoader.classList.remove("my-ajax-loader--active");
+				// uploadPicturePreview.classList.remove("has-image");
+			},
+
+			success: function(data) {
+				console.log("SUCCESS!");
+				console.log(data);
+
+				// const dataJSON = JSON.parse(data);
+
+				$("#newImageInGalleryPlaceholder")
+					.clone()
+					.css("transform", "scale(0)")
+					.css("transition", "all 0.3s ease-in")
+					.appendTo(".my-pictures__gallery")
+					.attr("id", "newlyAddedImage");
+
+				setTimeout(function() {
+					$("#newlyAddedImage .remove-item").attr("data-id", data);
+
+					$("#newlyAddedImage")
+						.css("transform", "scale(1)")
+						.attr("id", "");
+				}, 100);
+
+				$("#newImageInGalleryPlaceholder").css("display", "none");
+
+				return data;
+			},
+			error: function(jqXHR, textStatus, errorThrown) {
+				console.log(jqXHR);
+				console.log(textStatus);
+				console.log(errorThrown);
+
+				let errorMessage = jqXHR.responseText;
+
+				console.log(errorMessage);
+
+				let errorMessageNode = $.parseHTML(errorMessage);
+
+				console.log(errorMessageNode);
+
+				modalMessageHolder.appendChild(errorMessageNode[0]);
+
+				showModal();
+
+				// jsonValue = jQuery.parseJSON( jqXHR.responseText );
+				// console.log(jsonValue.Message);
+			}
+		});
+	});
+
+	$("#image-to-gallery__input").change(function(event) {
+		$("#newImageInGalleryPlaceholder").fadeIn(300);
+
+		$("#newImageInGalleryPlaceholder img")
+			.fadeIn(300)
+			.attr("src", URL.createObjectURL(event.target.files[0]));
 	});
 });
