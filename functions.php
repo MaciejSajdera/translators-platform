@@ -574,109 +574,6 @@ function basic_user_data_form() {
 	return ob_get_clean();
 }
 
-// Save Basic user data form information
-// function add_basic_user_data() {
-
-// 	$current_user = wp_get_current_user();
-	
-// 	$current_user_nickname = $current_user->user_login;
-
-//     if ( isset( $_POST['add_basic_user_data_nonce'] ) && wp_verify_nonce($_POST['add_basic_user_data_nonce'], 'add_basic_user_data')) {
-
-// 		$user_id = get_current_user_id();
-
-// 		//Get ID of the current user post
-// 		$user_post_title = $current_user_nickname; 
-
-// 		if ( $post = get_page_by_path( $user_post_title, OBJECT, 'translator' ) )
-// 			$user_post_id = $post->ID;
-// 		else
-// 			$user_post_id = 0;
-
-// 		// Save/Update values to user meta data or user post
-
-// 		if (isset( $_POST["user_first_name"] )) {
-// 			$user_first_name		= $_POST["user_first_name"];	
-
-// 			//Update User meta data
-// 			update_user_meta( $user_id, 'first_name', $user_first_name);
-// 			//Update ACF field for user post
-// 			update_field( "translator_first_name", $user_first_name, $user_post_id );
-// 		}
-
-// 		if (isset( $_POST["user_last_name"] )) {
-// 			$user_last_name		= $_POST["user_last_name"];	
-			
-// 			//Update User meta data
-// 			update_user_meta( $user_id, 'last_name', $user_last_name);
-// 			//Update ACF field for user post
-// 			update_field( "translator_last_name", $user_last_name, $user_post_id );
-// 		}
-
-
-// 		if (isset( $_POST["user_bio"] )) {
-// 			$user_bio		= $_POST["user_bio"];
-// 			update_user_meta( $user_id, 'description', $user_bio);
-// 			//Update ACF field for user post
-// 			update_field( "translator_bio", $user_bio, $user_post_id );
-// 		}
-
-// 		if ( isset( $_POST["user_languages"] )) {
-// 			$user_languages_array		= $_POST["user_languages"];
-// 			// update_user_meta( $user_id, '_user_languages', $user_languages_array);
-
-// 			//clears previous values
-// 			wp_set_post_terms( $user_post_id, null, 'translator_language' );
-
-// 			//sets updated values
-// 			wp_set_post_terms( $user_post_id, $user_languages_array, 'translator_language' );
-
-// 		}
-
-// 		// if all user_languages checkboxes are marked as false and the form is submitted
-
-// 		if ( !isset( $_POST["user_languages"] ) && isset( $_POST["user_first_name"] ) ) {
-			
-// 			$user_languages_array = 0;
-// 			// update_user_meta( $user_id, '_user_languages', $user_languages_array);
-
-// 			//clears previous values
-// 			wp_set_post_terms( $user_post_id, null, 'translator_language' );
-
-// 			//sets updated values
-// 			wp_set_post_terms( $user_post_id, $user_languages_array, 'translator_language' );
-
-// 		}
-
-// 		if ( isset( $_POST["user_specializations"] )) {
-// 			$user_specializations_array		= $_POST["user_specializations"];
-
-// 			//clears previous values
-// 			wp_set_post_terms( $user_post_id, null, 'translator_specialization' );
-
-// 			//sets updated values
-// 			wp_set_post_terms( $user_post_id, $user_specializations_array, 'translator_specialization' );
-
-// 		}
-
-// 		// if all user__specialization checkboxes are marked as false and the form is submitted
-
-// 		if ( !isset( $_POST["user_specializations"] ) && isset( $_POST["user_first_name"] ) ) {
-	
-// 			$user_languages_array = 0;
-// 			// update_user_meta( $user_id, '_user_languages', $user_languages_array);
-
-// 			//clears previous values
-// 			wp_set_post_terms( $user_post_id, null, 'translator_specialization' );
-
-// 			//sets updated values
-// 			wp_set_post_terms( $user_post_id, $user_languages_array, 'translator_specialization' );
-
-// 		}
-
-//   	}
-// }
-// add_action('init', 'add_basic_user_data');
 
 
 // used for tracking error messages
@@ -1588,10 +1485,13 @@ function gallery_image_uploader($user_post_id) {
 
 				</label>
 
-
-
 				<input type="submit" name="submit_image_to_gallery" value="Zaktualizuj galerię" />
 				<?php wp_nonce_field( "handle_image_to_gallery_upload", "image_to_gallery_nonce" ); ?>
+
+				<div class="progress">
+					<div class="progress-bar"></div>
+					<div class="progress-percents"></div>
+				</div>
 	</form>
 
 	<?php
@@ -1745,10 +1645,13 @@ function gallery_video_uploader($user_post_id) {
 
 				</label>
 
-
-
 				<input type="submit" name="submit_video_to_gallery" value="Zaktualizuj galerię" />
 				<?php wp_nonce_field( "handle_video_to_gallery_upload", "video_to_gallery_nonce" ); ?>
+
+				<div class="progress">
+					<div class="progress-bar"></div>
+					<div class="progress-percents"></div>
+				</div>
 	</form>
 
 	<?php
@@ -1815,23 +1718,45 @@ function handle_video_to_gallery_upload() {
 		}
 	}
 
-	// $attachment_ids = array();
 
 	$post_id = $_POST['post_id'];
 
+	$videos_gallery_array = get_field("translator_video_gallery", $post_id);
 
+	//if there are some files to delete
 
 	if ($_POST["videos_to_delete"]) {
 
 		$videos_to_delete_array = explode(',', $_POST["videos_to_delete"]);
 
+		var_dump($videos_to_delete_array);
+
 		foreach ($videos_to_delete_array as $video_to_delete) :
-	
-			delete_row('translator_video_gallery', $video_to_delete, $post_id);
-	
+
+			$deleted_row_index = $video_to_delete;
+
+			delete_row('translator_video_gallery', $deleted_row_index, $post_id);
+
+			print_r("deleted_row_index: ".$deleted_row_index);
+
+			// update_row('translator_video_gallery', $deleted_row_index, false);
+
+			// -1 because acf rows count starts at 1 and array from 0
+			// var_dump($videos_gallery_array[$deleted_row_index - 1]["translator_single_video"]);
+
+			$url = $videos_gallery_array[$deleted_row_index - 1]["translator_single_video"];
+			$deleted_file_id = attachment_url_to_postid($url);
+			$path = parse_url($url, PHP_URL_PATH);
+			$fullPath = get_home_path() . $path;
+
+			// wp_delete_file($fullPath);
+			// unlink($fullPath);
+			wp_delete_attachment($deleted_file_id);
+
 		endforeach;
 	
 	}
+
 
 
 	//if file has been attached
@@ -1844,10 +1769,10 @@ function handle_video_to_gallery_upload() {
 
 		if ( $movefile )
 		{
-			  $image_url = $movefile["url"];
+			  $video_url = $movefile["url"];
 			  $upload_dir = wp_upload_dir();
-			  $image_data = file_get_contents($image_url);
-			  $filename = basename($image_url);
+			  $image_data = file_get_contents($video_url);
+			  $filename = basename($video_url);
 			  if(wp_mkdir_p($upload_dir['path']))
 				  $file = $upload_dir['path'] . '/' . $filename;
 			  else
@@ -1866,13 +1791,10 @@ function handle_video_to_gallery_upload() {
 			  $listing_post_id = $post_id ; //your post id to which you want to attach the video
 			  $attach_id = wp_insert_attachment( $attachment, $file, $listing_post_id);
 
-			//   $attach_data = wp_generate_attachment_metadata( $attach_id, $file );
-			//   wp_update_attachment_metadata( $attach_id, $attach_data );
+				//   $attach_data = wp_generate_attachment_metadata( $attach_id, $file );
+				//   wp_update_attachment_metadata( $attach_id, $attach_data );
 
-			//   print_r($attach_id);
-
-
-
+				//   print_r($attach_id);
 
 				$row = array(
 					'translator_single_video' => $attach_id,
@@ -1880,44 +1802,17 @@ function handle_video_to_gallery_upload() {
 
 				add_row('translator_video_gallery', $row, $post_id);
 
+				var_dump($videos_gallery_array);
 
-				$videos_gallery_array = get_field("translator_video_gallery", $post_id);
-
-
-				print_r(count($videos_gallery_array));
+				var_dump(count($videos_gallery_array));
 
 			  /*end file uploader*/
-
-
-
-			}
-
-
-		// $attachment_id = media_handle_upload( 'video-to-gallery__input', $post_id );
-
-		// if ( is_wp_error( $attachment_id ) ) {
-		// 	// There was an error uploading the image.
-		// 	wp_die( $attachment_id->get_error_message() );
-		// }
-
-		// array_push($videos_to_upload, $attachment_id);
-
-		// print_r($attachment_id);
+		}
 
 	}
 
-		// $row = array(
-		// 	'translator_single_video' => $attachment_id,
-		// );
-
-		// add_row('translator_video_gallery', $row);
-
-		// update_field('translator_gallery', $videos_to_upload, $post_id);
-
-
-
-
 	die();
+
 }
 
 /**
@@ -1927,6 +1822,12 @@ function handle_video_to_gallery_upload() {
 
 add_action( 'wp_ajax_nopriv_handle_video_to_gallery_upload',  'handle_video_to_gallery_upload' );
 add_action( 'wp_ajax_handle_video_to_gallery_upload','handle_video_to_gallery_upload' );
+
+
+
+
+
+
 
 
 

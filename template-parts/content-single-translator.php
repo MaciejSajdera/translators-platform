@@ -203,12 +203,14 @@
 
 									foreach($single_translator_videos_repeater as $repeater_field) :
 
-										array_push($single_translator_videos_gallery, $repeater_field["translator_single_video"]);
+										if ($repeater_field["translator_single_video"]) {
+											array_push($single_translator_videos_gallery, $repeater_field["translator_single_video"]);
+										}
 
 									endforeach;
 
 										//operations below are for determing which array is longer and for adding empty-link value(s) as placeholders
-										//otherwise arra_combine wouldn't be possible, array lengths need to be equal
+										//otherwise array_combine wouldn't be possible, arrays lengths need to be equal to do that
 
 										$count_pictures = count($single_translator_pictures_gallery);
 
@@ -235,7 +237,7 @@
 											$shorter_array = $single_translator_pictures_gallery;
 
 										} else {
-											//doesnt matter if they are equal length
+											//doesnt matter which is which, if they are equal length
 
 											//count
 											$longer_array_count = $count_videos;
@@ -248,54 +250,68 @@
 
 										$length_difference = $longer_array_count - $shorter_array_count;
 
+										//add placeholder 'empty-link' value(s) to shorter array as many times as needed to make its length equal to the longer one
+
 										if ($length_difference !== 0) {
 											for ($j = 0; $j < $length_difference; $j++) {
 												array_push($shorter_array, "empty-link");
 											}
 										}
 
+										//now we can combine these 2 arrays
+
 										$multimedia_array = array_combine($longer_array, $shorter_array);
 
-										foreach($multimedia_array as $longer_array_element => $shorter_array_element) :
+										if (count($multimedia_array) > 0) {
 
-											$longer_array_element_info = pathinfo($longer_array_element);
-											$longer_array_element_extension = $longer_array_element_info['extension'];
+											foreach($multimedia_array as $longer_array_element => $shorter_array_element) :
 
-											$pictures_proper_formats = array('png','jpg','jpeg');
-											$videos_proper_formats = array('mp4','mov','wmv','mpg');
+												//file extension check 
 
+												if ($longer_array_element && $shorter_array_element) {
 
-											if (in_array($longer_array_element_extension, $pictures_proper_formats) ) {
-												$picture_element = $longer_array_element;
-												$video_element = $shorter_array_element;
-											}
-
-											if (in_array($longer_array_element_extension, $videos_proper_formats) ) {
-												$video_element = $longer_array_element;
-												$picture_element = $shorter_array_element;
-											}
-
-											// $picture_id = attachment_url_to_postid($picture);
-
-											// $picture_alt = get_post_meta( $picture_id, '_wp_attachment_image_alt', true);
-
-											echo '<div class="swiper-slide">';
-
-												if (!($picture_element == "empty-link")) {
-													echo '<img src="'.$picture_element.'">';
-												}
-
-												if (!($video_element == "empty-link")) {
-													echo '<div class="video-container">';
-														echo '<video controls src="'.$video_element.'">';
+													$longer_array_element_info = pathinfo($longer_array_element);
+													$longer_array_element_extension = $longer_array_element_info['extension'];
+		
+													$pictures_proper_formats = array('png','jpg','jpeg');
+													$videos_proper_formats = array('mp4','mov','wmv','mpg');
+		
+													//to recognize which one is which
+		
+													if (in_array($longer_array_element_extension, $pictures_proper_formats) ) {
+														$picture_element = $longer_array_element;
+														$video_element = $shorter_array_element;
+													}
+		
+													if (in_array($longer_array_element_extension, $videos_proper_formats) ) {
+														$video_element = $longer_array_element;
+														$picture_element = $shorter_array_element;
+													}
+		
+													//finally we can echo elements in swiper slide
+		
+													echo '<div class="swiper-slide">';
+		
+														if (!($picture_element == "empty-link")) {
+															echo '<img src="'.$picture_element.'">';
+														}
+		
+														if (!($video_element == "empty-link")) {
+															echo '<div class="video-container">';
+																echo '<video controls src="'.$video_element.'">';
+															echo '</div>';
+														}
+														
 													echo '</div>';
+													
 												}
-												
-											echo '</div>';
+	
 
-											// echo '<br>';
+	
+											endforeach;
+										}
 
-										endforeach;
+
 
 								?>
 

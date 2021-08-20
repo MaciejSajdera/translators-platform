@@ -57,11 +57,12 @@ document.addEventListener("DOMContentLoaded", () => {
 			initialSlide: 0,
 			speed: 1000,
 			autoplay: {
-				delay: 3000
+				delay: 2000
 			},
-			grabCursor: true,
-			observer: true,
-			observeParents: true,
+			grabCursor: false,
+			allowTouchMove: false,
+			// observer: true,
+			// observeParents: true,
 			// breakpoints: {
 			// 	992: {
 			// 		slidesPerView: 1.5,

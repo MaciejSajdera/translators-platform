@@ -98,6 +98,7 @@ get_header();
 								echo '<div class="my-ajax-loader">';
 
 									echo '<div class="my-ajax-loader__spinner"></div>';
+									
 						
 								echo '</div>';
 
@@ -631,7 +632,11 @@ get_header();
 												
 												echo '<div class="my-videos__gallery">';
 
+												// var_dump($videos_to_gallery_array);
+
 												if ($videos_to_gallery_array) {
+
+													//start at 1 because acf repeater rows indexes start with 1
 
 													$i = 1;
 
@@ -660,9 +665,9 @@ get_header();
 																	echo '<p>'.$video_name.'</p>';
 
 																echo '</div>';
-
-																$i++;
 															} 
+
+															$i++;
 
 													endforeach;
 
@@ -714,51 +719,52 @@ get_header();
 								echo '<div class="account__header">';
 								
 								echo '<p>Edycja ustawień</p>';
-								
-								echo '</div>';
-
-								echo '<div class="content-box info-box">';
-
-									echo '<div><p class="info-box__header">Adres e-mail</p></div>';
-									echo '<div><p class="info-box__subheader">Adres ten wyświetla się na profilu i służy do logowania do konta PSTK</p></div>';
 
 								echo '</div>';
 
-								echo '<div class="content-box info-box">';
+								echo '<form name="settings_user_data_form" id="settings_user_data_form" class="vicode_form" action="" method="POST">';
 
-									echo '<div><p class="info-box__header">Widoczność profilu</p></div>';
+									echo '<div class="content-box info-box">';
 
-									echo '<div class="info-box__subbox">';
-
-											echo '<ul class="options">';
-
-												echo '<li>';
-
-													echo '<form name="settings_user_data_form" id="settings_user_data_form" class="vicode_form" action="" method="POST">';
-
-													echo '<div class="options__position">Mój profil tłumacza</div>';
-													
-													echo '<div class="options__switch">';
-
-													?>
-													<label for="switch">
-														<input name="user_options_visibility" type="checkbox" class="switch"/>
-													</label>
-													
-
-													<?php
-													
-													echo '</div>';
-
-													echo '</form>';
-
-												echo '</li>';
-
-											echo '</ul>';
+										echo '<div><p class="info-box__header">Adres e-mail</p></div>';
+										echo '<div><p class="info-box__subheader">Adres ten wyświetla się na profilu i służy do logowania do konta PSTK</p></div>';
 
 									echo '</div>';
 
-								echo '</div>';
+									echo '<div class="content-box info-box">';
+
+										echo '<div><p class="info-box__header">Widoczność profilu</p></div>';
+
+										echo '<div class="info-box__subbox">';
+
+												echo '<ul class="options">';
+
+													echo '<li>';
+
+														echo '<div class="options__position">Mój profil tłumacza</div>';
+														
+														echo '<div class="options__switch">';
+
+														?>
+														<label for="switch">
+															<input name="user_options_visibility" type="checkbox" class="switch"/>
+														</label>
+														
+
+														<?php
+														
+														echo '</div>';
+
+
+													echo '</li>';
+
+												echo '</ul>';
+
+										echo '</div>';
+
+									echo '</div>';
+
+								echo '</form>';
 
 							echo '</div>';
 

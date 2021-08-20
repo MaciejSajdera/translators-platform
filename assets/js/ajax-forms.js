@@ -434,13 +434,32 @@ jQuery(document).ready(function($) {
 
 		const imageToGalleryInput = this.querySelector("#image-to-gallery__input");
 
-		// console.log(this);
-
 		var galleryFormData = new FormData(this);
 
+		const progress = this.querySelector(".progress");
+		const progressBar = progress.querySelector(".progress-bar");
+		const progressPercents = progress.querySelector(".progress-percents");
+
 		$.ajax({
-			url: ajaxurl + "?action=handle_image_to_gallery_upload",
+			xhr: function() {
+				const xhr = new window.XMLHttpRequest();
+				xhr.upload.addEventListener(
+					"progress",
+					function(e) {
+						if (e.lengthComputable) {
+							const percentComplete = (e.loaded / e.total) * 100;
+							console.log(percentComplete);
+							progress.classList.add("progress-show");
+							progressBar.style.width = percentComplete + "%";
+							progressPercents.innerText = Math.round(percentComplete) + "%";
+						}
+					},
+					false
+				);
+				return xhr;
+			},
 			type: "POST",
+			url: ajaxurl + "?action=handle_image_to_gallery_upload",
 			data: galleryFormData,
 			async: true,
 			cache: false,
@@ -455,6 +474,7 @@ jQuery(document).ready(function($) {
 
 			complete: function() {
 				thisAjaxLoader.classList.remove("my-ajax-loader--active");
+				progress.classList.remove("progress-show");
 				// uploadPicturePreview.classList.remove("has-image");
 			},
 
@@ -540,7 +560,28 @@ jQuery(document).ready(function($) {
 
 		var videoGalleryFormData = new FormData(this);
 
+		const progress = this.querySelector(".progress");
+		const progressBar = progress.querySelector(".progress-bar");
+		const progressPercents = progress.querySelector(".progress-percents");
+
 		$.ajax({
+			xhr: function() {
+				const xhr = new window.XMLHttpRequest();
+				xhr.upload.addEventListener(
+					"progress",
+					function(e) {
+						if (e.lengthComputable) {
+							const percentComplete = (e.loaded / e.total) * 100;
+							console.log(percentComplete);
+							progress.classList.add("progress-show");
+							progressBar.style.width = percentComplete + "%";
+							progressPercents.innerText = Math.round(percentComplete) + "%";
+						}
+					},
+					false
+				);
+				return xhr;
+			},
 			url: ajaxurl + "?action=handle_video_to_gallery_upload",
 			type: "POST",
 			data: videoGalleryFormData,
@@ -557,6 +598,7 @@ jQuery(document).ready(function($) {
 
 			complete: function() {
 				thisAjaxLoader.classList.remove("my-ajax-loader--active");
+				progress.classList.remove("progress-show");
 				// uploadPicturePreview.classList.remove("has-image");
 			},
 

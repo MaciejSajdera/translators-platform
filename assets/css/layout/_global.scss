@@ -337,3 +337,31 @@ body.blog {
 		}
 	}
 }
+
+.progress {
+	margin-top: 1rem;
+	position: absolute;
+	left: 50%;
+	transform: translate(-50%, -50%);
+	width: 100px;
+	z-index: 99999;
+	opacity: 0;
+	transition: all 0.3s ease-in-out;
+
+	&-show {
+		opacity: 1;
+	}
+
+	&-bar {
+		height: 5px;
+		background: $color_special-elements;
+		border-radius: 5px;
+		transition: all 0.1s linear;
+		width: 0%;
+	}
+
+	&-percents {
+		width: 100%;
+		text-align: center;
+	}
+}
