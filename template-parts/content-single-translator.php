@@ -188,7 +188,128 @@
 				</h2>
 
 				<div class="wrapper-flex">
-						
+						<!-- Slider main container -->
+							<div class="swiper-container swiper-container--single-translator-multimedia-gallery">
+							<!-- Additional required wrapper -->
+							<div class="swiper-wrapper">
+								<!-- Slides -->
+								
+								<?php
+									$single_translator_pictures_gallery = get_field("translator_gallery");
+
+									$single_translator_videos_repeater = get_field("translator_video_gallery");
+
+									$single_translator_videos_gallery = [];
+
+									foreach($single_translator_videos_repeater as $repeater_field) :
+
+										array_push($single_translator_videos_gallery, $repeater_field["translator_single_video"]);
+
+									endforeach;
+
+										//operations below are for determing which array is longer and for adding empty-link value(s) as placeholders
+										//otherwise arra_combine wouldn't be possible, array lengths need to be equal
+
+										$count_pictures = count($single_translator_pictures_gallery);
+
+										$count_videos = count($single_translator_videos_gallery);
+
+										if($count_pictures > $count_videos) {
+
+											//count
+											$longer_array_count = $count_pictures;
+											$shorter_array_count = $count_videos;
+
+											//arrays
+											$longer_array = $single_translator_pictures_gallery;
+											$shorter_array = $single_translator_videos_gallery;
+
+										} elseif($count_pictures < $count_videos) {
+
+											//count
+											$longer_array_count = $count_videos;
+											$shorter_array_count = $count_pictures;
+
+											//arrays
+											$longer_array = $single_translator_videos_gallery;
+											$shorter_array = $single_translator_pictures_gallery;
+
+										} else {
+											//doesnt matter if they are equal length
+
+											//count
+											$longer_array_count = $count_videos;
+											$shorter_array_count = $count_pictures;
+
+											//arrays
+											$longer_array = $single_translator_videos_gallery;
+											$shorter_array = $single_translator_pictures_gallery;
+										}
+
+										$length_difference = $longer_array_count - $shorter_array_count;
+
+										if ($length_difference !== 0) {
+											for ($j = 0; $j < $length_difference; $j++) {
+												array_push($shorter_array, "empty-link");
+											}
+										}
+
+										$multimedia_array = array_combine($longer_array, $shorter_array);
+
+										foreach($multimedia_array as $longer_array_element => $shorter_array_element) :
+
+											$longer_array_element_info = pathinfo($longer_array_element);
+											$longer_array_element_extension = $longer_array_element_info['extension'];
+
+											$pictures_proper_formats = array('png','jpg','jpeg');
+											$videos_proper_formats = array('mp4','mov','wmv','mpg');
+
+
+											if (in_array($longer_array_element_extension, $pictures_proper_formats) ) {
+												$picture_element = $longer_array_element;
+												$video_element = $shorter_array_element;
+											}
+
+											if (in_array($longer_array_element_extension, $videos_proper_formats) ) {
+												$video_element = $longer_array_element;
+												$picture_element = $shorter_array_element;
+											}
+
+											// $picture_id = attachment_url_to_postid($picture);
+
+											// $picture_alt = get_post_meta( $picture_id, '_wp_attachment_image_alt', true);
+
+											echo '<div class="swiper-slide">';
+
+												if (!($picture_element == "empty-link")) {
+													echo '<img src="'.$picture_element.'">';
+												}
+
+												if (!($video_element == "empty-link")) {
+													echo '<div class="video-container">';
+														echo '<video controls src="'.$video_element.'">';
+													echo '</div>';
+												}
+												
+											echo '</div>';
+
+											// echo '<br>';
+
+										endforeach;
+
+								?>
+
+							</div>
+							<!-- If we need pagination -->
+							<div class="swiper-pagination"></div>
+
+							<!-- If we need navigation buttons -->
+							<div class="swiper-button-prev"></div>
+							<div class="swiper-button-next"></div>
+
+							<!-- If we need scrollbar -->
+							<!-- <div class="swiper-scrollbar"></div> -->
+							</div>
 				</div>
 		</div>
 

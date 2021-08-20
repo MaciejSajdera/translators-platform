@@ -1514,7 +1514,6 @@ function handle_profile_picture_upload() {
         array(
             'jpg' => 'image/jpeg',
             'png' => 'image/png',
-            'gif' => 'image/gif',
         ),
         true
     )) {
@@ -1655,7 +1654,6 @@ function handle_image_to_gallery_upload() {
 			array(
 				'jpg' => 'image/jpeg',
 				'png' => 'image/png',
-				'gif' => 'image/gif',
 			),
 			true
 		)) {

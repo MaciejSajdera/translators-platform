@@ -16,30 +16,63 @@ document.addEventListener("DOMContentLoaded", () => {
 	// configure Swiper to use modules
 	Swiper.use([Navigation, Pagination, EffectFade]);
 
-	var testimonials = new Swiper(".swiper-container--translator-publications", {
-		direction: "horizontal",
-		loop: false,
-		// centeredSlides: true,
-		spaceBetween: 50,
-		slidesPerView: 2,
-		initialSlide: 0,
-		speed: 1000,
-		autoplay: {
-			delay: 3000
-		},
-		grabCursor: true,
-		observer: true,
-		observeParents: true,
-		// breakpoints: {
-		// 	992: {
-		// 		slidesPerView: 1.5,
-		// 		centeredSlides: true
-		// 	}
-		// },
+	var publicationsSwiper = new Swiper(
+		".swiper-container--translator-publications",
+		{
+			direction: "horizontal",
+			loop: false,
+			// centeredSlides: true,
+			spaceBetween: 50,
+			slidesPerView: 2,
+			initialSlide: 0,
+			speed: 1000,
+			autoplay: {
+				delay: 3000
+			},
+			grabCursor: true,
+			observer: true,
+			observeParents: true,
+			// breakpoints: {
+			// 	992: {
+			// 		slidesPerView: 1.5,
+			// 		centeredSlides: true
+			// 	}
+			// },
 
-		navigation: {
-			nextEl: ".swiper-button-next",
-			prevEl: ".swiper-button-prev"
+			navigation: {
+				nextEl: ".swiper-button-next",
+				prevEl: ".swiper-button-prev"
+			}
 		}
-	});
+	);
+
+	var multimediaGallerySwiper = new Swiper(
+		".swiper-container--single-translator-multimedia-gallery",
+		{
+			direction: "horizontal",
+			loop: false,
+			// centeredSlides: true,
+			spaceBetween: 50,
+			slidesPerView: 1,
+			initialSlide: 0,
+			speed: 1000,
+			autoplay: {
+				delay: 3000
+			},
+			grabCursor: true,
+			observer: true,
+			observeParents: true,
+			// breakpoints: {
+			// 	992: {
+			// 		slidesPerView: 1.5,
+			// 		centeredSlides: true
+			// 	}
+			// },
+
+			navigation: {
+				nextEl: ".swiper-button-next",
+				prevEl: ".swiper-button-prev"
+			}
+		}
+	);
 });
