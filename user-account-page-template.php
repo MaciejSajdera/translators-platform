@@ -829,9 +829,19 @@ get_header();
 
 									<div><p class="info-box__header">Widoczność profilu</p></div>
 
-									<div class="info-box__subbox">
+									<div class="info-box__subbox account__box-container info-box__single-setting ajax-content-wrapper">
 
-										<?php echo settings_user_data_visibility(); ?>
+										<div class="my-ajax-loader">
+
+											<div class="my-ajax-loader__spinner"></div>
+
+										</div>
+
+										<?php
+										
+										echo settings_user_data_visibility_form();
+										
+										?>
 
 									</div>
 

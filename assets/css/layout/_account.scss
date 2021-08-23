@@ -107,6 +107,16 @@
 			}
 		}
 	}
+
+	&__settings {
+		.info-box {
+			margin-bottom: 3rem;
+		}
+
+		.account__box-container {
+			border: none;
+		}
+	}
 }
 
 .info-box {
@@ -433,6 +443,7 @@
 		display: flex;
 		justify-content: space-between;
 		align-items: center;
+		padding: 1rem 0;
 	}
 
 	&__switch {
@@ -447,7 +458,7 @@
 			text-indent: -9999px;
 			width: 40px;
 			height: 20px;
-			background: grey;
+			background: $color__inactive-element;
 			display: block;
 			border-radius: 20px;
 			position: relative;
@@ -467,7 +478,7 @@
 
 		&--on {
 			label {
-				background: #bada55;
+				background: $color_special-elements;
 			}
 
 			label:after {

@@ -1,23 +1,23 @@
 <?php
 
-function add_work_user_data_with_ajax() {
+function change_settings_user_data_visibility_with_ajax() {
 
-if ( ! isset( $_POST["user_work"] ) ) {
-	return;
-}
+// if ( ! isset( $_POST["user_work"] ) ) {
+// 	return;
+// }
 
-print_r(json_encode($_POST));
+	print_r(json_encode($_POST));
 
-$current_user = wp_get_current_user();
+	$current_user = wp_get_current_user();
 
-$current_user_nickname = $current_user->user_login;
+	$current_user_nickname = $current_user->user_login;
 
-$user_work = $_POST["user_work"];
+	$user_work = $_POST["user_work"];
 
 
-if ( ! wp_verify_nonce( $_POST["add_work_user_data_nonce"], "add_work_user_data") ) {
-	die ( 'Nonce mismatched!');
-}
+	if ( ! wp_verify_nonce( $_POST["add_work_user_data_nonce"], "add_work_user_data") ) {
+		die ( 'Nonce mismatched!');
+	}
 
 	$user_id = get_current_user_id();
 
@@ -40,9 +40,9 @@ die();
 
 	/* UPDATE VISIBILITY SETTINGS FORM */
 
-	var workUserDataForm = ajax_forms_params.work_user_data_form;
+	var userDataVisibilityForm = ajax_forms_params.settings_user_data_visibility_form;
 
-	$(workUserDataForm).submit(function(event) {
+	$(userDataVisibilityForm).submit(function(event) {
 		event.preventDefault();
 
 		const thisAjaxLoader = this.closest(".ajax-content-wrapper").querySelector(
@@ -50,9 +50,9 @@ die();
 		);
 
 		$.ajax({
-			url: ajaxurl + "?action=add_work_user_data_with_ajax",
+			url: ajaxurl + "?action=change_settings_user_data_visibility_with_ajax",
 			type: "post",
-			data: $(workUserDataForm).serialize(),
+			data: $(userDataVisibilityForm).serialize(),
 			beforeSend: function() {
 				// Before we send the request, remove the .hidden class from the spinner and default to inline-block.
 				thisAjaxLoader.classList.add("my-ajax-loader--active");

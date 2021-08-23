@@ -165,6 +165,7 @@ function pstk_scripts() {
 				'upload_video_to_gallery_form' => "#upload_video_to_gallery_form",
 				'settings_user_login_email_form' => "#settings_user_login_email_form",
 				'settings_user_password_form' => "#settings_user_password_form",
+				'settings_user_data_visibility_form' => "#settings_user_data_visibility_form",
 			)
 		);
 	
@@ -202,13 +203,6 @@ if (!current_user_can('administrator') && !is_admin()) {
 }
 
 //helper functions
-
-// function wpcf_filter_terms_order( $orderby, $query_vars, $taxonomies ) {
-//     return $query_vars['orderby'] == 'term_order' ? 'term_order' : $orderby;
-// }
-
-// add_filter( 'get_terms_orderby', 'wpcf_filter_terms_order', 10, 3 );
-
 
 function cmb_get_image_id($image_src) {
 	
@@ -344,9 +338,11 @@ function vicode_add_new_user() {
                   'first_name'		=> $user_first,
                   'last_name'			=> $user_last,
                   'user_registered'	=> date('Y-m-d H:i:s'),
-                  'role'				=> 'subscriber'
+                  'role'				=> 'subscriber',
+				  'show_admin_bar_front' => 'false',
               )
           );
+
           if($new_user_id) {
               // send an email to the admin
               wp_new_user_notification($new_user_id);
@@ -358,7 +354,7 @@ function vicode_add_new_user() {
 
 
               // send the newly created user to the home page after logging them in
-            //   wp_redirect(home_url()); exit;
+            	//   wp_redirect(home_url()); exit;
           }
           
       }
@@ -2052,7 +2048,7 @@ add_action( 'init',  'change_settings_user_password' );
 
 
 /* CHANGE USER'S DATA VISIBILITY FORM */
-function settings_user_data_visibility() {
+function settings_user_data_visibility_form() {
 
 	$current_user = wp_get_current_user();
 
@@ -2069,68 +2065,82 @@ function settings_user_data_visibility() {
 	else
 		$user_post_id = 0;
 
-		// var_dump($current_user_languages_array_terms);
+	$user_post_status = get_post_status($user_post_id);
+
+	$translator_contact_phone_status = get_field("translator_contact_phone_public");
+	$translator_contact_email_status = get_field("translator_contact_email_public");
+	$translator_city_public_status = get_field("translator_city_public");
+
+		// var_dump(get_field("translator_contact_email_public", $user_post_id));
 
 	ob_start(); ?>	
 
 		<?php 
 		// show any error messages after form submission
-		// settings_user_data_visibility_messages(); ?>
+		// settings_user_data_visibility_form_messages(); ?>
 		
-					<form name="settings_user_data_visibility" id="settings_user_data_visibility" class="vicode_form" action="" method="POST">
+					<form name="settings_user_data_visibility_form" id="settings_user_data_visibility_form" class="vicode_form" action="" method="POST">
 
                         <ul class="options">
 
-							<li class="info-box__single-setting">
+							<li>
 
                                 <div class="options__position">Mój profil tłumacza</div>
                                 
-                                <div class="options__switch">
+                                <div class="options__switch
+								<?php if ($user_post_status == "publish") { echo 'options__switch--on'; } ?>
+								">
 
-                                    <label for="switch">
-                                        <input name="user_settings_visibility_public_profile" type="checkbox" class="switch"/>
+                                    <label for="switch" >
+                                        <input name="user_settings_visibility_public_profile" type="checkbox" class="switch" <?php if ($user_post_status == "publish") { echo 'checked'; } ?>/>
                                     </label>
                                 
                                 </div>
 
                             </li>
 
-							<li class="info-box__single-setting">
+							<li>
 
 								<div class="options__position">Numer telefonu</div>
 
-								<div class="options__switch">
+								<div class="options__switch
+								<?php if ($translator_contact_phone_status) { echo 'options__switch--on'; } ?>
+								">
 
 									<label for="switch">
-										<input name="user_settings_visibility_contact_phone" type="checkbox" class="switch"/>
+										<input name="user_settings_visibility_contact_phone" type="checkbox" class="switch" <?php if ($translator_contact_phone_status) { echo 'checked'; } ?>/>
 									</label>
 
 								</div>
 
 							</li>
 							
-							<li class="info-box__single-setting">
+							<li>
 
 								<div class="options__position">Adres e-mail</div>
 
-								<div class="options__switch">
+								<div class="options__switch
+								<?php if ($translator_contact_email_status) { echo 'options__switch--on'; } ?>
+								">
 
 									<label for="switch">
-										<input name="user_settings_visibility_contact_email" type="checkbox" class="switch"/>
+										<input name="user_settings_visibility_contact_email" type="checkbox" class="switch" <?php if ($translator_contact_email_status) { echo 'checked'; } ?>/>
 									</label>
 
 								</div>
 
 							</li>
 
-							<li class="info-box__single-setting">
+							<li>
 
 								<div class="options__position">Miasto zamieszkania</div>
 
-								<div class="options__switch">
+								<div class="options__switch
+								<?php if ($translator_city_public_status) { echo 'options__switch--on'; } ?>
+								">
 
 									<label for="switch">
-										<input name="user_settings_visibility_city" type="checkbox" class="switch"/>
+										<input name="user_settings_visibility_city" type="checkbox" class="switch" <?php if ($translator_city_public_status) { echo 'checked'; } ?>/>
 									</label>
 
 								</div>
@@ -2140,8 +2150,8 @@ function settings_user_data_visibility() {
                         </ul>
 
 						<p>
-							<input type="submit" name="submit_settings_user_data_visibility" class="info-box__single-setting" value="<?php _e('Zaktualizuj widoczność profilu'); ?>"/>
-							<?php wp_nonce_field( 'settings_user_data_visibility', 'settings_user_data_visibility_nonce' ); ?>
+							<input type="submit" name="submit_settings_user_data_visibility_form" class="info-box__single-setting" value="<?php _e('Zaktualizuj widoczność profilu'); ?>"/>
+							<?php wp_nonce_field( 'settings_user_data_visibility_form', 'settings_user_data_visibility_form_nonce' ); ?>
 						</p>
 
 					</form>
@@ -2150,8 +2160,69 @@ function settings_user_data_visibility() {
 	return ob_get_clean();
 }
 
+function change_settings_user_data_visibility_with_ajax() {
 
-// <span class="file-input__button-text">Wybierz zdjęcie</span>
+		$user_id = get_current_user_id();
+		$current_user = wp_get_current_user();
+		$current_user_nickname = $current_user->user_login;
+		$user_post_title = $current_user_nickname; 
+
+		if ( $post = get_page_by_path( $user_post_title, OBJECT, 'translator' ) )
+			$user_post_id = $post->ID;
+		else
+			$user_post_id = 0;
+
+		if ( ! wp_verify_nonce( $_POST["settings_user_data_visibility_form_nonce"], "settings_user_data_visibility_form") ) {
+			die ( 'Nonce mismatched!');
+		}
+
+		$user_settings_visibility_public_profile = $_POST["user_settings_visibility_public_profile"];
+		$user_settings_visibility_contact_phone = $_POST["user_settings_visibility_contact_phone"];
+		$user_settings_visibility_contact_email = $_POST["user_settings_visibility_contact_email"];
+		$user_settings_visibility_city = $_POST["user_settings_visibility_city"];
+
+
+		if ($user_settings_visibility_public_profile === "on") {
+			wp_update_post(array(
+				'ID'    =>  $user_post_id,
+				'post_status'   =>  'publish',
+			));
+		} else {
+			wp_update_post(array(
+				'ID'    =>  $user_post_id,
+				'post_status'   =>  'private',
+			));
+		}
+
+		if ($user_settings_visibility_contact_phone === "on") {
+			update_field( "translator_contact_phone_public", 1, $user_post_id );
+		} else {
+			update_field( "translator_contact_phone_public", 0, $user_post_id );
+		}
+
+		if ($user_settings_visibility_contact_phone === "on") {
+			update_field( "translator_contact_email_public", 1, $user_post_id );
+		} else {
+			update_field( "translator_contact_email_public", 0, $user_post_id );
+		}
+
+		if ($user_settings_visibility_contact_phone === "on") {
+			update_field( "translator_city_public", 1, $user_post_id );
+		} else {
+			update_field( "translator_city_public", 0, $user_post_id );
+		}
+	
+
+		
+		die();
+	
+	}
+	
+add_action( 'wp_ajax_nopriv_change_settings_user_data_visibility_with_ajax',  'change_settings_user_data_visibility_with_ajax' );
+add_action( 'wp_ajax_change_settings_user_data_visibility_with_ajax','change_settings_user_data_visibility_with_ajax' );
+
+
+
 
 function redirect_login_page() {
 	$login_page  = get_permalink(18);

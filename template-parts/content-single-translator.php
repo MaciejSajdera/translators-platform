@@ -17,13 +17,23 @@
 
 			<?php pstk_post_thumbnail();
 
+			$translator_contact_phone_status = get_field("translator_contact_phone_public");
+			$translator_contact_email_status = get_field("translator_contact_email_public");
+			$translator_city_public_status = get_field("translator_city_public");
+
+			if ($translator_contact_phone_status) {
+				echo '<p>'.get_field('translator_contact_phone').'</p>';
+			}
+
+			if ($translator_contact_email_status) {
+				echo '<p>'.get_field('translator_contact_email').'</p>';
+			}
+
+			if ($translator_city_public_status) {
+				echo '<p>'.get_field('translator_city').'</p>';
+			}
 			
-			echo '<p>'.get_field('translator_contact_phone').'</p>';
-
-			echo '<p>'.get_field('translator_contact_email').'</p>';
-
-			echo '<p>'.get_field('translator_city').'</p>';
-
+		
 			echo '<p>';
 
 			$translator_localizations = wp_get_object_terms( $post->ID, 'translator_localization' );
