@@ -94,12 +94,19 @@
 		justify-content: center;
 		align-items: center;
 		background: $color__background-body;
-		color: red;
+
 		text-align: center;
 	}
 
 	&__content {
+		color: $color__error-red;
 		margin: auto;
+	}
+}
+
+.php-success {
+	&__text {
+		color: $color__success-green;
 	}
 }
 

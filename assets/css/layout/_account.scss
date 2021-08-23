@@ -115,6 +115,7 @@
 	}
 
 	&__subbox {
+		position: relative;
 		margin-bottom: 3rem;
 
 		&:last-of-type {
@@ -125,6 +126,11 @@
 	&__subbox-header {
 		font-weight: 700;
 		font-size: 18px;
+	}
+
+	&__single-setting {
+		max-width: 350px;
+		padding: 1rem 0;
 	}
 
 	&__checkbox-wrapper {
@@ -392,7 +398,7 @@
 
 			&:hover {
 				&:after {
-					color: red;
+					color: $color__error-red;
 				}
 			}
 		}
@@ -420,8 +426,13 @@
 }
 
 .options {
+	margin: 0;
+	padding: 0;
+
 	li {
 		display: flex;
+		justify-content: space-between;
+		align-items: center;
 	}
 
 	&__switch {
@@ -434,23 +445,23 @@
 		label {
 			cursor: pointer;
 			text-indent: -9999px;
-			width: 200px;
-			height: 100px;
+			width: 40px;
+			height: 20px;
 			background: grey;
 			display: block;
-			border-radius: 100px;
+			border-radius: 20px;
 			position: relative;
 		}
 
 		label:after {
 			content: "";
 			position: absolute;
-			top: 5px;
-			left: 5px;
-			width: 90px;
-			height: 90px;
+			top: 3px;
+			left: 3px;
+			width: 14px;
+			height: 14px;
 			background: #fff;
-			border-radius: 90px;
+			border-radius: 18px;
 			transition: 0.3s;
 		}
 
@@ -466,7 +477,7 @@
 		}
 
 		label:active:after {
-			width: 130px;
+			width: 26px;
 		}
 	}
 }

@@ -661,4 +661,152 @@ jQuery(document).ready(function($) {
 		$("#newVideoInGalleryPlaceholder").fadeIn(300);
 		$("#newVideoInGalleryPlaceholder p").text(event.target.files[0].name);
 	});
+
+	/* USERS SETTINGS */
+
+	/* 	User Settings Update Email Form */
+
+	var changeSettingsUserLoginEmail =
+		ajax_forms_params.settings_user_login_email_form;
+
+	$(changeSettingsUserLoginEmail).submit(function(event) {
+		event.preventDefault();
+
+		const thisAjaxLoader = this.closest(".ajax-content-wrapper").querySelector(
+			".my-ajax-loader"
+		);
+
+		var changeSettingsUserLoginEmailFormData = new FormData(this);
+
+		$.ajax({
+			url: ajaxurl + "?action=change_settings_user_login_email_with_ajax",
+			type: "POST",
+			data: changeSettingsUserLoginEmailFormData,
+			async: true,
+			cache: false,
+			contentType: false,
+			processData: false,
+
+			beforeSend: function() {
+				// Before we send the request, remove the .hidden class from the spinner and default to inline-block.
+				thisAjaxLoader.classList.add("my-ajax-loader--active");
+			},
+
+			complete: function() {
+				thisAjaxLoader.classList.remove("my-ajax-loader--active");
+			},
+
+			success: function(data) {
+				console.log("SUCCESS!");
+				console.log(data);
+
+				const dataJSON = JSON.parse(data);
+
+				const userCurrentLoginEmailText = document.querySelector(
+					"#user_current_login_email"
+				);
+
+				userCurrentLoginEmailText.innerText = `${dataJSON}`;
+
+				return data;
+			},
+			error: function(jqXHR, textStatus, errorThrown) {
+				console.log(jqXHR);
+				console.log(textStatus);
+				console.log(errorThrown);
+
+				let errorMessage = jqXHR.responseText;
+
+				console.log(errorMessage);
+
+				let errorMessageNode = $.parseHTML(errorMessage);
+
+				console.log(errorMessageNode);
+
+				modalMessageHolder.appendChild(errorMessageNode[0]);
+
+				showModal();
+
+				// jsonValue = jQuery.parseJSON( jqXHR.responseText );
+				// console.log(jsonValue.Message);
+			}
+		});
+	});
+
+	/* 	User Settings Update Password */
+
+	// var changeSettingsUserPassword =
+	// 	ajax_forms_params.settings_user_password_form;
+
+	// $(changeSettingsUserPassword).submit(function(event) {
+	// 	event.preventDefault();
+
+	// 	const thisAjaxLoader = this.closest(".ajax-content-wrapper").querySelector(
+	// 		".my-ajax-loader"
+	// 	);
+
+	// 	var changeSettingsUserPasswordFormData = new FormData(this);
+
+	// 	$.ajax({
+	// 		url: ajaxurl + "?action=change_settings_user_password_with_ajax",
+	// 		type: "POST",
+	// 		data: changeSettingsUserPasswordFormData,
+	// 		async: true,
+	// 		cache: false,
+	// 		contentType: false,
+	// 		processData: false,
+
+	// 		beforeSend: function() {
+	// 			// Before we send the request, remove the .hidden class from the spinner and default to inline-block.
+	// 			thisAjaxLoader.classList.add("my-ajax-loader--active");
+	// 		},
+
+	// 		complete: function() {
+	// 			thisAjaxLoader.classList.remove("my-ajax-loader--active");
+	// 		},
+
+	// 		success: function(data) {
+	// 			console.log("SUCCESS!");
+	// 			console.log(data);
+
+	// 			// const dataJSON = JSON.parse(data);
+
+	// 			// console.log(dataJSON);
+
+	// 			// const userCurrentLoginEmailText = document.querySelector(
+	// 			// 	"#user_current_login_email"
+	// 			// );
+
+	// 			// userCurrentLoginEmailText.innerText = `${dataJSON}`;
+
+	// 			let successMessageNode = $.parseHTML(data);
+
+	// 			modalMessageHolder.appendChild(successMessageNode[0]);
+
+	// 			showModal();
+
+	// 			return data;
+	// 		},
+	// 		error: function(jqXHR, textStatus, errorThrown) {
+	// 			console.log(jqXHR);
+	// 			console.log(textStatus);
+	// 			console.log(errorThrown);
+
+	// 			let errorMessage = jqXHR.responseText;
+
+	// 			console.log(errorMessage);
+
+	// 			let errorMessageNode = $.parseHTML(errorMessage);
+
+	// 			console.log(errorMessageNode);
+
+	// 			modalMessageHolder.appendChild(errorMessageNode[0]);
+
+	// 			showModal();
+
+	// 			// jsonValue = jQuery.parseJSON( jqXHR.responseText );
+	// 			// console.log(jsonValue.Message);
+	// 		}
+	// 	});
+	// });
 });

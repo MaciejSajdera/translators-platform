@@ -55,7 +55,7 @@ get_header();
 				$current_user = wp_get_current_user();
 				$current_user_id = get_current_user_id();
 				$current_user_nickname = $current_user->user_login;
-				
+				$current_user_login_email = $current_user->user_email;
 	
 				$user_post_title = $current_user_nickname; 
 	
@@ -123,7 +123,7 @@ get_header();
 
 						echo '<div class="account__main">';
 
-							echo '<div id="profile-section-1" class="profile-section profile-section--active account__edit-profile">';
+							echo '<div id="profile-section-1" class="profile-section profile-section--not-active account__edit-profile">';
 
 								echo '<div class="account__welcome-message account__header">';
 
@@ -342,7 +342,7 @@ get_header();
 												$translator_contact_email = get_field("translator_contact_email");
 												$placeholder_mode = '';
 											} else {
-												$translator_contact_email = 'przykladowy@mail.pl';
+												$translator_contact_email = $current_user_login_email;
 												$placeholder_mode = 'placeholder_mode';
 											}
 
@@ -714,57 +714,132 @@ get_header();
 							echo '</div>';
 							/* END OF profile-section-1 */
 
-							echo '<div id="profile-section-2" class="profile-section profile-section--not-active account__settings">';
+							echo '<div id="profile-section-2" class="profile-section profile-section--active account__settings">';
 
 								echo '<div class="account__header">';
 								
-								echo '<p>Edycja ustawień</p>';
+									echo '<p>Edycja ustawień</p>';
 
 								echo '</div>';
 
-								echo '<form name="settings_user_data_form" id="settings_user_data_form" class="vicode_form" action="" method="POST">';
 
-									echo '<div class="content-box info-box">';
+								/* UPDATE LOGIN EMAIL ADDRESS FORM */
 
-										echo '<div><p class="info-box__header">Adres e-mail</p></div>';
-										echo '<div><p class="info-box__subheader">Adres ten wyświetla się na profilu i służy do logowania do konta PSTK</p></div>';
+								?>
 
-									echo '</div>';
+								<div class="info-box">
 
-									echo '<div class="content-box info-box">';
+									<p class="info-box__header">Adres e-mail</p>
+									<p class="info-box__tip">Adres ten wyświetla się na Twoim profilu i służy do logowania do konta PSTK </p>
+				
+				
+									<div class="info-box__subbox info-box__single-setting account__box-container ajax-content-wrapper">
 
-										echo '<div><p class="info-box__header">Widoczność profilu</p></div>';
+										<div class="my-ajax-loader">
 
-										echo '<div class="info-box__subbox">';
+											<div class="my-ajax-loader__spinner"></div>
 
-												echo '<ul class="options">';
+										</div>
+				
+										<button data-profile-edit="edit-settings-login-email-address" id="button__edit-login_email" class="button button__edit-account-content"></button>
+				
+										<p id="user_current_login_email" class="content-box info-box__content">
+											<?php
+												echo $current_user_login_email;
+											?>
+										</p>
 
-													echo '<li>';
+										<div id="edit-settings-login-email-address" class="edit-box info-box">
 
-														echo '<div class="options__position">Mój profil tłumacza</div>';
-														
-														echo '<div class="options__switch">';
+											<?php echo settings_user_login_email_form(); ?>
+				
+										</div>
+				
+									</div>
+				
+								</div>
 
-														?>
-														<label for="switch">
-															<input name="user_options_visibility" type="checkbox" class="switch"/>
-														</label>
-														
+								<?php
+								
+								/* UPDATE LOGIN EMAIL ADDRESS FORM  */
 
-														<?php
-														
+								?>
+
+								<div class="info-box">
+
+									<p class="info-box__header">Hasło</p>
+									<p class="info-box__tip">Hasło służy do logowania do konta PSTK. Musi zawierać minimum 8 znaków, w tym jedną wielką literę i jeden znak specjalny.</p>
+
+
+									<div class="info-box__subbox info-box__single-setting account__box-container ajax-content-wrapper">
+
+										<div class="my-ajax-loader">
+
+											<div class="my-ajax-loader__spinner"></div>
+
+										</div>
+
+										<button data-profile-edit="edit-settings-password" id="button__edit-basic-info" class="button button__edit-account-content"></button>
+
+										<div class="content-box info-box__content">
+											<?php
+
+												// show any error messages after form submission
+
+													$errors = vicode_errors()->get_error_messages();
+
+													// var_dump($errors);
+													
+													if (isset( $_POST['submit_user_new_password']) && empty($errors)) {
+														echo '<p class="php-success__text">Hasło zostało zmienione</p>';
+													} else {
+
+														echo '<div class="php-error__content">';
+
+														foreach($errors as $error) :
+
+															echo '<p>'.$error.'</p>';
+
+														endforeach;
+
 														echo '</div>';
+													}
+
+												echo '***********';
+											?>
+										</div>
+
+										<div id="edit-settings-password" class="edit-box info-box">
+
+											<?php echo settings_user_password_form(); ?>
+
+										</div>
+
+									</div>
+
+								</div>
+
+								<?php
+								
+								/* UPDATE VISIBILITY SETTINGS  */
+
+								?>
+
+								<div class="info-box">
+
+									<div><p class="info-box__header">Widoczność profilu</p></div>
+
+									<div class="info-box__subbox">
+
+										<?php echo settings_user_data_visibility(); ?>
+
+									</div>
+
+								</div>
+
+								<?php
 
 
-													echo '</li>';
-
-												echo '</ul>';
-
-										echo '</div>';
-
-									echo '</div>';
-
-								echo '</form>';
 
 							echo '</div>';
 

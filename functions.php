@@ -163,6 +163,8 @@ function pstk_scripts() {
 				'work_user_data_form' => '#work_user_data_form',
 				'upload_image_to_gallery_form' => "#upload_image_to_gallery_form",
 				'upload_video_to_gallery_form' => "#upload_video_to_gallery_form",
+				'settings_user_login_email_form' => "#settings_user_login_email_form",
+				'settings_user_password_form' => "#settings_user_password_form",
 			)
 		);
 	
@@ -243,7 +245,7 @@ function vicode_registration_fields() {
 		
 		<?php 
 		// show any error messages after form submission
-		vicode_register_messages();
+		vicode_error_messages();
 		?>
 		
 		<form id="vicode_registration_form" class="vicode_form" action="" method="POST">
@@ -405,7 +407,7 @@ function vicode_errors(){
 }
 
 // displays error messages from form submissions
-function vicode_register_messages() {
+function vicode_error_messages() {
 	if($codes = vicode_errors()->get_error_codes()) {
 		echo '<div class="vicode_errors">';
 		    // Loop error codes and display errors
@@ -414,7 +416,9 @@ function vicode_register_messages() {
 		        echo '<span class="error"><strong>' . __('Error') . '</strong>: ' . $message . '</span><br/>';
 		    }
 		echo '</div>';
-	}	
+	} else {
+		return false;
+	}
 }
 
 // basic_user_data_form shortcode
@@ -1289,7 +1293,6 @@ function work_user_data_form_messages() {
 
 //Ajaxify work user data form https://support.advancedcustomfields.com/forums/topic/use-update_field-with-ajax/
 
-
 function add_work_user_data_with_ajax() {
 
 	if ( ! isset( $_POST["user_work"] ) ) {
@@ -1358,7 +1361,7 @@ function profile_picture_uploader($user_post_id) {
 
 				</label>
 
-				<input type="hidden" name="post_id" id="post_id" value="<?php echo $user_post_id ?>"><br>
+				<input type="hidden" name="post_id" value="<?php echo $user_post_id ?>"><br>
 				<input type="submit" name="submit_profile_picture" value="Zaktualizuj zdjęcie" />
 				<?php wp_nonce_field( "handle_profile_picture_upload", "profile_picture_nonce" ); ?>
 	</form>
@@ -1477,7 +1480,7 @@ function gallery_image_uploader($user_post_id) {
 
 				</label>
 
-				<input type="hidden" name="post_id" id="post_id" value="<?php echo $user_post_id ?>"><br>
+				<input type="hidden" name="post_id" value="<?php echo $user_post_id ?>"><br>
 
 				<label>
 
@@ -1637,7 +1640,7 @@ function gallery_video_uploader($user_post_id) {
 
 				</label>
 
-				<input type="hidden" name="post_id" id="post_id" value="<?php echo $user_post_id ?>"><br>
+				<input type="hidden" name="post_id" value="<?php echo $user_post_id ?>"><br>
 
 				<label>
 
@@ -1697,7 +1700,6 @@ function handle_video_to_gallery_upload() {
 			throw new Exception('Exception message');
 			throw new RuntimeException('Invalid file format.');
 			die();
-			;
 		}
 
 		$finfo = new finfo(FILEINFO_MIME_TYPE);
@@ -1729,7 +1731,7 @@ function handle_video_to_gallery_upload() {
 
 		$videos_to_delete_array = explode(',', $_POST["videos_to_delete"]);
 
-		var_dump($videos_to_delete_array);
+		// var_dump($videos_to_delete_array);
 
 		foreach ($videos_to_delete_array as $video_to_delete) :
 
@@ -1737,7 +1739,7 @@ function handle_video_to_gallery_upload() {
 
 			delete_row('translator_video_gallery', $deleted_row_index, $post_id);
 
-			print_r("deleted_row_index: ".$deleted_row_index);
+			// print_r("deleted_row_index: ".$deleted_row_index);
 
 			// update_row('translator_video_gallery', $deleted_row_index, false);
 
@@ -1802,9 +1804,9 @@ function handle_video_to_gallery_upload() {
 
 				add_row('translator_video_gallery', $row, $post_id);
 
-				var_dump($videos_gallery_array);
+				// var_dump($videos_gallery_array);
 
-				var_dump(count($videos_gallery_array));
+				// var_dump(count($videos_gallery_array));
 
 			  /*end file uploader*/
 		}
@@ -1836,7 +1838,317 @@ add_action( 'wp_ajax_handle_video_to_gallery_upload','handle_video_to_gallery_up
 
 
 
+/* UPDATE USER'S LOGIN EMAIL FORM */
+function settings_user_login_email_form() {
 
+	$current_user = wp_get_current_user();
+
+	$current_user_id = $current_user->id;
+
+	//Get ID of the current user post
+	$current_user_login_email = $current_user->user_email;
+
+		// var_dump($current_user_languages_array_terms);
+
+	ob_start(); ?>	
+
+		<?php 
+		// show any error messages after form submission
+		// settings_user_data_form_messages(); ?>
+		
+		<form name="settings_user_login_email_form" id="settings_user_login_email_form" class="vicode_form" action="" method="POST">
+
+			<p>
+				<input name="user_new_login_email" id="user_new_login_email" class="user_new_login_email" type="text" value="<?php echo $current_user_login_email; ?>"/>
+			</p>
+
+			<p>
+				<input type="submit" name="submit_user_new_login_email" value="<?php _e('Zaktualizuj adres email'); ?>"/>
+				<?php wp_nonce_field( 'user_new_login_email', 'user_new_login_email_nonce' ); ?>
+			</p>
+		</form>
+
+	<?php
+	return ob_get_clean();
+}
+
+
+function change_settings_user_login_email_with_ajax() {
+
+		$current_user = wp_get_current_user();
+
+		$user_current_login_email = $current_user->user_email;
+
+		if ( ! wp_verify_nonce( $_POST["user_new_login_email_nonce"], "user_new_login_email") ) {
+			die ( 'Nonce mismatched!');
+		}
+
+		$user_id = get_current_user_id();
+
+		if (isset( $_POST["user_new_login_email"])) {
+
+			$user_new_login_email = $_POST["user_new_login_email"];
+
+			// check if user is really updating the value
+			if ($user_current_login_email != $user_new_login_email) {       
+				// check if email is free to use
+					if (email_exists( $user_new_login_email )){
+
+						echo '<div class="modal-notification php-error__wrapper"><div class="php-error__content">'.sprintf( esc_html__( 'Podany adres e-mail jest już zajęty, proszę podać inny adres.', 'theme-text-domain' )).'</div></div>';
+						throw new Exception('Exception message');
+						throw new RuntimeException('Invalid file format.');
+						die();
+
+					}
+					
+					elseif (!filter_var($user_new_login_email, FILTER_VALIDATE_EMAIL, FILTER_FLAG_EMAIL_UNICODE)) {
+
+						echo '<div class="modal-notification php-error__wrapper"><div class="php-error__content">'.sprintf( esc_html__( 'Podany adres e-mail ma niepoprawny format.', 'theme-text-domain' )).'</div></div>';
+						throw new Exception('Exception message');
+						throw new RuntimeException('Invalid file format.');
+						die();
+					
+					} else {
+						$args = array(
+							'ID'         => $user_id,
+							'user_email' => esc_attr( $user_new_login_email ),
+						);            
+						wp_update_user( $args );
+
+						print_r(json_encode($user_new_login_email));
+					}   
+			} else {
+				echo '<div class="modal-notification php-error__wrapper"><div class="php-error__content">'.sprintf( esc_html__( 'Podany adres e-mail jest już przypisany do tego konta.', 'theme-text-domain' )).'</div></div>';
+				throw new Exception('Exception message');
+				throw new RuntimeException('Invalid file format.');
+				die();
+			}
+		}  
+		
+	die();
+
+}
+
+add_action( 'wp_ajax_nopriv_change_settings_user_login_email_with_ajax',  'change_settings_user_login_email_with_ajax' );
+add_action( 'wp_ajax_change_settings_user_login_email_with_ajax','change_settings_user_login_email_with_ajax' );
+
+
+
+/* UPDATE USER'S PASSWORD FORM */
+
+function settings_user_password_form() {
+
+	$current_user = wp_get_current_user();
+
+	$current_user_id = $current_user->id;
+
+	//Get ID of the current user post
+	$current_user_login_email = $current_user->user_email;
+
+		// var_dump($current_user_languages_array_terms);
+
+	ob_start(); ?>
+
+
+
+		<form name="settings_user_password_form" id="settings_user_password_form" class="vicode_form" action="" method="POST">
+
+
+				<label for="current_password">Wprowadź aktualne hasło:</label>
+				<input id="current_password" type="password" name="current_password" title="current_password" placeholder="">
+				<label for="new_password">Nowe hasło:</label>
+				<input id="new_password" type="password" name="new_password" title="new_password" placeholder="">
+				<label for="confirm_new_password">Potwierdź nowe hasło:</label>
+				<input id="confirm_new_password" type="password" name="confirm_new_password" title="confirm_new_password" placeholder="">
+
+				
+				<p>
+					<input type="submit" name="submit_user_new_password" value="<?php _e('Zmień hasło'); ?>"/>
+					<?php wp_nonce_field( 'user_new_password', 'user_new_password_nonce' ); ?>
+				</p>
+
+		</form>
+
+	<?php
+	return ob_get_clean();
+}
+
+
+function change_settings_user_password() {
+// function change_settings_user_password_with_ajax() {
+
+	if (isset( $_POST['submit_user_new_password']) && wp_verify_nonce( $_POST["user_new_password_nonce"], "user_new_password")) {
+
+		$user_id = get_current_user_id();
+	
+		if (isset( $_POST['current_password'])) {
+	
+			// print_r($_POST);
+	
+			$_POST = array_map('stripslashes_deep', $_POST);
+			$current_password = sanitize_text_field($_POST['current_password']);
+			$new_password = sanitize_text_field($_POST['new_password']);
+			$confirm_new_password = sanitize_text_field($_POST['confirm_new_password']);
+			$user_id = get_current_user_id();
+			$errors = array();
+			$current_user = get_user_by('id', $user_id);
+	
+	
+			// Check for errors
+			if (empty($current_password) && empty($new_password) && empty($confirm_new_password) ) {
+					$errors[] = 'All fields are required';
+			}
+			if ($current_user && wp_check_password($current_password, $current_user->data->user_pass, $current_user->ID)){
+			//match
+			} else {
+				$errors[] = 'Password is incorrect';
+				vicode_errors()->add('username_empty', __('Password is incorrect'));
+			}
+			if ($new_password != $confirm_new_password){
+				$errors[] = 'Password does not match';
+				vicode_errors()->add('username_empty', __('Password does not match'));
+			}
+			if (strlen($new_password) < 8) {
+				$errors[] = 'Password is too short, minimum of 8 characters';
+				vicode_errors()->add('username_empty', __('Password is too short, minimum of 8 characters'));
+			}
+	
+			if (!preg_match("/[A-Z]/", $new_password)) {
+				$errors[] = "Password should contain at least one Capital Letter";
+				vicode_errors()->add('username_empty', __('Password should contain at least one Capital Letter'));
+			}
+	
+			if (!preg_match("/\W/", $new_password)) {
+				$errors[] = "Password should contain at least one special character";
+				vicode_errors()->add('username_empty', __('Password should contain at least one special character'));
+			}
+	
+			if (preg_match("/\s/", $new_password)) {
+				$errors[] = "Password should not contain any white space";
+				vicode_errors()->add('username_empty', __('Password should not contain any white space'));
+			}
+	
+			if(empty($errors)){
+				wp_set_password( $new_password, $current_user->ID );
+	
+				wp_set_auth_cookie($current_user->ID);
+				wp_set_current_user($current_user->ID);
+				do_action('wp_login', $current_user->user_login, $current_user);
+	
+			}
+		}
+
+	} else {
+		return;
+	}
+
+}
+
+add_action( 'init',  'change_settings_user_password' );
+// add_action( 'wp_ajax_nopriv_change_settings_user_password_with_ajax',  'change_settings_user_password_with_ajax' );
+// add_action( 'wp_ajax_change_settings_user_password_with_ajax','change_settings_user_password_with_ajax' );
+
+
+
+
+/* CHANGE USER'S DATA VISIBILITY FORM */
+function settings_user_data_visibility() {
+
+	$current_user = wp_get_current_user();
+
+	$current_user_id = $current_user->id;
+
+	
+	//Get ID of the current user post
+	$current_user_login_email = $current_user->user_email;
+	$current_user_nickname = $current_user->user_login;
+	$user_post_title = $current_user_nickname; 
+
+	if ( $post = get_page_by_path( $user_post_title, OBJECT, 'translator' ) )
+		$user_post_id = $post->ID;
+	else
+		$user_post_id = 0;
+
+		// var_dump($current_user_languages_array_terms);
+
+	ob_start(); ?>	
+
+		<?php 
+		// show any error messages after form submission
+		// settings_user_data_visibility_messages(); ?>
+		
+					<form name="settings_user_data_visibility" id="settings_user_data_visibility" class="vicode_form" action="" method="POST">
+
+                        <ul class="options">
+
+							<li class="info-box__single-setting">
+
+                                <div class="options__position">Mój profil tłumacza</div>
+                                
+                                <div class="options__switch">
+
+                                    <label for="switch">
+                                        <input name="user_settings_visibility_public_profile" type="checkbox" class="switch"/>
+                                    </label>
+                                
+                                </div>
+
+                            </li>
+
+							<li class="info-box__single-setting">
+
+								<div class="options__position">Numer telefonu</div>
+
+								<div class="options__switch">
+
+									<label for="switch">
+										<input name="user_settings_visibility_contact_phone" type="checkbox" class="switch"/>
+									</label>
+
+								</div>
+
+							</li>
+							
+							<li class="info-box__single-setting">
+
+								<div class="options__position">Adres e-mail</div>
+
+								<div class="options__switch">
+
+									<label for="switch">
+										<input name="user_settings_visibility_contact_email" type="checkbox" class="switch"/>
+									</label>
+
+								</div>
+
+							</li>
+
+							<li class="info-box__single-setting">
+
+								<div class="options__position">Miasto zamieszkania</div>
+
+								<div class="options__switch">
+
+									<label for="switch">
+										<input name="user_settings_visibility_city" type="checkbox" class="switch"/>
+									</label>
+
+								</div>
+
+							</li>
+
+                        </ul>
+
+						<p>
+							<input type="submit" name="submit_settings_user_data_visibility" class="info-box__single-setting" value="<?php _e('Zaktualizuj widoczność profilu'); ?>"/>
+							<?php wp_nonce_field( 'settings_user_data_visibility', 'settings_user_data_visibility_nonce' ); ?>
+						</p>
+
+					</form>
+
+	<?php
+	return ob_get_clean();
+}
 
 
 // <span class="file-input__button-text">Wybierz zdjęcie</span>
