@@ -123,7 +123,7 @@ get_header();
 
 						echo '<div class="account__main">';
 
-							echo '<div id="profile-section-1" class="profile-section profile-section--not-active account__edit-profile">';
+							echo '<div id="profile-section-1" class="profile-section profile-section--active account__edit-profile">';
 
 								echo '<div class="account__welcome-message account__header">';
 
@@ -419,6 +419,151 @@ get_header();
 								/* END OF CONTACT INFO CONTAINER */
 
 
+								/* SOUND GALLERY CONTAINER */
+
+								echo '<div class="account__box-container">';
+
+									/* CONTENT BOX */
+
+									echo '<div class="content-box info-box">';
+
+										echo '<div><p class="info-box__header">Próbka głosu</p></div>';
+
+										echo '<div class="info-box__subbox wrapper-flex-drow-mcol">';
+
+											$sounds_to_gallery_array = get_field('translator_sound_gallery');
+
+											/////////////////////////////////
+
+
+
+
+
+
+
+
+											////////////////////////////////////
+
+											echo '<div class="my-sounds__wrapper ajax-content-wrapper">';
+
+												/* AJAX LOADER */
+
+												echo '<div class="my-ajax-loader">';
+
+													echo '<div class="my-ajax-loader__spinner"></div>';
+
+												echo '</div>';
+
+												echo '<p class="info-box__subbox-header">Wybierz tekst i dodaj nagranie</p>';
+												
+												echo '<div class="my-sounds__gallery">';
+
+												// var_dump($sounds_to_gallery_array);
+
+												if ($sounds_to_gallery_array) {
+
+													//start at 1 because acf repeater rows indexes start with 1
+
+													$i = 1;
+
+													foreach ($sounds_to_gallery_array as $sound) :
+
+														$translator_single_voice_recording_label = $sound["translator_single_voice_recording_label"];
+														$translator_single_voice_recording_text = $sound["translator_single_voice_recording_text"];
+														$sound_link = $sound['translator_single_voice_recording'];
+
+														echo '<div class="my-sounds__gallery-row-wrapper">';
+
+															echo '<div class="my-sounds__gallery-text-wrapper">';
+
+																echo '<div class="my-sounds__gallery-attachment-label">';
+
+																	echo '<div>'.$translator_single_voice_recording_label.'</div>';
+
+																echo '</div>';
+
+																echo '<div class="my-sounds__gallery-attachment-label">';
+
+																	echo '<div>'.$translator_single_voice_recording_text.'</div>';
+
+																echo '</div>';
+
+															echo '</div>';
+
+
+															if($sound_link) {
+
+																$sound_id = attachment_url_to_postid($sound_link);
+
+																echo '<div class="my-sounds__gallery-attachment">';
+
+																	echo '<a class="remove-item" href="#" data-id="'.$i.'"></a>';
+
+																	echo '<svg viewBox="0 0 384 384" xmlns="http://www.w3.org/2000/svg">
+																	<path d="m176 288c0 8.832031 7.167969 16 16 16s16-7.167969 16-16v-192c0-8.832031-7.167969-16-16-16s-16 7.167969-16 16zm0 0"/>
+																	<path d="m16 96c-8.832031 0-16 7.167969-16 16v160c0 8.832031 7.167969 16 16 16s16-7.167969 16-16v-160c0-8.832031-7.167969-16-16-16zm0 0"/>
+																	<path d="m152 256v-128c0-8.832031-7.167969-16-16-16s-16 7.167969-16 16v128c0 8.832031 7.167969 16 16 16s16-7.167969 16-16zm0 0"/>
+																	<path d="m80 240c8.832031 0 16-7.167969 16-16v-64c0-8.832031-7.167969-16-16-16s-16 7.167969-16 16v64c0 8.832031 7.167969 16 16 16zm0 0"/>
+																	<path d="m264 256v-128c0-8.832031-7.167969-16-16-16s-16 7.167969-16 16v128c0 8.832031 7.167969 16 16 16s16-7.167969 16-16zm0 0"/>
+																	<path d="m368 96c-8.832031 0-16 7.167969-16 16v160c0 8.832031 7.167969 16 16 16s16-7.167969 16-16v-160c0-8.832031-7.167969-16-16-16zm0 0"/>
+																	<path d="m304 144c-8.832031 0-16 7.167969-16 16v64c0 8.832031 7.167969 16 16 16s16-7.167969 16-16v-64c0-8.832031-7.167969-16-16-16zm0 0"/>
+																	<path d="m176 368c0 8.832031 7.167969 16 16 16s16-7.167969 16-16v-16c0-8.832031-7.167969-16-16-16s-16 7.167969-16 16zm0 0"/>
+																	<path d="m192 48c8.832031 0 16-7.167969 16-16v-16c0-8.832031-7.167969-16-16-16s-16 7.167969-16 16v16c0 8.832031 7.167969 16 16 16zm0 0"/></svg>';
+
+																	$sound_name = basename(get_attached_file( $sound_id ));
+
+																	echo '<p>'.$sound_name.'</p>';
+
+																echo '</div>';
+															} 
+
+															$i++;
+
+														echo '</div>';
+
+													endforeach;
+
+												} else {
+
+													echo '<p>Aktualnie nie masz dodanych żadnych próbek głosu.</p>';
+													
+												};
+
+												echo '</div>';
+
+												echo gallery_sound_uploader($user_post_id);
+
+												echo '<div id="newSoundInGalleryPlaceholder" class="my-sounds__gallery-attachment" style="display:none;" >';
+
+													echo '<a class="remove-item remove" data-id="clear-input" href="#"></a>';
+
+													echo '<svg viewBox="0 0 384 384" xmlns="http://www.w3.org/2000/svg">
+													<path d="m176 288c0 8.832031 7.167969 16 16 16s16-7.167969 16-16v-192c0-8.832031-7.167969-16-16-16s-16 7.167969-16 16zm0 0"/>
+													<path d="m16 96c-8.832031 0-16 7.167969-16 16v160c0 8.832031 7.167969 16 16 16s16-7.167969 16-16v-160c0-8.832031-7.167969-16-16-16zm0 0"/>
+													<path d="m152 256v-128c0-8.832031-7.167969-16-16-16s-16 7.167969-16 16v128c0 8.832031 7.167969 16 16 16s16-7.167969 16-16zm0 0"/>
+													<path d="m80 240c8.832031 0 16-7.167969 16-16v-64c0-8.832031-7.167969-16-16-16s-16 7.167969-16 16v64c0 8.832031 7.167969 16 16 16zm0 0"/>
+													<path d="m264 256v-128c0-8.832031-7.167969-16-16-16s-16 7.167969-16 16v128c0 8.832031 7.167969 16 16 16s16-7.167969 16-16zm0 0"/>
+													<path d="m368 96c-8.832031 0-16 7.167969-16 16v160c0 8.832031 7.167969 16 16 16s16-7.167969 16-16v-160c0-8.832031-7.167969-16-16-16zm0 0"/>
+													<path d="m304 144c-8.832031 0-16 7.167969-16 16v64c0 8.832031 7.167969 16 16 16s16-7.167969 16-16v-64c0-8.832031-7.167969-16-16-16zm0 0"/>
+													<path d="m176 368c0 8.832031 7.167969 16 16 16s16-7.167969 16-16v-16c0-8.832031-7.167969-16-16-16s-16 7.167969-16 16zm0 0"/>
+													<path d="m192 48c8.832031 0 16-7.167969 16-16v-16c0-8.832031-7.167969-16-16-16s-16 7.167969-16 16v16c0 8.832031 7.167969 16 16 16zm0 0"/></svg>';
+
+													echo '<p></p>';
+
+												echo '</div>';
+
+											echo '</div>';
+
+										echo '</div>';
+
+									echo '</div>';
+
+
+								echo '</div>';
+
+								/* END OF SOUND GALLERY CONTAINER */
+
+
 								/* LINKEDIN INFO CONTAINER */
 
 								echo '<div class="account__box-container ajax-content-wrapper">';
@@ -493,7 +638,7 @@ get_header();
 
 								/* END OF LINKEDIN INFO CONTAINER */
 
-								/* work INFO CONTAINER */
+								/* WORK INFO CONTAINER */
 
 								echo '<div class="account__box-container ajax-content-wrapper">';
 
@@ -708,13 +853,12 @@ get_header();
 
 								/* END OF PICTURES AND VIDEOS CONTAINER */
 
-
-
-
 							echo '</div>';
+
+
 							/* END OF profile-section-1 */
 
-							echo '<div id="profile-section-2" class="profile-section profile-section--active account__settings">';
+							echo '<div id="profile-section-2" class="profile-section profile-section--not-active account__settings">';
 
 								echo '<div class="account__header">';
 								
@@ -805,7 +949,7 @@ get_header();
 														echo '</div>';
 													}
 
-												echo '***********';
+												echo '<p>***********</p>';
 											?>
 										</div>
 

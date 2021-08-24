@@ -254,6 +254,129 @@ jQuery(document).ready(function($) {
 		});
 	});
 
+	/* 	Upload sound to gallery Form */
+
+	var uploadSoundToGalleryForm = ajax_forms_params.upload_sound_to_gallery_form;
+
+	$(uploadSoundToGalleryForm).submit(function(event) {
+		event.preventDefault();
+
+		const submitButton = this.querySelector("input[type='submit']");
+		submitButton.classList.remove("reveal-button");
+		const uploadSoundPreview = this.querySelector(".input-preview__wrapper");
+
+		const thisAjaxLoader = this.closest(".ajax-content-wrapper").querySelector(
+			".my-ajax-loader"
+		);
+
+		const soundToGalleryInput = this.querySelector("#sound-to-gallery__input");
+
+		// console.log(this);
+
+		var soundGalleryFormData = new FormData(this);
+
+		const progress = this.querySelector(".progress");
+		const progressBar = progress.querySelector(".progress-bar");
+		const progressPercents = progress.querySelector(".progress-percents");
+
+		$.ajax({
+			xhr: function() {
+				const xhr = new window.XMLHttpRequest();
+				xhr.upload.addEventListener(
+					"progress",
+					function(e) {
+						if (e.lengthComputable) {
+							const percentComplete = (e.loaded / e.total) * 100;
+							console.log(percentComplete);
+							progress.classList.add("progress-show");
+							progressBar.style.width = percentComplete + "%";
+							progressPercents.innerText = Math.round(percentComplete) + "%";
+						}
+					},
+					false
+				);
+				return xhr;
+			},
+			url: ajaxurl + "?action=handle_sound_to_gallery_upload",
+			type: "POST",
+			data: soundGalleryFormData,
+			async: true,
+			cache: false,
+			contentType: false,
+			enctype: "multipart/form-data",
+			processData: false,
+
+			beforeSend: function() {
+				// Before we send the request, remove the .hidden class from the spinner and default to inline-block.
+				thisAjaxLoader.classList.add("my-ajax-loader--active");
+			},
+
+			complete: function() {
+				thisAjaxLoader.classList.remove("my-ajax-loader--active");
+				progress.classList.remove("progress-show");
+				// uploadSoundPreview.classList.remove("has-image");
+			},
+
+			success: function(data) {
+				console.log("SUCCESS!");
+				console.log(data);
+
+				// const dataJSON = JSON.parse(data);
+
+				// console.log(dataJSON);
+
+				let newlyAddedSound = $("#newSoundInGalleryPlaceholder").clone();
+
+				newlyAddedSound
+					.css("transform", "scale(0)")
+					.css("transition", "all 0.3s ease-in")
+					.appendTo(".my-sounds__gallery")
+					.attr("id", "newlyAddedSound");
+
+				setTimeout(function() {
+					$("#newlyAddedSound .remove-item").attr("data-id", data);
+
+					$("#newlyAddedSound")
+						.css("transform", "scale(1)")
+						.attr("id", "");
+				}, 100);
+
+				$("#newSoundInGalleryPlaceholder").css("display", "none");
+
+				//clear input
+
+				soundToGalleryInput.value = null;
+
+				return data;
+			},
+			error: function(jqXHR, textStatus, errorThrown) {
+				console.log(jqXHR);
+				console.log(textStatus);
+				console.log(errorThrown);
+
+				let errorMessage = jqXHR.responseText;
+
+				console.log(errorMessage);
+
+				let errorMessageNode = $.parseHTML(errorMessage);
+
+				console.log(errorMessageNode);
+
+				modalMessageHolder.appendChild(errorMessageNode[0]);
+
+				showModal();
+
+				// jsonValue = jQuery.parseJSON( jqXHR.responseText );
+				// console.log(jsonValue.Message);
+			}
+		});
+	});
+
+	$("#sound-to-gallery__input").change(function(event) {
+		$("#newSoundInGalleryPlaceholder").fadeIn(300);
+		$("#newSoundInGalleryPlaceholder p").text(event.target.files[0].name);
+	});
+
 	/* 	User Linkedin Form */
 
 	var linkedinUserDataForm = ajax_forms_params.linkedin_user_data_form;

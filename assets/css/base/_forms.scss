@@ -66,7 +66,7 @@ $repeater_input_height: 46px;
 
 .repeater {
 	&__holder {
-		padding-left: calc(#{$checkbox_width} + #{$checkbox_margin-right});
+		// padding-left: calc(#{$checkbox_width} + #{$checkbox_margin-right});
 		position: relative;
 	}
 
@@ -89,18 +89,19 @@ $repeater_input_height: 46px;
 		cursor: pointer;
 		width: $checkbox_width;
 		height: $checkbox_height;
-		margin-right: $checkbox_margin-right;
 		border: 0;
 		padding: 0;
 		font-size: 22px;
+		position: absolute;
 
 		&--add {
-			position: absolute;
-			left: 0;
+			left: calc(#{-$checkbox_width} - #{$checkbox_margin-right});
+			margin-right: $checkbox_margin-right;
 		}
 
 		&--delete {
-			right: 0;
+			right: calc(#{-$checkbox_width} - #{$checkbox_margin-right});
+			margin-left: $checkbox_margin-right;
 		}
 	}
 }
