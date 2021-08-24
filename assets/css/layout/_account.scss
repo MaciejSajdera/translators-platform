@@ -465,7 +465,9 @@
 
 		&-text-wrapper,
 		&-attachment {
-			width: 50%;
+			@media screen and (min-width: 992px) {
+				width: 50%;
+			}
 		}
 	}
 }

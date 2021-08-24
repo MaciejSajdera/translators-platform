@@ -303,4 +303,62 @@ document.addEventListener("DOMContentLoaded", () => {
 				});
 			}
 		});
+
+	//Sounds Gallery
+
+	const soundsGalleryWrapper = document.querySelector(".my-sounds__wrapper");
+
+	const soundToGalleryInput = soundsGalleryWrapper?.querySelector(
+		"#sound-to-gallery__input"
+	);
+
+	const soundsToDeleteArray = [];
+	const soundsToDeleteInput = document.querySelector("#sounds_to_delete");
+
+	soundsGalleryWrapper &&
+		soundsGalleryWrapper.addEventListener("mouseover", function(e) {
+			if (e.target.classList.contains("my-sounds__gallery-attachment")) {
+				e.target.classList.add("my-sounds__gallery-attachment--hovered");
+
+				e.target.addEventListener("mouseleave", e => {
+					e.target.classList.contains("my-sounds__gallery-attachment--hovered")
+						? e.target.classList.remove(
+								"my-sounds__gallery-attachment--hovered"
+						  )
+						: "";
+				});
+			}
+
+			if (e.target.classList.contains("remove-item")) {
+				e.target.addEventListener("click", e => {
+					e.preventDefault();
+
+					let thisSoundWrapper = e.target.closest(
+						".my-sounds__gallery-attachment"
+					);
+
+					let soundId = e.target.dataset.id;
+
+					if (thisSoundWrapper.id === "newSoundInGalleryPlaceholder") {
+						console.log("clear");
+						soundToGalleryInput.value = null;
+						thisSoundWrapper.style.display = "none";
+						thisSoundWrapper.querySelector("p").innerText = null;
+
+						return;
+					}
+
+					if (soundId) {
+						!soundsToDeleteArray.includes(soundId)
+							? soundsToDeleteArray.push(soundId)
+							: "";
+
+						console.log(soundsToDeleteArray);
+						soundsToDeleteInput.value = soundsToDeleteArray;
+					}
+
+					thisSoundWrapper.remove();
+				});
+			}
+		});
 });

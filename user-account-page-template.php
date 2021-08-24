@@ -429,7 +429,7 @@ get_header();
 
 										echo '<div><p class="info-box__header">Próbka głosu</p></div>';
 
-										echo '<div class="info-box__subbox wrapper-flex-drow-mcol">';
+										echo '<div class="info-box__subbox">';
 
 											$sounds_to_gallery_array = get_field('translator_sound_gallery');
 
@@ -472,23 +472,27 @@ get_header();
 														$translator_single_voice_recording_text = $sound["translator_single_voice_recording_text"];
 														$sound_link = $sound['translator_single_voice_recording'];
 
-														echo '<div class="my-sounds__gallery-row-wrapper">';
+														if ($translator_single_voice_recording_label || $translator_single_voice_recording_text || $sound_link) {
 
-															echo '<div class="my-sounds__gallery-text-wrapper">';
+															echo '<div class="my-sounds__gallery-row-wrapper wrapper-flex-drow-mcol">';
 
-																echo '<div class="my-sounds__gallery-attachment-label">';
+																echo '<div class="my-sounds__gallery-text-wrapper">';
 
-																	echo '<div>'.$translator_single_voice_recording_label.'</div>';
+																	echo '<div class="my-sounds__gallery-attachment-label">';
+
+																		echo '<div>'.$translator_single_voice_recording_label.'</div>';
+
+																	echo '</div>';
+
+																	echo '<div class="my-sounds__gallery-attachment-label">';
+
+																		echo '<div>'.$translator_single_voice_recording_text.'</div>';
+
+																	echo '</div>';
 
 																echo '</div>';
-
-																echo '<div class="my-sounds__gallery-attachment-label">';
-
-																	echo '<div>'.$translator_single_voice_recording_text.'</div>';
-
-																echo '</div>';
-
-															echo '</div>';
+															
+														
 
 
 															if($sound_link) {
@@ -516,10 +520,12 @@ get_header();
 
 																echo '</div>';
 															} 
-
+														
 															$i++;
 
-														echo '</div>';
+															echo '</div>';
+
+														}
 
 													endforeach;
 

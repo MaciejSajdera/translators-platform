@@ -374,7 +374,7 @@ jQuery(document).ready(function($) {
 
 	$("#sound-to-gallery__input").change(function(event) {
 		$("#newSoundInGalleryPlaceholder").fadeIn(300);
-		$("#newSoundInGalleryPlaceholder p").text(event.target.files[0].name);
+		$("#newSoundInGalleryPlaceholder p").text(event.target.files[0]?.name);
 	});
 
 	/* 	User Linkedin Form */
