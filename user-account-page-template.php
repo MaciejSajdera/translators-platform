@@ -474,19 +474,21 @@ get_header();
 
 														if ($translator_single_voice_recording_label || $translator_single_voice_recording_text || $sound_link) {
 
-															echo '<div class="my-sounds__gallery-row-wrapper wrapper-flex-drow-mcol">';
+															echo '<div class="row-wrapper my-sounds__gallery-row-wrapper wrapper-flex-drow-mcol">';
+															
+																echo '<a class="remove-item" href="#" data-id="'.$i.'"></a>';
 
 																echo '<div class="my-sounds__gallery-text-wrapper">';
 
-																	echo '<div class="my-sounds__gallery-attachment-label">';
+																	echo '<div class="my-sounds__gallery-attachment--label">';
 
-																		echo '<div>'.$translator_single_voice_recording_label.'</div>';
+																		echo '<p>'.$translator_single_voice_recording_label.'</p>';
 
 																	echo '</div>';
 
-																	echo '<div class="my-sounds__gallery-attachment-label">';
+																	echo '<div class="my-sounds__gallery-attachment--description">';
 
-																		echo '<div>'.$translator_single_voice_recording_text.'</div>';
+																		echo '<p>'.$translator_single_voice_recording_text.'</p>';
 
 																	echo '</div>';
 
@@ -499,9 +501,8 @@ get_header();
 
 																$sound_id = attachment_url_to_postid($sound_link);
 
-																echo '<div class="my-sounds__gallery-attachment">';
+																echo '<div class="my-sounds__gallery-attachment my-sounds__gallery-attachment--file-info">';
 
-																	echo '<a class="remove-item" href="#" data-id="'.$i.'"></a>';
 
 																	echo '<svg viewBox="0 0 384 384" xmlns="http://www.w3.org/2000/svg">
 																	<path d="m176 288c0 8.832031 7.167969 16 16 16s16-7.167969 16-16v-192c0-8.832031-7.167969-16-16-16s-16 7.167969-16 16zm0 0"/>
@@ -755,13 +756,6 @@ get_header();
 
 												echo gallery_image_uploader($user_post_id);
 
-												echo '<div id="newImageInGalleryPlaceholder" class="my-pictures__gallery-attachment" style="display:none;" >';
-
-													echo '<a class="remove-item remove" data-id="clear-input" href="#"></a>';
-
-													echo '<img src="" width=""/>';
-
-												echo '</div>';
 
 											echo '</div>';
 

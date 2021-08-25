@@ -1227,345 +1227,7 @@ add_action( 'wp_ajax_nopriv_add_linkedin_user_data_with_ajax',  'add_linkedin_us
 add_action( 'wp_ajax_add_linkedin_user_data_with_ajax','add_linkedin_user_data_with_ajax' );
 
 
-
-function gallery_sound_uploader($user_post_id) {
-
-	ob_start(); 
-
-	// show any error messages after form submission
-	// gallery_sound_uploader_form_messages();
-	?>
-
-	<form name="upload_sound_to_gallery_form" id="upload_sound_to_gallery_form" method="POST" enctype="multipart/form-data">
-
-			<div class="my-sounds__gallery">
-
-				<div class="repeater__holder">
-
-					<button class="repeater__button repeater__button--add">+</button>
-
-					<div class="repeater__field-wrapper">
-
-						<div class="repeater__field">
-
-							<div class="my-sounds__gallery-row-wrapper wrapper-flex-drow-mcol">
-
-								<div class="my-sounds__gallery-text-wrapper">
-
-									<p>
-										<input name="sound-label__input[]" id="sound-label__input" class="input-text" type="text" value="" placeholder="Tytuł nagrania"/>
-									</p>
-
-									<p>
-										<textarea form="upload_sound_to_gallery_form" name="sound-textarea__input[]" id="sound-textarea__input" class="input-textarea" type="text" maxlength="100"></textarea>
-										<label for="user_work">0/100</label>
-									</p>
-
-								</div>
-
-								<p>
-
-									<!-- <label class="file-input__label"> -->
-										<input type="file" name="sound-to-gallery__input[]" id="sound-to-gallery__input" class="custom-file-input input-preview__src" accept=".mp3,.wav,.m4a" />
-									<!-- </label> -->
-
-								</p>
-
-							</div>
-
-						</div>
-
-						<!-- <button class="repeater__button repeater__button--delete">-</button> -->
-
-					</div>
-
-				</div>
-
-			</div>
-
-
-			<input type="hidden" name="post_id" value="<?php echo $user_post_id ?>"><br>
-
-			<label>
-
-				<input type="hidden" name="sounds_to_delete" id="sounds_to_delete" value=""/>
-
-			</label>
-
-			<input type="submit" name="submit_sound_to_gallery" value="Zaktualizuj galerię" />
-			<?php wp_nonce_field( "handle_sound_to_gallery_upload", "sound_to_gallery_nonce" ); ?>
-
-			<div class="progress">
-				<div class="progress-bar"></div>
-				<div class="progress-percents"></div>
-			</div>
-	</form>
-
-	<?php
-	return ob_get_clean();
-}
-
-
-/**
-* Handles the sound file upload request.
-*/
-function handle_sound_to_gallery_upload() {
-
-	// Verify nonce
-	if ( ! wp_verify_nonce( $_POST['sound_to_gallery_nonce'], 'handle_sound_to_gallery_upload' ) ) {
-		wp_die( esc_html__( 'Nonce mismatched', 'theme-text-domain' ) );
-	}
-
-	$post_id = $_POST['post_id'];
-
-	// Handle file and text inputs
-	
-	$all_sound_label_inputs = $_POST["sound-label__input"];
-
-	$all_sound_textarea__inputs = $_POST["sound-textarea__input"];
-
-	$all_file_names = $_FILES["sound-to-gallery__input"]["name"];
-
-	$array_of_objects = array();
-
-	$index = 0;
-
-	foreach($all_file_names as $file_name) :
-
-		$single_file_obj = new stdClass();
-
-		foreach($_FILES['sound-to-gallery__input'] as $key => $value) :
-
-			$single_file_obj->$key = $value[$index];
-
-			$single_file_obj->label = $all_sound_label_inputs[$index];
-
-			$single_file_obj->textarea = $all_sound_textarea__inputs[$index];
-
-		endforeach;
-
-		// var_dump($single_file_obj);
-
-		//ignore empty ones
-
-		if (true) {
-			array_push($array_of_objects, $single_file_obj);
-		}
-
-		$index++;
-
-	endforeach;
-
-	var_dump($array_of_objects);
-
-
-	//validation
-
-	if ( count($array_of_objects) > 0 ) {
-
-		require_once(ABSPATH . 'wp-admin/includes/image.php');
-		require_once(ABSPATH . 'wp-admin/includes/file.php');
-		require_once(ABSPATH . 'wp-admin/includes/media.php');
-
-		$finfo = new finfo(FILEINFO_MIME_TYPE);
-
-		foreach($array_of_objects as $file_object) :
-
-			if ($file_object->name) {
-
-				//VALIDATION
-
-				$file_size = $file_object->size;
-				$allowed_file_size = 10145728; // Here we are setting the file size limit to 3MB
-
-				//Check for file size limit
-				if ( $file_size >= $allowed_file_size ) {
-					echo '<div class="modal-notification php-error__wrapper"><div class="php-error__content">'.sprintf( esc_html__( 'Zbyt duży rozmiar pliku, proszę wybrać plik o maksymalnym rozmiarze %d MB', 'theme-text-domain' ), round($allowed_file_size / 1000000) ).'</div></div>';
-					throw new Exception('Exception message');
-					throw new RuntimeException('Invalid file format.');
-					die();
-				}
-
-				//Check mime type
-				$file_tmp_name = $file_object->tmp_name;
-
-				if (false === $ext = array_search(
-					$finfo->file($file_tmp_name),
-					array(
-						'mp3' => 'audio/mpeg',
-						'wav' => 'audio/wav',
-						'm4a' => 'audio/m4a',
-					),
-					true
-				)) {
-					echo '<div class="modal-notification php-error__wrapper"><div class="php-error__content">Nieprawidłowy format pliku</div></div>';
-					throw new Exception('Exception message');
-					throw new RuntimeException('Invalid file format.');
-					die();
-				}
-
-			} else {
-				var_dump('no file');
-			}
-
-		endforeach;
-	}
-
-
-	//if file has been attached
-
-	if ( count($array_of_objects) > 0 ) {
-
-		// var_dump($_FILES['sound-to-gallery__input']);
-
-		// var_dump($array_of_objects);
-
-		// $uploadedfile = $current_file['sound-to-gallery__input'];
-
-		// var_dump($uploadedfile);
-
-		foreach ($array_of_objects as $file_object) :
-
-			//transforming object to nested array needed for wp_handle_upload to be possible
-			$uploadedfile = json_decode(json_encode($file_object), true);
-
-			if ($uploadedfile["name"]) {
-
-				$upload_overrides = array( 'test_form' => false );
-				$movefile = wp_handle_upload( $uploadedfile, $upload_overrides );
-	
-				var_dump($movefile);
-	
-				var_dump('movefile?');
-		
-				if ( $movefile ) {
-					  $video_url = $movefile["url"];
-					  $upload_dir = wp_upload_dir();
-					  $image_data = file_get_contents($video_url);
-					  $filename = basename($video_url);
-					  if(wp_mkdir_p($upload_dir['path']))
-						  $file = $upload_dir['path'] . '/' . $filename;
-					  else
-						  $file = $upload_dir['basedir'] . '/' . $filename;
-					  file_put_contents($file, $image_data);
-		
-					  $wp_filetype = wp_check_filetype($filename, null );
-		
-					  $attachment = array(
-						  'post_mime_type' => $wp_filetype['type'],
-						  'post_title' => sanitize_file_name($filename),
-						  'post_content' => '',
-						  'post_status' => 'inherit'
-					  );
-		
-					  $listing_post_id = $post_id ; //your post id to which you want to attach the video
-					  $attach_id = wp_insert_attachment( $attachment, $file, $listing_post_id);
-		
-						//   $attach_data = wp_generate_attachment_metadata( $attach_id, $file );
-						//   wp_update_attachment_metadata( $attach_id, $attach_data );
-		
-						//   print_r($attach_id);
-		
-						$row = array(
-							'translator_single_voice_recording' => $attach_id,
-							'translator_single_voice_recording_label' => $uploadedfile["label"],
-							'translator_single_voice_recording_text' => $uploadedfile["textarea"],
-						);
-		
-						add_row('translator_sound_gallery', $row, $post_id);
-		
-						// var_dump($videos_gallery_array);
-		
-						// var_dump(count($videos_gallery_array));
-		
-					  /*end file uploader*/
-				} 
-
-			} else {
-
-				$row = array(
-					'translator_single_voice_recording_label' => $uploadedfile["label"],
-					'translator_single_voice_recording_text' => $uploadedfile["textarea"],
-				);
-
-				add_row('translator_sound_gallery', $row, $post_id);
-			}
-
-		endforeach;
-
-	}
-
-
-	// Handle text inputs
-
-	// $all_sound_label_inputs = $_POST["sound-label__input"];
-
-
-	// if ($all_sound_label_input) {
-
-	// 	var_dump($all_sound_label_inputs);
-
-	// 	foreach($all_sound_label_inputs as $sound_label) :
-
-			
-
-	// 	endforeach;
-
-	// }
-
-
-	//if there are some files to delete
-	
-	$post_id = $_POST['post_id'];
-
-	$sounds_gallery_array = get_field("translator_sound_gallery", $post_id);
-
-	if ($_POST["sounds_to_delete"]) {
-
-		$sounds_to_delete_array = explode(',', $_POST["sounds_to_delete"]);
-
-		// var_dump($sounds_to_delete_array);
-
-		foreach ($sounds_to_delete_array as $sound_to_delete) :
-
-			$deleted_row_index = $sound_to_delete;
-
-			delete_row('translator_sound_gallery', $deleted_row_index, $post_id);
-
-			// print_r("deleted_row_index: ".$deleted_row_index);
-
-			// update_row('translator_sound_gallery', $deleted_row_index, false);
-
-			// -1 because acf rows count starts at 1 and array from 0
-			// var_dump($sounds_gallery_array[$deleted_row_index - 1]["translator_single_voice_recording"]);
-
-			$url = $sounds_gallery_array[$deleted_row_index - 1]["translator_single_voice_recording"];
-			$deleted_file_id = attachment_url_to_postid($url);
-			$path = parse_url($url, PHP_URL_PATH);
-			$fullPath = get_home_path() . $path;
-
-			// wp_delete_file($fullPath);
-			// unlink($fullPath);
-			wp_delete_attachment($deleted_file_id);
-
-		endforeach;
-	
-	}
-
-	die();
-
-}
-
-/**
-* Hook the function that handles the file upload request.
-*/
-// add_action( 'init', 'handle_sound_to_gallery_upload' );
-
-add_action( 'wp_ajax_nopriv_handle_sound_to_gallery_upload',  'handle_sound_to_gallery_upload' );
-add_action( 'wp_ajax_handle_sound_to_gallery_upload','handle_sound_to_gallery_upload' );
-
-
-/* ADD work USER DATA FORM */
+/* ADD WORK USER DATA FORM */
 function work_user_data_form() {
 
 	$current_user = wp_get_current_user();
@@ -1797,6 +1459,368 @@ add_action( 'wp_ajax_nopriv_handle_profile_picture_upload',  'handle_profile_pic
 add_action( 'wp_ajax_handle_profile_picture_upload','handle_profile_picture_upload' );
 
 
+function gallery_sound_uploader($user_post_id) {
+
+	ob_start(); 
+
+	// show any error messages after form submission
+	// gallery_sound_uploader_form_messages();
+	?>
+
+	<form name="upload_sound_to_gallery_form" id="upload_sound_to_gallery_form" method="POST" enctype="multipart/form-data">
+
+			<div class="my-sounds__gallery">
+
+				<div class="repeater__holder">
+
+					<button class="repeater__button repeater__button--add">+</button>
+
+					<div class="repeater__field-wrapper">
+
+						<div class="repeater__field">
+
+							<div class="row-wrapper my-sounds__gallery-row-wrapper wrapper-flex-drow-mcol">
+
+								<div class="my-sounds__gallery-text-wrapper">
+
+									<p>
+										<input name="sound-label__input[]" id="sound-label__input" class="input-text" type="text" value="" placeholder="Tytuł nagrania"/>
+									</p>
+
+									<p>
+										<textarea form="upload_sound_to_gallery_form" name="sound-textarea__input[]" id="sound-textarea__input" class="input-textarea" type="text" maxlength="100"></textarea>
+										<label for="user_work">0/100</label>
+									</p>
+
+								</div>
+
+								<p>
+
+									<!-- <label class="file-input__label"> -->
+										<input type="file" name="sound-to-gallery__input[]" id="sound-to-gallery__input" class="custom-file-input input-preview__src" accept=".mp3,.wav,.m4a" />
+									<!-- </label> -->
+
+								</p>
+
+								<div class="new-attachment__wrapper" >
+
+									<a class="remove-item remove" data-id="clear-input" href="#"></a>
+
+									<div class="new-attachment__placeholder" style="display:none;" src="" width="">
+										<?php
+
+										echo '<div class="row-wrapper my-sounds__gallery-row-wrapper wrapper-flex-drow-mcol">';
+
+											echo '<div class="my-sounds__gallery-text-wrapper">';
+
+												echo '<div class="my-sounds__gallery-attachment--label">';
+
+													echo '<p></p>';
+
+												echo '</div>';
+
+												echo '<div class="my-sounds__gallery-attachment--description">';
+
+													echo '<p></p>';
+
+												echo '</div>';
+
+											echo '</div>';
+
+											echo '<div class="my-sounds__gallery-attachment my-sounds__gallery-attachment--file-info">';
+
+												echo '<a class="remove-item" href="#" data-id=""></a>';
+
+												echo '<svg viewBox="0 0 384 384" xmlns="http://www.w3.org/2000/svg">
+												<path d="m176 288c0 8.832031 7.167969 16 16 16s16-7.167969 16-16v-192c0-8.832031-7.167969-16-16-16s-16 7.167969-16 16zm0 0"/>
+												<path d="m16 96c-8.832031 0-16 7.167969-16 16v160c0 8.832031 7.167969 16 16 16s16-7.167969 16-16v-160c0-8.832031-7.167969-16-16-16zm0 0"/>
+												<path d="m152 256v-128c0-8.832031-7.167969-16-16-16s-16 7.167969-16 16v128c0 8.832031 7.167969 16 16 16s16-7.167969 16-16zm0 0"/>
+												<path d="m80 240c8.832031 0 16-7.167969 16-16v-64c0-8.832031-7.167969-16-16-16s-16 7.167969-16 16v64c0 8.832031 7.167969 16 16 16zm0 0"/>
+												<path d="m264 256v-128c0-8.832031-7.167969-16-16-16s-16 7.167969-16 16v128c0 8.832031 7.167969 16 16 16s16-7.167969 16-16zm0 0"/>
+												<path d="m368 96c-8.832031 0-16 7.167969-16 16v160c0 8.832031 7.167969 16 16 16s16-7.167969 16-16v-160c0-8.832031-7.167969-16-16-16zm0 0"/>
+												<path d="m304 144c-8.832031 0-16 7.167969-16 16v64c0 8.832031 7.167969 16 16 16s16-7.167969 16-16v-64c0-8.832031-7.167969-16-16-16zm0 0"/>
+												<path d="m176 368c0 8.832031 7.167969 16 16 16s16-7.167969 16-16v-16c0-8.832031-7.167969-16-16-16s-16 7.167969-16 16zm0 0"/>
+												<path d="m192 48c8.832031 0 16-7.167969 16-16v-16c0-8.832031-7.167969-16-16-16s-16 7.167969-16 16v16c0 8.832031 7.167969 16 16 16zm0 0"/></svg>';
+
+												echo '<p></p>';
+
+											echo '</div>';
+
+										echo '</div>';
+										?>
+									</div>
+
+								</div>
+
+
+
+							</div>
+
+						</div>
+
+						<!-- <button class="repeater__button repeater__button--delete">-</button> -->
+
+					</div>
+
+				</div>
+
+			</div>
+
+
+			<input type="hidden" name="post_id" value="<?php echo $user_post_id ?>"><br>
+
+			<label>
+
+				<input type="hidden" name="sounds_to_delete" id="sounds_to_delete" value=""/>
+
+			</label>
+
+			<input type="submit" name="submit_sound_to_gallery" value="Zaktualizuj galerię" />
+			<?php wp_nonce_field( "handle_sound_to_gallery_upload", "sound_to_gallery_nonce" ); ?>
+
+			<div class="progress">
+				<div class="progress-bar"></div>
+				<div class="progress-percents"></div>
+			</div>
+	</form>
+
+	<?php
+	return ob_get_clean();
+}
+
+
+/**
+* Handles the sound file upload request.
+*/
+function handle_sound_to_gallery_upload() {
+
+	// Verify nonce
+	if ( ! wp_verify_nonce( $_POST['sound_to_gallery_nonce'], 'handle_sound_to_gallery_upload' ) ) {
+		wp_die( esc_html__( 'Nonce mismatched', 'theme-text-domain' ) );
+	}
+
+	$post_id = $_POST['post_id'];
+
+	// Handle file and text inputs
+	
+	$all_sound_label_inputs = $_POST["sound-label__input"];
+
+	$all_sound_textarea__inputs = $_POST["sound-textarea__input"];
+
+	$all_file_names = $_FILES["sound-to-gallery__input"]["name"];
+
+	$array_of_objects = array();
+
+	$index = 0;
+
+	foreach($all_file_names as $file_name) :
+
+		$single_file_obj = new stdClass();
+
+		foreach($_FILES['sound-to-gallery__input'] as $key => $value) :
+
+			$single_file_obj->$key = $value[$index];
+
+			$single_file_obj->label = $all_sound_label_inputs[$index];
+
+			$single_file_obj->textarea = $all_sound_textarea__inputs[$index];
+
+		endforeach;
+
+		// var_dump($single_file_obj);
+
+		array_push($array_of_objects, $single_file_obj);
+
+		$index++;
+
+	endforeach;
+
+	// var_dump($array_of_objects);
+
+
+	//validation
+
+	if ( count($array_of_objects) > 0 ) {
+
+		require_once(ABSPATH . 'wp-admin/includes/image.php');
+		require_once(ABSPATH . 'wp-admin/includes/file.php');
+		require_once(ABSPATH . 'wp-admin/includes/media.php');
+
+		$finfo = new finfo(FILEINFO_MIME_TYPE);
+		$allowed_file_size = 10145728; // Here we are setting the file size limit to 3MB
+
+		foreach($array_of_objects as $file_object) :
+
+			if ($file_object->name) {
+
+				//VALIDATION
+
+				//Check for file size limit
+				$file_size = $file_object->size;
+
+				if ( $file_size >= $allowed_file_size ) {
+					echo '<div class="modal-notification php-error__wrapper"><div class="php-error__content">'.sprintf( esc_html__( 'Zbyt duży rozmiar pliku, proszę wybrać plik o maksymalnym rozmiarze %d MB', 'theme-text-domain' ), round($allowed_file_size / 1000000) ).'</div></div>';
+					throw new Exception('Exception message');
+					throw new RuntimeException('Invalid file format.');
+					die();
+				}
+
+				//Check mime type
+				$file_tmp_name = $file_object->tmp_name;
+
+				if (false === $ext = array_search(
+					$finfo->file($file_tmp_name),
+					array(
+						'mp3' => 'audio/mpeg',
+						'wav' => 'audio/wav',
+						'm4a' => 'audio/m4a',
+					),
+					true
+				)) {
+					echo '<div class="modal-notification php-error__wrapper"><div class="php-error__content">Nieprawidłowy format pliku</div></div>';
+					throw new Exception('Exception message');
+					throw new RuntimeException('Invalid file format.');
+					die();
+				}
+
+			} else {
+				// var_dump('no file');
+			}
+
+		endforeach;
+	}
+
+
+	//if file has been attached
+
+	if ( count($array_of_objects) > 0 ) {
+
+		// var_dump($_FILES['sound-to-gallery__input']);
+
+		// var_dump($array_of_objects);
+
+		// $uploadedfile = $current_file['sound-to-gallery__input'];
+
+		// var_dump($uploadedfile);
+
+		foreach ($array_of_objects as $file_object) :
+
+			//transforming object to nested array needed for wp_handle_upload to be possible
+			$uploadedfile = json_decode(json_encode($file_object), true);
+
+			if ($uploadedfile["name"]) {
+
+				$upload_overrides = array( 'test_form' => false );
+				$movefile = wp_handle_upload( $uploadedfile, $upload_overrides );
+		
+				if ( $movefile ) {
+					  $video_url = $movefile["url"];
+					  $upload_dir = wp_upload_dir();
+					  $image_data = file_get_contents($video_url);
+					  $filename = basename($video_url);
+					  if(wp_mkdir_p($upload_dir['path']))
+						  $file = $upload_dir['path'] . '/' . $filename;
+					  else
+						  $file = $upload_dir['basedir'] . '/' . $filename;
+					  file_put_contents($file, $image_data);
+		
+					  $wp_filetype = wp_check_filetype($filename, null );
+		
+					  $attachment = array(
+						  'post_mime_type' => $wp_filetype['type'],
+						  'post_title' => sanitize_file_name($filename),
+						  'post_content' => '',
+						  'post_status' => 'inherit'
+					  );
+		
+					  $listing_post_id = $post_id ; //your post id to which you want to attach the video
+					  $attach_id = wp_insert_attachment( $attachment, $file, $listing_post_id);
+		
+						//   $attach_data = wp_generate_attachment_metadata( $attach_id, $file );
+						//   wp_update_attachment_metadata( $attach_id, $attach_data );
+		
+						//   print_r($attach_id);
+		
+						$row = array(
+							'translator_single_voice_recording' => $attach_id,
+							'translator_single_voice_recording_label' => $uploadedfile["label"],
+							'translator_single_voice_recording_text' => $uploadedfile["textarea"],
+						);
+		
+						add_row('translator_sound_gallery', $row, $post_id);
+		
+						// var_dump($videos_gallery_array);
+		
+						// var_dump(count($videos_gallery_array));
+		
+					  /*end file uploader*/
+				} 
+
+			} else {
+
+				$row = array(
+					'translator_single_voice_recording_label' => $uploadedfile["label"],
+					'translator_single_voice_recording_text' => $uploadedfile["textarea"],
+				);
+
+				add_row('translator_sound_gallery', $row, $post_id);
+			}
+
+		endforeach;
+
+	}
+
+	//if there are some files to delete
+	
+	$post_id = $_POST['post_id'];
+
+	$sounds_gallery_array = get_field("translator_sound_gallery", $post_id);
+
+	if ($_POST["sounds_to_delete"]) {
+
+		$sounds_to_delete_array = explode(',', $_POST["sounds_to_delete"]);
+
+		var_dump($sounds_to_delete_array);
+
+		foreach ($sounds_to_delete_array as $sound_to_delete) :
+
+			$deleted_row_index = $sound_to_delete;
+
+			delete_row('translator_sound_gallery', $deleted_row_index, $post_id);
+
+			// print_r("deleted_row_index: ".$deleted_row_index);
+
+			// update_row('translator_sound_gallery', $deleted_row_index, false);
+
+			// -1 because acf rows count starts at 1 and array from 0
+			// var_dump($sounds_gallery_array[$deleted_row_index - 1]["translator_single_voice_recording"]);
+
+			$url = $sounds_gallery_array[$deleted_row_index - 1]["translator_single_voice_recording"];
+			$deleted_file_id = attachment_url_to_postid($url);
+			$path = parse_url($url, PHP_URL_PATH);
+			$fullPath = get_home_path() . $path;
+
+			// wp_delete_file($fullPath);
+			// unlink($fullPath);
+			wp_delete_attachment($deleted_file_id);
+
+		endforeach;
+	
+	}
+
+	die();
+
+}
+
+/**
+* Hook the function that handles the file upload request.
+*/
+// add_action( 'init', 'handle_sound_to_gallery_upload' );
+
+add_action( 'wp_ajax_nopriv_handle_sound_to_gallery_upload',  'handle_sound_to_gallery_upload' );
+add_action( 'wp_ajax_handle_sound_to_gallery_upload','handle_sound_to_gallery_upload' );
+
+
 function gallery_image_uploader($user_post_id) {
 
 	ob_start(); 
@@ -1810,27 +1834,51 @@ function gallery_image_uploader($user_post_id) {
 
 	<form id="upload_image_to_gallery_form" method="POST" enctype="multipart/form-data">
 
-				<label class="file-input__label">
+			<div class="repeater__holder">
 
-					<input type="file" name="image-to-gallery__input" id="image-to-gallery__input" class="custom-file-input input-preview__src" accept=".png,.jpg,.jpeg" />
+				<button class="repeater__button repeater__button--add">+</button>
 
-				</label>
+				<div class="repeater__field-wrapper">
 
-				<input type="hidden" name="post_id" value="<?php echo $user_post_id ?>"><br>
+					<div class="repeater__field">
 
-				<label>
+						<div class="row-wrapper my-pictures__gallery-row-wrapper">
 
-					<input type="hidden" name="pictures_to_delete" id="pictures_to_delete" value=""/>
+							<label class="file-input__label">
 
-				</label>
+								<input type="file" name="image-to-gallery__input[]" id="image-to-gallery__input" class="custom-file-input input-preview__src" accept=".png,.jpg,.jpeg" />
 
-				<input type="submit" name="submit_image_to_gallery" value="Zaktualizuj galerię" />
-				<?php wp_nonce_field( "handle_image_to_gallery_upload", "image_to_gallery_nonce" ); ?>
+							</label>
 
-				<div class="progress">
-					<div class="progress-bar"></div>
-					<div class="progress-percents"></div>
+							<div class="new-attachment__wrapper" >
+
+								<img class="new-attachment__placeholder" style="display:none;" src="" width=""/>
+
+								<a class="remove-item remove" data-id="clear-input" href="#"></a>
+
+							</div>
+
+						
+						</div>
+
+					</div>
+
+					<!-- <button class="repeater__button repeater__button--delete">-</button> -->
+
 				</div>
+
+			</div>
+
+			<input type="hidden" name="post_id" value="<?php echo $user_post_id ?>"><br>
+			<input type="hidden" name="pictures_to_delete" id="pictures_to_delete" value=""/>
+			<input type="submit" name="submit_image_to_gallery" value="Zaktualizuj galerię" />
+			<?php wp_nonce_field( "handle_image_to_gallery_upload", "image_to_gallery_nonce" ); ?>
+
+			<div class="progress">
+				<div class="progress-bar"></div>
+				<div class="progress-percents"></div>
+			</div>
+
 	</form>
 
 	<?php
@@ -1867,43 +1915,79 @@ function handle_image_to_gallery_upload() {
 		wp_die( esc_html__( 'Nonce mismatched', 'theme-text-domain' ) );
 	}
 
-	//validation
+	$all_file_names = $_FILES["image-to-gallery__input"]["name"];
 
-	if ( $_FILES['image-to-gallery__input']['name'] ) {
+	$array_of_objects = array();
 
-		//validation
+	$index = 0;
 
-		// $_FILES['image-to-gallery__input']['name'] = preg_replace('/\s+/', '-', $_FILES["file"]["name"]);
+	foreach($all_file_names as $file_name) :
 
-		$file_size = $_FILES['image-to-gallery__input']['size'];
+		$single_file_obj = new stdClass();
+
+		foreach($_FILES['image-to-gallery__input'] as $key => $value) :
+
+			$single_file_obj->$key = $value[$index];
+
+		endforeach;
+
+		// var_dump($single_file_obj);
+
+		//ignore empty ones
+
+		if (true) {
+			array_push($array_of_objects, $single_file_obj);
+		}
+
+		$index++;
+
+	endforeach;
+
+	// var_dump($array_of_objects);
+
+	//VALIDATION
+
+	if ( count($array_of_objects) > 0 ) {
+
 		$allowed_file_size = 3145728; // Here we are setting the file size limit to 3MB
-
-		// Check for file size limit
-		if ( $file_size >= $allowed_file_size ) {
-			echo '<div class="modal-notification php-error__wrapper"><div class="php-error__content">'.sprintf( esc_html__( 'Zbyt duży rozmiar pliku, proszę wybrać plik o maksymalnym rozmiarze %d MB', 'theme-text-domain' ), round($allowed_file_size / 1000000) ).'</div></div>';
-			throw new Exception('Exception message');
-			throw new RuntimeException('Invalid file format.');
-			die();
-			;
-		}
-
 		$finfo = new finfo(FILEINFO_MIME_TYPE);
-		if (false === $ext = array_search(
-			$finfo->file($_FILES['image-to-gallery__input']['tmp_name']),
-			array(
-				'jpg' => 'image/jpeg',
-				'png' => 'image/png',
-			),
-			true
-		)) {
-			echo '<div class="modal-notification php-error__wrapper"><div class="php-error__content">Nieprawidłowy format pliku</div></div>';
-			throw new Exception('Exception message');
-			throw new RuntimeException('Invalid file format.');
-			die();
-		}
-	}
 
-	// $attachment_ids = array();
+		foreach($array_of_objects as $file_object) :
+
+			if ($file_object->name) {
+
+			//Check for file size limit
+			$file_size = $file_object->size;
+
+			if ( $file_size >= $allowed_file_size ) {
+				echo '<div class="modal-notification php-error__wrapper"><div class="php-error__content">'.sprintf( esc_html__( 'Zbyt duży rozmiar pliku, proszę wybrać plik o maksymalnym rozmiarze %d MB', 'theme-text-domain' ), round($allowed_file_size / 1000000) ).'</div></div>';
+				throw new Exception('Exception message');
+				throw new RuntimeException('Invalid file format.');
+				die();
+				;
+			}
+
+			//Check mime type
+			$file_tmp_name = $file_object->tmp_name;
+
+			if (false === $ext = array_search(
+				$finfo->file($file_tmp_name),
+				array(
+					'jpg' => 'image/jpeg',
+					'png' => 'image/png',
+				),
+				true
+			)) {
+				echo '<div class="modal-notification php-error__wrapper"><div class="php-error__content">Nieprawidłowy format pliku</div></div>';
+				throw new Exception('Exception message');
+				throw new RuntimeException('Invalid file format.');
+				die();
+			}
+
+		}
+
+		endforeach;
+	}
 
 	$post_id = $_POST['post_id'];
 
@@ -1926,21 +2010,37 @@ function handle_image_to_gallery_upload() {
 	endforeach;
 
 
-
 	//if file has been attached
 
-	if ( $_FILES['image-to-gallery__input']['name'] ) {
+	if ( count($array_of_objects) > 0 ) {
 
-		$attachment_id = media_handle_upload( 'image-to-gallery__input', $post_id );
+		foreach($array_of_objects as $file_object) :
 
-		if ( is_wp_error( $attachment_id ) ) {
-			// There was an error uploading the image.
-			wp_die( $attachment_id->get_error_message() );
-		}
-	
-		array_push($images_to_upload, $attachment_id);
+			//transforming object to nested array needed for media_handle_upload to be possible
+			$uploadedfile = json_decode(json_encode($file_object), true);
 
-		print_r($attachment_id);
+			if ($uploadedfile["name"]) {
+				// var_dump($uploadedfile["name"]);
+
+				$_FILES = array("upload_file" => $uploadedfile);
+				$attachment_id = media_handle_upload("upload_file", 0);
+
+				if (is_wp_error($attachment_id)) {
+					// There was an error uploading the image.
+					echo '<div class="modal-notification php-error__wrapper"><div class="php-error__content">Podczas wysyłania zdjęcia wystąpił błąd, proszę odświeżyć stronę i spróbować ponownie.</div></div>';
+					throw new Exception('Exception message');
+					throw new RuntimeException('Invalid file format.');
+					die();
+				} else {
+					// The image was uploaded successfully!
+					//needed for passing id to newly appended DOM node
+					print_r($attachment_id);
+
+					array_push($images_to_upload, $attachment_id);
+				}
+			}
+
+		endforeach;
 
 	}
 

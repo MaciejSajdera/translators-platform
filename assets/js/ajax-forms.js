@@ -1,4 +1,6 @@
 jQuery(document).ready(function($) {
+	/***************** ADDITIONAL FUNCTIONALITIES RELATED TO FORMS ******************/
+
 	/* 	Modal for displaying errors */
 	const modal = document.querySelector(".modal");
 	const modalContent = modal.querySelector(".modal-content");
@@ -30,6 +32,83 @@ jQuery(document).ready(function($) {
 
 	closeButton.addEventListener("click", closeModal);
 	window.addEventListener("click", windowOnClick);
+
+	/* 	For handling previews of files added by repeaters */
+
+	const allRepeaterHolders = document.querySelectorAll(".repeater__holder");
+
+	allRepeaterHolders.forEach(wrapper => {
+		let repeaterFieldWrapper = wrapper.querySelector(
+			".repeater__field-wrapper"
+		);
+		const allOriginalFileInputs = wrapper.querySelectorAll(
+			'input[type="file"]'
+		);
+
+		//static for already existing inputs
+		allOriginalFileInputs.forEach(fileInput => {
+			fileInput.addEventListener("change", function(e) {
+				if (fileInput.classList.contains("input-preview__src")) {
+					console.log(e);
+
+					let newAttachmentPlaceholder = fileInput
+						.closest(".row-wrapper")
+						?.querySelector(".new-attachment__placeholder");
+
+					console.log(newAttachmentPlaceholder);
+
+					newAttachmentPlaceholder &&
+						newAttachmentPlaceholder.setAttribute(
+							"src",
+							URL.createObjectURL(e.target.files[0])
+						);
+
+					newAttachmentPlaceholder.style.display = "block";
+				}
+			});
+		});
+
+		//dynamic for inputs added with repeater
+		let observer = new MutationObserver(function(mutations) {
+			mutations.forEach(function(mutation) {
+				console.log(mutation);
+
+				if (mutation.type === "childList") {
+					const allFileInputs = wrapper.querySelectorAll('input[type="file"]');
+
+					allFileInputs.forEach(fileInput => {
+						fileInput.addEventListener("change", function(e) {
+							if (fileInput.classList.contains("input-preview__src")) {
+								console.log(e);
+
+								let newAttachmentPlaceholder = fileInput
+									.closest(".row-wrapper")
+									?.querySelector(".new-attachment__placeholder");
+
+								newAttachmentPlaceholder &&
+									newAttachmentPlaceholder.setAttribute(
+										"src",
+										URL.createObjectURL(e.target.files[0])
+									);
+
+								if (newAttachmentPlaceholder) {
+									newAttachmentPlaceholder.style.display = "block";
+								}
+							}
+						});
+					});
+				}
+			});
+		});
+
+		observer.observe(repeaterFieldWrapper, {
+			attributes: true,
+			childList: true,
+			characterData: true
+		});
+	});
+
+	/******************************* FORMS ***********************************/
 
 	/* 	AJAX URL path */
 
@@ -271,8 +350,6 @@ jQuery(document).ready(function($) {
 
 		const soundToGalleryInput = this.querySelector("#sound-to-gallery__input");
 
-		// console.log(this);
-
 		var soundGalleryFormData = new FormData(this);
 
 		const progress = this.querySelector(".progress");
@@ -372,10 +449,10 @@ jQuery(document).ready(function($) {
 		});
 	});
 
-	$("#sound-to-gallery__input").change(function(event) {
-		$("#newSoundInGalleryPlaceholder").fadeIn(300);
-		$("#newSoundInGalleryPlaceholder p").text(event.target.files[0]?.name);
-	});
+	// $("#sound-to-gallery__input").change(function(event) {
+	// 	$("#newSoundInGalleryPlaceholder").fadeIn(300);
+	// 	$("#newSoundInGalleryPlaceholder p").text(event.target.files[0]?.name);
+	// });
 
 	/* 	User Linkedin Form */
 
@@ -555,8 +632,6 @@ jQuery(document).ready(function($) {
 			".my-ajax-loader"
 		);
 
-		const imageToGalleryInput = this.querySelector("#image-to-gallery__input");
-
 		var galleryFormData = new FormData(this);
 
 		const progress = this.querySelector(".progress");
@@ -607,27 +682,67 @@ jQuery(document).ready(function($) {
 
 				// const dataJSON = JSON.parse(data);
 
-				let newlyAddedImage = $("#newImageInGalleryPlaceholder").clone();
+				let allNewAttachmentWrappersInThisForm = $(
+					"#upload_image_to_gallery_form .new-attachment__wrapper"
+				);
 
-				newlyAddedImage
-					.css("transform", "scale(0)")
-					.css("transition", "all 0.3s ease-in")
-					.appendTo(".my-pictures__gallery")
-					.attr("id", "newlyAddedImage");
+				allNewAttachmentWrappersInThisForm.each(function(index) {
+					console.log(this);
+					$(this)
+						.clone()
+						.css("transform", "scale(0)")
+						.css("transition", "all 0.3s ease-in")
+						.addClass("my-pictures__gallery-attachment")
+						.addClass("newlyAddedImage")
+						.appendTo(".my-pictures__gallery");
 
-				setTimeout(function() {
-					$("#newlyAddedImage .remove-item").attr("data-id", data);
+					setTimeout(function() {
+						$(".newlyAddedImage .remove-item").attr("data-id", data);
 
-					$("#newlyAddedImage")
-						.css("transform", "scale(1)")
-						.attr("id", "");
-				}, 100);
+						$(".newlyAddedImage")
+							.css("transform", "scale(1)")
+							.removeClass("newlyAddedImage");
+					}, 200);
+				});
 
-				$("#newImageInGalleryPlaceholder").css("display", "none");
+				let allRepeaterFieldsInThisForm = $(
+					"#upload_image_to_gallery_form .repeater__field"
+				);
+
+				allRepeaterFieldsInThisForm.each(function(index) {
+					//clear first one
+					if (index === 0) {
+						$(this).find("INPUT").value = null;
+						$(this)
+							.find(".new-attachment__placeholder")
+							.attr("src", "");
+					}
+
+					//delete rest
+					if (index > 0) {
+						$(this).remove();
+					}
+				});
+
+				// let newlyAddedImage = $("#newImageInGalleryPlaceholder").clone();
+
+				// newlyAddedImage
+				// 	.css("transform", "scale(0)")
+				// 	.css("transition", "all 0.3s ease-in")
+				// 	.appendTo(".my-pictures__gallery")
+				// 	.attr("id", "newlyAddedImage");
+
+				// setTimeout(function() {
+				// 	$("#newlyAddedImage .remove-item").attr("data-id", data);
+
+				// 	$("#newlyAddedImage")
+				// 		.css("transform", "scale(1)")
+				// 		.attr("id", "");
+				// }, 100);
+
+				// $("#newImageInGalleryPlaceholder").css("display", "none");
 
 				//clear input
-
-				imageToGalleryInput.value = null;
 
 				return data;
 			},
@@ -654,13 +769,36 @@ jQuery(document).ready(function($) {
 		});
 	});
 
-	$("#image-to-gallery__input").change(function(event) {
-		$("#newImageInGalleryPlaceholder").fadeIn(300);
+	// const allFileInputs = document.querySelectorAll('input[type="file"]');
 
-		$("#newImageInGalleryPlaceholder img")
-			.fadeIn(300)
-			.attr("src", URL.createObjectURL(event.target.files[0]));
-	});
+	// allFileInputs &&
+	// 	allFileInputs.forEach(fileinput => {
+	// 		fileinput.addEventListener("change", function(e) {
+	// 			if (fileinput.classList.contains("input-preview__src")) {
+	// 				console.log(e);
+
+	// 				let newAttachmentPlaceholder = fileinput
+	// 					.closest(".row-wrapper")
+	// 					?.querySelector(".new-attachment__placeholder");
+
+	// 				newAttachmentPlaceholder &&
+	// 					newAttachmentPlaceholder.setAttribute(
+	// 						"src",
+	// 						URL.createObjectURL(e.target.files[0])
+	// 					);
+
+	// 				newAttachmentPlaceholder.style.display = "block";
+	// 			}
+	// 		});
+	// 	});
+
+	// $("#image-to-gallery__input").change(function(event) {
+	// 	$("#newImageInGalleryPlaceholder").fadeIn(300);
+
+	// 	$("#newImageInGalleryPlaceholder img")
+	// 		.fadeIn(300)
+	// 		.attr("src", URL.createObjectURL(event.target.files[0]));
+	// });
 
 	/* 	Upload video to gallery Form */
 

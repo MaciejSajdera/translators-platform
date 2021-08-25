@@ -100,7 +100,7 @@ document.addEventListener("DOMContentLoaded", () => {
 				mutations.forEach(function(mutation) {
 					console.log(mutation);
 
-					if (mutation.type == "attributes") {
+					if (mutation.type === "attributes") {
 						console.log("attributes changed");
 
 						let allOptionsChosen = box.querySelectorAll(

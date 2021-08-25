@@ -102,6 +102,14 @@ document.addEventListener("DOMContentLoaded", () => {
 
 					clonedFieldInput ? (clonedFieldInput.value = "") : "";
 
+					let clonedFieldNewAttachmentPlaceholder = clonedField.querySelector(
+						".new-attachment__placeholder"
+					);
+
+					clonedFieldNewAttachmentPlaceholder
+						? (clonedFieldNewAttachmentPlaceholder.src = "")
+						: "";
+
 					container.appendChild(clonedField);
 				}
 
@@ -198,7 +206,7 @@ document.addEventListener("DOMContentLoaded", () => {
 	galleryWrapper &&
 		galleryWrapper.addEventListener("mouseover", function(e) {
 			if (e.target.classList.contains("my-pictures__gallery-attachment")) {
-				console.log(e.target);
+				// console.log(e.target);
 				e.target.classList.add("my-pictures__gallery-attachment--hovered");
 
 				e.target.addEventListener("mouseleave", e => {
@@ -222,7 +230,11 @@ document.addEventListener("DOMContentLoaded", () => {
 
 					let pictureId = e.target.dataset.id;
 
-					if (thisPictureWrapper.id === "newImageInGalleryPlaceholder") {
+					if (
+						thisPictureWrapper.classList.contains(
+							"newImageInGalleryPlaceholder"
+						)
+					) {
 						console.log("clear");
 						imageToGalleryInput.value = null;
 						thisPictureWrapper.style.display = "none";
@@ -317,7 +329,9 @@ document.addEventListener("DOMContentLoaded", () => {
 
 	soundsGalleryWrapper &&
 		soundsGalleryWrapper.addEventListener("mouseover", function(e) {
-			if (e.target.classList.contains("my-sounds__gallery-attachment")) {
+			console.log(e.target);
+
+			if (e.target.classList.contains("my-sounds__gallery-row-wrapper")) {
 				e.target.classList.add("my-sounds__gallery-attachment--hovered");
 
 				e.target.addEventListener("mouseleave", e => {
@@ -334,7 +348,7 @@ document.addEventListener("DOMContentLoaded", () => {
 					e.preventDefault();
 
 					let thisSoundWrapper = e.target.closest(
-						".my-sounds__gallery-attachment"
+						".my-sounds__gallery-row-wrapper"
 					);
 
 					let soundId = e.target.dataset.id;
