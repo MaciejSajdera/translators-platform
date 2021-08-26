@@ -433,17 +433,6 @@ get_header();
 
 											$sounds_to_gallery_array = get_field('translator_sound_gallery');
 
-											/////////////////////////////////
-
-
-
-
-
-
-
-
-											////////////////////////////////////
-
 											echo '<div class="my-sounds__wrapper ajax-content-wrapper">';
 
 												/* AJAX LOADER */
@@ -472,13 +461,20 @@ get_header();
 														$translator_single_voice_recording_text = $sound["translator_single_voice_recording_text"];
 														$sound_link = $sound['translator_single_voice_recording'];
 
-														if ($translator_single_voice_recording_label || $translator_single_voice_recording_text || $sound_link) {
+
+
+														if ( $translator_single_voice_recording_label != "" || $translator_single_voice_recording_text != "" || $sound_link) {
+
+															// echo '$translator_single_voice_recording_label: '.$translator_single_voice_recording_label;
+															// echo  '$translator_single_voice_recording_text: '. $translator_single_voice_recording_text;
+															// echo '$sound_link: '.$sound_link;
+
 
 															echo '<div class="row-wrapper my-sounds__gallery-row-wrapper wrapper-flex-drow-mcol">';
 															
 																echo '<a class="remove-item" href="#" data-id="'.$i.'"></a>';
 
-																echo '<div class="my-sounds__gallery-text-wrapper">';
+																echo '<div class="my-sounds__gallery-text-wrapper col-d50">';
 
 																	echo '<div class="my-sounds__gallery-attachment--label">';
 
@@ -501,7 +497,7 @@ get_header();
 
 																$sound_id = attachment_url_to_postid($sound_link);
 
-																echo '<div class="my-sounds__gallery-attachment my-sounds__gallery-attachment--file-info">';
+																echo '<div class="my-sounds__gallery-attachment my-sounds__gallery-attachment--file-info col-d50">';
 
 
 																	echo '<svg viewBox="0 0 384 384" xmlns="http://www.w3.org/2000/svg">
@@ -522,11 +518,11 @@ get_header();
 																echo '</div>';
 															} 
 														
-															$i++;
-
 															echo '</div>';
 
 														}
+
+														$i++;
 
 													endforeach;
 
@@ -715,7 +711,7 @@ get_header();
 
 										$images_to_gallery_array = get_field('translator_gallery');
 
-											echo '<div class="my-pictures__wrapper ajax-content-wrapper">';
+											echo '<div class="my-pictures__wrapper ajax-content-wrapper col-d50">';
 
 												/* AJAX LOADER */
 
@@ -763,7 +759,7 @@ get_header();
 
 											$videos_to_gallery_array = get_field('translator_video_gallery');
 
-											echo '<div class="my-videos__wrapper ajax-content-wrapper">';
+											echo '<div class="my-videos__wrapper ajax-content-wrapper col-d50">';
 
 												/* AJAX LOADER */
 

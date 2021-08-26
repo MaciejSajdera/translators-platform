@@ -205,22 +205,29 @@
 								<!-- Slides -->
 								
 								<?php
+								
 									$single_translator_pictures_gallery = get_field("translator_gallery");
 
 									$single_translator_videos_repeater = get_field("translator_video_gallery");
 
 									$single_translator_videos_gallery = [];
 
-									foreach($single_translator_videos_repeater as $repeater_field) :
+									if ($single_translator_videos_repeater) :
 
-										if ($repeater_field["translator_single_video"]) {
-											array_push($single_translator_videos_gallery, $repeater_field["translator_single_video"]);
-										}
+										foreach($single_translator_videos_repeater as $repeater_field) :
 
-									endforeach;
+											if ($repeater_field["translator_single_video"]) {
+												array_push($single_translator_videos_gallery, $repeater_field["translator_single_video"]);
+											}
 
-										//operations below are for determing which array is longer and for adding empty-link value(s) as placeholders
-										//otherwise array_combine wouldn't be possible, arrays lengths need to be equal to do that
+										endforeach;
+
+									endif;
+
+										//operations below are for determing which array is longer, and for adding empty-link value(s) as placeholders
+										//otherwise array_combine wouldn't be possible, arrays lengths must be equal
+
+									if ($single_translator_pictures_gallery) {
 
 										$count_pictures = count($single_translator_pictures_gallery);
 
@@ -315,13 +322,12 @@
 													echo '</div>';
 													
 												}
-	
 
 	
 											endforeach;
+
 										}
-
-
+									}
 
 								?>
 

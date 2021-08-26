@@ -377,15 +377,6 @@
 }
 
 .my-pictures,
-.my-videos {
-	&__wrapper {
-		@media screen and (min-width: 992px) {
-			width: 50%;
-		}
-	}
-}
-
-.my-pictures,
 .my-videos,
 .my-sounds {
 	&__gallery-attachment {
@@ -393,14 +384,19 @@
 		align-items: center;
 		justify-content: flex-start;
 		position: relative;
-		padding: 1rem;
+		padding: 1rem 0;
 		width: 100%;
-		cursor: pointer;
 
 		&--hovered {
 			.remove-item {
 				transform: scale(1);
 			}
+		}
+
+		svg,
+		img,
+		p {
+			pointer-events: none;
 		}
 	}
 
@@ -437,9 +433,7 @@
 		}
 
 		&-text-wrapper {
-			@media screen and (min-width: 992px) {
-				width: 50%;
-			}
+			pointer-events: none;
 		}
 
 		&-attachment {
@@ -451,13 +445,7 @@
 			}
 
 			&--file-info {
-				@media screen and (min-width: 992px) {
-					width: 50%;
-
-					// p:last-of-type {
-					// 	margin-bottom: 0;
-					// }
-				}
+				pointer-events: none;
 			}
 		}
 	}

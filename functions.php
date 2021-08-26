@@ -958,7 +958,7 @@ function contact_user_data_form() {
 
 										<div class="repeater__field-wrapper">
 
-											<div class="repeater__field">
+											<div class="repeater__field" data-repeater-id="0">
 
 												<input name="user_localizations[]" id="user_localizations" class="user_localizations user_localizations__repeater" placeholder="Dodaj inną lokalizację" type="text" value="" />
 
@@ -1469,7 +1469,7 @@ function gallery_sound_uploader($user_post_id) {
 
 	<form name="upload_sound_to_gallery_form" id="upload_sound_to_gallery_form" method="POST" enctype="multipart/form-data">
 
-			<div class="my-sounds__gallery">
+			<div class="form-content-wrapper">
 
 				<div class="repeater__holder">
 
@@ -1477,110 +1477,106 @@ function gallery_sound_uploader($user_post_id) {
 
 					<div class="repeater__field-wrapper">
 
-						<div class="repeater__field">
+						<div class="repeater__field" data-repeater-id="0">
 
-							<div class="row-wrapper my-sounds__gallery-row-wrapper wrapper-flex-drow-mcol">
+							<div class="row-wrapper wrapper-flex-drow-mcol">
 
-								<div class="my-sounds__gallery-text-wrapper">
+								<div class="wrapper-flex-col-start col-d50">
 
 									<p>
-										<input name="sound-label__input[]" id="sound-label__input" class="input-text" type="text" value="" placeholder="Tytuł nagrania"/>
+										<input name="sound-label__input[]" id="sound-label__input" class="input-text input-preview__src" type="text" value="" placeholder="Tytuł nagrania"/>
 									</p>
 
 									<p>
-										<textarea form="upload_sound_to_gallery_form" name="sound-textarea__input[]" id="sound-textarea__input" class="input-textarea" type="text" maxlength="100"></textarea>
+										<textarea form="upload_sound_to_gallery_form" name="sound-textarea__input[]" id="sound-textarea__input" class="input-textarea input-preview__src" type="text" maxlength="100"></textarea>
 										<label for="user_work">0/100</label>
 									</p>
 
 								</div>
 
-								<p>
+								<div class="col-d50">
 
-									<!-- <label class="file-input__label"> -->
-										<input type="file" name="sound-to-gallery__input[]" id="sound-to-gallery__input" class="custom-file-input input-preview__src" accept=".mp3,.wav,.m4a" />
-									<!-- </label> -->
+									<input type="file" name="sound-to-gallery__input[]" id="sound-to-gallery__input" class="custom-file-input input-preview__src" accept=".mp3,.wav,.m4a"/>
 
-								</p>
+									<div class="new-attachment__wrapper my-sounds__gallery-row-wrapper ">
 
-								<div class="new-attachment__wrapper" >
+										<div id="newSoundInGalleryPlaceholder" class="new-attachment__placeholder" style="display:none;" width="">
+											<?php
 
-									<a class="remove-item remove" data-id="clear-input" href="#"></a>
+											echo '<div class="new-attachment__preview row-wrapper my-sounds__gallery-attachment my-sounds__gallery-row-wrapper">';
 
-									<div class="new-attachment__placeholder" style="display:none;" src="" width="">
-										<?php
+													echo '<a class="remove-item remove" data-id="clear-input" href="#"></a>';
 
-										echo '<div class="row-wrapper my-sounds__gallery-row-wrapper wrapper-flex-drow-mcol">';
+													echo '<div class="my-sounds__gallery-text-wrapper">';
 
-											echo '<div class="my-sounds__gallery-text-wrapper">';
+														echo '<div class="my-sounds__gallery-attachment--label" style="display: none">';
 
-												echo '<div class="my-sounds__gallery-attachment--label">';
+															echo '<p></p>';
 
-													echo '<p></p>';
+														echo '</div>';
 
-												echo '</div>';
+														echo '<div class="my-sounds__gallery-attachment--description" style="display: none">';
 
-												echo '<div class="my-sounds__gallery-attachment--description">';
+															echo '<p></p>';
 
-													echo '<p></p>';
+														echo '</div>';
 
-												echo '</div>';
+													echo '</div>';
+
+													echo '<div class="my-sounds__gallery-attachment my-sounds__gallery-attachment--file-info">';
+
+														echo '<div class="new-attachment__icon ">';
+
+															echo '<svg viewBox="0 0 384 384" xmlns="http://www.w3.org/2000/svg">
+															<path d="m176 288c0 8.832031 7.167969 16 16 16s16-7.167969 16-16v-192c0-8.832031-7.167969-16-16-16s-16 7.167969-16 16zm0 0"/>
+															<path d="m16 96c-8.832031 0-16 7.167969-16 16v160c0 8.832031 7.167969 16 16 16s16-7.167969 16-16v-160c0-8.832031-7.167969-16-16-16zm0 0"/>
+															<path d="m152 256v-128c0-8.832031-7.167969-16-16-16s-16 7.167969-16 16v128c0 8.832031 7.167969 16 16 16s16-7.167969 16-16zm0 0"/>
+															<path d="m80 240c8.832031 0 16-7.167969 16-16v-64c0-8.832031-7.167969-16-16-16s-16 7.167969-16 16v64c0 8.832031 7.167969 16 16 16zm0 0"/>
+															<path d="m264 256v-128c0-8.832031-7.167969-16-16-16s-16 7.167969-16 16v128c0 8.832031 7.167969 16 16 16s16-7.167969 16-16zm0 0"/>
+															<path d="m368 96c-8.832031 0-16 7.167969-16 16v160c0 8.832031 7.167969 16 16 16s16-7.167969 16-16v-160c0-8.832031-7.167969-16-16-16zm0 0"/>
+															<path d="m304 144c-8.832031 0-16 7.167969-16 16v64c0 8.832031 7.167969 16 16 16s16-7.167969 16-16v-64c0-8.832031-7.167969-16-16-16zm0 0"/>
+															<path d="m176 368c0 8.832031 7.167969 16 16 16s16-7.167969 16-16v-16c0-8.832031-7.167969-16-16-16s-16 7.167969-16 16zm0 0"/>
+															<path d="m192 48c8.832031 0 16-7.167969 16-16v-16c0-8.832031-7.167969-16-16-16s-16 7.167969-16 16v16c0 8.832031 7.167969 16 16 16zm0 0"/></svg>';
+
+														echo '</div>';
+
+														echo '<div class="new-attachment__description">';
+
+															echo '<p class="sound-title"></p>';
+
+														echo '</div>';
+
+													echo '</div>';
 
 											echo '</div>';
+											?>
+										</div>
 
-											echo '<div class="my-sounds__gallery-attachment my-sounds__gallery-attachment--file-info">';
-
-												echo '<a class="remove-item" href="#" data-id=""></a>';
-
-												echo '<svg viewBox="0 0 384 384" xmlns="http://www.w3.org/2000/svg">
-												<path d="m176 288c0 8.832031 7.167969 16 16 16s16-7.167969 16-16v-192c0-8.832031-7.167969-16-16-16s-16 7.167969-16 16zm0 0"/>
-												<path d="m16 96c-8.832031 0-16 7.167969-16 16v160c0 8.832031 7.167969 16 16 16s16-7.167969 16-16v-160c0-8.832031-7.167969-16-16-16zm0 0"/>
-												<path d="m152 256v-128c0-8.832031-7.167969-16-16-16s-16 7.167969-16 16v128c0 8.832031 7.167969 16 16 16s16-7.167969 16-16zm0 0"/>
-												<path d="m80 240c8.832031 0 16-7.167969 16-16v-64c0-8.832031-7.167969-16-16-16s-16 7.167969-16 16v64c0 8.832031 7.167969 16 16 16zm0 0"/>
-												<path d="m264 256v-128c0-8.832031-7.167969-16-16-16s-16 7.167969-16 16v128c0 8.832031 7.167969 16 16 16s16-7.167969 16-16zm0 0"/>
-												<path d="m368 96c-8.832031 0-16 7.167969-16 16v160c0 8.832031 7.167969 16 16 16s16-7.167969 16-16v-160c0-8.832031-7.167969-16-16-16zm0 0"/>
-												<path d="m304 144c-8.832031 0-16 7.167969-16 16v64c0 8.832031 7.167969 16 16 16s16-7.167969 16-16v-64c0-8.832031-7.167969-16-16-16zm0 0"/>
-												<path d="m176 368c0 8.832031 7.167969 16 16 16s16-7.167969 16-16v-16c0-8.832031-7.167969-16-16-16s-16 7.167969-16 16zm0 0"/>
-												<path d="m192 48c8.832031 0 16-7.167969 16-16v-16c0-8.832031-7.167969-16-16-16s-16 7.167969-16 16v16c0 8.832031 7.167969 16 16 16zm0 0"/></svg>';
-
-												echo '<p></p>';
-
-											echo '</div>';
-
-										echo '</div>';
-										?>
 									</div>
 
 								</div>
-
-
 
 							</div>
 
 						</div>
 
-						<!-- <button class="repeater__button repeater__button--delete">-</button> -->
-
 					</div>
 
 				</div>
 
-			</div>
-
-
-			<input type="hidden" name="post_id" value="<?php echo $user_post_id ?>"><br>
-
-			<label>
+				<input type="hidden" name="post_id" value="<?php echo $user_post_id ?>"><br>
 
 				<input type="hidden" name="sounds_to_delete" id="sounds_to_delete" value=""/>
 
-			</label>
+				<input type="submit" name="submit_sound_to_gallery" value="Zaktualizuj galerię" />
 
-			<input type="submit" name="submit_sound_to_gallery" value="Zaktualizuj galerię" />
-			<?php wp_nonce_field( "handle_sound_to_gallery_upload", "sound_to_gallery_nonce" ); ?>
+				<?php wp_nonce_field( "handle_sound_to_gallery_upload", "sound_to_gallery_nonce" ); ?>
 
-			<div class="progress">
-				<div class="progress-bar"></div>
-				<div class="progress-percents"></div>
+				<div class="progress">
+					<div class="progress-bar"></div>
+					<div class="progress-percents"></div>
+				</div>
+
 			</div>
 	</form>
 
@@ -1629,7 +1625,12 @@ function handle_sound_to_gallery_upload() {
 
 		// var_dump($single_file_obj);
 
-		array_push($array_of_objects, $single_file_obj);
+		//ignore empty ones
+
+		if ($single_file_obj->name || $single_file_obj->label || $single_file_obj->textarea ) {
+
+			array_push($array_of_objects, $single_file_obj);
+		}
 
 		$index++;
 
@@ -1691,6 +1692,15 @@ function handle_sound_to_gallery_upload() {
 	}
 
 
+	// $sounds_object_for_ajax = array("added_files", "deleted_files");
+
+	$sounds_object_for_ajax  = (object) [
+		'added_files_ids' => [],
+		'added_rows' => [],
+		'deleted_rows' => [],
+		'console_log' => []
+	];
+
 	//if file has been attached
 
 	if ( count($array_of_objects) > 0 ) {
@@ -1740,6 +1750,7 @@ function handle_sound_to_gallery_upload() {
 						//   wp_update_attachment_metadata( $attach_id, $attach_data );
 		
 						//   print_r($attach_id);
+						array_push($sounds_object_for_ajax->added_files_ids, $attach_id);
 		
 						$row = array(
 							'translator_single_voice_recording' => $attach_id,
@@ -1748,7 +1759,11 @@ function handle_sound_to_gallery_upload() {
 						);
 		
 						add_row('translator_sound_gallery', $row, $post_id);
-		
+
+						$count = count(get_field('translator_sound_gallery', $post_id));
+
+						array_push($sounds_object_for_ajax->added_rows, $count);
+
 						// var_dump($videos_gallery_array);
 		
 						// var_dump(count($videos_gallery_array));
@@ -1764,6 +1779,11 @@ function handle_sound_to_gallery_upload() {
 				);
 
 				add_row('translator_sound_gallery', $row, $post_id);
+
+				$count = count(get_field('translator_sound_gallery', $post_id));
+
+				array_push($sounds_object_for_ajax->added_rows, $count);
+				
 			}
 
 		endforeach;
@@ -1780,13 +1800,17 @@ function handle_sound_to_gallery_upload() {
 
 		$sounds_to_delete_array = explode(',', $_POST["sounds_to_delete"]);
 
-		var_dump($sounds_to_delete_array);
+		// var_dump($sounds_to_delete_array);
 
 		foreach ($sounds_to_delete_array as $sound_to_delete) :
 
 			$deleted_row_index = $sound_to_delete;
 
-			delete_row('translator_sound_gallery', $deleted_row_index, $post_id);
+			array_push($sounds_object_for_ajax->deleted_rows, $deleted_row_index);
+
+			//'while' because delete_row returns a boolean based on if it succeeds or not
+
+			while (delete_row('translator_sound_gallery', $deleted_row_index, $post_id));
 
 			// print_r("deleted_row_index: ".$deleted_row_index);
 
@@ -1795,18 +1819,22 @@ function handle_sound_to_gallery_upload() {
 			// -1 because acf rows count starts at 1 and array from 0
 			// var_dump($sounds_gallery_array[$deleted_row_index - 1]["translator_single_voice_recording"]);
 
-			$url = $sounds_gallery_array[$deleted_row_index - 1]["translator_single_voice_recording"];
-			$deleted_file_id = attachment_url_to_postid($url);
-			$path = parse_url($url, PHP_URL_PATH);
-			$fullPath = get_home_path() . $path;
+			// $url = $sounds_gallery_array[$deleted_row_index - 1]["translator_single_voice_recording"];
+			// $deleted_file_id = attachment_url_to_postid($url);
+			// $path = parse_url($url, PHP_URL_PATH);
+			// $fullPath = get_home_path() . $path;
 
-			// wp_delete_file($fullPath);
-			// unlink($fullPath);
-			wp_delete_attachment($deleted_file_id);
+			// // wp_delete_file($fullPath);
+			// // unlink($fullPath);
+			// wp_delete_attachment($deleted_file_id);
 
 		endforeach;
+
+		// print_r(json_encode($indexes_of_rows_to_delete));
 	
 	}
+
+	print_r(json_encode($sounds_object_for_ajax ));
 
 	die();
 
@@ -1834,13 +1862,15 @@ function gallery_image_uploader($user_post_id) {
 
 	<form id="upload_image_to_gallery_form" method="POST" enctype="multipart/form-data">
 
+		<div class="form-content-wrapper">
+
 			<div class="repeater__holder">
 
 				<button class="repeater__button repeater__button--add">+</button>
 
 				<div class="repeater__field-wrapper">
 
-					<div class="repeater__field">
+					<div class="repeater__field" data-repeater-id="0">
 
 						<div class="row-wrapper my-pictures__gallery-row-wrapper">
 
@@ -1879,6 +1909,8 @@ function gallery_image_uploader($user_post_id) {
 				<div class="progress-percents"></div>
 			</div>
 
+		</div>
+
 	</form>
 
 	<?php
@@ -1915,13 +1947,49 @@ function handle_image_to_gallery_upload() {
 		wp_die( esc_html__( 'Nonce mismatched', 'theme-text-domain' ) );
 	}
 
-	$all_file_names = $_FILES["image-to-gallery__input"]["name"];
+	$post_id = $_POST['post_id'];
+
+	$all_file_names_to_upload = $_FILES["image-to-gallery__input"]["name"];
 
 	$array_of_objects = array();
 
+
+
+	$pictures_to_delete_array = explode(',', $_POST["pictures_to_delete"]);
+
+	// print_r("pictures_to_delete_array:");
+	// var_dump($pictures_to_delete_array);
+
+	$images_already_in_gallery_array = get_field('translator_gallery', $post_id);
+
+	$images_to_upload = array();
+
+	// print_r("'already in array':");
+	// var_dump($images_already_in_gallery_array);
+
+	foreach ($images_already_in_gallery_array as $image) :
+
+		$image_id = attachment_url_to_postid($image);
+
+		//if image_id is not in $pictures_to_delete_array dont include it 
+
+		if (!in_array($image_id, $pictures_to_delete_array)) {
+			array_push($images_to_upload, $image_id);
+		}
+
+		if (in_array($image_id, $pictures_to_delete_array)) {
+			wp_delete_attachment($image_id);
+		}
+
+
+	endforeach;
+
+
+
+
 	$index = 0;
 
-	foreach($all_file_names as $file_name) :
+	foreach($all_file_names_to_upload as $file_name) :
 
 		$single_file_obj = new stdClass();
 
@@ -1989,30 +2057,12 @@ function handle_image_to_gallery_upload() {
 		endforeach;
 	}
 
-	$post_id = $_POST['post_id'];
-
-	$pictures_to_delete_array = explode(',', $_POST["pictures_to_delete"]);
-
-	$images_already_in_gallery_array = get_field('translator_gallery', $post_id);
-
-	$images_to_upload = array();
-
-	foreach ($images_already_in_gallery_array as $image) :
-
-		$image_id = attachment_url_to_postid($image);
-
-		//if image_id is not in $pictures_to_delete_array dont include it 
-
-		if (!in_array($image_id, $pictures_to_delete_array)) {
-			array_push($images_to_upload, $image_id);
-		}
-
-	endforeach;
-
 
 	//if file has been attached
 
 	if ( count($array_of_objects) > 0 ) {
+
+		$attachment_ids = array();
 
 		foreach($array_of_objects as $file_object) :
 
@@ -2034,15 +2084,21 @@ function handle_image_to_gallery_upload() {
 				} else {
 					// The image was uploaded successfully!
 					//needed for passing id to newly appended DOM node
-					print_r($attachment_id);
+					
 
+					array_push($attachment_ids, $attachment_id);
 					array_push($images_to_upload, $attachment_id);
 				}
 			}
 
 		endforeach;
 
+		print_r(json_encode($attachment_ids));
+
 	}
+
+	// print_r("'images to upload':");
+	// var_dump($images_to_upload);
 
 	update_field('translator_gallery', $images_to_upload, $post_id);
 
@@ -2078,13 +2134,11 @@ function gallery_video_uploader($user_post_id) {
 
 				<input type="hidden" name="post_id" value="<?php echo $user_post_id ?>"><br>
 
-				<label>
 
-					<input type="hidden" name="videos_to_delete" id="videos_to_delete" value=""/>
-
-				</label>
+				<input type="hidden" name="videos_to_delete" id="videos_to_delete" value=""/>
 
 				<input type="submit" name="submit_video_to_gallery" value="Zaktualizuj galerię" />
+				
 				<?php wp_nonce_field( "handle_video_to_gallery_upload", "video_to_gallery_nonce" ); ?>
 
 				<div class="progress">
@@ -2161,6 +2215,13 @@ function handle_video_to_gallery_upload() {
 
 	$videos_gallery_array = get_field("translator_video_gallery", $post_id);
 
+	$videos_object_for_ajax  = (object) [
+		'added_files_ids' => [],
+		'added_rows' => [],
+		'deleted_rows' => [],
+		'console_log' => []
+	];
+
 	//if there are some files to delete
 
 	if ($_POST["videos_to_delete"]) {
@@ -2173,11 +2234,10 @@ function handle_video_to_gallery_upload() {
 
 			$deleted_row_index = $video_to_delete;
 
-			delete_row('translator_video_gallery', $deleted_row_index, $post_id);
+			array_push($videos_object_for_ajax->deleted_rows, $deleted_row_index);
 
-			// print_r("deleted_row_index: ".$deleted_row_index);
-
-			// update_row('translator_video_gallery', $deleted_row_index, false);
+			//'while' because delete_row returns a boolean based on if it succeeds or not
+			while (delete_row('translator_video_gallery', $deleted_row_index, $post_id));
 
 			// -1 because acf rows count starts at 1 and array from 0
 			// var_dump($videos_gallery_array[$deleted_row_index - 1]["translator_single_video"]);
@@ -2203,13 +2263,8 @@ function handle_video_to_gallery_upload() {
 
 		$uploadedfile = $_FILES['video-to-gallery__input'];
 
-
-		var_dump($uploadedfile);
-
 		$upload_overrides = array( 'test_form' => false );
 		$movefile = wp_handle_upload( $uploadedfile, $upload_overrides );
-
-
 
 		if ( $movefile )
 		{
@@ -2246,6 +2301,10 @@ function handle_video_to_gallery_upload() {
 
 				add_row('translator_video_gallery', $row, $post_id);
 
+				$count = count(get_field('translator_video_gallery', $post_id));
+
+				array_push($videos_object_for_ajax->added_rows, $count);
+
 				// var_dump($videos_gallery_array);
 
 				// var_dump(count($videos_gallery_array));
@@ -2254,6 +2313,8 @@ function handle_video_to_gallery_upload() {
 		}
 
 	}
+
+	print_r(json_encode($videos_object_for_ajax ));
 
 	die();
 

@@ -41,28 +41,85 @@ jQuery(document).ready(function($) {
 		let repeaterFieldWrapper = wrapper.querySelector(
 			".repeater__field-wrapper"
 		);
-		const allOriginalFileInputs = wrapper.querySelectorAll(
-			'input[type="file"]'
-		);
+
+		const allOriginalInputs = wrapper.querySelectorAll(".input-preview__src");
 
 		//static for already existing inputs
-		allOriginalFileInputs.forEach(fileInput => {
-			fileInput.addEventListener("change", function(e) {
-				if (fileInput.classList.contains("input-preview__src")) {
-					console.log(e);
+		allOriginalInputs.forEach(thisInput => {
+			thisInput.addEventListener("change", function(e) {
+				console.log(e);
 
-					let newAttachmentPlaceholder = fileInput
-						.closest(".row-wrapper")
-						?.querySelector(".new-attachment__placeholder");
+				let newAttachmentPlaceholder = thisInput
+					.closest(".row-wrapper")
+					?.querySelector(".new-attachment__placeholder");
 
+				if (newAttachmentPlaceholder.tagName == "IMG") {
 					console.log(newAttachmentPlaceholder);
+					newAttachmentPlaceholder.setAttribute(
+						"src",
+						URL.createObjectURL(e.target.files[0])
+					);
+				}
 
-					newAttachmentPlaceholder &&
-						newAttachmentPlaceholder.setAttribute(
-							"src",
-							URL.createObjectURL(e.target.files[0])
-						);
+				if (
+					newAttachmentPlaceholder.querySelector(
+						".my-sounds__gallery-text-wrapper"
+					) &&
+					!e.target.files
+				) {
+					let soundLabel = thisInput
+						.closest("FORM")
+						.querySelector(".input-text").value;
+					let soundDescription = thisInput
+						.closest("FORM")
+						.querySelector(".input-textarea").value;
 
+					newAttachmentPlaceholder.querySelector(
+						".my-sounds__gallery-attachment--label p"
+					).textContent = soundLabel;
+					newAttachmentPlaceholder.querySelector(
+						".my-sounds__gallery-attachment--description p"
+					).textContent = soundDescription;
+
+					//dont show icon if there is no sound attached
+					newAttachmentPlaceholder.querySelector(
+						".new-attachment__icon"
+					).style.display = "none";
+					newAttachmentPlaceholder.style.position = "absolute";
+				}
+
+				if (
+					newAttachmentPlaceholder.querySelector(".sound-title") &&
+					e.target.files
+				) {
+					newAttachmentPlaceholder.querySelector(".sound-title").textContent =
+						e.target.files[0].name;
+					let soundLabel = thisInput
+						.closest("FORM")
+						.querySelector(".input-text").value;
+					let soundDescription = thisInput
+						.closest("FORM")
+						.querySelector(".input-textarea").value;
+
+					console.log(soundLabel);
+
+					newAttachmentPlaceholder.querySelector(
+						".my-sounds__gallery-attachment--label p"
+					).textContent = soundLabel;
+					newAttachmentPlaceholder.querySelector(
+						".my-sounds__gallery-attachment--description p"
+					).textContent = soundDescription;
+
+					//show icon and title if there is sound attached
+					newAttachmentPlaceholder.classList.add("important-visible");
+
+					newAttachmentPlaceholder.querySelector(
+						".new-attachment__icon"
+					).style.display = "block";
+					newAttachmentPlaceholder.style.position = "static";
+				}
+
+				if (newAttachmentPlaceholder) {
 					newAttachmentPlaceholder.style.display = "block";
 				}
 			});
@@ -74,26 +131,91 @@ jQuery(document).ready(function($) {
 				console.log(mutation);
 
 				if (mutation.type === "childList") {
-					const allFileInputs = wrapper.querySelectorAll('input[type="file"]');
+					const allFileInputs = wrapper.querySelectorAll(".input-preview__src");
 
-					allFileInputs.forEach(fileInput => {
-						fileInput.addEventListener("change", function(e) {
-							if (fileInput.classList.contains("input-preview__src")) {
-								console.log(e);
+					allFileInputs.forEach(thisInput => {
+						thisInput.addEventListener("change", function(e) {
+							console.log(e);
 
-								let newAttachmentPlaceholder = fileInput
-									.closest(".row-wrapper")
-									?.querySelector(".new-attachment__placeholder");
+							let closestRowWrapper = thisInput.closest(".row-wrapper");
 
-								newAttachmentPlaceholder &&
-									newAttachmentPlaceholder.setAttribute(
-										"src",
-										URL.createObjectURL(e.target.files[0])
-									);
+							let newAttachmentPlaceholder = closestRowWrapper?.querySelector(
+								".new-attachment__placeholder"
+							);
 
-								if (newAttachmentPlaceholder) {
-									newAttachmentPlaceholder.style.display = "block";
-								}
+							console.log(
+								newAttachmentPlaceholder.querySelector(".sound-title")
+									.textContent.length
+							);
+
+							if (newAttachmentPlaceholder.tagName == "IMG") {
+								newAttachmentPlaceholder.setAttribute(
+									"src",
+									URL.createObjectURL(e.target.files[0])
+								);
+							}
+
+							if (
+								newAttachmentPlaceholder.querySelector(
+									".my-sounds__gallery-text-wrapper"
+								) &&
+								newAttachmentPlaceholder.querySelector(".sound-title")
+									.textContent.length > 0 &&
+								!e.target.files
+							) {
+								let soundLabel = thisInput
+									.closest("FORM")
+									.querySelector(".input-text").value;
+								let soundDescription = thisInput
+									.closest("FORM")
+									.querySelector(".input-textarea").value;
+
+								newAttachmentPlaceholder.querySelector(
+									".my-sounds__gallery-attachment--label p"
+								).textContent = soundLabel;
+								newAttachmentPlaceholder.querySelector(
+									".my-sounds__gallery-attachment--description p"
+								).textContent = soundDescription;
+
+								//dont show icon if there is no sound attached
+								newAttachmentPlaceholder.querySelector(
+									".new-attachment__icon"
+								).style.display = "none";
+								newAttachmentPlaceholder.style.position = "absolute";
+							}
+
+							if (
+								newAttachmentPlaceholder.querySelector(".sound-title") &&
+								e.target.files
+							) {
+								newAttachmentPlaceholder.querySelector(
+									".sound-title"
+								).textContent = e.target.files[0].name;
+								let soundLabel = thisInput
+									.closest("FORM")
+									.querySelector(".input-text").value;
+								let soundDescription = thisInput
+									.closest("FORM")
+									.querySelector(".input-textarea").value;
+
+								console.log(soundLabel);
+
+								newAttachmentPlaceholder.querySelector(
+									".my-sounds__gallery-attachment--label p"
+								).textContent = soundLabel;
+								newAttachmentPlaceholder.querySelector(
+									".my-sounds__gallery-attachment--description p"
+								).textContent = soundDescription;
+
+								//show icon and title if there is sound attached
+								newAttachmentPlaceholder.querySelector(
+									".new-attachment__icon"
+								).style.display = "block";
+								newAttachmentPlaceholder.style.position = "static";
+							}
+
+							if (newAttachmentPlaceholder) {
+								newAttachmentPlaceholder.style.display = "block";
 							}
 						});
 					});
@@ -348,7 +470,9 @@ jQuery(document).ready(function($) {
 			".my-ajax-loader"
 		);
 
-		const soundToGalleryInput = this.querySelector("#sound-to-gallery__input");
+		const allSoundToGalleryInputs = this.querySelectorAll(
+			"#sound-to-gallery__input"
+		);
 
 		var soundGalleryFormData = new FormData(this);
 
@@ -398,31 +522,82 @@ jQuery(document).ready(function($) {
 				console.log("SUCCESS!");
 				console.log(data);
 
-				// const dataJSON = JSON.parse(data);
+				const dataJSON = JSON.parse(data);
 
-				// console.log(dataJSON);
+				// console.log(dataJSON.added_files_ids);
 
-				let newlyAddedSound = $("#newSoundInGalleryPlaceholder").clone();
+				let addedFilesIds = dataJSON.added_files_ids;
+				let addedRows = dataJSON.added_rows;
+				let deletedRows = dataJSON.deleted_rows;
 
-				newlyAddedSound
-					.css("transform", "scale(0)")
-					.css("transition", "all 0.3s ease-in")
-					.appendTo(".my-sounds__gallery")
-					.attr("id", "newlyAddedSound");
+				let allNewlyAddedSounds = $(
+					"#upload_sound_to_gallery_form .new-attachment__placeholder"
+				);
+
+				// console.log(allNewlyAddedSounds);
+
+				allNewlyAddedSounds.each(function(index) {
+					console.log(index);
+
+					$(this)
+						.clone()
+						.css("transform", "scale(0)")
+						.css("position", "static")
+						.css("transition", "all 0.3s ease-in")
+						.appendTo(".my-sounds__gallery")
+						.addClass(
+							"newlyAddedSound row-wrapper my-sounds__gallery-row-wrapper wrapper-flex-drow-mcol"
+						)
+						.find("A")
+						.attr("data-id", addedRows[index]);
+
+					//clear input
+					$(this).css("display", "none");
+				});
+
+				//reset form
+
+				$(uploadSoundToGalleryForm).trigger("reset");
 
 				setTimeout(function() {
-					$("#newlyAddedSound .remove-item").attr("data-id", data);
+					$(".newlyAddedSound")
+						.find(".my-sounds__gallery-attachment--label")
+						.css("display", "block");
+					$(".newlyAddedSound")
+						.find(".my-sounds__gallery-attachment--description")
+						.css("display", "block");
 
-					$("#newlyAddedSound")
+					$(".newlyAddedSound")
+						.find(".my-sounds__gallery-text-wrapper")
+						.addClass("col-d50");
+					$(".newlyAddedSound")
+						.find(".my-sounds__gallery-attachment--file-info")
+						.addClass("col-d50");
+
+					$(".newlyAddedSound")
 						.css("transform", "scale(1)")
-						.attr("id", "");
-				}, 100);
+						.removeClass("newlyAddedSound");
+				}, 200);
 
-				$("#newSoundInGalleryPlaceholder").css("display", "none");
+				let allRepeaterFieldsInThisForm = $(
+					"#upload_sound_to_gallery_form .repeater__field"
+				);
 
-				//clear input
+				allRepeaterFieldsInThisForm.each(function(index) {
+					//clear first one
+					// if (index === 0) {
+					// 	$(this)
+					// 		.find(".new-attachment__placeholder")
+					// 		.attr("src", "");
+					// }
 
-				soundToGalleryInput.value = null;
+					//delete rest
+					if (index > 0) {
+						$(this).remove();
+					}
+				});
+
+				$(uploadSoundToGalleryForm).trigger("reset");
 
 				return data;
 			},
@@ -442,17 +617,9 @@ jQuery(document).ready(function($) {
 				modalMessageHolder.appendChild(errorMessageNode[0]);
 
 				showModal();
-
-				// jsonValue = jQuery.parseJSON( jqXHR.responseText );
-				// console.log(jsonValue.Message);
 			}
 		});
 	});
-
-	// $("#sound-to-gallery__input").change(function(event) {
-	// 	$("#newSoundInGalleryPlaceholder").fadeIn(300);
-	// 	$("#newSoundInGalleryPlaceholder p").text(event.target.files[0]?.name);
-	// });
 
 	/* 	User Linkedin Form */
 
@@ -610,9 +777,6 @@ jQuery(document).ready(function($) {
 
 				originalImage.style.opacity = "1";
 				uploadPicturePreview.classList.remove("has-image");
-
-				// jsonValue = jQuery.parseJSON( jqXHR.responseText );
-				// console.log(jsonValue.Message);
 			}
 		});
 	});
@@ -680,7 +844,13 @@ jQuery(document).ready(function($) {
 				console.log("SUCCESS!");
 				console.log(data);
 
-				// const dataJSON = JSON.parse(data);
+				const dataJSON = JSON.parse(data);
+				console.log(dataJSON);
+				console.log(typeof dataJSON);
+
+				let arrayOfIndexesToDelete = Object.values(dataJSON);
+
+				console.log(arrayOfIndexesToDelete);
 
 				let allNewAttachmentWrappersInThisForm = $(
 					"#upload_image_to_gallery_form .new-attachment__wrapper"
@@ -694,11 +864,15 @@ jQuery(document).ready(function($) {
 						.css("transition", "all 0.3s ease-in")
 						.addClass("my-pictures__gallery-attachment")
 						.addClass("newlyAddedImage")
-						.appendTo(".my-pictures__gallery");
+						.appendTo(".my-pictures__gallery")
+						.children("A")
+						.attr("data-id", arrayOfIndexesToDelete[index]);
+
+					// console.log(arrayOfIndexesToDelete[index]);
+
+					// $(this).attr("data-id", arrayOfIndexesToDelete[index]);
 
 					setTimeout(function() {
-						$(".newlyAddedImage .remove-item").attr("data-id", data);
-
 						$(".newlyAddedImage")
 							.css("transform", "scale(1)")
 							.removeClass("newlyAddedImage");
@@ -709,10 +883,13 @@ jQuery(document).ready(function($) {
 					"#upload_image_to_gallery_form .repeater__field"
 				);
 
+				//clearings
+
+				$(uploadImageToGalleryForm).trigger("reset");
+
 				allRepeaterFieldsInThisForm.each(function(index) {
 					//clear first one
 					if (index === 0) {
-						$(this).find("INPUT").value = null;
 						$(this)
 							.find(".new-attachment__placeholder")
 							.attr("src", "");
@@ -723,26 +900,6 @@ jQuery(document).ready(function($) {
 						$(this).remove();
 					}
 				});
-
-				// let newlyAddedImage = $("#newImageInGalleryPlaceholder").clone();
-
-				// newlyAddedImage
-				// 	.css("transform", "scale(0)")
-				// 	.css("transition", "all 0.3s ease-in")
-				// 	.appendTo(".my-pictures__gallery")
-				// 	.attr("id", "newlyAddedImage");
-
-				// setTimeout(function() {
-				// 	$("#newlyAddedImage .remove-item").attr("data-id", data);
-
-				// 	$("#newlyAddedImage")
-				// 		.css("transform", "scale(1)")
-				// 		.attr("id", "");
-				// }, 100);
-
-				// $("#newImageInGalleryPlaceholder").css("display", "none");
-
-				//clear input
 
 				return data;
 			},
@@ -768,37 +925,6 @@ jQuery(document).ready(function($) {
 			}
 		});
 	});
-
-	// const allFileInputs = document.querySelectorAll('input[type="file"]');
-
-	// allFileInputs &&
-	// 	allFileInputs.forEach(fileinput => {
-	// 		fileinput.addEventListener("change", function(e) {
-	// 			if (fileinput.classList.contains("input-preview__src")) {
-	// 				console.log(e);
-
-	// 				let newAttachmentPlaceholder = fileinput
-	// 					.closest(".row-wrapper")
-	// 					?.querySelector(".new-attachment__placeholder");
-
-	// 				newAttachmentPlaceholder &&
-	// 					newAttachmentPlaceholder.setAttribute(
-	// 						"src",
-	// 						URL.createObjectURL(e.target.files[0])
-	// 					);
-
-	// 				newAttachmentPlaceholder.style.display = "block";
-	// 			}
-	// 		});
-	// 	});
-
-	// $("#image-to-gallery__input").change(function(event) {
-	// 	$("#newImageInGalleryPlaceholder").fadeIn(300);
-
-	// 	$("#newImageInGalleryPlaceholder img")
-	// 		.fadeIn(300)
-	// 		.attr("src", URL.createObjectURL(event.target.files[0]));
-	// });
 
 	/* 	Upload video to gallery Form */
 
@@ -867,9 +993,13 @@ jQuery(document).ready(function($) {
 				console.log("SUCCESS!");
 				console.log(data);
 
-				// const dataJSON = JSON.parse(data);
+				const dataJSON = JSON.parse(data);
 
-				// console.log(dataJSON);
+				console.log(dataJSON);
+
+				let addedFilesIds = dataJSON.added_files_ids;
+				let addedRows = dataJSON.added_rows;
+				let deletedRows = dataJSON.deleted_rows;
 
 				let newlyAddedVideo = $("#newVideoInGalleryPlaceholder").clone();
 
@@ -880,7 +1010,7 @@ jQuery(document).ready(function($) {
 					.attr("id", "newlyAddedVideo");
 
 				setTimeout(function() {
-					$("#newlyAddedVideo .remove-item").attr("data-id", data);
+					$("#newlyAddedVideo .remove-item").attr("data-id", addedRows[0]);
 
 					$("#newlyAddedVideo")
 						.css("transform", "scale(1)")

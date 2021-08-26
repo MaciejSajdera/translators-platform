@@ -130,6 +130,10 @@ input[type="checkbox"] {
 			bottom: calc((#{$repeater_input_height} - #{$checkbox_height}) / 2);
 		}
 	}
+
+	.row-wrapper {
+		align-items: center;
+	}
 }
 
 #upload_image_to_gallery_form {
@@ -150,6 +154,13 @@ label {
 	display: flex;
 	align-items: center;
 	cursor: pointer;
+}
+
+.new-attachment {
+	&__icon {
+		min-width: 35px;
+		width: 35px;
+	}
 }
 
 /* Profile Picture Form */

@@ -74,6 +74,8 @@ document.addEventListener("DOMContentLoaded", () => {
 	const allRepeaterHolders = document.querySelectorAll(".repeater__holder");
 
 	if (allRepeaterHolders) {
+		let i = 1;
+
 		allRepeaterHolders.forEach(holder => {
 			holder.addEventListener("click", function(e) {
 				if (e.target.classList.contains("repeater__button--add")) {
@@ -87,6 +89,10 @@ document.addEventListener("DOMContentLoaded", () => {
 						.querySelector(".repeater__field")
 						.cloneNode(true);
 
+					clonedField.dataset.repeaterId = i;
+
+					i++;
+
 					let deleteFieldButton = document.createElement("BUTTON");
 
 					deleteFieldButton.classList.add(
@@ -98,9 +104,23 @@ document.addEventListener("DOMContentLoaded", () => {
 
 					clonedField.appendChild(deleteFieldButton);
 
-					let clonedFieldInput = clonedField.querySelector("INPUT");
+					//clearings
 
-					clonedFieldInput ? (clonedFieldInput.value = "") : "";
+					let allClonedFieldInputs = clonedField.querySelectorAll("INPUT");
+
+					let allClonedFieldTextAreas = clonedField.querySelectorAll(
+						"TEXTAREA"
+					);
+
+					allClonedFieldInputs &&
+						allClonedFieldInputs.forEach(clonedInput => {
+							clonedInput.value = "";
+						});
+
+					allClonedFieldTextAreas &&
+						allClonedFieldTextAreas.forEach(clonedTextArea => {
+							clonedTextArea.value = "";
+						});
 
 					let clonedFieldNewAttachmentPlaceholder = clonedField.querySelector(
 						".new-attachment__placeholder"
@@ -109,6 +129,14 @@ document.addEventListener("DOMContentLoaded", () => {
 					clonedFieldNewAttachmentPlaceholder
 						? (clonedFieldNewAttachmentPlaceholder.src = "")
 						: "";
+
+					clonedField
+						.querySelector(".new-attachment__placeholder")
+						.classList.remove("important-visible");
+
+					clonedField.querySelector(
+						".new-attachment__placeholder"
+					).style.display = "none";
 
 					container.appendChild(clonedField);
 				}
@@ -320,9 +348,9 @@ document.addEventListener("DOMContentLoaded", () => {
 
 	const soundsGalleryWrapper = document.querySelector(".my-sounds__wrapper");
 
-	const soundToGalleryInput = soundsGalleryWrapper?.querySelector(
-		"#sound-to-gallery__input"
-	);
+	// const soundToGalleryInput = soundsGalleryWrapper?.querySelector(
+	// 	"#sound-to-gallery__input"
+	// );
 
 	const soundsToDeleteArray = [];
 	const soundsToDeleteInput = document.querySelector("#sounds_to_delete");
@@ -346,20 +374,32 @@ document.addEventListener("DOMContentLoaded", () => {
 			if (e.target.classList.contains("remove-item")) {
 				e.target.addEventListener("click", e => {
 					e.preventDefault();
-
-					let thisSoundWrapper = e.target.closest(
-						".my-sounds__gallery-row-wrapper"
-					);
-
 					let soundId = e.target.dataset.id;
 
-					if (thisSoundWrapper.id === "newSoundInGalleryPlaceholder") {
-						console.log("clear");
-						soundToGalleryInput.value = null;
-						thisSoundWrapper.style.display = "none";
+					let thisSoundWrapper;
+
+					//form
+					if (e.target.closest("#upload_sound_to_gallery_form")) {
+						console.log("form");
+						thisSoundWrapper = e.target.closest(".new-attachment__preview");
+
+						thisSoundWrapper
+							.closest("FORM")
+							.querySelector("input[type='file']").value = null;
+						thisSoundWrapper.closest(
+							".new-attachment__placeholder"
+						).style.display = "none";
 						thisSoundWrapper.querySelector("p").innerText = null;
 
-						return;
+						thisSoundWrapper.remove();
+					}
+
+					//gallery
+					if (e.target.closest(".my-sounds__gallery")) {
+						console.log("gallery");
+						thisSoundWrapper = e.target.closest(".row-wrapper");
+
+						thisSoundWrapper.remove();
 					}
 
 					if (soundId) {
@@ -370,8 +410,6 @@ document.addEventListener("DOMContentLoaded", () => {
 						console.log(soundsToDeleteArray);
 						soundsToDeleteInput.value = soundsToDeleteArray;
 					}
-
-					thisSoundWrapper.remove();
 				});
 			}
 		});
