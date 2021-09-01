@@ -32,36 +32,57 @@
 		<div class="modal-message-holder"></div>
     </div>
 </div>
-
+ 
 <?php wp_body_open(); ?>
 <div id="page" class="site">
 	<a class="skip-link screen-reader-text" href="#content"><?php esc_html_e( 'Skip to content', 'pstk' ); ?></a>
 
 	<header id="masthead" class="site-header">
 
-		<div class="site-header__wrapper">
+				<div class="site-branding">
 
-			<div class="site-branding">
+					<a href="<?php echo esc_url( home_url( '/' ) ); ?>" rel="home"><?php bloginfo( 'name' ); ?>
+						<?php the_custom_logo(); ?>
+					</a>
 
-				<a href="<?php echo esc_url( home_url( '/' ) ); ?>" rel="home"><?php bloginfo( 'name' ); ?>
-					<?php the_custom_logo(); ?>
-				</a>
+				</div><!-- .site-branding -->
 
-			</div><!-- .site-branding -->
+				<div class="desktop-menu-container">
 
-			<nav id="site-navigation" class="main-navigation">
+						<div class="dropdownBackground">
+							<span class="arrow"></span>
+						</div>
+
+						<?php
+							wp_nav_menu(
+								array(
+									'theme_location' => 'primary',
+									'menu_id'        => 'desktop-menu',
+									'orderby' => 'menu_order',
+									'container'            => 'nav',
+								)
+							);
+						?>
+						
+				</div>
+
+
+				<div class="mobile-menu-container">
+					<?php
+						wp_nav_menu(
+							array(
+								'theme_location' => 'primary',
+								'menu_id'        => 'mobile-menu',
+								'orderby' => 'menu_order',
+								'container'            => 'nav',
+							)
+						);
+					?>
+				</div>
+
+
 				<button class="menu-toggle" aria-controls="primary-menu" aria-expanded="false"><?php esc_html_e( 'Primary Menu', 'pstk' ); ?></button>
-				<?php
-				wp_nav_menu(
-					array(
-						'theme_location' => 'menu-1',
-						'menu_id'        => 'primary-menu',
-					)
-				);
-				?>
-			</nav><!-- #site-navigation -->
 
-		</div>
 
 	</header><!-- #masthead -->
 

@@ -9,9 +9,9 @@ $color__background-ins: #fff9c0;
 $color__text-screen: #21759b;
 $color__text-input: #666;
 $color__text-input-focus: #111;
-$color__link: #4169e1; //royalblue
-$color__link-visited: #800080; //purple
-$color__link-hover: #191970; //midnightblue
+$color__link: inherit; //royalblue
+$color__link-visited: inherit; //purple
+$color__link-hover: inherit; //midnightblue
 $color__text-main: #404040;
 
 $color__border-button: #ccc #ccc #bbb;
@@ -26,6 +26,7 @@ $color__inactive-element: #cacaca;
 
 $color__error-red: red;
 $color__success-green: green;
+$color__text--light-grey: #999;
 
 /* TYPOGRAPHY */
 $font__main: sans-serif;

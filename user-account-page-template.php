@@ -13,7 +13,6 @@ get_header();
 // var_dump($_FILES);
 ?>
 
-	
 
 	<div id="primary" class="content-area">
 		<main id="main" class="site-main account">
@@ -23,16 +22,18 @@ get_header();
 		if ( !is_user_logged_in() ) {
 			?>
 
-			<div class="login-and-registration login-and-registration__welcome-view">
+			<div class="wrapper-flex-drow-mcol login-and-registration login-and-registration__welcome-view">
 
 				<div class="login-and-registration__forms">
 
-					<div class="login-panel">
+					<div class="login-panel sign-in-wrapper form-active form-activated">
 						<?php get_template_part( 'template-parts/custom-login-form' ); ?>
+						<p id="switch-sign-up">Nie masz konta? Dołącz do PSTK</p>
 					</div>
 
-					<div class="registration-panel">
+					<div class="registration-panel sign-up-wrapper form-deactivated">
 						<?php echo do_shortcode("[register_form]"); ?>
+						<p id="switch-sign-in">Masz już konto? Zaloguj się</p>
 					</div>
 
 				</div>
@@ -474,7 +475,7 @@ get_header();
 															
 																echo '<a class="remove-item" href="#" data-id="'.$i.'"></a>';
 
-																echo '<div class="my-sounds__gallery-text-wrapper col-d50">';
+																echo '<div class="my-sounds__gallery-text-wrapper col-d50 test">';
 
 																	echo '<div class="my-sounds__gallery-attachment--label">';
 

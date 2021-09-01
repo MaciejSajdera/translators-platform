@@ -1,6 +1,10 @@
 .site-content,
 .site-header {
-	padding: 0 7.5%;
+	padding: 0 1rem;
+
+	@media screen and (min-width: 992px) {
+		padding: 0 7.5%;
+	}
 }
 
 .site-content {
@@ -30,6 +34,13 @@
 	flex-flow: row;
 	justify-content: space-between;
 	flex-wrap: wrap;
+}
+
+.wrapper-flex-col-center {
+	display: flex;
+	flex-flow: column;
+	justify-content: center;
+	align-items: center;
 }
 
 .col-d50 {
@@ -120,6 +131,10 @@
 		color: $color__error-red;
 		margin: auto;
 	}
+
+	&__text {
+		color: $color__error-red;
+	}
 }
 
 .php-success {
@@ -169,6 +184,8 @@ body.blog {
 			form > ul {
 				display: flex;
 				flex-flow: column;
+				padding: 0;
+				margin: 0;
 
 				@media screen and (min-width: 992px) {
 					flex-flow: row;
@@ -441,5 +458,32 @@ body.blog {
 
 	.new-attachment__icon {
 		display: none !important;
+	}
+}
+
+.common-box {
+	&__new-posts {
+		margin: 4em 0;
+
+		h2 {
+			text-align: center;
+		}
+
+		.tile {
+			flex: 1;
+			min-height: 300px;
+			overflow: hidden;
+
+			a {
+				display: block;
+				height: 100%;
+				width: 100%;
+			}
+
+			.thumbnail {
+				background-size: cover;
+				height: 100%;
+			}
+		}
 	}
 }

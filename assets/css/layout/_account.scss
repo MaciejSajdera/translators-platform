@@ -112,6 +112,10 @@
 		}
 	}
 
+	input[type="file"] {
+		color: transparent;
+	}
+
 	&__settings {
 		.info-box {
 			margin-bottom: 3rem;
@@ -174,17 +178,26 @@
 	}
 }
 
+$login-and-registration-height: 80vh;
+
 .login-and-registration {
 	&__welcome-view {
 		display: flex;
-		min-height: 90vh;
+		min-height: $login-and-registration-height;
 	}
 
 	&__forms {
-		width: 35%;
 		height: 100%;
 		border: 1px solid $color__border-element;
 		position: relative;
+		display: flex;
+		justify-content: center;
+		align-items: center;
+
+		@media screen and (min-width: 992px) {
+			width: 35%;
+			min-height: $login-and-registration-height;
+		}
 
 		// .login-panel,
 		// .registration-panel {
@@ -203,6 +216,39 @@
 			}
 		}
 
+		.login-panel,
+		.registration-panel {
+			transition: all 0.5s cubic-bezier(0.17, 0.04, 0.32, 1);
+			transform: translateY(5%);
+			opacity: 0;
+			width: 100%;
+		}
+
+		.forgot-password-link {
+			text-align: center;
+			width: 100%;
+			display: block;
+		}
+
+		#switch-sign-in,
+		#switch-sign-up {
+			cursor: pointer;
+			text-align: center;
+		}
+
+		.form-deactivated {
+			display: none;
+		}
+
+		.form-activated {
+			display: block;
+		}
+
+		.form-active {
+			opacity: 1;
+			transform: translateY(0%);
+		}
+
 		.login-logo {
 			display: flex;
 			width: 100%;
@@ -213,13 +259,23 @@
 	}
 
 	&__our-mission {
-		width: 65%;
-
 		display: flex;
 		justify-content: center;
 		align-items: center;
 
 		border: 1px solid $color__border-element;
+
+		@media screen and (min-width: 992px) {
+			width: 65%;
+		}
+	}
+}
+
+#lostpasswordform {
+	p {
+		display: flex;
+		flex-flow: column;
+		margin: 1rem auto;
 	}
 }
 
@@ -430,6 +486,7 @@
 			display: flex;
 			align-items: center;
 			position: relative;
+			margin: 1rem 0;
 		}
 
 		&-text-wrapper {

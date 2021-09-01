@@ -1,4 +1,33 @@
 document.addEventListener("DOMContentLoaded", () => {
+	const switchSignIn = document.querySelector("#switch-sign-in");
+	const switchSignUp = document.querySelector("#switch-sign-up");
+	const signInWrapper = document.querySelector(".sign-in-wrapper");
+	const signUpWrapper = document.querySelector(".sign-up-wrapper");
+
+	if (switchSignIn) {
+		switchSignUp.addEventListener("click", () => {
+			signInWrapper.classList.remove("form-active", "form-activated");
+			signInWrapper.classList.add("form-deactivated");
+
+			signUpWrapper.classList.add("form-activated");
+			setTimeout(() => signUpWrapper.classList.add("form-active"), 100);
+
+			// switchSignIn.classList.remove("switch-active");
+			// switchSignUp.classList.add("switch-active");
+		});
+
+		switchSignIn.addEventListener("click", () => {
+			signUpWrapper.classList.remove("form-active", "form-activated");
+			signUpWrapper.classList.add("form-deactivated");
+
+			signInWrapper.classList.add("form-activated");
+			setTimeout(() => signInWrapper.classList.add("form-active"), 100);
+
+			// switchSignUp.classList.remove("switch-active");
+			// switchSignIn.classList.add("switch-active");
+		});
+	}
+
 	const accountNavigation = document.querySelector(".account__navigation");
 
 	if (accountNavigation) {
@@ -130,9 +159,11 @@ document.addEventListener("DOMContentLoaded", () => {
 						? (clonedFieldNewAttachmentPlaceholder.src = "")
 						: "";
 
-					clonedField
-						.querySelector(".new-attachment__placeholder")
-						.classList.remove("important-visible");
+					console.log(clonedFieldNewAttachmentPlaceholder);
+
+					clonedFieldNewAttachmentPlaceholder
+						.querySelector(".new-attachment__preview")
+						?.remove();
 
 					clonedField.querySelector(
 						".new-attachment__placeholder"
@@ -340,76 +371,6 @@ document.addEventListener("DOMContentLoaded", () => {
 					}
 
 					thisVideoWrapper.remove();
-				});
-			}
-		});
-
-	//Sounds Gallery
-
-	const soundsGalleryWrapper = document.querySelector(".my-sounds__wrapper");
-
-	// const soundToGalleryInput = soundsGalleryWrapper?.querySelector(
-	// 	"#sound-to-gallery__input"
-	// );
-
-	const soundsToDeleteArray = [];
-	const soundsToDeleteInput = document.querySelector("#sounds_to_delete");
-
-	soundsGalleryWrapper &&
-		soundsGalleryWrapper.addEventListener("mouseover", function(e) {
-			console.log(e.target);
-
-			if (e.target.classList.contains("my-sounds__gallery-row-wrapper")) {
-				e.target.classList.add("my-sounds__gallery-attachment--hovered");
-
-				e.target.addEventListener("mouseleave", e => {
-					e.target.classList.contains("my-sounds__gallery-attachment--hovered")
-						? e.target.classList.remove(
-								"my-sounds__gallery-attachment--hovered"
-						  )
-						: "";
-				});
-			}
-
-			if (e.target.classList.contains("remove-item")) {
-				e.target.addEventListener("click", e => {
-					e.preventDefault();
-					let soundId = e.target.dataset.id;
-
-					let thisSoundWrapper;
-
-					//form
-					if (e.target.closest("#upload_sound_to_gallery_form")) {
-						console.log("form");
-						thisSoundWrapper = e.target.closest(".new-attachment__preview");
-
-						thisSoundWrapper
-							.closest("FORM")
-							.querySelector("input[type='file']").value = null;
-						thisSoundWrapper.closest(
-							".new-attachment__placeholder"
-						).style.display = "none";
-						thisSoundWrapper.querySelector("p").innerText = null;
-
-						thisSoundWrapper.remove();
-					}
-
-					//gallery
-					if (e.target.closest(".my-sounds__gallery")) {
-						console.log("gallery");
-						thisSoundWrapper = e.target.closest(".row-wrapper");
-
-						thisSoundWrapper.remove();
-					}
-
-					if (soundId) {
-						!soundsToDeleteArray.includes(soundId)
-							? soundsToDeleteArray.push(soundId)
-							: "";
-
-						console.log(soundsToDeleteArray);
-						soundsToDeleteInput.value = soundsToDeleteArray;
-					}
 				});
 			}
 		});

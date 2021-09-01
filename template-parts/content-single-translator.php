@@ -155,16 +155,67 @@
 
 	</div>
 	 <!-- end of section-1 -->
+	 
+	 <?php
+	 	$single_translator_sounds_repeater = get_field("translator_sound_gallery");
 
-	 <div class="single-translator__section single-translator__section--2">
+		if ($single_translator_sounds_repeater) :
+	 ?>
 
-		<div class="wrapper-flex">
-			<h2>
-				Posłuchaj próbki głosu
-			</h2>
+		<div class="single-translator__section single-translator__section--2">
+
+			<div class="wrapper-flex">
+				<h2>
+					Posłuchaj próbki głosu
+				</h2>
+
+				<div class="wrapper-flex">
+					<!-- Slider main container -->
+					<div class="swiper-container swiper-container--single-translator-sound-gallery">
+					<!-- Additional required wrapper -->
+						<div class="swiper-wrapper">
+
+							<?php
+
+								foreach($single_translator_sounds_repeater as $repeater_field) :
+
+									echo '<div class="swiper-slide wrapper-flex-col-center">';
+
+										echo '<audio
+												controls
+												src="'.$repeater_field["translator_single_voice_recording"].'">
+													Your browser does not support the
+													<code>audio</code> element.
+											</audio>';
+
+										echo '<p>'.$repeater_field["translator_single_voice_recording_label"].'</p>';
+
+										echo '<p>'.$repeater_field["translator_single_voice_recording_text"].'</p>';
+									
+									echo '</div>';
+
+
+								endforeach;
+
+							?>
+
+						</div>
+						<!-- If we need pagination -->
+						<div class="swiper-pagination"></div>
+
+						<!-- If we need navigation buttons -->
+						<div class="swiper-button-prev"></div>
+						<div class="swiper-button-next"></div>
+
+					</div>
+				</div>
+			</div>
+
 		</div>
 
-	</div>
+	<?php
+		endif;
+	?>
 	<!-- end of section-2 -->
 
 	<div class="single-translator__section single-translator__section--3">

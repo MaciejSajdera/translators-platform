@@ -45,9 +45,10 @@ if ( ! function_exists( 'pstk_setup' ) ) :
 		// This theme uses wp_nav_menu() in one location.
 		register_nav_menus(
 			array(
-				'menu-1' => esc_html__( 'Primary', 'pstk' ),
+				'primary' => esc_html__( 'Primary', 'pstk' ),
 			)
 		);
+		
 
 		/*
 		 * Switch default core markup for search form, comment form, and comments
@@ -198,19 +199,70 @@ function my_update_cookie( $logged_in_cookie ){
 // remove admin bar for all users except administrators
 add_action('after_setup_theme', 'remove_admin_bar');
 function remove_admin_bar() {
-if (!current_user_can('administrator') && !is_admin()) {
-  show_admin_bar(false);
+	if (!current_user_can('administrator') && !is_admin()) {
+	show_admin_bar(false);
+	}
 }
+
+// change url of the lost password page
+add_filter( 'lostpassword_url',  'my_lostpassword_url', 10, 0 );
+function my_lostpassword_url() {
+    return site_url('/lost-password/');
 }
 
 //helper functions
 
-function cmb_get_image_id($image_src) {
-	
-    global $wpdb;
-    $image = $wpdb->get_col($wpdb->prepare("SELECT ID FROM $wpdb->posts WHERE guid='%s';", $image_src )); 
-    return $image[0]; //return the image ID
+
+//
+
+///////////////////////// MENUS ////////////////////////////
+
+add_filter( 'wp_nav_menu_objects', 'wpdocs_add_menu_parent_class', 11, 3 );
+
+function wpdocs_add_menu_parent_class( $items ) {
+    $parents = array();
+
+    // Collect menu items with parents.
+    foreach ( $items as $item ) {
+        if ( $item->menu_item_parent && $item->menu_item_parent > 0 ) {
+            $parents[] = $item->menu_item_parent;
+        }
+    }
+
+    // Add class.
+    foreach ( $items as $item ) {
+        if ( in_array( $item->ID, $parents ) ) {
+            $item->classes[] = 'menu-parent-link'; //here attach the class
+			// $item->title .= ' <span class="expand-menu-toggle"></span>';
+        }
+    }
+
+    return $items;
 }
+
+function prefix_add_button_after_menu_item_children( $item_output, $item, $depth, $args ) {
+
+        if ( in_array( 'menu-item-has-children', $item->classes ) || in_array( 'page_item_has_children', $item->classes ) ) {
+            $item_output = str_replace( $args->link_after . '</a>', $args->link_after . '</a><span class="expand-menu-toggle" aria-expanded="false" aria-pressed="false"></span>', $item_output );
+        }
+
+    return $item_output;
+}
+add_filter( 'walker_nav_menu_start_el', 'prefix_add_button_after_menu_item_children', 10, 4 );
+
+
+class Has_Child_Walker_Nav_Menu extends Walker_Nav_Menu {
+    public function display_element( $element, &$children_elements, $max_depth, $depth, $args, &$output ) {
+        if ( ! $element ) {
+            return;
+        }
+        $element->has_children = ! empty( $children_elements[ $element->{$this->db_fields['id']} ] );
+        parent::display_element( $element, $children_elements, $max_depth, $depth, $args, $output );
+    }
+}
+
+
+/////////////////////////////////// FORMS ////////////////////////////////////////////////////
 
 // user registration login form
 function vicode_registration_form() {
@@ -424,7 +476,6 @@ function vicode_error_messages() {
 // 		return $output;
 // }
 // add_shortcode('display_basic_user_data_form', 'show_basic_user_data_form');
-
 
 
 /* ADD BASIC USER DATA FORM */
@@ -1503,52 +1554,52 @@ function gallery_sound_uploader($user_post_id) {
 										<div id="newSoundInGalleryPlaceholder" class="new-attachment__placeholder" style="display:none;" width="">
 											<?php
 
-											echo '<div class="new-attachment__preview row-wrapper my-sounds__gallery-attachment my-sounds__gallery-row-wrapper">';
+											// echo '<div class="new-attachment__preview row-wrapper my-sounds__gallery-attachment my-sounds__gallery-row-wrapper">';
 
-													echo '<a class="remove-item remove" data-id="clear-input" href="#"></a>';
+											// 		echo '<a class="remove-item remove" data-id="clear-input" href="#"></a>';
 
-													echo '<div class="my-sounds__gallery-text-wrapper">';
+											// 		echo '<div class="my-sounds__gallery-text-wrapper">';
 
-														echo '<div class="my-sounds__gallery-attachment--label" style="display: none">';
+											// 			echo '<div class="my-sounds__gallery-attachment--label" style="display: none">';
 
-															echo '<p></p>';
+											// 				echo '<p></p>';
 
-														echo '</div>';
+											// 			echo '</div>';
 
-														echo '<div class="my-sounds__gallery-attachment--description" style="display: none">';
+											// 			echo '<div class="my-sounds__gallery-attachment--description" style="display: none">';
 
-															echo '<p></p>';
+											// 				echo '<p></p>';
 
-														echo '</div>';
+											// 			echo '</div>';
 
-													echo '</div>';
+											// 		echo '</div>';
 
-													echo '<div class="my-sounds__gallery-attachment my-sounds__gallery-attachment--file-info">';
+											// 		echo '<div class="my-sounds__gallery-attachment my-sounds__gallery-attachment--file-info">';
 
-														echo '<div class="new-attachment__icon ">';
+											// 			echo '<div class="new-attachment__icon ">';
 
-															echo '<svg viewBox="0 0 384 384" xmlns="http://www.w3.org/2000/svg">
-															<path d="m176 288c0 8.832031 7.167969 16 16 16s16-7.167969 16-16v-192c0-8.832031-7.167969-16-16-16s-16 7.167969-16 16zm0 0"/>
-															<path d="m16 96c-8.832031 0-16 7.167969-16 16v160c0 8.832031 7.167969 16 16 16s16-7.167969 16-16v-160c0-8.832031-7.167969-16-16-16zm0 0"/>
-															<path d="m152 256v-128c0-8.832031-7.167969-16-16-16s-16 7.167969-16 16v128c0 8.832031 7.167969 16 16 16s16-7.167969 16-16zm0 0"/>
-															<path d="m80 240c8.832031 0 16-7.167969 16-16v-64c0-8.832031-7.167969-16-16-16s-16 7.167969-16 16v64c0 8.832031 7.167969 16 16 16zm0 0"/>
-															<path d="m264 256v-128c0-8.832031-7.167969-16-16-16s-16 7.167969-16 16v128c0 8.832031 7.167969 16 16 16s16-7.167969 16-16zm0 0"/>
-															<path d="m368 96c-8.832031 0-16 7.167969-16 16v160c0 8.832031 7.167969 16 16 16s16-7.167969 16-16v-160c0-8.832031-7.167969-16-16-16zm0 0"/>
-															<path d="m304 144c-8.832031 0-16 7.167969-16 16v64c0 8.832031 7.167969 16 16 16s16-7.167969 16-16v-64c0-8.832031-7.167969-16-16-16zm0 0"/>
-															<path d="m176 368c0 8.832031 7.167969 16 16 16s16-7.167969 16-16v-16c0-8.832031-7.167969-16-16-16s-16 7.167969-16 16zm0 0"/>
-															<path d="m192 48c8.832031 0 16-7.167969 16-16v-16c0-8.832031-7.167969-16-16-16s-16 7.167969-16 16v16c0 8.832031 7.167969 16 16 16zm0 0"/></svg>';
+											// 				echo '<svg viewBox="0 0 384 384" xmlns="http://www.w3.org/2000/svg">
+											// 				<path d="m176 288c0 8.832031 7.167969 16 16 16s16-7.167969 16-16v-192c0-8.832031-7.167969-16-16-16s-16 7.167969-16 16zm0 0"/>
+											// 				<path d="m16 96c-8.832031 0-16 7.167969-16 16v160c0 8.832031 7.167969 16 16 16s16-7.167969 16-16v-160c0-8.832031-7.167969-16-16-16zm0 0"/>
+											// 				<path d="m152 256v-128c0-8.832031-7.167969-16-16-16s-16 7.167969-16 16v128c0 8.832031 7.167969 16 16 16s16-7.167969 16-16zm0 0"/>
+											// 				<path d="m80 240c8.832031 0 16-7.167969 16-16v-64c0-8.832031-7.167969-16-16-16s-16 7.167969-16 16v64c0 8.832031 7.167969 16 16 16zm0 0"/>
+											// 				<path d="m264 256v-128c0-8.832031-7.167969-16-16-16s-16 7.167969-16 16v128c0 8.832031 7.167969 16 16 16s16-7.167969 16-16zm0 0"/>
+											// 				<path d="m368 96c-8.832031 0-16 7.167969-16 16v160c0 8.832031 7.167969 16 16 16s16-7.167969 16-16v-160c0-8.832031-7.167969-16-16-16zm0 0"/>
+											// 				<path d="m304 144c-8.832031 0-16 7.167969-16 16v64c0 8.832031 7.167969 16 16 16s16-7.167969 16-16v-64c0-8.832031-7.167969-16-16-16zm0 0"/>
+											// 				<path d="m176 368c0 8.832031 7.167969 16 16 16s16-7.167969 16-16v-16c0-8.832031-7.167969-16-16-16s-16 7.167969-16 16zm0 0"/>
+											// 				<path d="m192 48c8.832031 0 16-7.167969 16-16v-16c0-8.832031-7.167969-16-16-16s-16 7.167969-16 16v16c0 8.832031 7.167969 16 16 16zm0 0"/></svg>';
 
-														echo '</div>';
+											// 			echo '</div>';
 
-														echo '<div class="new-attachment__description">';
+											// 			echo '<div class="new-attachment__description">';
 
-															echo '<p class="sound-title"></p>';
+											// 				echo '<p class="sound-title"></p>';
 
-														echo '</div>';
+											// 			echo '</div>';
 
-													echo '</div>';
+											// 		echo '</div>';
 
-											echo '</div>';
+											// echo '</div>';
 											?>
 										</div>
 
@@ -1597,6 +1648,15 @@ function handle_sound_to_gallery_upload() {
 
 	$post_id = $_POST['post_id'];
 
+
+	$sounds_object_for_ajax  = (object) [
+		'added_files_ids' => [],
+		'added_rows' => [],
+		'deleted_rows' => [],
+		'console_log' => []
+	];
+
+
 	// Handle file and text inputs
 	
 	$all_sound_label_inputs = $_POST["sound-label__input"];
@@ -1637,7 +1697,6 @@ function handle_sound_to_gallery_upload() {
 	endforeach;
 
 	// var_dump($array_of_objects);
-
 
 	//validation
 
@@ -1691,27 +1750,53 @@ function handle_sound_to_gallery_upload() {
 		endforeach;
 	}
 
+		//if there are some files to delete
+	
+		$post_id = $_POST['post_id'];
 
-	// $sounds_object_for_ajax = array("added_files", "deleted_files");
+		$sounds_gallery_array = get_field("translator_sound_gallery", $post_id);
+	
+		if ($_POST["sounds_to_delete"]) {
+	
+			$sounds_to_delete_array = explode(',', $_POST["sounds_to_delete"]);
 
-	$sounds_object_for_ajax  = (object) [
-		'added_files_ids' => [],
-		'added_rows' => [],
-		'deleted_rows' => [],
-		'console_log' => []
-	];
+			sort($sounds_to_delete_array);
+
+			$number_of_deleted_rows = 0;
+
+			foreach ($sounds_to_delete_array as $sound_to_delete) :
+	
+				array_push($sounds_object_for_ajax->deleted_rows, $sound_to_delete);
+
+
+				// in acf way, row #1 has index 1, not 0
+				$index_of_row_to_delete = $sound_to_delete - $number_of_deleted_rows;
+
+				delete_row('translator_sound_gallery', $index_of_row_to_delete, $post_id);
+
+
+				// -1 because acf rows count starts at 1 and array from 0
+
+				$url = $sounds_gallery_array[$index_of_row_to_delete - 1]["translator_single_voice_recording"];
+				$deleted_file_id = attachment_url_to_postid($url);
+				// $path = parse_url($url, PHP_URL_PATH);
+				// $fullPath = get_home_path() . $path;
+	
+				// // wp_delete_file($fullPath);
+				// // unlink($fullPath);
+				wp_delete_attachment($deleted_file_id);
+
+				$number_of_deleted_rows++;
+	
+			endforeach;
+	
+		}
+
 
 	//if file has been attached
 
 	if ( count($array_of_objects) > 0 ) {
 
-		// var_dump($_FILES['sound-to-gallery__input']);
-
-		// var_dump($array_of_objects);
-
-		// $uploadedfile = $current_file['sound-to-gallery__input'];
-
-		// var_dump($uploadedfile);
 
 		foreach ($array_of_objects as $file_object) :
 
@@ -1763,10 +1848,6 @@ function handle_sound_to_gallery_upload() {
 						$count = count(get_field('translator_sound_gallery', $post_id));
 
 						array_push($sounds_object_for_ajax->added_rows, $count);
-
-						// var_dump($videos_gallery_array);
-		
-						// var_dump(count($videos_gallery_array));
 		
 					  /*end file uploader*/
 				} 
@@ -1790,49 +1871,7 @@ function handle_sound_to_gallery_upload() {
 
 	}
 
-	//if there are some files to delete
-	
-	$post_id = $_POST['post_id'];
 
-	$sounds_gallery_array = get_field("translator_sound_gallery", $post_id);
-
-	if ($_POST["sounds_to_delete"]) {
-
-		$sounds_to_delete_array = explode(',', $_POST["sounds_to_delete"]);
-
-		// var_dump($sounds_to_delete_array);
-
-		foreach ($sounds_to_delete_array as $sound_to_delete) :
-
-			$deleted_row_index = $sound_to_delete;
-
-			array_push($sounds_object_for_ajax->deleted_rows, $deleted_row_index);
-
-			//'while' because delete_row returns a boolean based on if it succeeds or not
-
-			while (delete_row('translator_sound_gallery', $deleted_row_index, $post_id));
-
-			// print_r("deleted_row_index: ".$deleted_row_index);
-
-			// update_row('translator_sound_gallery', $deleted_row_index, false);
-
-			// -1 because acf rows count starts at 1 and array from 0
-			// var_dump($sounds_gallery_array[$deleted_row_index - 1]["translator_single_voice_recording"]);
-
-			// $url = $sounds_gallery_array[$deleted_row_index - 1]["translator_single_voice_recording"];
-			// $deleted_file_id = attachment_url_to_postid($url);
-			// $path = parse_url($url, PHP_URL_PATH);
-			// $fullPath = get_home_path() . $path;
-
-			// // wp_delete_file($fullPath);
-			// // unlink($fullPath);
-			// wp_delete_attachment($deleted_file_id);
-
-		endforeach;
-
-		// print_r(json_encode($indexes_of_rows_to_delete));
-	
-	}
 
 	print_r(json_encode($sounds_object_for_ajax ));
 
@@ -1951,9 +1990,13 @@ function handle_image_to_gallery_upload() {
 
 	$all_file_names_to_upload = $_FILES["image-to-gallery__input"]["name"];
 
+	$image_gallery_object_for_ajax  = (object) [
+		'added_files_ids' => [],
+		'deleted_files' => [],
+		'console_log' => []
+	];
+
 	$array_of_objects = array();
-
-
 
 	$pictures_to_delete_array = explode(',', $_POST["pictures_to_delete"]);
 
@@ -1971,20 +2014,18 @@ function handle_image_to_gallery_upload() {
 
 		$image_id = attachment_url_to_postid($image);
 
-		//if image_id is not in $pictures_to_delete_array dont include it 
 
+		//include only ids that are NOT in the pictures_to_delete_array
 		if (!in_array($image_id, $pictures_to_delete_array)) {
 			array_push($images_to_upload, $image_id);
 		}
 
 		if (in_array($image_id, $pictures_to_delete_array)) {
+			array_push($image_gallery_object_for_ajax->deleted_files, $image_id);
 			wp_delete_attachment($image_id);
 		}
 
-
 	endforeach;
-
-
 
 
 	$index = 0;
@@ -1999,19 +2040,15 @@ function handle_image_to_gallery_upload() {
 
 		endforeach;
 
-		// var_dump($single_file_obj);
-
 		//ignore empty ones
 
-		if (true) {
+		if ($single_file_obj->name) {
 			array_push($array_of_objects, $single_file_obj);
 		}
 
 		$index++;
 
 	endforeach;
-
-	// var_dump($array_of_objects);
 
 	//VALIDATION
 
@@ -2062,15 +2099,12 @@ function handle_image_to_gallery_upload() {
 
 	if ( count($array_of_objects) > 0 ) {
 
-		$attachment_ids = array();
-
 		foreach($array_of_objects as $file_object) :
 
 			//transforming object to nested array needed for media_handle_upload to be possible
 			$uploadedfile = json_decode(json_encode($file_object), true);
 
 			if ($uploadedfile["name"]) {
-				// var_dump($uploadedfile["name"]);
 
 				$_FILES = array("upload_file" => $uploadedfile);
 				$attachment_id = media_handle_upload("upload_file", 0);
@@ -2083,17 +2117,15 @@ function handle_image_to_gallery_upload() {
 					die();
 				} else {
 					// The image was uploaded successfully!
-					//needed for passing id to newly appended DOM node
-					
 
-					array_push($attachment_ids, $attachment_id);
 					array_push($images_to_upload, $attachment_id);
+
+					array_push($image_gallery_object_for_ajax->added_files_ids, $attachment_id);
+
 				}
 			}
 
 		endforeach;
-
-		print_r(json_encode($attachment_ids));
 
 	}
 
@@ -2102,6 +2134,9 @@ function handle_image_to_gallery_upload() {
 
 	update_field('translator_gallery', $images_to_upload, $post_id);
 
+	// print_r(json_encode($attachment_ids));
+	// array_push($image_gallery_object_for_ajax->console_log, $single_file_obj);
+	print_r(json_encode( $image_gallery_object_for_ajax ));
 
 	die();
 }
@@ -2729,8 +2764,6 @@ add_action( 'wp_ajax_nopriv_change_settings_user_data_visibility_with_ajax',  'c
 add_action( 'wp_ajax_change_settings_user_data_visibility_with_ajax','change_settings_user_data_visibility_with_ajax' );
 
 
-
-
 function redirect_login_page() {
 	$login_page  = get_permalink(18);
 	$page_viewed = basename($_SERVER['REQUEST_URI']);
@@ -2743,23 +2776,23 @@ function redirect_login_page() {
 
 add_action('init','redirect_login_page');
 
-function redirect_users_after_login() {
-	if(!current_user_can( 'manage_options' )){
-		$url  = get_permalink(18);
-		// wp_redirect($login_page);
-		return $url;
-		die; // You have to die here
-	}
+// function redirect_users_after_login() {
+// 	if(!current_user_can( 'manage_options' )){
+// 		$url  = get_permalink(18);
+// 		// wp_redirect($login_page);
+// 		return $url;
+// 		die; // You have to die here
+// 	}
 
-    if ( current_user_can( 'manage_options' ) ) {
-		$url = esc_url( admin_url( 'edit.php' ) );
-		return $url;
-		die;
-    }
+//     if ( current_user_can( 'manage_options' ) ) {
+// 		$url = esc_url( admin_url( 'edit.php' ) );
+// 		return $url;
+// 		die;
+//     }
 
-}
+// }
 
-add_filter('login_redirect', 'redirect_users_after_login');
+// add_filter('login_redirect', 'redirect_users_after_login');
 
 
 function login_failed() {

@@ -1,13 +1,27 @@
 .single-translator {
+
 	article.translator {
 		margin: 4rem 0;
 	}
 
 	&__section {
+		margin: 8rem 0;
+
+		h2 {
+			text-align: center;
+			margin-bottom: 3rem;
+		}
+
 		&--1 {
 			display: flex;
 			justify-content: space-between;
 			flex-wrap: wrap;
+		}
+
+		&--3 {
+			p {
+				text-align: center;
+			}
 		}
 	}
 
@@ -16,21 +30,28 @@
 			text-align: center;
 		}
 
-		&--single-translator-multimedia-gallery {
+		&--single-translator-multimedia-gallery,
+		&--single-translator-sound-gallery {
 			width: 80%;
+			padding: 0 4rem;
 
 			.swiper-slide {
 				display: flex;
 				justify-content: center;
 				align-items: center;
 				overflow: hidden;
+				column-gap: 5rem;
 
 				img {
-					width: 30%;
+					width: 40%;
 				}
 
-				video {
-					width: 40%;
+				.video-container {
+					width: 50%;
+
+					video {
+						width: 100%;
+					}
 				}
 			}
 		}

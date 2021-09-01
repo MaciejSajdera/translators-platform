@@ -1,7 +1,7 @@
 <?php
 
 /*
- * Template Name: Home Page Template
+ * Template Name: Find Translator Page Template
  * description: >-
   Page template without sidebar
  */
@@ -21,12 +21,8 @@ get_header();
 
 				<h2>Znajdź tłumacza na zdarzenie</h2>
 
-				<!--
-				Example of multidropdown checkbox select
-				https://codepen.io/elmahdim/embed/hlmri?height=565&theme-id=0&slug-hash=hlmri&default-tab=result&user=elmahdim&embed-version=2&pen-title=Dropdown%20with%20Multiple%20checkbox%20select%20with%20jQuery -->
-
 				<?php
-					get_template_part( 'template-parts/searchfilter-basic' );
+					get_template_part( 'template-parts/searchfilter-full' );
 				?>
 
 			</div>

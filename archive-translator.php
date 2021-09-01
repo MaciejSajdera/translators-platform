@@ -21,7 +21,7 @@ get_header();
 		</div>
 
 		<?php
-			get_template_part( 'template-parts/searchfilter' );
+			get_template_part( 'template-parts/searchfilter-full' );
 		?>
 
 		<?php if ( have_posts() ) : ?>
@@ -67,7 +67,10 @@ get_header();
 
 			get_template_part( 'template-parts/blog-new-posts' );
 
-			?>
+		?>
+
+		<a href="<?php echo home_url(); ?>" class="button button__go-back go-back">Powrót do strony głównej</a>
+
 		</main><!-- #main -->
 	</div><!-- #primary -->
 
