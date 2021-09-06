@@ -7,15 +7,38 @@ jQuery(document).ready(function($) {
 	const modalMessageHolder = modal.querySelector(".modal-message-holder");
 	const closeButton = document.querySelector(".close-button");
 
-	function showModal() {
+	function showModal(modalContent) {
 		modal.classList.add("unlock-modal");
 		modal.classList.add("show-modal");
 
 		setTimeout(() => modal.classList.add("show-modal"), 300);
 
+		if (modalContent) {
+			console.log(modalContent);
+
+			typeof modalContent === "object" ? showObjectInModal(modalContent) : "";
+		}
+
 		// modal.classList.contains("show-modal")
 		// 	? modal.classList.remove("show-modal")
 		// 	: modal.classList.add("show-modal");
+	}
+
+	function showObjectInModal(modalContent) {
+		const objectValues = Object.values(modalContent);
+		objectValues.forEach(value => {
+			let newParagraph = document.createElement("P");
+
+			newParagraph.classList.add("modal-message");
+			modalMessageHolder.appendChild(newParagraph);
+			newParagraph.innerText = value.innerText;
+
+			if (value.classList.contains("php-error__text")) {
+				newParagraph.classList.add("php-error__text");
+			}
+
+			console.log(value);
+		});
 	}
 
 	function closeModal() {
@@ -366,6 +389,8 @@ jQuery(document).ready(function($) {
 				console.log(JSON.parse(data));
 				const dataJSON = JSON.parse(data);
 
+				const postData = dataJSON.post_data;
+
 				const accountUserName = document.querySelector(".account__user-name");
 				const userBioText = document.querySelector("#user_bio_text");
 				const userLanguagesText = document.querySelector(
@@ -375,21 +400,71 @@ jQuery(document).ready(function($) {
 					"#user_specializations_text"
 				);
 
-				accountUserName.innerText = `${dataJSON.user_first_name} ${dataJSON.user_last_name}`;
-				userBioText.innerText = `${dataJSON.user_bio}`;
+				accountUserName.innerText = `${postData.user_first_name} ${postData.user_last_name}`;
+				userBioText.innerText = `${postData.user_bio}`;
 
-				dataJSON.user_languages && dataJSON.user_languages.length > 0
-					? (userLanguagesText.innerText = `${dataJSON.user_languages.join(
+				postData.user_languages && postData.user_languages.length > 0
+					? (userLanguagesText.innerText = `${postData.user_languages.join(
 							", "
 					  )}`)
 					: (userLanguagesText.innerText = "");
 
-				dataJSON.user_specializations &&
-				dataJSON.user_specializations.length > 0
-					? (userSpecializationsText.innerText = `${dataJSON.user_specializations.join(
+				postData.user_specializations &&
+				postData.user_specializations.length > 0
+					? (userSpecializationsText.innerText = `${postData.user_specializations.join(
 							", "
 					  )}`)
 					: (userSpecializationsText.innerText = "");
+
+				const percentValueOfAccountFillCompletnessHolder = document.querySelector(
+					"#percentValueOfAccountFillCompletness"
+				);
+
+				const percentValueOfAccountFillCompletness =
+					dataJSON.percent_value_of_account_fill_completness;
+
+					percentValueOfAccountFillCompletnessHolder.textContent = percentValueOfAccountFillCompletness;
+
+				const labelsOfEmptyTranslatorCurrent = document.querySelectorAll(
+					"#emptyProfileFieldsLabels .empty-field-label"
+				);
+				const labelsOfEmptyTranslatorFieldsAjax =
+					dataJSON.labels_of_empty_translator_fields;
+
+				const labelsCurrent = [];
+				const labelsToBeAdded = [];
+				const labelsToBeDeleted = [];
+
+				labelsOfEmptyTranslatorCurrent.forEach(labelCurrent => {
+					labelsCurrent.push(labelsCurrent.innerText);
+
+					let comperativeArray = [];
+					let isOnTheCurrentList;
+					// console.log(`labelCurrent: ${labelCurrent.innerText}`);
+
+					labelsOfEmptyTranslatorFieldsAjax.forEach(labelAjax => {
+						// console.log(`labelAjax: ${labelAjax}`);
+						// console.log(labelCurrent.innerText === labelAjax);
+
+						comperativeArray.push(labelCurrent.innerText === labelAjax);
+
+						if (comperativeArray.includes(true)) {
+							isOnTheCurrentList = true;
+						}
+
+						// if (labelCurrent.innerText !== labelAjax) {
+						// 	// isOnTheCurrentList = true;
+						// 	console.log(labelAjax);
+						// }
+
+						// !isOnTheCurrentList ? labelsToBeAdded.push(labelAjax) : "";
+					});
+
+					console.log(comperativeArray);
+
+					// console.log(isOnTheCurrentList);
+					// console.log(`to be added: ${labelsToBeAdded}`);
+				});
 
 				return data;
 			},
@@ -437,10 +512,19 @@ jQuery(document).ready(function($) {
 				console.log(data);
 
 				const dataJSON = JSON.parse(data);
+				const postData = dataJSON.post_data;
 
 				const userAboutText = document.querySelector("#user_about_text");
+				userAboutText.innerText = `${postData.user_about}`;
 
-				userAboutText.innerText = `${dataJSON.user_about}`;
+				const percentValueOfAccountFillCompletness =
+					dataJSON.percent_value_of_account_fill_completness;
+
+				const percentValueOfAccountFillCompletnessText = document.querySelector(
+					"#percentValueOfAccountFillCompletness"
+				);
+
+				percentValueOfAccountFillCompletnessText.innerText = percentValueOfAccountFillCompletness;
 
 				return data;
 			},
@@ -494,31 +578,33 @@ jQuery(document).ready(function($) {
 
 				const dataJSON = JSON.parse(data);
 
+				const postData = dataJSON.post_data;
+
 				const userContactPhoneText = document.querySelector(
 					"#user_contact_phone_text"
 				);
 
-				if (dataJSON.user_contact_phone) {
-					userContactPhoneText.innerText = `${dataJSON.user_contact_phone}`;
+				if (postData.user_contact_phone) {
+					userContactPhoneText.innerText = `${postData.user_contact_phone}`;
 				}
 
 				const userContactEmailText = document.querySelector(
 					"#user_contact_email_text"
 				);
 
-				if (dataJSON.user_contact_email) {
-					userContactEmailText.innerText = `${dataJSON.user_contact_email}`;
+				if (postData.user_contact_email) {
+					userContactEmailText.innerText = `${postData.user_contact_email}`;
 				}
 
 				const userCityText = document.querySelector("#user_city_text");
 
-				if (dataJSON.user_city) {
-					userCityText.innerText = `${dataJSON.user_city}`;
+				if (postData.user_city) {
+					userCityText.innerText = `${postData.user_city}`;
 				}
 
 				if (
-					dataJSON.user_localizations &&
-					dataJSON.user_localizations.length > 0
+					postData.user_localizations &&
+					postData.user_localizations.length > 0
 				) {
 					//remove old localizations
 
@@ -532,7 +618,7 @@ jQuery(document).ready(function($) {
 
 					//display all checked localizations
 
-					allUniqueLocalizations = [...new Set(dataJSON.user_localizations)];
+					allUniqueLocalizations = [...new Set(postData.user_localizations)];
 
 					allUniqueLocalizations
 						.filter(
@@ -568,6 +654,15 @@ jQuery(document).ready(function($) {
 							: "";
 					});
 				}
+
+				const percentValueOfAccountFillCompletness =
+					dataJSON.percent_value_of_account_fill_completness;
+
+				const percentValueOfAccountFillCompletnessText = document.querySelector(
+					"#percentValueOfAccountFillCompletness"
+				);
+
+				percentValueOfAccountFillCompletnessText.innerText = percentValueOfAccountFillCompletness;
 
 				return data;
 			},
@@ -1423,6 +1518,18 @@ jQuery(document).ready(function($) {
 
 	/* 	User Settings Update Password */
 
+	// Modal for errors displayed on page reload
+
+	const allphpErrorContentainers = document.querySelectorAll(
+		".php-error__content"
+	);
+
+	allphpErrorContentainers &&
+		allphpErrorContentainers.forEach(container => {
+			let singleErrors = container.querySelectorAll(".php-error__text");
+			showModal(singleErrors);
+		});
+
 	// var changeSettingsUserPassword =
 	// 	ajax_forms_params.settings_user_password_form;
 
@@ -1535,6 +1642,21 @@ jQuery(document).ready(function($) {
 			success: function(data) {
 				console.log("SUCCESS!");
 				console.log(data);
+				const dataJSON = JSON.parse(data);
+
+				const isProfilePublic = dataJSON.profile_is_public;
+
+				isProfilePublicStatusIcon = document.querySelector(
+					".account__public SVG"
+				);
+
+				if (isProfilePublic) {
+					isProfilePublicStatusIcon.style.fill = "green";
+				} else {
+					isProfilePublicStatusIcon.style.fill = "#cacaca";
+				}
+
+				// accountIsPublicIcon.style.
 
 				// const dataJSON = JSON.parse(data);
 

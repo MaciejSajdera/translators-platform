@@ -671,9 +671,6 @@ function vicode_add_new_user() {
 }
 add_action('init', 'vicode_add_new_user');
 
-
-
-
 /* Creates custom post every time new user registers */
 
 function create_post_for_user( $user_id ) {
@@ -702,7 +699,8 @@ function create_post_for_user( $user_id ) {
 
 		update_field( "translator_first_name", $user_first_name, $user_post_id );
 		update_field( "translator_last_name", $user_last_name, $user_post_id );
-		update_field( "translator_id", $user_id, $user_post_id );
+		update_field( "translator_contact_email", $user_info->user_email, $user_post_id );
+		// update_field( "translator_id", $user_id, $user_post_id );
     }
 }
 add_action( 'user_register', 'create_post_for_user', 10, 1 );
@@ -729,17 +727,9 @@ function vicode_error_messages() {
 	}
 }
 
-// basic_user_data_form shortcode
-// function show_basic_user_data_form() {
-// 		$output = basic_user_data_form();
-// 		return $output;
-// }
-// add_shortcode('display_basic_user_data_form', 'show_basic_user_data_form');
+// Tool functions for forms at account page
 
-
-/* ADD BASIC USER DATA FORM */
-function basic_user_data_form() {
-
+function get_current_user_post_id() {
 	$current_user = wp_get_current_user();
 
 	//Get ID of the current user post
@@ -750,6 +740,109 @@ function basic_user_data_form() {
 		$user_post_id = $post->ID;
 	else
 		$user_post_id = 0;
+
+	return $user_post_id;
+}
+
+function get_percent_value_of_account_fill_completness() {
+	
+
+	$all_user_acf_field_objects = get_field_objects(get_current_user_post_id());
+
+	$count_of_all_valueable_fields = 0;
+	$count_of_all_filled_fields = 0;
+
+	if ($all_user_acf_field_objects) {
+
+		foreach($all_user_acf_field_objects as $field_object_name => $field_object_content) :
+
+			$is_string = gettype($field_object_content["value"]) == 'string';
+			$is_array = gettype($field_object_content["value"]) == 'array';
+			$is_boolean = gettype($field_object_content["value"]) == 'boolean';
+
+			// To do: fix missing array on basic user form data
+
+			//Dont include privacy settings
+			if ( !$is_array && $is_boolean ) {
+				continue;
+			};
+
+			if ( $is_array )  {
+
+				$count_of_all_valueable_fields++;
+				
+				if (count($field_object_content["value"]) > 0) {
+					$count_of_all_filled_fields++;
+				} 
+			};
+
+			if ( $is_string ) {
+
+				$count_of_all_valueable_fields++;
+
+				if (strlen($field_object_content["value"]) > 0) {
+					$count_of_all_filled_fields++;
+				}
+			}
+
+		endforeach;
+
+	}
+
+	$percent_value_of_single_field = 100 / $count_of_all_valueable_fields;
+
+	$percent_value_of_account_fill_completness = round($count_of_all_filled_fields / $count_of_all_valueable_fields * 100);
+
+	return $percent_value_of_account_fill_completness;
+}
+
+
+function get_labels_of_empty_translator_fields() {
+	$all_user_acf_field_objects = get_field_objects(get_current_user_post_id());
+
+	$empty_field_labels = [];
+
+	if ($all_user_acf_field_objects) {
+
+		foreach($all_user_acf_field_objects as $field_object_name => $field_object_content) :
+
+			$is_string = gettype($field_object_content["value"]) == 'string';
+			$is_array = gettype($field_object_content["value"]) == 'array';
+			$is_boolean = gettype($field_object_content["value"]) == 'boolean';
+
+			//Dont include privacy settings
+			if ( !$is_array && $is_boolean ) {
+				continue;
+			};
+
+			if ( $is_array )  {
+
+				if (count($field_object_content["value"]) == 0) {
+					array_push($empty_field_labels, $field_object_content["label"]);
+				}
+			};
+
+			if ( $is_string ) {
+
+				if (strlen($field_object_content["value"]) == 0) {
+					array_push($empty_field_labels, $field_object_content["label"]);
+				} 
+			}
+
+		endforeach;
+
+	}
+
+	return $empty_field_labels;
+}
+
+
+/* ADD BASIC USER DATA FORM */
+function basic_user_data_form() {
+
+	$current_user = wp_get_current_user();
+
+	$user_post_id = get_current_user_post_id();
 
 	$current_user_languages_array_terms = wp_get_post_terms($user_post_id, 'translator_language', array('fields' => 'names'));
 
@@ -914,18 +1007,11 @@ function add_basic_user_data_with_ajax() {
 	
 	$current_user = wp_get_current_user();
 	
-	$current_user_nickname = $current_user->user_login;
-
 	$user_id = get_current_user_id();
 
 	//Get ID of the current user post
-	$user_post_title = $current_user_nickname; 
 
-	if ( $post = get_page_by_path( $user_post_title, OBJECT, 'translator' ) ) {
-		$user_post_id = $post->ID;
-	} else {
-		$user_post_id = 0;
-	}
+	$user_post_id = get_current_user_post_id();
 
 	$error_array = array();
 
@@ -1015,10 +1101,16 @@ function add_basic_user_data_with_ajax() {
 
 		}
 
-
 		$_POST['errors'] = $error_array;
 
-		print_r(json_encode($_POST));
+		$basic_user_data_object_for_ajax  = (object) [
+			'post_data' => $_POST,
+			'percent_value_of_account_fill_completness' => get_percent_value_of_account_fill_completness(),
+			'labels_of_empty_translator_fields' => get_labels_of_empty_translator_fields(),
+			'console_log' => []
+		];
+
+		print_r(json_encode($basic_user_data_object_for_ajax));
 
     die();
 
@@ -1034,15 +1126,9 @@ function about_user_data_form() {
 	$current_user = wp_get_current_user();
 
 	//Get ID of the current user post
-	$current_user_nickname = $current_user->user_login;
-	$user_post_title = $current_user_nickname; 
+	$user_post_id = get_current_user_post_id();
 
-	if ( $post = get_page_by_path( $user_post_title, OBJECT, 'translator' ) )
-		$user_post_id = $post->ID;
-	else
-		$user_post_id = 0;
-
-		// var_dump($current_user_languages_array_terms);
+	// var_dump($current_user_languages_array_terms);
 
 	ob_start(); ?>	
 
@@ -1095,32 +1181,25 @@ function about_user_data_form_messages() {
 
 function add_about_user_data_with_ajax() {
 
-	print_r(json_encode($_POST));
-	
-	$current_user = wp_get_current_user();
-	
-	$current_user_nickname = $current_user->user_login;
+	//Get ID of the current user post
+	$user_post_id = get_current_user_post_id();
 
-    $user_about		= $_POST["user_about"];
+	$user_about		= $_POST["user_about"];
 
 	if ( ! wp_verify_nonce( $_POST["add_about_user_data_nonce"], "add_about_user_data") ) {
 		die ( 'Nonce mismatched!');
 	}
 
-		$user_id = get_current_user_id();
+	//Update ACF field for user post
+	update_field( "translator_about", $user_about, $user_post_id );
 
-		//Get ID of the current user post
-		$user_post_title = $current_user_nickname; 
+	$about_user_data_object_for_ajax  = (object) [
+		'post_data' => $_POST,
+		'percent_value_of_account_fill_completness' => get_percent_value_of_account_fill_completness(),
+		'console_log' => []
+	];
 
-		if ( $post = get_page_by_path( $user_post_title, OBJECT, 'translator' ) )
-			$user_post_id = $post->ID;
-		else
-			$user_post_id = 0;
-
-		// Save/Update values to user meta data or user post
-
-        //Update ACF field for user post
-        update_field( "translator_about", $user_about, $user_post_id );
+	print_r(json_encode($about_user_data_object_for_ajax));
 		
     die();
 
@@ -1137,19 +1216,11 @@ function contact_user_data_form() {
 	$current_user = wp_get_current_user();
 
 	//Get ID of the current user post
-	$current_user_nickname = $current_user->user_login;
-	$user_post_title = $current_user_nickname; 
-
-
-
-	if ( $post = get_page_by_path( $user_post_title, OBJECT, 'translator' ) )
-		$user_post_id = $post->ID;
-	else
-		$user_post_id = 0;
+	$user_post_id = get_current_user_post_id();
 
 	$current_user_localizations_array_terms = wp_get_post_terms($user_post_id, 'translator_localization', array('fields' => 'names'));
 
-		// var_dump($current_user_localizations_array_terms);
+	// var_dump($current_user_localizations_array_terms);
 
 	ob_start(); ?>	
 
@@ -1361,11 +1432,8 @@ function contact_user_data_form_messages() {
 
 function add_contact_user_data_with_ajax() {
 
-	print_r(json_encode($_POST));
-	
-	$current_user = wp_get_current_user();
-	
-	$current_user_nickname = $current_user->user_login;
+	//Get ID of the current user post
+	$user_post_id = get_current_user_post_id();
 
 	$user_contact_phone = $_POST["user_contact_phone"];
 	$user_contact_email = $_POST["user_contact_email"];
@@ -1376,42 +1444,32 @@ function add_contact_user_data_with_ajax() {
 		die ( 'Nonce mismatched!');
 	}
 
-		$user_id = get_current_user_id();
+	// Save/Update values to user meta data or user post
 
-		//Get ID of the current user post
-		$user_post_title = $current_user_nickname; 
+	if ( isset( $user_contact_phone )) {
+		//Update ACF field for user post
+		update_field( "translator_contact_phone", $user_contact_phone, $user_post_id );
+	}
 
-		if ( $post = get_page_by_path( $user_post_title, OBJECT, 'translator' ) )
-			$user_post_id = $post->ID;
-		else
-			$user_post_id = 0;
+	if ( isset( $user_contact_email )) {
+		//Update ACF field for user post
+		update_field( "translator_contact_email", $user_contact_email, $user_post_id );
+	}
 
-		// Save/Update values to user meta data or user post
+	if ( isset( $user_city )) {
+		//Update ACF field for user post
+		update_field( "translator_city", $user_city, $user_post_id );
+	}
 
-		if ( isset( $user_contact_phone )) {
-			//Update ACF field for user post
-			update_field( "translator_contact_phone", $user_contact_phone, $user_post_id );
-		}
+	if ( isset( $user_localizations )) {
+		
+		//clears previous values
+		wp_set_post_terms( $user_post_id, null, 'translator_localization' );
 
-		if ( isset( $user_contact_email )) {
-			//Update ACF field for user post
-			update_field( "translator_contact_email", $user_contact_email, $user_post_id );
-		}
+		//sets updated values
+		wp_set_post_terms( $user_post_id, $user_localizations, 'translator_localization' );
 
-		if ( isset( $user_city )) {
-			//Update ACF field for user post
-			update_field( "translator_city", $user_city, $user_post_id );
-		}
-
-		if ( isset( $user_localizations )) {
-			
-			//clears previous values
-			wp_set_post_terms( $user_post_id, null, 'translator_localization' );
-
-			//sets updated values
-			wp_set_post_terms( $user_post_id, $user_localizations, 'translator_localization' );
-
-		}
+	}
 
 		// if all user__specialization checkboxes are marked as false and the form is submitted
 
@@ -1426,6 +1484,14 @@ function add_contact_user_data_with_ajax() {
 		// 	wp_set_post_terms( $user_post_id, $user_languages_array, 'translator_specialization' );
 
 		// }
+
+	$contact_user_data_object_for_ajax  = (object) [
+		'post_data' => $_POST,
+		'percent_value_of_account_fill_completness' => get_percent_value_of_account_fill_completness(),
+		'console_log' => []
+	];
+
+	print_r(json_encode($contact_user_data_object_for_ajax));
 		
     die();
 
@@ -3046,11 +3112,16 @@ function settings_user_data_visibility_form() {
 }
 
 function change_settings_user_data_visibility_with_ajax() {
-
+	
 		$user_id = get_current_user_id();
 		$current_user = wp_get_current_user();
 		$current_user_nickname = $current_user->user_login;
 		$user_post_title = $current_user_nickname; 
+
+		$user_data_visibility_object_for_ajax = (object) [
+			'profile_is_public' => "",
+			'console_log' => [],
+		];
 
 		if ( $post = get_page_by_path( $user_post_title, OBJECT, 'translator' ) )
 			$user_post_id = $post->ID;
@@ -3072,12 +3143,18 @@ function change_settings_user_data_visibility_with_ajax() {
 				'ID'    =>  $user_post_id,
 				'post_status'   =>  'publish',
 			));
+
+			$user_data_visibility_object_for_ajax->profile_is_public = true;
+
 		} else {
 			wp_update_post(array(
 				'ID'    =>  $user_post_id,
 				'post_status'   =>  'private',
 			));
+
+			$user_data_visibility_object_for_ajax->profile_is_public = false;
 		}
+		
 
 		if ($user_settings_visibility_contact_phone === "on") {
 			update_field( "translator_contact_phone_public", 1, $user_post_id );
@@ -3097,7 +3174,7 @@ function change_settings_user_data_visibility_with_ajax() {
 			update_field( "translator_city_public", 0, $user_post_id );
 		}
 	
-
+		print_r(json_encode( $user_data_visibility_object_for_ajax ));
 		
 		die();
 	

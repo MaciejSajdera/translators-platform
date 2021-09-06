@@ -6,6 +6,9 @@
   Page template without sidebar
  */
 
+ // if post is not published 
+$acf_fields_active = false;
+
 get_header();
 
 // var_dump($_POST);
@@ -185,42 +188,196 @@ get_header();
 
 						echo '<div class="account__main">';
 
-
 							/* PROFILE SECTION 1 - EDIT PROFILE */
+
+							// var_dump(acf_get_fields($user_post_id));
 
 							echo '<div id="profile-section-1" class="profile-section profile-section--active account__edit-profile">';
 
-								echo '<div class="account__welcome-message account__header">';
+								// WELCOME MESSAGE
 
 								$user_nickname = $current_user->user_login;
 
-								echo '<h1>Cześć '.$user_nickname.'</h1>';
+								
+								$count_of_all_valueable_fields = 0;
+								$count_of_all_filled_fields = 0;
 
-								echo '<h2>Witaj na swoim koncie PSTK.<br />
-								Twój profil jest kompletny w 10%. Uzupełnij go.								
-								<h2>';
+								$empty_field_labels = [];
 
-								// var_dump(get_fields($user_post_id));
+								// get field groups for the post
+								// returns an array of field groups
+								$groups = get_field_objects($user_post_id);
+								// $groups = acf_get_field_groups(array('post_id' => $user_post_id));
 
-								$all_user_acf_fields = get_fields($user_post_id);
+								foreach($groups as $group){
 
-								if ($all_user_acf_fields) {
-									
-									foreach($all_user_acf_fields as $field) :
+										$field_object_name = $group['name'];
 
-										echo gettype($field);
-
-										if ( gettype($field) == 'string' )  {
-											echo strlen($field);
+										if (str_contains($field_object_name, 'public')) {
+											$count_of_all_valueable_fields;
+										} else {
+											$count_of_all_valueable_fields++;
 										}
 
-										// var_dump($field);
-										echo '<br />';
+										$is_null = $group["value"] == null;
+										$is_string = gettype($group["value"]) == 'string';
+										$is_array = gettype($group["value"]) == 'array';
+										$is_boolean = gettype($group["value"]) == 'boolean';
 
-									endforeach;
+										//Dont include privacy settings
+										if ( !$is_array && $is_boolean ) {
+											continue;
+										};
 
+										if ( $is_array ) {
+
+											// echo $field_object_name;
+										
+											if (count($group["value"]) > 0) {
+												$count_of_all_filled_fields++;
+											} else {
+												array_push($empty_field_labels, $group["label"]);
+											}
+										};
+
+										if ( $is_string ) {
+
+											// echo $field_object_name;
+										
+											// echo $field_object_content["label"];
+											
+											// echo strlen($field_object_content["value"]);
+
+											if (strlen($group["value"]) > 0) {
+												$count_of_all_filled_fields++;
+											} else {
+												array_push($empty_field_labels, $group["label"]);
+											}
+										}
 								}
 
+								// echo '<br />';
+
+								// $all_user_acf_field_objects = acf_get_field_groups(array('post_id' => $user_post_id));
+
+								// var_dump($fields);
+
+								// $count_of_all_valueable_fields = 0;
+								// $count_of_all_filled_fields = 0;
+
+								// $empty_field_labels = [];
+
+								// if ($all_user_acf_field_objects) {
+
+								// 	foreach($all_user_acf_field_objects as $field_object) :
+
+								// 		foreach(acf_get_fields($field_object['key']) as $field_object_content) :
+
+								// 		// print_r(json_encode($field_object_content));
+
+								// 		$field_object_name =  $field_object_content['name'];
+
+								// 		// echo $field_object_name;
+
+								// 		if (str_contains($field_object_name, 'public')) {
+								// 			$count_of_all_valueable_fields;
+								// 		} else {
+								// 			$count_of_all_valueable_fields++;
+								// 		}
+
+								// 		// if ( $field_object_name = "translator_city_public") {
+								// 		// 	var_dump($field_object_name);
+								// 		// }
+
+
+								// 		// echo '<br />';
+
+								// 		$is_null = $field_object_content["value"] == null;
+								// 		$is_string = gettype($field_object_content["value"]) == 'string';
+								// 		$is_array = gettype($field_object_content["value"]) == 'array';
+								// 		$is_boolean = gettype($field_object_content["value"]) == 'boolean';
+
+								// 		//Dont include privacy settings
+								// 		if ( !$is_array && $is_boolean ) {
+								// 			continue;
+								// 		};
+
+								// 		// if (empty($field_object_content["value"])) {
+								// 		// 	echo $field_object_name.'empty';
+								// 		// }
+
+								// 		if ( $is_array ) {
+
+								// 			// echo $field_object_name;
+										
+								// 			if (count($field_object_content["value"]) > 0) {
+								// 				$count_of_all_filled_fields++;
+								// 			} else {
+								// 				array_push($empty_field_labels, $field_object_content["label"]);
+								// 			}
+								// 		};
+
+								// 		if ( $is_string ) {
+
+								// 			// echo $field_object_name;
+										
+								// 			// echo $field_object_content["label"];
+											
+								// 			// echo strlen($field_object_content["value"]);
+
+								// 			if (strlen($field_object_content["value"]) > 0) {
+								// 				$count_of_all_filled_fields++;
+								// 			} else {
+								// 				array_push($empty_field_labels, $field_object_content["label"]);
+								// 			}
+								// 		}
+
+								// 		// echo '<br />';
+								// 		endforeach;
+								// 	endforeach;
+								// }
+
+								echo $count_of_all_valueable_fields.'count_of_all_valueable_fields';
+
+								echo '<div class="account__welcome-message account__header">';
+
+									echo '<h1>Cześć '.$user_nickname.'</h1>';
+
+									echo '<h2>Witaj na swoim koncie PSTK.</h2>';
+
+									if (!$count_of_all_valueable_fields) {
+
+										$default_starting_number = 15;
+
+										echo '<h2>';
+										echo 'Twój profil jest kompletny w <span id="percentValueOfAccountFillCompletness">'.$default_starting_number.'</span>%. Uzupełnij go.';		
+										echo '</h2>';
+									}
+
+									if ($count_of_all_valueable_fields > 0) {
+
+										$percent_value_of_account_fill_completness = round($count_of_all_filled_fields / $count_of_all_valueable_fields * 100);
+
+
+										echo '<h2>';
+
+										echo 'Twój profil jest kompletny w <span id="percentValueOfAccountFillCompletness">'.$percent_value_of_account_fill_completness.'</span>%. Uzupełnij go.';		
+
+										 	// var_dump($empty_field_labels);
+
+											echo '<div id="emptyProfileFieldsLabels" class="info-box">';
+												echo '<h3>Nieuzupełnione pola</h3>';
+
+											foreach($empty_field_labels as $label) :
+
+												echo '<p class="empty-field-label">'.$label.'</p>';
+
+											endforeach;
+
+											echo '</div>';
+
+										echo '</h2>';
+									}
 
 								echo '</div>';
 
@@ -428,6 +585,8 @@ get_header();
 									echo '</div>';
 
 									echo '<div class="info-box__subbox">';
+
+										$translator_contact_email = get_field("translator_contact_email");
 
 											if (strlen(get_field("translator_contact_email")) > 0) {
 												$translator_contact_email = get_field("translator_contact_email");
@@ -1024,18 +1183,22 @@ get_header();
 													
 													if (isset( $_POST['submit_user_new_password']) && empty($errors)) {
 														echo '<p class="php-success__text">Hasło zostało zmienione</p>';
-													} else {
+													} 
 
-														echo '<div class="php-error__content">';
+
+													if(!empty($errors)) {
+
+														echo '<div class="php-error__content show__only-in-modal">';
 
 														foreach($errors as $error) :
 
-															echo '<p class="php-error__text">'.$error.'</p>';
+															echo '<p class="php-error__text show-in-modal">'.$error.'</p>';
 
 														endforeach;
 
 														echo '</div>';
 													}
+
 
 												echo '<p>***********</p>';
 											?>
