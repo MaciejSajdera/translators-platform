@@ -204,16 +204,271 @@ function remove_admin_bar() {
 	}
 }
 
-// change url of the lost password page
-add_filter( 'lostpassword_url',  'my_lostpassword_url', 10, 0 );
-function my_lostpassword_url() {
-    return site_url('/lost-password/');
+//For hiding Custom Post Types from google search results
+
+function inject_custom_metadata() {
+
+	global $post;
+	
+	if ( is_singular( 'membership_package' ) || is_singular( 'secret_posts' ) ) {
+	
+	?>
+	
+	<meta name="robots" content="noindex, nofollow" />
+	
+	<?php
+	
+	}
+	
 }
+add_action( 'wp_head', 'inject_custom_metadata' );
+
+function redirect_login_page() {
+	$login_page  = get_permalink(18);
+	$page_viewed = basename($_SERVER['REQUEST_URI']);
+   
+	if( $page_viewed == "wp-login.php" && $_SERVER['REQUEST_METHOD'] == 'GET') {
+	  wp_redirect($login_page);
+	  exit;
+	}
+}
+
+add_action('init','redirect_login_page');
+
+function redirect_users_after_login() {
+	if(!current_user_can( 'manage_options' )){
+		$url  = get_permalink(18);
+		// wp_redirect($login_page);
+		return $url;
+		die; // You have to die here
+	}
+
+    if ( current_user_can( 'manage_options' ) ) {
+		$url = esc_url( admin_url( 'edit.php' ) );
+		return $url;
+		die;
+    }
+
+}
+
+add_filter('login_redirect', 'redirect_users_after_login');
+
+
+function login_failed() {
+	$login_page  = get_permalink(18);
+	wp_redirect( $login_page . '?login=failed' );
+	exit;
+}
+
+add_action( 'wp_login_failed', 'login_failed' );
+   
+function verify_username_password( $user, $username, $password ) {
+	$login_page  = get_permalink(18);
+		if( $username == "" || $password == "" ) {
+			wp_redirect( $login_page . "?login=empty" );
+			exit;
+		}
+}
+
+add_filter( 'authenticate', 'verify_username_password', 1, 3);
+
+function logout_page() {
+	$login_page  = get_permalink(18);
+	wp_redirect( $login_page . "?login=false" );
+	exit;
+}
+
+add_action('wp_logout','logout_page');
+
+/**
+ * Block wp-admin access for non-admins
+ */
+function block_wp_admin() {
+	$login_page  = get_permalink(18);
+	if ( is_admin() && ! current_user_can( 'administrator' ) && ! ( defined( 'DOING_AJAX' ) && DOING_AJAX ) ) {
+		wp_safe_redirect( $login_page );
+		exit;
+	}
+}
+
+add_action( 'admin_init', 'block_wp_admin' );
+
+//Exclude pages from WordPress Search
+// if (!is_admin()) {
+// 	function wpb_search_filter($query) {
+// 	if ($query->is_search) {
+// 	$query->set('post_type', 'post');
+// 	}
+// 	return $query;
+// 	}
+// 	add_filter('pre_get_posts','wpb_search_filter');
+// }
+
+
+//Search Filter PRO
+
+add_filter('wp_title','search_form_title');
+
+function search_form_title($title){
+ 
+ 	global $searchandfilter;
+ 
+	if ( $searchandfilter->active_sfid() == 35889) {
+		return 'Search Results';
+	} else {
+		return $title;
+	}
+ 
+}
+
+function distance($lat1, $lon1, $lat2, $lon2, $unit) {
+	if (($lat1 == $lat2) && ($lon1 == $lon2)) {
+	  return 0;
+	}
+	else {
+	  $theta = $lon1 - $lon2;
+	  $dist = sin(deg2rad($lat1)) * sin(deg2rad($lat2)) +  cos(deg2rad($lat1)) * cos(deg2rad($lat2)) * cos(deg2rad($theta));
+	  $dist = acos($dist);
+	  $dist = rad2deg($dist);
+	  $miles = $dist * 60 * 1.1515;
+	  $unit = strtoupper($unit);
+  
+	  if ($unit == "K") {
+		return ($miles * 1.609344);
+	  } else if ($unit == "N") {
+		return ($miles * 0.8684);
+	  } else {
+		return $miles;
+	  }
+	}
+}
+
+//change url of the lost password page
+// add_filter( 'lostpassword_url',  'my_lostpassword_url', 10, 0 );
+// function my_lostpassword_url() {
+//     return site_url('/password-reset/');
+// }
+
+// // Information needed for creating the plugin's pages
+// $page_definitions = array(
+//     'member-login' => array(
+//         'title' => __( 'Sign In', 'personalize-login' ),
+//         'content' => '[custom-login-form]'
+//     ),
+//     'member-account' => array(
+//         'title' => __( 'Your Account', 'personalize-login' ),
+//         'content' => '[account-info]'
+//     ),
+//     'member-register' => array(
+//         'title' => __( 'Register', 'personalize-login' ),
+//         'content' => '[custom-register-form]'
+//     ),
+//     'member-password-lost' => array(
+//         'title' => __( 'Forgot Your Password?', 'personalize-login' ),
+//         'content' => '[custom-password-lost-form]'
+//     ),
+//     'member-password-reset' => array(
+//         'title' => __( 'Pick a New Password', 'personalize-login' ),
+//         'content' => '[custom-password-reset-form]'
+//     )
+// );
+
+// add_action( 'login_form_lostpassword', array( $this, 'redirect_to_custom_lostpassword' ) );
+
+/**
+ * Redirects the user to the custom "Forgot your password?" page instead of
+ * wp-login.php?action=lostpassword.
+ */
+// public function redirect_to_custom_lostpassword() {
+//     if ( 'GET' == $_SERVER['REQUEST_METHOD'] ) {
+//         if ( is_user_logged_in() ) {
+//             $this->redirect_logged_in_user();
+//             exit;
+//         }
+ 
+//         wp_redirect( home_url( 'member-password-lost' ) );
+//         exit;
+//     }
+// }
 
 //helper functions
 
+function wpb_list_child_pages() { 
+ 
+	global $post; 
+	 
+	if ( is_page() && $post->post_parent )
+	 
+		$childpages = wp_list_pages( 'sort_column=menu_order&title_li=&child_of=' . $post->post_parent . '&echo=0' );
+	else
+		$childpages = wp_list_pages( 'sort_column=menu_order&title_li=&child_of=' . $post->ID . '&echo=0' );
+	 
+	if ( $childpages ) {
+	 
+		$string = '<ul class="wpb_page_list">' . $childpages . '</ul>';
 
-//
+		return $string;
+
+	} else {
+
+		return;
+
+	}
+	 
+}
+	 
+add_shortcode('wpb_childpages', 'wpb_list_child_pages');
+
+// Mark posts when they are published for the first time (Approved by moderator)
+
+// function add_field_if_post_approved($post_id) {
+//     $is_approved = get_post_meta($post_id, 'is_approved', true);
+//     if( !$is_approved ) {
+// 		add_post_meta( $post_id, 'is_approved', 'yes' );
+//     }
+// }
+
+// add_action('save_post', 'add_field_if_post_approved', 99);
+
+
+
+
+// function add_custom_field_automatically($post_id) {
+
+// 	global $wpdb;
+
+//     $is_approved = get_post_meta($post_id, 'is_approved', true);
+// 	if( $is_approved == '') {
+// 		add_post_meta($post_id, 'is_approved', 'yes');
+// 	}
+
+// }
+
+// add_action('publish_post', 'add_custom_field_automatically');
+
+
+// function wpse120996_add_custom_field_automatically($post_id) {
+//     global $wpdb;
+//     $votes_count = get_post_meta($post_id, 'votes_count', true);
+//     if( empty( $votes_count ) && ! wp_is_post_revision( $post_id ) ) {
+//         update_post_meta($post_id, 'votes_count', '0');
+//     }
+// }
+// add_action('publish_post', 'wpse120996_add_custom_field_automatically');
+
+
+function add_field_if_post_approved( $post_id, $post ) {
+	//do whatever
+	if (get_post_status($post_id) == "publish") {
+
+		$is_approved = get_post_meta($post_id, 'is_approved', true);
+		if( !$is_approved ) {
+			add_post_meta( $post_id, 'is_approved', 'yes' );
+		}
+	}
+}
+
+add_action('save_post', 'add_field_if_post_approved', 10, 2);
 
 ///////////////////////// MENUS ////////////////////////////
 
@@ -344,11 +599,11 @@ function vicode_add_new_user() {
       
       if(username_exists($user_login)) {
           // Username already registered
-          vicode_errors()->add('username_unavailable', __('Username already taken'));
+          vicode_errors()->add('username_unavailable', __('Ta nazwa użytkownika jest już zajęta, proszę wybrać inną nazwę.'));
       }
       if(!validate_username($user_login)) {
           // invalid username
-          vicode_errors()->add('username_invalid', __('Invalid username'));
+          vicode_errors()->add('username_invalid', __('Nieprawidłowa nazwa użytkownika'));
       }
       if($user_login == '') {
           // empty username
@@ -416,6 +671,9 @@ function vicode_add_new_user() {
 }
 add_action('init', 'vicode_add_new_user');
 
+
+
+
 /* Creates custom post every time new user registers */
 
 function create_post_for_user( $user_id ) {
@@ -462,7 +720,8 @@ function vicode_error_messages() {
 		    // Loop error codes and display errors
 		   foreach($codes as $code){
 		        $message = vicode_errors()->get_error_message($code);
-		        echo '<span class="error"><strong>' . __('Error') . '</strong>: ' . $message . '</span><br/>';
+		        // echo '<span class="error"><strong>' . __('Error') . '</strong>: ' . $message . '</span><br/>';
+				echo '<p class="login-msg php-error__text">' . $message . '</p>';
 		    }
 		echo '</div>';
 	} else {
@@ -904,12 +1163,12 @@ function contact_user_data_form() {
 
 				<p>
 					<label for="user_contact_phone"><?php _e('Numer telefonu'); ?></label>
-					<input name="user_contact_phone" id="user_contact_phone" class="user_contact_phone" type="text" value="<?php echo get_field("translator_contact_phone") ?>"/>
+					<input name="user_contact_phone" id="user_contact_phone" class="user_contact_phone" type="text" value="<?php if(strlen(get_field("translator_contact_phone") > 0)) { echo get_field("translator_contact_phone"); } else { echo "+48 123 456 789"; }  ?>"/>
 				</p>
 
 				<p>
 					<label for="user_contact_email"><?php _e('Adres e-mail'); ?></label>
-					<input name="user_contact_email" id="user_contact_email" class="user_contact_email" type="text" value="<?php echo get_field("translator_contact_email") ?>"/>
+					<input name="user_contact_email" id="user_contact_email" class="user_contact_email" type="text" value="<?php if(strlen(get_field("translator_contact_email") > 0)) { echo get_field("translator_contact_email"); } else { echo $current_user->user_email; }  ?>"/>
 				</p>
 
 					<?php
@@ -2617,29 +2876,113 @@ function settings_user_data_visibility_form() {
 
 	ob_start(); ?>	
 
-		<?php 
-		// show any error messages after form submission
-		// settings_user_data_visibility_form_messages(); ?>
 		
 					<form name="settings_user_data_visibility_form" id="settings_user_data_visibility_form" class="vicode_form" action="" method="POST">
 
                         <ul class="options">
 
-							<li>
+							<?php
 
-                                <div class="options__position">Mój profil tłumacza</div>
-                                
-                                <div class="options__switch
-								<?php if ($user_post_status == "publish") { echo 'options__switch--on'; } ?>
-								">
+								$is_approved = get_post_meta( $user_post_id, 'is_approved', true );
 
-                                    <label for="switch" >
-                                        <input name="user_settings_visibility_public_profile" type="checkbox" class="switch" <?php if ($user_post_status == "publish") { echo 'checked'; } ?>/>
-                                    </label>
-                                
-                                </div>
+								if( $is_approved ) {
+									?>
 
-                            </li>
+									<li>
+										<div class="options__position">Mój profil tłumacza</div>
+
+										<div class="options__switch
+										<?php if ($user_post_status == "publish") { echo 'options__switch--on'; } ?>
+										">
+											<label for="switch" >
+												<input name="user_settings_visibility_public_profile" type="checkbox" class="switch" <?php if ( $user_post_status == "publish" ) { echo 'checked'; } ?>/>
+											</label>
+
+										</div>
+									</li>
+
+									<?php
+
+								} else {
+									?>
+									<li>
+
+										<div class="options__position">Mój profil tłumacza</div>
+									
+										<div class="options__switch options__to-be-approved
+										">
+
+											<label for="switch">
+												<svg version="1.1" id="Capa_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
+														viewBox="0 0 512 512" style="enable-background:new 0 0 512 512;" xml:space="preserve">
+													<g>
+														<g>
+															<g>
+																<path d="M458.406,380.681c-8.863-6.593-21.391-4.752-27.984,4.109c-3.626,4.874-7.506,9.655-11.533,14.21
+																	c-7.315,8.275-6.538,20.915,1.737,28.231c3.806,3.364,8.531,5.016,13.239,5.016c5.532,0,11.04-2.283,14.992-6.754
+																	c4.769-5.394,9.364-11.056,13.658-16.829C469.108,399.803,467.269,387.273,458.406,380.681z"/>
+																<path d="M491.854,286.886c-10.786-2.349-21.447,4.496-23.796,15.288c-1.293,5.937-2.855,11.885-4.646,17.681
+																	c-3.261,10.554,2.651,21.752,13.204,25.013c1.967,0.607,3.955,0.896,5.911,0.896c8.54,0,16.448-5.514,19.102-14.102
+																	c2.126-6.878,3.98-13.937,5.514-20.98C509.492,299.89,502.647,289.236,491.854,286.886z"/>
+																<path d="M362.139,444.734c-5.31,2.964-10.808,5.734-16.34,8.233c-10.067,4.546-14.542,16.392-9.996,26.459
+																	c3.34,7.396,10.619,11.773,18.239,11.773c2.752,0,5.549-0.571,8.22-1.777c6.563-2.964,13.081-6.249,19.377-9.764
+																	c9.645-5.384,13.098-17.568,7.712-27.212C383.968,442.803,371.784,439.35,362.139,444.734z"/>
+																<path d="M236,96v151.716l-73.339,73.338c-7.81,7.811-7.81,20.474,0,28.284c3.906,3.906,9.023,5.858,14.143,5.858
+																	c5.118,0,10.237-1.953,14.143-5.858l79.196-79.196c3.75-3.75,5.857-8.838,5.857-14.142V96c0-11.046-8.954-20-20-20
+																	C244.954,76,236,84.954,236,96z"/>
+																<path d="M492,43c-11.046,0-20,8.954-20,20v55.536C425.448,45.528,344.151,0,256,0C187.62,0,123.333,26.629,74.98,74.98
+																	C26.629,123.333,0,187.62,0,256s26.629,132.667,74.98,181.02C123.333,485.371,187.62,512,256,512c0.169,0,0.332-0.021,0.5-0.025
+																	c0.168,0.004,0.331,0.025,0.5,0.025c7.208,0,14.487-0.304,21.637-0.902c11.007-0.922,19.183-10.592,18.262-21.599
+																	c-0.923-11.007-10.58-19.187-21.6-18.261C269.255,471.743,263.099,472,257,472c-0.169,0-0.332,0.021-0.5,0.025
+																	c-0.168-0.004-0.331-0.025-0.5-0.025c-119.103,0-216-96.897-216-216S136.897,40,256,40c76.758,0,147.357,40.913,185.936,106
+																	h-54.993c-11.046,0-20,8.954-20,20s8.954,20,20,20H448c12.18,0,23.575-3.423,33.277-9.353c0.624-0.356,1.224-0.739,1.796-1.152
+																	C500.479,164.044,512,144.347,512,122V63C512,51.954,503.046,43,492,43z"/>
+															</g>
+														</g>
+													</g>
+													<g>
+													</g>
+													<g>
+													</g>
+													<g>
+													</g>
+													<g>
+													</g>
+													<g>
+													</g>
+													<g>
+													</g>
+													<g>
+													</g>
+													<g>
+													</g>
+													<g>
+													</g>
+													<g>
+													</g>
+													<g>
+													</g>
+													<g>
+													</g>
+													<g>
+													</g>
+													<g>
+													</g>
+													<g>
+													</g>
+													</svg>
+											</label>
+
+										</div>
+
+									</li>
+
+								<?php
+								}
+
+							?>
+
+
 
 							<li>
 
@@ -2692,7 +3035,7 @@ function settings_user_data_visibility_form() {
                         </ul>
 
 						<p>
-							<input type="submit" name="submit_settings_user_data_visibility_form" class="info-box__single-setting" value="<?php _e('Zaktualizuj widoczność profilu'); ?>"/>
+							<input type="submit" name="submit_settings_user_data_visibility_form" class="info-box__subbox--max-width" value="<?php _e('Zaktualizuj widoczność profilu'); ?>"/>
 							<?php wp_nonce_field( 'settings_user_data_visibility_form', 'settings_user_data_visibility_form_nonce' ); ?>
 						</p>
 
@@ -2764,127 +3107,9 @@ add_action( 'wp_ajax_nopriv_change_settings_user_data_visibility_with_ajax',  'c
 add_action( 'wp_ajax_change_settings_user_data_visibility_with_ajax','change_settings_user_data_visibility_with_ajax' );
 
 
-function redirect_login_page() {
-	$login_page  = get_permalink(18);
-	$page_viewed = basename($_SERVER['REQUEST_URI']);
-   
-	if( $page_viewed == "wp-login.php" && $_SERVER['REQUEST_METHOD'] == 'GET') {
-	  wp_redirect($login_page);
-	  exit;
-	}
-}
-
-add_action('init','redirect_login_page');
-
-// function redirect_users_after_login() {
-// 	if(!current_user_can( 'manage_options' )){
-// 		$url  = get_permalink(18);
-// 		// wp_redirect($login_page);
-// 		return $url;
-// 		die; // You have to die here
-// 	}
-
-//     if ( current_user_can( 'manage_options' ) ) {
-// 		$url = esc_url( admin_url( 'edit.php' ) );
-// 		return $url;
-// 		die;
-//     }
-
-// }
-
-// add_filter('login_redirect', 'redirect_users_after_login');
-
-
-function login_failed() {
-	$login_page  = get_permalink(18);
-	wp_redirect( $login_page . '?login=failed' );
-	exit;
-}
-add_action( 'wp_login_failed', 'login_failed' );
-   
-function verify_username_password( $user, $username, $password ) {
-$login_page  = get_permalink(18);
-	if( $username == "" || $password == "" ) {
-		wp_redirect( $login_page . "?login=empty" );
-		exit;
-	}
-}
-add_filter( 'authenticate', 'verify_username_password', 1, 3);
-
-function logout_page() {
-	$login_page  = get_permalink(18);
-  wp_redirect( $login_page . "?login=false" );
-  exit;
-}
-add_action('wp_logout','logout_page');
-
-/**
- * Block wp-admin access for non-admins
- */
-function block_wp_admin() {
-	$login_page  = get_permalink(18);
-	if ( is_admin() && ! current_user_can( 'administrator' ) && ! ( defined( 'DOING_AJAX' ) && DOING_AJAX ) ) {
-		wp_safe_redirect( $login_page );
-		exit;
-	}
-}
-add_action( 'admin_init', 'block_wp_admin' );
-
-//Exclude pages from WordPress Search
-// if (!is_admin()) {
-// 	function wpb_search_filter($query) {
-// 	if ($query->is_search) {
-// 	$query->set('post_type', 'post');
-// 	}
-// 	return $query;
-// 	}
-// 	add_filter('pre_get_posts','wpb_search_filter');
-// }
 
 
 
-
-//Search Filter PRO
-
-
-add_filter('wp_title','search_form_title');
-
-function search_form_title($title){
- 
- global $searchandfilter;
- 
- if ( $searchandfilter->active_sfid() == 35889)
- {
- return 'Search Results';
- }
- else
- {
- return $title;
- }
- 
-}
-
-function distance($lat1, $lon1, $lat2, $lon2, $unit) {
-	if (($lat1 == $lat2) && ($lon1 == $lon2)) {
-	  return 0;
-	}
-	else {
-	  $theta = $lon1 - $lon2;
-	  $dist = sin(deg2rad($lat1)) * sin(deg2rad($lat2)) +  cos(deg2rad($lat1)) * cos(deg2rad($lat2)) * cos(deg2rad($theta));
-	  $dist = acos($dist);
-	  $dist = rad2deg($dist);
-	  $miles = $dist * 60 * 1.1515;
-	  $unit = strtoupper($unit);
-  
-	  if ($unit == "K") {
-		return ($miles * 1.609344);
-	  } else if ($unit == "N") {
-		return ($miles * 0.8684);
-	  } else {
-		return $miles;
-	  }
-	}
-}
 
 function footer_copyright() {
 	global $wpdb;

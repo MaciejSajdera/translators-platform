@@ -328,7 +328,7 @@ jQuery(document).ready(function($) {
 
 	/* 	User Basic Info Form */
 
-	var basicUserDataForm = ajax_forms_params.basic_user_data_form;
+	const basicUserDataForm = document.querySelector("#basic_user_data_form");
 
 	$(basicUserDataForm).submit(function(event) {
 		event.preventDefault();
@@ -347,6 +347,13 @@ jQuery(document).ready(function($) {
 			beforeSend: function() {
 				// Before we send the request, remove the .hidden class from the spinner and default to inline-block.
 				thisAjaxLoader.classList.add("my-ajax-loader--active");
+
+				// And scroll intro view
+				basicUserDataForm.closest(".account__box-container").scrollIntoView({
+					behavior: "smooth",
+					block: "start",
+					inline: "nearest"
+				});
 			},
 
 			complete: function() {
@@ -357,7 +364,6 @@ jQuery(document).ready(function($) {
 				console.log("SUCCESS!");
 				console.log(data);
 				console.log(JSON.parse(data));
-
 				const dataJSON = JSON.parse(data);
 
 				const accountUserName = document.querySelector(".account__user-name");
@@ -397,7 +403,7 @@ jQuery(document).ready(function($) {
 
 	/* 	User About Form */
 
-	var aboutUserDataForm = ajax_forms_params.about_user_data_form;
+	const aboutUserDataForm = document.querySelector("#about_user_data_form");
 
 	$(aboutUserDataForm).submit(function(event) {
 		event.preventDefault();
@@ -413,6 +419,13 @@ jQuery(document).ready(function($) {
 			beforeSend: function() {
 				// Before we send the request, remove the .hidden class from the spinner and default to inline-block.
 				thisAjaxLoader.classList.add("my-ajax-loader--active");
+
+				// And scroll intro view
+				aboutUserDataForm.closest(".account__box-container").scrollIntoView({
+					behavior: "smooth",
+					block: "start",
+					inline: "nearest"
+				});
 			},
 
 			complete: function() {
@@ -440,7 +453,7 @@ jQuery(document).ready(function($) {
 
 	/* 	User Contact Data Form */
 
-	var contactUserDataForm = ajax_forms_params.contact_user_data_form;
+	const contactUserDataForm = document.querySelector("#contact_user_data_form");
 
 	//inputs: #user_city and #user_localization_city needs to share the same value
 
@@ -462,6 +475,13 @@ jQuery(document).ready(function($) {
 			beforeSend: function() {
 				// Before we send the request, remove the .hidden class from the spinner and default to inline-block.
 				thisAjaxLoader.classList.add("my-ajax-loader--active");
+
+				// And scroll intro view
+				contactUserDataForm.closest(".account__box-container").scrollIntoView({
+					behavior: "smooth",
+					block: "start",
+					inline: "nearest"
+				});
 			},
 
 			complete: function() {
@@ -534,6 +554,19 @@ jQuery(document).ready(function($) {
 
 							userLocalizationsColumn.appendChild(newAddedLocalization);
 						});
+
+					//remove emoty fields
+					console.log(contactUserDataForm);
+					let allRepeaterFieldsInThisForm = contactUserDataForm.querySelectorAll(
+						".repeater__field"
+					);
+
+					allRepeaterFieldsInThisForm.forEach(repeaterField => {
+						console.log(repeaterField.querySelector("INPUT").value);
+						!repeaterField.querySelector("INPUT").value
+							? repeaterField.remove()
+							: "";
+					});
 				}
 
 				return data;
@@ -618,7 +651,9 @@ jQuery(document).ready(function($) {
 
 	//uploading
 
-	var uploadSoundToGalleryForm = ajax_forms_params.upload_sound_to_gallery_form;
+	var uploadSoundToGalleryForm = document.querySelector(
+		"#upload_sound_to_gallery_form"
+	);
 
 	$(uploadSoundToGalleryForm).submit(function(event) {
 		event.preventDefault();
@@ -671,6 +706,15 @@ jQuery(document).ready(function($) {
 			beforeSend: function() {
 				// Before we send the request, remove the .hidden class from the spinner and default to inline-block.
 				thisAjaxLoader.classList.add("my-ajax-loader--active");
+
+				// And scroll intro view
+				uploadSoundToGalleryForm
+					.closest(".account__box-container")
+					.scrollIntoView({
+						behavior: "smooth",
+						block: "start",
+						inline: "nearest"
+					});
 			},
 
 			complete: function() {
@@ -808,7 +852,9 @@ jQuery(document).ready(function($) {
 
 	/* 	User Linkedin Form */
 
-	var linkedinUserDataForm = ajax_forms_params.linkedin_user_data_form;
+	const linkedinUserDataForm = document.querySelector(
+		"#linkedin_user_data_form"
+	);
 
 	$(linkedinUserDataForm).submit(function(event) {
 		event.preventDefault();
@@ -824,6 +870,13 @@ jQuery(document).ready(function($) {
 			beforeSend: function() {
 				// Before we send the request, remove the .hidden class from the spinner and default to inline-block.
 				thisAjaxLoader.classList.add("my-ajax-loader--active");
+
+				// And scroll intro view
+				linkedinUserDataForm.closest(".account__box-container").scrollIntoView({
+					behavior: "smooth",
+					block: "start",
+					inline: "nearest"
+				});
 			},
 
 			complete: function() {
@@ -851,7 +904,7 @@ jQuery(document).ready(function($) {
 
 	/* 	User work Form */
 
-	var workUserDataForm = ajax_forms_params.work_user_data_form;
+	const workUserDataForm = document.querySelector("#work_user_data_form");
 
 	$(workUserDataForm).submit(function(event) {
 		event.preventDefault();
@@ -867,6 +920,13 @@ jQuery(document).ready(function($) {
 			beforeSend: function() {
 				// Before we send the request, remove the .hidden class from the spinner and default to inline-block.
 				thisAjaxLoader.classList.add("my-ajax-loader--active");
+
+				// And scroll intro view
+				workUserDataForm.closest(".account__box-container").scrollIntoView({
+					behavior: "smooth",
+					block: "start",
+					inline: "nearest"
+				});
 			},
 
 			complete: function() {
@@ -894,7 +954,9 @@ jQuery(document).ready(function($) {
 
 	/* 	Upload profile picture Form */
 
-	var uploadProfilePictureForm = ajax_forms_params.upload_profile_picture_form;
+	const uploadProfilePictureForm = document.querySelector(
+		"#upload_profile_picture_form"
+	);
 
 	$(uploadProfilePictureForm).submit(function(event) {
 		event.preventDefault();
@@ -968,7 +1030,9 @@ jQuery(document).ready(function($) {
 
 	/* 	Upload image to gallery Form */
 
-	var uploadImageToGalleryForm = ajax_forms_params.upload_image_to_gallery_form;
+	const uploadImageToGalleryForm = document.querySelector(
+		"#upload_image_to_gallery_form"
+	);
 
 	$(uploadImageToGalleryForm).submit(function(event) {
 		event.preventDefault();
@@ -1017,6 +1081,14 @@ jQuery(document).ready(function($) {
 			beforeSend: function() {
 				// Before we send the request, remove the .hidden class from the spinner and default to inline-block.
 				thisAjaxLoader.classList.add("my-ajax-loader--active");
+
+				uploadImageToGalleryForm
+					.closest(".account__box-container")
+					.scrollIntoView({
+						behavior: "smooth",
+						block: "start",
+						inline: "nearest"
+					});
 			},
 
 			complete: function() {
@@ -1027,45 +1099,58 @@ jQuery(document).ready(function($) {
 
 			success: function(data) {
 				console.log("SUCCESS!");
-				console.log(data);
+				// console.log(data);
 
 				const dataJSON = JSON.parse(data);
-				console.log(dataJSON);
+				// console.log(dataJSON);
 
 				let addedFilesIds = dataJSON.added_files_ids;
 				let addedRows = dataJSON.added_rows;
 				let deletedRows = dataJSON.deleted_rows;
 
-				let allNewAttachmentWrappersInThisForm = $(
-					"#upload_image_to_gallery_form .new-attachment__wrapper"
-				);
-
-				allNewAttachmentWrappersInThisForm.each(function(index) {
-					console.log(this);
-					$(this)
-						.clone()
-						.css("transform", "scale(0)")
-						.css("transition", "all 0.3s ease-in")
-						.addClass("my-pictures__gallery-attachment")
-						.addClass("newlyAddedImage")
-						.appendTo(".my-pictures__gallery")
-						.children("A")
-						.attr("data-id", addedFilesIds[index]);
-
-					// console.log(arrayOfIndexesToDelete[index]);
-
-					// $(this).attr("data-id", arrayOfIndexesToDelete[index]);
-
-					setTimeout(function() {
-						$(".newlyAddedImage")
-							.css("transform", "scale(1)")
-							.removeClass("newlyAddedImage");
-					}, 200);
-				});
-
 				let allRepeaterFieldsInThisForm = $(
 					"#upload_image_to_gallery_form .repeater__field"
 				);
+
+				allRepeaterFieldsInThisForm.each(function(index) {
+					console.log(this.querySelector("INPUT").value);
+
+					let allNewAttachmentWrappersInThisForm = this.querySelector(
+						".new-attachment__wrapper"
+					);
+
+					let repeaterInputValue = this.querySelector("INPUT").value;
+
+					if (repeaterInputValue) {
+						$(allNewAttachmentWrappersInThisForm)
+							.clone()
+							.css("transform", "scale(0)")
+							.css("transition", "all 0.3s ease-in")
+							.addClass("my-pictures__gallery-attachment")
+							.addClass("newlyAddedImage")
+							.appendTo(".my-pictures__gallery")
+							.children("A")
+							.attr("data-id", addedFilesIds[index]);
+
+						// console.log(arrayOfIndexesToDelete[index]);
+
+						// $(this).attr("data-id", arrayOfIndexesToDelete[index]);
+
+						setTimeout(function() {
+							$(".newlyAddedImage")
+								.css("transform", "scale(1)")
+								.removeClass("newlyAddedImage");
+						}, 200);
+					}
+				});
+
+				// let allNewAttachmentWrappersInThisForm = $(
+				// 	"#upload_image_to_gallery_form .new-attachment__wrapper"
+				// );
+
+				// allNewAttachmentWrappersInThisForm.each(function(index) {
+
+				// });
 
 				//clearings
 
@@ -1085,7 +1170,6 @@ jQuery(document).ready(function($) {
 					}
 				});
 
-				
 				document
 					.querySelector("#upload_image_to_gallery_form")
 					.closest(".account__box-container")
@@ -1122,7 +1206,9 @@ jQuery(document).ready(function($) {
 
 	/* 	Upload video to gallery Form */
 
-	var uploadVideoToGalleryForm = ajax_forms_params.upload_video_to_gallery_form;
+	const uploadVideoToGalleryForm = document.querySelector(
+		"#upload_video_to_gallery_form"
+	);
 
 	$(uploadVideoToGalleryForm).submit(function(event) {
 		event.preventDefault();
@@ -1175,6 +1261,14 @@ jQuery(document).ready(function($) {
 			beforeSend: function() {
 				// Before we send the request, remove the .hidden class from the spinner and default to inline-block.
 				thisAjaxLoader.classList.add("my-ajax-loader--active");
+
+				uploadVideoToGalleryForm
+					.closest(".account__box-container")
+					.scrollIntoView({
+						behavior: "smooth",
+						block: "start",
+						inline: "nearest"
+					});
 			},
 
 			complete: function() {
@@ -1251,8 +1345,9 @@ jQuery(document).ready(function($) {
 
 	/* 	User Settings Update Email Form */
 
-	var changeSettingsUserLoginEmail =
-		ajax_forms_params.settings_user_login_email_form;
+	const changeSettingsUserLoginEmail = document.querySelector(
+		"#settings_user_login_email_form"
+	);
 
 	$(changeSettingsUserLoginEmail).submit(function(event) {
 		event.preventDefault();
@@ -1275,6 +1370,14 @@ jQuery(document).ready(function($) {
 			beforeSend: function() {
 				// Before we send the request, remove the .hidden class from the spinner and default to inline-block.
 				thisAjaxLoader.classList.add("my-ajax-loader--active");
+
+				changeSettingsUserLoginEmail
+					.closest(".account__box-container")
+					.scrollIntoView({
+						behavior: "smooth",
+						block: "start",
+						inline: "nearest"
+					});
 			},
 
 			complete: function() {
@@ -1397,8 +1500,9 @@ jQuery(document).ready(function($) {
 
 	/* UPDATE VISIBILITY SETTINGS FORM */
 
-	var userDataVisibilityForm =
-		ajax_forms_params.settings_user_data_visibility_form;
+	var userDataVisibilityForm = document.querySelector(
+		"#settings_user_data_visibility_form"
+	);
 
 	$(userDataVisibilityForm).submit(function(event) {
 		event.preventDefault();
@@ -1414,6 +1518,14 @@ jQuery(document).ready(function($) {
 			beforeSend: function() {
 				// Before we send the request, remove the .hidden class from the spinner and default to inline-block.
 				thisAjaxLoader.classList.add("my-ajax-loader--active");
+
+				userDataVisibilityForm
+					.closest(".account__box-container")
+					.scrollIntoView({
+						behavior: "smooth",
+						block: "start",
+						inline: "nearest"
+					});
 			},
 
 			complete: function() {

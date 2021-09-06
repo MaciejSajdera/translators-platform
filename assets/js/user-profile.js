@@ -110,11 +110,11 @@ document.addEventListener("DOMContentLoaded", () => {
 				if (e.target.classList.contains("repeater__button--add")) {
 					e.preventDefault();
 
-					const container = this.parentNode.querySelector(
+					const container = this.closest(".repeater__holder").querySelector(
 						".repeater__field-wrapper"
 					);
 
-					let clonedField = this.parentNode
+					let clonedField = this.closest(".repeater__holder")
 						.querySelector(".repeater__field")
 						.cloneNode(true);
 
@@ -135,19 +135,19 @@ document.addEventListener("DOMContentLoaded", () => {
 
 					//clearings
 
-					let allClonedFieldInputs = clonedField.querySelectorAll("INPUT");
+					let allInputsOfClonedField = clonedField.querySelectorAll("INPUT");
 
-					let allClonedFieldTextAreas = clonedField.querySelectorAll(
+					let allTextAreasOfClonedField = clonedField.querySelectorAll(
 						"TEXTAREA"
 					);
 
-					allClonedFieldInputs &&
-						allClonedFieldInputs.forEach(clonedInput => {
+					allInputsOfClonedField &&
+						allInputsOfClonedField.forEach(clonedInput => {
 							clonedInput.value = "";
 						});
 
-					allClonedFieldTextAreas &&
-						allClonedFieldTextAreas.forEach(clonedTextArea => {
+					allTextAreasOfClonedField &&
+						allTextAreasOfClonedField.forEach(clonedTextArea => {
 							clonedTextArea.value = "";
 						});
 
@@ -155,19 +155,19 @@ document.addEventListener("DOMContentLoaded", () => {
 						".new-attachment__placeholder"
 					);
 
+					clonedFieldNewAttachmentPlaceholder &&
 					clonedFieldNewAttachmentPlaceholder
 						? (clonedFieldNewAttachmentPlaceholder.src = "")
 						: "";
 
-					console.log(clonedFieldNewAttachmentPlaceholder);
+					clonedFieldNewAttachmentPlaceholder &&
+						clonedFieldNewAttachmentPlaceholder
+							.querySelector(".new-attachment__preview")
+							?.remove();
 
-					clonedFieldNewAttachmentPlaceholder
-						.querySelector(".new-attachment__preview")
-						?.remove();
-
-					clonedField.querySelector(
-						".new-attachment__placeholder"
-					).style.display = "none";
+					if (clonedFieldNewAttachmentPlaceholder) {
+						clonedFieldNewAttachmentPlaceholder.style.display = "none";
+					}
 
 					container.appendChild(clonedField);
 				}

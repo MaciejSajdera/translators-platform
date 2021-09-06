@@ -272,15 +272,18 @@ table {
 	opacity: 1;
 }
 
+.icon,
+.icon svg {
+	height: 30px;
+	width: 30px;
+}
+
 .social-media-icons {
 	.icon {
 		background-size: contain;
 		background-position: center;
 		background-repeat: no-repeat;
 		display: block;
-
-		height: 50px;
-		width: 50px;
 		margin: 1rem;
 		transition: all 0.3s ease-in-out;
 

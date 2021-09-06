@@ -81,26 +81,87 @@ get_header();
 					echo '<div class="account__container">';
 
 						echo '<div class="account__side-menu">';
+						
+							echo '<div class="account__privacy-status">';
+
+							$is_approved = get_post_meta( $user_post_id, 'is_approved', true );
+
+							$account_privacy_status = get_post_status($user_post_id);
+
+							$account_privacy_icon = file_get_contents(get_stylesheet_directory_uri().'/dist/dist/svg/earth.svg');
+
+
+							// $earth_svg = get_template_directory_uri("/dist/dist/svg/earth.svg");
+
+							if ( !$is_approved ) {
+
+								echo '<div class="icon account__private">
+								'.$account_privacy_icon.'
+								</div>';
+							}
+
+							if( $is_approved && $account_privacy_status !== "publish" ) {
+
+								echo '<div class="icon account__private">
+								'.$account_privacy_icon.'
+								</div>';
+
+							}
+
+							if ( $is_approved && $account_privacy_status == "publish" ) {
+
+								echo '<div class="icon account__public">
+								'.$account_privacy_icon.'
+								</div>';
+
+							}
+
+							echo '</div>';
 
 							echo '<div class="profile-picture__wrapper ajax-content-wrapper">';
 
-								if(wp_get_attachment_image_url(get_post_thumbnail_id($user_post_id))) {
-									pstk_post_thumbnail($user_post_id);
-								} else {
-									echo '<div class="post-thumbnail">';
-									echo '<img src="'.get_stylesheet_directory_uri(). '/dist/dist/img/avatarplaceholder.jpg">';
-									
-									
+								echo '<div class="post-thumbnail">';
+
+									echo '<div class="post-thumbnail__wrapper">';
+
+									if(wp_get_attachment_image_url(get_post_thumbnail_id($user_post_id))) {
+										// pstk_post_thumbnail($user_post_id);
+										echo '<img src="'.wp_get_attachment_image_url(get_post_thumbnail_id($user_post_id), "full").'">';
+										
+									} else {
+
+										echo '<img style="transform: scale(1.1);" src="'.get_stylesheet_directory_uri(). '/dist/dist/img/avatarplaceholder.jpg">';
+										
+									}
+
+										echo '<div class="account__approval-status">';
+
+											if( $is_approved ) {
+
+												echo '<div class="icon account__approved">
+												<svg id="Layer_1" enable-background="new 0 0 511.375 511.375" height="512" viewBox="0 0 511.375 511.375" width="512" xmlns="http://www.w3.org/2000/svg"><g><path d="m511.375 255.687-57.89-64.273 9.064-86.045-84.65-17.921-43.18-75.011-79.031 35.32-79.031-35.32-43.18 75.011-84.65 17.921 9.063 86.045-57.89 64.273 57.889 64.273-9.063 86.045 84.65 17.921 43.18 75.011 79.031-35.321 79.031 35.321 43.18-75.011 84.65-17.921-9.064-86.045zm-148.497-55.985-128.345 143.792-89.186-89.186 21.213-21.213 66.734 66.734 107.203-120.104z"/></g></svg>
+												</div>';
+
+											} else {
+
+												echo '<div class="icon account__not-approved">
+												<svg id="Layer_1" enable-background="new 0 0 511.375 511.375" height="512" viewBox="0 0 511.375 511.375" width="512" xmlns="http://www.w3.org/2000/svg"><g><path d="m511.375 255.687-57.89-64.273 9.064-86.045-84.65-17.921-43.18-75.011-79.031 35.32-79.031-35.32-43.18 75.011-84.65 17.921 9.063 86.045-57.89 64.273 57.889 64.273-9.063 86.045 84.65 17.921 43.18 75.011 79.031-35.321 79.031 35.321 43.18-75.011 84.65-17.921-9.064-86.045zm-148.497-55.985-128.345 143.792-89.186-89.186 21.213-21.213 66.734 66.734 107.203-120.104z"/></g></svg>
+												</div>';
+
+											}
+
+										echo '</div>';
+
 									echo '</div>';
-								}
+
+								echo '</div>';
 
 								echo profile_picture_uploader($user_post_id);
 
 								echo '<div class="my-ajax-loader">';
 
 									echo '<div class="my-ajax-loader__spinner"></div>';
-									
-						
+								
 								echo '</div>';
 
 							echo '</div>';
@@ -113,8 +174,8 @@ get_header();
 
 									echo '<li><a href="#" data-profile-section="profile-section-1">Edycja Profilu</a></li>';
 									echo '<li><a href="#" data-profile-section="profile-section-2">Ustawienia</a></li>';
-									echo '<li><a href="#" data-profile-section="profile-section-3">Płatności</a></li>';
-									echo '<li><a href="#" data-profile-section="profile-section-4">Materiały tylko dla członków PSTK</a></li>';
+									// echo '<li><a href="#" data-profile-section="profile-section-3">Płatności</a></li>';
+									echo '<li><a href="#" data-profile-section="profile-section-3">Materiały tylko dla członków PSTK</a></li>';
 
 								echo '</ul>';
 
@@ -124,13 +185,42 @@ get_header();
 
 						echo '<div class="account__main">';
 
+
+							/* PROFILE SECTION 1 - EDIT PROFILE */
+
 							echo '<div id="profile-section-1" class="profile-section profile-section--active account__edit-profile">';
 
 								echo '<div class="account__welcome-message account__header">';
 
 								$user_nickname = $current_user->user_login;
 
-								echo '<p>Cześć '.$user_nickname.'</p>';
+								echo '<h1>Cześć '.$user_nickname.'</h1>';
+
+								echo '<h2>Witaj na swoim koncie PSTK.<br />
+								Twój profil jest kompletny w 10%. Uzupełnij go.								
+								<h2>';
+
+								// var_dump(get_fields($user_post_id));
+
+								$all_user_acf_fields = get_fields($user_post_id);
+
+								if ($all_user_acf_fields) {
+									
+									foreach($all_user_acf_fields as $field) :
+
+										echo gettype($field);
+
+										if ( gettype($field) == 'string' )  {
+											echo strlen($field);
+										}
+
+										// var_dump($field);
+										echo '<br />';
+
+									endforeach;
+
+								}
+
 
 								echo '</div>';
 
@@ -852,8 +942,9 @@ get_header();
 
 							echo '</div>';
 
+							/* END OF PROFILE SECTION 1 */
 
-							/* END OF profile-section-1 */
+							/* PROFILE SECTION 2 - SETTINGS */
 
 							echo '<div id="profile-section-2" class="profile-section profile-section--not-active account__settings">';
 
@@ -874,7 +965,7 @@ get_header();
 									<p class="info-box__tip">Adres ten wyświetla się na Twoim profilu i służy do logowania do konta PSTK </p>
 				
 				
-									<div class="info-box__subbox info-box__single-setting account__box-container ajax-content-wrapper">
+									<div class="info-box__subbox info-box__subbox--max-width account__box-container ajax-content-wrapper">
 
 										<div class="my-ajax-loader">
 
@@ -912,7 +1003,7 @@ get_header();
 									<p class="info-box__tip">Hasło służy do logowania do konta PSTK. Musi zawierać minimum 8 znaków, w tym jedną wielką literę i jeden znak specjalny.</p>
 
 
-									<div class="info-box__subbox info-box__single-setting account__box-container ajax-content-wrapper">
+									<div class="info-box__subbox info-box__subbox--max-width account__box-container ajax-content-wrapper">
 
 										<div class="my-ajax-loader">
 
@@ -939,7 +1030,7 @@ get_header();
 
 														foreach($errors as $error) :
 
-															echo '<p>'.$error.'</p>';
+															echo '<p class="php-error__text">'.$error.'</p>';
 
 														endforeach;
 
@@ -970,7 +1061,7 @@ get_header();
 
 									<div><p class="info-box__header">Widoczność profilu</p></div>
 
-									<div class="info-box__subbox account__box-container info-box__single-setting ajax-content-wrapper">
+									<div class="info-box__subbox account__box-container info-box__subbox--max-width ajax-content-wrapper">
 
 										<div class="my-ajax-loader">
 
@@ -992,6 +1083,182 @@ get_header();
 
 
 
+							echo '</div>';
+
+							/* END OF PROFILE SECTION 2 */
+
+							/* PROFILE SECTION 3 - DOWNLOADS */
+
+							echo '<div id="profile-section-3" class="profile-section profile-section--not-active account__settings">';
+
+								echo '<div class="account__header">';
+								
+									echo '<p>Materiały tylko dla członków PSTK</p>';
+
+								echo '</div>';
+
+								echo '<div class="account__subheader">';
+								
+									echo '<p>Znajdziesz tu materiały bonusowe tylko dla członków oraz materiały poufne, których zasięg ograniczamy do osób zrzeszonych w PSTK.</p>';
+
+								echo '</div>';
+
+
+								/* UPDATE LOGIN EMAIL ADDRESS FORM */
+
+								?>
+
+								<div class="info-box membership_package">
+
+									<p class="info-box__header">Pakiet członkowski</p>
+									<!-- <p class="info-box__tip"></p> -->
+				
+									<div class="info-box__subbox">
+
+									<ul class="membership_package__list">
+
+										<?php
+
+										/* Query membership_package posts in given order  */
+
+										$membership_package_args = array(
+										'post_type' => 'membership_package',
+										'orderby' => 'date',
+										);
+
+										// var_dump($membership_package_args);
+
+										$membership_package_query = new WP_Query($membership_package_args);
+
+										if ($membership_package_query->have_posts()) {
+											while ($membership_package_query->have_posts()) {
+												$membership_package_query->the_post();
+
+												if (get_field('membership_package_file')) {
+
+													echo '<li>';
+
+														echo '<div class="membership_package__label">'.get_the_title().'</div>';
+
+														echo '<a href="'.get_field('membership_package_file')['url'].'" class="button button__download" download>Pobierz</a>';
+
+													echo '</li>';
+
+												}
+
+											}
+										}
+
+										?>
+
+									</ul>
+
+									</div>
+				
+								</div>
+
+								<div class="info-box">
+
+									<p class="info-box__header">Poufne materiały - tylko dla członków</p>
+									<!-- <p class="info-box__tip"></p> -->
+
+									<div class="info-box__subbox wrapper-flex-wrap">
+
+											<?php
+
+											/* Query membership_package posts in given order  */
+
+											$secret_posts_args = array(
+											'post_type' => 'secret_posts',
+											'orderby' => 'date',
+											);
+
+											// var_dump($membership_package_args);
+
+											$secret_posts_query = new WP_Query($secret_posts_args);
+
+											if ($secret_posts_query->have_posts()) {
+												while ($secret_posts_query->have_posts()) {
+													$secret_posts_query->the_post();
+
+													echo '<div class="wrapper-flex-col-center blog-post-tile">';
+
+														echo '<a href="'.get_permalink().'">'; 
+
+															echo '<div>';
+
+																echo '<h3>'.get_the_title().'</h3>';
+
+																the_excerpt();
+
+															echo '</div>';
+
+															echo '<div class="button button__read-more">Czytaj więcej</div>';
+
+														echo '</a>';
+
+													echo '</div>';
+
+												}
+											}
+
+											?>
+									</div>
+
+								</div>
+
+								<div class="info-box">
+
+									<p class="info-box__header">Wsparcie marketingowe</p>
+									<!-- <p class="info-box__tip"></p> -->
+
+									<div class="info-box__subbox wrapper-flex-wrap">
+
+									<?php
+
+									/* Query membership_package posts in given order  */
+
+									$marketing_support_args = array(
+									'post_type' => 'marketing_support',
+									'orderby' => 'date',
+									);
+
+									// var_dump($membership_package_args);
+
+									$marketing_support_query = new WP_Query($marketing_support_args);
+
+									if ($marketing_support_query->have_posts()) {
+										while ($marketing_support_query->have_posts()) {
+											$marketing_support_query->the_post();
+
+											echo '<div class="wrapper-flex-col-center blog-post-tile">';
+
+												echo '<a href="'.get_permalink().'">'; 
+
+													echo '<div>';
+
+														echo '<h3>'.get_the_title().'</h3>';
+
+														the_excerpt();
+
+													echo '</div>';
+
+													echo '<div class="button button__read-more">Czytaj więcej</div>';
+
+												echo '</a>';
+
+											echo '</div>';
+
+										}
+									}
+
+									?>
+									</div>
+
+								</div>
+
+								<?php
+								
 							echo '</div>';
 
 

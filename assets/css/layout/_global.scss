@@ -12,6 +12,18 @@
 	margin-top: 3rem;
 }
 
+.list {
+	&--clear {
+		margin: 0;
+		padding: 0;
+		list-style: none;
+	}
+}
+
+.list-item--classic {
+	padding: 1rem 0;
+}
+
 .wrapper-flex-drow-mcol {
 	display: flex;
 	flex-flow: column;
@@ -34,6 +46,17 @@
 	flex-flow: row;
 	justify-content: space-between;
 	flex-wrap: wrap;
+}
+
+.wrapper-flex-wrap {
+	display: flex;
+	flex-flow: row;
+	flex-wrap: wrap;
+	column-gap: 2rem;
+}
+
+.blog-post-tile {
+	max-width: 350px;
 }
 
 .wrapper-flex-col-center {
@@ -485,5 +508,10 @@ body.blog {
 				height: 100%;
 			}
 		}
+	}
+}
+
+.blog-post {
+	&--box {
 	}
 }

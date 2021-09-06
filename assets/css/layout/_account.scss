@@ -1,6 +1,30 @@
 .account {
 	position: relative;
 
+	&__private {
+		svg {
+			fill: $color__inactive-element;
+		}
+	}
+
+	&__public {
+		svg {
+			fill: $color__success-green;
+		}
+	}
+
+	&__not-approved {
+		svg {
+			fill: $color__inactive-element;
+		}
+	}
+
+	&__approved {
+		svg {
+			fill: $color__success-green;
+		}
+	}
+
 	.logout-link {
 		position: absolute;
 		right: 3rem;
@@ -80,6 +104,7 @@
 	&__box-container {
 		position: relative;
 		border: 1px solid black;
+		scroll-margin: 4rem;
 
 		@media screen and (min-width: 992px) {
 			padding: 3em 4em;
@@ -154,14 +179,14 @@
 		}
 	}
 
+	&__subbox--max-width {
+		max-width: 350px;
+		padding: 1rem 0;
+	}
+
 	&__subbox-header {
 		font-weight: 700;
 		font-size: 18px;
-	}
-
-	&__single-setting {
-		max-width: 350px;
-		padding: 1rem 0;
 	}
 
 	&__checkbox-wrapper {
@@ -301,6 +326,16 @@ $login-and-registration-height: 80vh;
 				width: $profile_picture_width;
 				object-fit: contain;
 			}
+
+			&__wrapper {
+				position: relative;
+			}
+
+			.account__approval-status {
+				position: absolute;
+				bottom: calc(#{$profile_picture_height} / 25);
+				right: calc(#{$profile_picture_height} / 25);
+			}
 		}
 
 		form#upload_profile_picture_form {
@@ -338,7 +373,7 @@ $login-and-registration-height: 80vh;
 						width: 100%;
 						background-color: transparent;
 						transition: all 0.2s ease-in-out;
-						border: 1px solid $color__border-element;
+						// border: 1px solid $color__border-element;
 						border-radius: 100%;
 					}
 
@@ -562,6 +597,40 @@ $login-and-registration-height: 80vh;
 
 		label:active:after {
 			width: 26px;
+		}
+	}
+
+	&__to-be-approved {
+		label {
+			height: auto;
+			background: none;
+
+			&:after {
+				display: none;
+			}
+		}
+
+		svg {
+			display: block;
+			height: 30px;
+			margin: auto;
+			fill: $color__pending;
+		}
+	}
+}
+
+.membership_package {
+	max-width: 350px;
+
+	&__list {
+		margin: 0;
+		padding: 0;
+
+		li {
+			display: flex;
+			justify-content: space-between;
+			align-items: center;
+			padding: 1rem 0;
 		}
 	}
 }

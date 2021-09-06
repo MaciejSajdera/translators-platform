@@ -16,6 +16,11 @@ get_header();
 ?>
 
 	<div id="primary" class="content-area">
+	<?php
+		if ( function_exists('yoast_breadcrumb') ) {
+		yoast_breadcrumb( '<p id="breadcrumbs">','</p>' );
+		}
+	?>
 		<main id="main" class="site-main">
 
 		<?php
@@ -30,7 +35,12 @@ get_header();
 			endif;
 
 		endwhile; // End of the loop.
+
+
+		echo do_shortcode("[wpb_childpages]");
 		?>
+
+
 
 		</main><!-- #main -->
 	</div><!-- #primary -->

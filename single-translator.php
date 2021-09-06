@@ -11,9 +11,18 @@ get_header();
 ?>
 
 	<div id="primary" class="content-area">
+
+	<?php
+		if ( function_exists('yoast_breadcrumb') ) {
+			yoast_breadcrumb( '<p id="breadcrumbs">','</p>' );
+		}
+		?>
+
+		<a href="<?php echo home_url(); ?>" class="button button__go-back go-back">Powrót</a>
+
 		<main id="main" class="site-main single-translator">
 
-		<div class="breadcrumbs">
+		<!-- <div class="breadcrumbs">
 
 			<?php
 
@@ -25,7 +34,7 @@ get_header();
 			?>
 
 			<a href="<?php echo home_url(); ?>" class="button button__go-back go-back">Powrót</a>
-		</div>
+		</div> -->
 
 		<?php
 		while ( have_posts() ) :

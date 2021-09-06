@@ -11,14 +11,17 @@ get_header();
 ?>
 
 	<div id="primary" class="content-area">
+
+		<?php
+		if ( function_exists('yoast_breadcrumb') ) {
+			yoast_breadcrumb( '<p id="breadcrumbs">','</p>' );
+		}
+		?>
+
+		<a href="<?php echo home_url(); ?>" class="button button__go-back go-back">Powrót</a>
+
 		<main id="main" class="site-main archive-translator">
 
-		<div class="breadcrumbs">
-			<p>PSTK > Znajdź tłumacza > Wyniki wyszukiwania</p>
-
-			<a href="<?php echo home_url(); ?>" class="button button__go-back go-back">Powrót</a>
-			
-		</div>
 
 		<?php
 			get_template_part( 'template-parts/searchfilter-full' );
