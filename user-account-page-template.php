@@ -84,42 +84,33 @@ get_header();
 					echo '<div class="account__container">';
 
 						echo '<div class="account__side-menu">';
-						
-							echo '<div class="account__privacy-status">';
 
 							$is_approved = get_post_meta( $user_post_id, 'is_approved', true );
 
 							$account_privacy_status = get_post_status($user_post_id);
 
 							$account_privacy_icon = file_get_contents(get_stylesheet_directory_uri().'/dist/dist/svg/earth.svg');
-
-
-							// $earth_svg = get_template_directory_uri("/dist/dist/svg/earth.svg");
-
+							
 							if ( !$is_approved ) {
 
-								echo '<div class="icon account__private">
-								'.$account_privacy_icon.'
-								</div>';
+								echo '<div>';
+									echo '<div class="icon account__privacy-status account__private">'.$account_privacy_icon.'</div>';
+								echo '</div>';
 							}
 
 							if( $is_approved && $account_privacy_status !== "publish" ) {
 
-								echo '<div class="icon account__private">
-								'.$account_privacy_icon.'
-								</div>';
-
+								echo '<div>';
+									echo '<div class="icon account__privacy-status account__private">'.$account_privacy_icon.'</div>';
+								echo '</div>';
 							}
 
 							if ( $is_approved && $account_privacy_status == "publish" ) {
 
-								echo '<div class="icon account__public">
-								'.$account_privacy_icon.'
-								</div>';
-
+								echo '<div>';
+									echo '<div class="icon account__privacy-status account__public">'.$account_privacy_icon.'</div>';
+								echo '</div>';
 							}
-
-							echo '</div>';
 
 							echo '<div class="profile-picture__wrapper ajax-content-wrapper">';
 
@@ -137,17 +128,17 @@ get_header();
 										
 									}
 
-										echo '<div class="account__approval-status">';
+										echo '<div class="account__approval-status-holder">';
 
 											if( $is_approved ) {
 
-												echo '<div class="icon account__approved">
+												echo '<div class="icon account__approval-status account__approved">
 												<svg id="Layer_1" enable-background="new 0 0 511.375 511.375" height="512" viewBox="0 0 511.375 511.375" width="512" xmlns="http://www.w3.org/2000/svg"><g><path d="m511.375 255.687-57.89-64.273 9.064-86.045-84.65-17.921-43.18-75.011-79.031 35.32-79.031-35.32-43.18 75.011-84.65 17.921 9.063 86.045-57.89 64.273 57.889 64.273-9.063 86.045 84.65 17.921 43.18 75.011 79.031-35.321 79.031 35.321 43.18-75.011 84.65-17.921-9.064-86.045zm-148.497-55.985-128.345 143.792-89.186-89.186 21.213-21.213 66.734 66.734 107.203-120.104z"/></g></svg>
 												</div>';
 
 											} else {
 
-												echo '<div class="icon account__not-approved">
+												echo '<div class="icon account__approval-status account__not-approved">
 												<svg id="Layer_1" enable-background="new 0 0 511.375 511.375" height="512" viewBox="0 0 511.375 511.375" width="512" xmlns="http://www.w3.org/2000/svg"><g><path d="m511.375 255.687-57.89-64.273 9.064-86.045-84.65-17.921-43.18-75.011-79.031 35.32-79.031-35.32-43.18 75.011-84.65 17.921 9.063 86.045-57.89 64.273 57.889 64.273-9.063 86.045 84.65 17.921 43.18 75.011 79.031-35.321 79.031 35.321 43.18-75.011 84.65-17.921-9.064-86.045zm-148.497-55.985-128.345 143.792-89.186-89.186 21.213-21.213 66.734 66.734 107.203-120.104z"/></g></svg>
 												</div>';
 
@@ -190,154 +181,11 @@ get_header();
 
 							/* PROFILE SECTION 1 - EDIT PROFILE */
 
-							// var_dump(acf_get_fields($user_post_id));
-
 							echo '<div id="profile-section-1" class="profile-section profile-section--active account__edit-profile">';
 
 								// WELCOME MESSAGE
 
 								$user_nickname = $current_user->user_login;
-
-								
-								$count_of_all_valueable_fields = 0;
-								$count_of_all_filled_fields = 0;
-
-								$empty_field_labels = [];
-
-								// get field groups for the post
-								// returns an array of field groups
-								$groups = get_field_objects($user_post_id);
-								// $groups = acf_get_field_groups(array('post_id' => $user_post_id));
-
-								foreach($groups as $group){
-
-										$field_object_name = $group['name'];
-
-										if (str_contains($field_object_name, 'public')) {
-											$count_of_all_valueable_fields;
-										} else {
-											$count_of_all_valueable_fields++;
-										}
-
-										$is_null = $group["value"] == null;
-										$is_string = gettype($group["value"]) == 'string';
-										$is_array = gettype($group["value"]) == 'array';
-										$is_boolean = gettype($group["value"]) == 'boolean';
-
-										//Dont include privacy settings
-										if ( !$is_array && $is_boolean ) {
-											continue;
-										};
-
-										if ( $is_array ) {
-
-											// echo $field_object_name;
-										
-											if (count($group["value"]) > 0) {
-												$count_of_all_filled_fields++;
-											} else {
-												array_push($empty_field_labels, $group["label"]);
-											}
-										};
-
-										if ( $is_string ) {
-
-											// echo $field_object_name;
-										
-											// echo $field_object_content["label"];
-											
-											// echo strlen($field_object_content["value"]);
-
-											if (strlen($group["value"]) > 0) {
-												$count_of_all_filled_fields++;
-											} else {
-												array_push($empty_field_labels, $group["label"]);
-											}
-										}
-								}
-
-								// echo '<br />';
-
-								// $all_user_acf_field_objects = acf_get_field_groups(array('post_id' => $user_post_id));
-
-								// var_dump($fields);
-
-								// $count_of_all_valueable_fields = 0;
-								// $count_of_all_filled_fields = 0;
-
-								// $empty_field_labels = [];
-
-								// if ($all_user_acf_field_objects) {
-
-								// 	foreach($all_user_acf_field_objects as $field_object) :
-
-								// 		foreach(acf_get_fields($field_object['key']) as $field_object_content) :
-
-								// 		// print_r(json_encode($field_object_content));
-
-								// 		$field_object_name =  $field_object_content['name'];
-
-								// 		// echo $field_object_name;
-
-								// 		if (str_contains($field_object_name, 'public')) {
-								// 			$count_of_all_valueable_fields;
-								// 		} else {
-								// 			$count_of_all_valueable_fields++;
-								// 		}
-
-								// 		// if ( $field_object_name = "translator_city_public") {
-								// 		// 	var_dump($field_object_name);
-								// 		// }
-
-
-								// 		// echo '<br />';
-
-								// 		$is_null = $field_object_content["value"] == null;
-								// 		$is_string = gettype($field_object_content["value"]) == 'string';
-								// 		$is_array = gettype($field_object_content["value"]) == 'array';
-								// 		$is_boolean = gettype($field_object_content["value"]) == 'boolean';
-
-								// 		//Dont include privacy settings
-								// 		if ( !$is_array && $is_boolean ) {
-								// 			continue;
-								// 		};
-
-								// 		// if (empty($field_object_content["value"])) {
-								// 		// 	echo $field_object_name.'empty';
-								// 		// }
-
-								// 		if ( $is_array ) {
-
-								// 			// echo $field_object_name;
-										
-								// 			if (count($field_object_content["value"]) > 0) {
-								// 				$count_of_all_filled_fields++;
-								// 			} else {
-								// 				array_push($empty_field_labels, $field_object_content["label"]);
-								// 			}
-								// 		};
-
-								// 		if ( $is_string ) {
-
-								// 			// echo $field_object_name;
-										
-								// 			// echo $field_object_content["label"];
-											
-								// 			// echo strlen($field_object_content["value"]);
-
-								// 			if (strlen($field_object_content["value"]) > 0) {
-								// 				$count_of_all_filled_fields++;
-								// 			} else {
-								// 				array_push($empty_field_labels, $field_object_content["label"]);
-								// 			}
-								// 		}
-
-								// 		// echo '<br />';
-								// 		endforeach;
-								// 	endforeach;
-								// }
-
-								echo $count_of_all_valueable_fields.'count_of_all_valueable_fields';
 
 								echo '<div class="account__welcome-message account__header">';
 
@@ -345,23 +193,22 @@ get_header();
 
 									echo '<h2>Witaj na swoim koncie PSTK.</h2>';
 
-									if (!$count_of_all_valueable_fields) {
+									if (get_percent_value_of_account_fill_completness() == 0) {
 
 										$default_starting_number = 15;
-
+ 
 										echo '<h2>';
 										echo 'Twój profil jest kompletny w <span id="percentValueOfAccountFillCompletness">'.$default_starting_number.'</span>%. Uzupełnij go.';		
 										echo '</h2>';
 									}
 
-									if ($count_of_all_valueable_fields > 0) {
+									if (get_percent_value_of_account_fill_completness() > 0) {
 
-										$percent_value_of_account_fill_completness = round($count_of_all_filled_fields / $count_of_all_valueable_fields * 100);
-
+										$empty_field_labels = get_labels_of_empty_translator_fields();
 
 										echo '<h2>';
 
-										echo 'Twój profil jest kompletny w <span id="percentValueOfAccountFillCompletness">'.$percent_value_of_account_fill_completness.'</span>%. Uzupełnij go.';		
+										echo 'Twój profil jest kompletny w <span id="percentValueOfAccountFillCompletness">'.get_percent_value_of_account_fill_completness().'</span>%. Uzupełnij go.';		
 
 										 	// var_dump($empty_field_labels);
 
@@ -405,15 +252,15 @@ get_header();
 
 										echo '<div class="info-box__subbox">';
 
-											if (strlen(get_field('translator_bio')) > 0) {
-												$translator_bio = get_field('translator_bio');
+											if (strlen(get_field('translator_about_short')) > 0) {
+												$translator_about_short = get_field('translator_about_short');
 												$placeholder_mode = '';
 											} else {
-												$translator_bio = 'Napisz jedno zdanie o sobie';
+												$translator_about_short = 'Napisz jedno zdanie o sobie';
 												$placeholder_mode = 'placeholder_mode';
 											}
 
-											echo '<p id="user_bio_text" class="info-box__content '.$placeholder_mode.'">'.$translator_bio.'</p>';
+											echo '<p id="user_about_short_text" class="info-box__content '.$placeholder_mode.'">'.$translator_about_short.'</p>';
 
 										echo '</div>';
 										

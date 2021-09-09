@@ -1,0 +1,27 @@
+.management {
+	&__squad {
+		display: flex;
+		flex-flow: wrap;
+		justify-content: space-between;
+	}
+
+	&__person {
+		&:first-of-type {
+			width: 100%;
+			justify-content: center;
+		}
+	}
+
+	&__person-wrapper {
+		justify-content: center;
+		display: flex;
+		flex-flow: column;
+		align-items: center;
+
+		img {
+			max-width: 150px;
+			height: auto;
+			object-fit: contain;
+		}
+	}
+}

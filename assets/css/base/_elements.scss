@@ -276,6 +276,7 @@ table {
 .icon svg {
 	height: 30px;
 	width: 30px;
+	cursor: pointer;
 }
 
 .social-media-icons {
@@ -357,5 +358,43 @@ table {
 		background-position: center;
 		background-color: transparent;
 		border: 0;
+	}
+}
+
+#popUp {
+	position: absolute;
+	z-index: 9999;
+	// width: 100%;
+	height: auto;
+
+	padding: 0 1em;
+	left: 50%;
+	opacity: 0;
+	transition: opacity 0.3s ease-in-out;
+	transform: translate(-50%, 100%);
+	bottom: -1em;
+	background: white;
+	box-shadow: 0 50px 100px rgb(50 50 93 / 10%), 0 15px 35px rgb(50 50 93 / 15%),
+		0 5px 15px rgb(0 0 0 / 10%);
+
+	@media screen and (min-width: 992px) {
+		min-width: 250px;
+		min-height: 50px;
+	}
+
+	.pop-up__arrow {
+		position: absolute;
+		width: 20px;
+		height: 20px;
+		display: block;
+		background: white;
+		left: 50%;
+		transform: translate(-50%, -50%) rotate(45deg);
+	}
+
+	p {
+		margin: 1em 0;
+		text-align: center;
+		@include fluid-type($min_width, $max_width, 12px, 14px);
 	}
 }

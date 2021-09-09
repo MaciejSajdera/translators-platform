@@ -95,7 +95,7 @@
 
 					echo '<p>';
 			
-						echo get_field("translator_bio");
+						echo get_field("translator_about_short");
 
 					echo '</p>';
 

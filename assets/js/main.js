@@ -208,15 +208,6 @@ document.addEventListener("DOMContentLoaded", () => {
 	mediaQueryDesktop.addListener(handleDesktopChange);
 	handleDesktopChange(mediaQueryDesktop);
 
-	// const allGoBackLinks = document.querySelectorAll(".go-back");
-
-	// allGoBackLinks &&
-	// 	allGoBackLinks.forEach(link => {
-	// 		link.addEventListener("click", () => {
-	// 			window.history.back();
-	// 		});
-	// 	});
-
 	const allCheckboxesSwitches = document.querySelectorAll(".options__switch");
 
 	allCheckboxesSwitches &&
@@ -226,25 +217,11 @@ document.addEventListener("DOMContentLoaded", () => {
 
 				let checkbox = element.querySelector("input[type='checkbox']");
 
-				checkbox.checked = !checkbox.checked;
+				if (checkbox) {
+					checkbox.checked = !checkbox.checked;
+				}
 			});
 		});
-
-	// const searchAndFilterForm = document.querySelector(
-	// 	"form.searchandfilter input[type='submit']"
-	// );
-
-	// searchAndFilterForm &&
-	// 	searchAndFilterForm.addEventListener("click", e => {
-	// 		e.preventDefault();
-	// 		console.log(e);
-	// 	});
-
-	// const searchAndFilterForm = document.querySelector("form.searchandfilter");
-
-	// searchAndFilterForm.addEventListener("change", e => {
-	// 	console.log(e);
-	// });
 
 	setTimeout(() => {
 		const allComboboxes = document.querySelectorAll(
@@ -320,4 +297,203 @@ document.addEventListener("DOMContentLoaded", () => {
 			});
 		});
 	}, 100);
+
+	let isPopUpActive = false;
+
+	const showInfoPopUp = (parentContainer, message) => {
+		if (isPopUpActive) {
+			return;
+		}
+
+		if (!parentContainer) {
+			console.error(
+				"No parentContainer passed to the showInfoPopUp function call."
+			);
+			return;
+		}
+
+		if (!message) {
+			console.error("No message passed to the showInfoPopUp function call.");
+			return;
+		}
+
+		if (!message || typeof message !== "string") {
+			console.error("Message is not a string.");
+			return;
+		}
+
+		let infoPopUp = document.createElement("DIV");
+		infoPopUp.classList.add("info-pop-up");
+		infoPopUp.id = "popUp";
+
+		let infoPopUpArrow = document.createElement("SPAN");
+		infoPopUpArrow.classList.add("pop-up__arrow");
+
+		let infoPopUpParagraph = document.createElement("P");
+		infoPopUpParagraph.innerText = message;
+
+		infoPopUp.appendChild(infoPopUpArrow);
+		infoPopUp.appendChild(infoPopUpParagraph);
+
+		parentContainer.style.position = "relative";
+
+		parentContainer.appendChild(infoPopUp);
+
+		isPopUpActive = true;
+
+		setTimeout(() => {
+			infoPopUp.style.opacity = 1;
+		}, 100);
+	};
+
+	// const hideInfoPopUp = (eventTarget, showPopUpTriggerTarget) => {
+	// 	if (
+	// 		!eventTarget ||
+	// 		!showPopUpTriggerTarget ||
+	// 		typeof showPopUpTriggerTarget !== "string"
+	// 	) {
+	// 		console.error("To few arguments used in hideInfoPopUp function call");
+	// 		return;
+	// 	}
+
+	// 	if (typeof showPopUpTriggerTarget !== "string") {
+	// 		console.error(
+	// 			"Second argument in hideInfoPopUp must be a string that contains a css classname"
+	// 		);
+	// 		return;
+	// 	}
+
+	// 	if (
+	// 		!eventTarget.classList.contains(showPopUpTriggerTarget) ||
+	// 		!eventTarget.closest(`.${showPopUpTriggerTarget}`) ||
+	// 		!eventTarget.classList.contains("info-pop-up") ||
+	// 		!eventTarget.closest(".info-pop-up")
+	// 	) {
+	// 		const infoPopUp = document.querySelector(".info-pop-up");
+	// 		infoPopUp ? (infoPopUp.style.opacity = 0) : "";
+	// 		infoPopUp
+	// 			? setTimeout(() => {
+	// 					infoPopUp.remove();
+	// 					isPopUpActive = false;
+	// 			  }, 300)
+	// 			: "";
+	// 	}
+	// };
+
+	const hideInfoPopUp = (eventTarget, showPopUpTriggerTarget) => {
+		// if (
+		// 	!eventTarget ||
+		// 	!showPopUpTriggerTarget ||
+		// 	typeof showPopUpTriggerTarget !== "string"
+		// ) {
+		// 	console.error("To few arguments used in hideInfoPopUp function call");
+		// 	return;
+		// }
+
+		// if (typeof showPopUpTriggerTarget !== "string") {
+		// 	console.error(
+		// 		"Second argument in hideInfoPopUp must be a string that contains a css classname"
+		// 	);
+		// 	return;
+		// }
+
+		// if (
+		// 	!eventTarget.classList.contains(showPopUpTriggerTarget) ||
+		// 	!eventTarget.closest(`.${showPopUpTriggerTarget}`) ||
+		// 	!eventTarget.classList.contains("info-pop-up") ||
+		// 	!eventTarget.closest(".info-pop-up")
+		// ) {
+		const infoPopUp = document.querySelector(".info-pop-up");
+		infoPopUp ? (infoPopUp.style.opacity = 0) : "";
+		infoPopUp
+			? setTimeout(() => {
+					infoPopUp.remove();
+					isPopUpActive = false;
+			  }, 300)
+			: "";
+		// }
+	};
+
+	/* Global mouseover event listener */
+
+	document.addEventListener("mouseover", e => {
+		console.log(e.target);
+
+		const handleInfoPopUp = e => {
+			let isOneOfTargets;
+
+			const optionsToBeApproved = document.querySelector(
+				".options__to-be-approved"
+			);
+
+			if (
+				(e.target && e.target.classList.contains("options__to-be-approved")) ||
+				(e.target && e.target.closest(".options__to-be-approved"))
+			) {
+				isOneOfTargets = true;
+				showInfoPopUp(
+					optionsToBeApproved,
+					"Twój profil nie został jeszcze opublikowany. Zmiana widoczności profilu będzie możliwa po aktywacji konta."
+				);
+			}
+
+			const accountPrivacyStatus = document.querySelector(
+				".account__privacy-status"
+			);
+
+			if (
+				(e.target && e.target.classList.contains("account__public")) ||
+				(e.target && e.target.closest(".account__public"))
+			) {
+				isOneOfTargets = true;
+				showInfoPopUp(
+					accountPrivacyStatus,
+					"Twój profil jest publicznie dostępny."
+				);
+			}
+
+			if (
+				(e.target && e.target.classList.contains("account__private")) ||
+				(e.target && e.target.closest(".account__private"))
+			) {
+				isOneOfTargets = true;
+				showInfoPopUp(
+					accountPrivacyStatus,
+					"Twój profil nie jest publicznie dostępny."
+				);
+			}
+
+			const accountApprovalStatus = document.querySelector(
+				".account__approval-status"
+			);
+
+			if (
+				(e.target && e.target.classList.contains("account__approved")) ||
+				(e.target && e.target.closest(".account__approved"))
+			) {
+				isOneOfTargets = true;
+				showInfoPopUp(accountApprovalStatus, "Twój profil jest zweryfikowany.");
+			}
+
+			if (
+				(e.target && e.target.classList.contains("account__not-approved")) ||
+				(e.target && e.target.closest(".account__not-approved"))
+			) {
+				isOneOfTargets = true;
+				showInfoPopUp(
+					accountApprovalStatus,
+					"Twój profil nie jest jeszcze zweryfikowany."
+				);
+			}
+
+			if (!isOneOfTargets) {
+				hideInfoPopUp();
+			}
+		};
+		handleInfoPopUp(e);
+	});
+
+	/* Global click event listener */
+
+	// document.addEventListener("click", e => {});
 });

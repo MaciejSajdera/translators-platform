@@ -37,7 +37,7 @@ get_header();
 		endwhile; // End of the loop.
 
 
-		echo do_shortcode("[wpb_childpages]");
+		echo do_shortcode("[childpages]");
 		?>
 
 

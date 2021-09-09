@@ -26,7 +26,7 @@
 
 		echo '<h2 class="entry-title">'.$translator_first_name.' '. $translator_last_name.'</h2>';
 		
-		echo get_field("translator_bio");
+		echo get_field("translator_about_short");
 
 		echo '<a href="'.get_permalink().'" rel="bookmark">Więcej</a>';
 		

@@ -393,7 +393,7 @@ function distance($lat1, $lon1, $lat2, $lon2, $unit) {
 
 //helper functions
 
-function wpb_list_child_pages() { 
+function list_child_pages() { 
  
 	global $post; 
 	 
@@ -417,7 +417,44 @@ function wpb_list_child_pages() {
 	 
 }
 	 
-add_shortcode('wpb_childpages', 'wpb_list_child_pages');
+add_shortcode('childpages', 'list_child_pages');
+
+
+/* https://support.advancedcustomfields.com/forums/topic/fix-for-displaying-fields-according-to-field-order-using-get_field_objects/ */
+
+function array_sort($array, $on, $order=SORT_ASC){
+	$new_array = array();
+	$sortable_array = array();
+
+	if (count($array) > 0) {
+		foreach ($array as $k => $v) {
+			if (is_array($v)) {
+				foreach ($v as $k2 => $v2) {
+					if ($k2 == $on) {
+						$sortable_array[$k] = $v2;
+					}
+				}
+			} else {
+				$sortable_array[$k] = $v;
+			}
+		}
+
+		switch ($order) {
+			case SORT_ASC:
+				asort($sortable_array);
+			break;
+			case SORT_DESC:
+				arsort($sortable_array);
+			break;
+		}
+
+		foreach ($sortable_array as $k => $v) {
+			$new_array[$k] = $array[$k];
+		}
+	}
+
+	return $new_array;
+}
 
 // Mark posts when they are published for the first time (Approved by moderator)
 
@@ -744,53 +781,103 @@ function get_current_user_post_id() {
 	return $user_post_id;
 }
 
-function get_percent_value_of_account_fill_completness() {
-	
-
-	$all_user_acf_field_objects = get_field_objects(get_current_user_post_id());
-
+function get_count_of_all_valueable_fields() {
 	$count_of_all_valueable_fields = 0;
-	$count_of_all_filled_fields = 0;
+	$all_acf_fields_of_post = get_field_objects(get_current_user_post_id());
 
-	if ($all_user_acf_field_objects) {
+	if ( is_array($all_acf_fields_of_post) && count($all_acf_fields_of_post) > 0 ) {
+		$all_acf_fields_of_post_sorted = array_sort($all_acf_fields_of_post, 'menu_order', SORT_ASC);
 
-		foreach($all_user_acf_field_objects as $field_object_name => $field_object_content) :
+		foreach($all_acf_fields_of_post_sorted as $acf_field) {
 
-			$is_string = gettype($field_object_content["value"]) == 'string';
-			$is_array = gettype($field_object_content["value"]) == 'array';
-			$is_boolean = gettype($field_object_content["value"]) == 'boolean';
-
-			// To do: fix missing array on basic user form data
+			$field_object_name = $acf_field['name'];
 
 			//Dont include privacy settings
-			if ( !$is_array && $is_boolean ) {
+			if (str_contains($field_object_name, 'public') || !$acf_field) {
 				continue;
-			};
-
-			if ( $is_array )  {
-
+			} else {
 				$count_of_all_valueable_fields++;
-				
-				if (count($field_object_content["value"]) > 0) {
+			}
+		}
+	}
+
+	$non_acf_valueable_fields = ['profile-picture'];
+
+	if ($non_acf_valueable_fields) {
+		foreach($non_acf_valueable_fields as $field) :
+			$count_of_all_valueable_fields++;
+		endforeach;
+	}
+
+	return $count_of_all_valueable_fields;
+}
+
+function get_count_of_all_filled_fields() {
+	$count_of_all_filled_fields = 0;
+	$all_acf_fields_of_post = get_field_objects(get_current_user_post_id());
+
+	if ( is_array($all_acf_fields_of_post) && count($all_acf_fields_of_post) > 0 ) {
+		$all_acf_fields_of_post_sorted = array_sort($all_acf_fields_of_post, 'menu_order', SORT_ASC);
+
+		foreach($all_acf_fields_of_post_sorted as $acf_field) {
+
+			$field_object_name = $acf_field['name'];
+
+			// echo $field_object_name.'<br>';
+
+			$is_null = $acf_field["value"] == null;
+			$is_string = gettype($acf_field["value"]) == 'string';
+			$is_array = gettype($acf_field["value"]) == 'array';
+			$is_boolean = gettype($acf_field["value"]) == 'boolean';
+
+			// Dont include privacy settings
+			if (str_contains($field_object_name, 'public') || !$acf_field) {
+				continue;
+			}
+
+			if ( $is_array ) {
+
+				// echo $field_object_name;
+			
+				if (count($acf_field["value"]) > 0) {
 					$count_of_all_filled_fields++;
 				} 
 			};
 
 			if ( $is_string ) {
 
-				$count_of_all_valueable_fields++;
+				// echo $field_object_name;
+			
+				// echo $field_object_content["label"];
+				
+				// echo strlen($field_object_content["value"]);
 
-				if (strlen($field_object_content["value"]) > 0) {
+				if (strlen($acf_field["value"]) > 0) {
 					$count_of_all_filled_fields++;
-				}
+				} 
 			}
-
-		endforeach;
-
+		}
 	}
 
-	$percent_value_of_single_field = 100 / $count_of_all_valueable_fields;
+	// For non acf fields
 
+	$is_profile_picture_added = has_post_thumbnail(get_current_user_post_id());
+
+	if ($is_profile_picture_added) {
+		$count_of_all_filled_fields++;
+	}
+
+	return $count_of_all_filled_fields;
+}
+
+function get_percent_value_of_account_fill_completness() {
+
+	$percent_value_of_account_fill_completness = 0;
+	
+	$count_of_all_valueable_fields = get_count_of_all_valueable_fields();
+	$count_of_all_filled_fields = get_count_of_all_filled_fields();
+
+	$percent_value_of_single_field = 100 / $count_of_all_valueable_fields;
 	$percent_value_of_account_fill_completness = round($count_of_all_filled_fields / $count_of_all_valueable_fields * 100);
 
 	return $percent_value_of_account_fill_completness;
@@ -799,28 +886,28 @@ function get_percent_value_of_account_fill_completness() {
 
 function get_labels_of_empty_translator_fields() {
 	$all_user_acf_field_objects = get_field_objects(get_current_user_post_id());
-
 	$empty_field_labels = [];
+	$all_user_acf_field_objects_sorted = array_sort($all_user_acf_field_objects, 'menu_order', SORT_ASC);
 
 	if ($all_user_acf_field_objects) {
 
-		foreach($all_user_acf_field_objects as $field_object_name => $field_object_content) :
+		foreach($all_user_acf_field_objects_sorted as $field_object_name => $field_object_content) :
+
+			//Dont include privacy settings
+			if (str_contains($field_object_name, 'public') || !$field_object_content) {
+				continue;
+			}
 
 			$is_string = gettype($field_object_content["value"]) == 'string';
 			$is_array = gettype($field_object_content["value"]) == 'array';
-			$is_boolean = gettype($field_object_content["value"]) == 'boolean';
+			$is_false = gettype($field_object_content["value"]) == 'boolean';
 
-			//Dont include privacy settings
-			if ( !$is_array && $is_boolean ) {
-				continue;
-			};
-
-			if ( $is_array )  {
-
-				if (count($field_object_content["value"]) == 0) {
-					array_push($empty_field_labels, $field_object_content["label"]);
-				}
-			};
+			// var_dump($field_object_name).'<br>';
+			
+			//for empty array type fields
+			// if (str_contains($field_object_name, 'gallery') && $is_false) {
+			// 	array_push($empty_field_labels, $field_object_content["label"]);
+			// }
 
 			if ( $is_string ) {
 
@@ -830,7 +917,14 @@ function get_labels_of_empty_translator_fields() {
 			}
 
 		endforeach;
+	}
 
+	// For non acf fields
+
+	$is_profile_picture_added = has_post_thumbnail(get_current_user_post_id());
+
+	if (!$is_profile_picture_added) {
+		array_push($empty_field_labels, "Profile Picture");
 	}
 
 	return $empty_field_labels;
@@ -841,11 +935,8 @@ function get_labels_of_empty_translator_fields() {
 function basic_user_data_form() {
 
 	$current_user = wp_get_current_user();
-
 	$user_post_id = get_current_user_post_id();
-
 	$current_user_languages_array_terms = wp_get_post_terms($user_post_id, 'translator_language', array('fields' => 'names'));
-
 	$current_user_specializations_array_terms = wp_get_post_terms($user_post_id, 'translator_specialization', array('fields' => 'names'));
 
 		// var_dump($current_user_languages_array_terms);
@@ -871,8 +962,8 @@ function basic_user_data_form() {
 				</p>
 
 				<p>
-					<label for="user_bio"><?php _e('Bio'); ?></label>
-					<textarea form="basic_user_data_form" name="user_bio" id="user_bio" class="user_bio" type="text"><?php echo get_field("translator_bio", $user_post_id) ?></textarea>
+					<label for="user_about_short"><?php _e('About Short'); ?></label>
+					<textarea form="basic_user_data_form" name="user_about_short" id="user_about_short" class="user_about_short" type="text"><?php echo get_field("translator_about_short", $user_post_id) ?></textarea>
 				</p>
 
 				<p>
@@ -1024,7 +1115,7 @@ function add_basic_user_data_with_ajax() {
 
 		$user_first_name		= $_POST["user_first_name"];
 		$user_last_name		= $_POST["user_last_name"];
-		$user_bio		= $_POST["user_bio"];	
+		$user_about_short		= $_POST["user_about_short"];	
 		$user_languages_array		= $_POST["user_languages"];
 		$user_specializations_array		= $_POST["user_specializations"];
 
@@ -1045,12 +1136,12 @@ function add_basic_user_data_with_ajax() {
 		}
 
 
-		if (isset( $user_bio )) {
+		if (isset( $user_about_short )) {
 			
 			//Update User meta data
-			update_user_meta( $user_id, 'description', $user_bio);
+			update_user_meta( $user_id, 'description', $user_about_short);
 			//Update ACF field for user post
-			update_field( "translator_bio", $user_bio, $user_post_id );
+			update_field( "translator_about_short", $user_about_short, $user_post_id );
 		}
 
 		if ( isset( $user_languages_array )) {
@@ -1196,6 +1287,7 @@ function add_about_user_data_with_ajax() {
 	$about_user_data_object_for_ajax  = (object) [
 		'post_data' => $_POST,
 		'percent_value_of_account_fill_completness' => get_percent_value_of_account_fill_completness(),
+		'labels_of_empty_translator_fields' => get_labels_of_empty_translator_fields(),
 		'console_log' => []
 	];
 
@@ -1488,6 +1580,7 @@ function add_contact_user_data_with_ajax() {
 	$contact_user_data_object_for_ajax  = (object) [
 		'post_data' => $_POST,
 		'percent_value_of_account_fill_completness' => get_percent_value_of_account_fill_completness(),
+		'labels_of_empty_translator_fields' => get_labels_of_empty_translator_fields(),
 		'console_log' => []
 	];
 
@@ -1568,7 +1661,7 @@ function linkedin_user_data_form_messages() {
 
 function add_linkedin_user_data_with_ajax() {
 
-	print_r(json_encode($_POST));
+
 	
 	$current_user = wp_get_current_user();
 	
@@ -1580,20 +1673,29 @@ function add_linkedin_user_data_with_ajax() {
 		die ( 'Nonce mismatched!');
 	}
 
-		$user_id = get_current_user_id();
+	$user_id = get_current_user_id();
 
-		//Get ID of the current user post
-		$user_post_title = $current_user_nickname; 
+	//Get ID of the current user post
+	$user_post_title = $current_user_nickname; 
 
-		if ( $post = get_page_by_path( $user_post_title, OBJECT, 'translator' ) )
-			$user_post_id = $post->ID;
-		else
-			$user_post_id = 0;
+	if ( $post = get_page_by_path( $user_post_title, OBJECT, 'translator' ) )
+		$user_post_id = $post->ID;
+	else
+		$user_post_id = 0;
 
-		// Save/Update values to user meta data or user post
+	// Save/Update values to user meta data or user post
 
-		//Update ACF field for user post
-		update_field( "translator_linkedin_link", $user_linkedin, $user_post_id );
+	//Update ACF field for user post
+	update_field( "translator_linkedin_link", $user_linkedin, $user_post_id );
+
+	$linkedin_user_data_for_ajax  = (object) [
+		'user_linkedin' => $user_linkedin,
+		'percent_value_of_account_fill_completness' => get_percent_value_of_account_fill_completness(),
+		'labels_of_empty_translator_fields' => get_labels_of_empty_translator_fields(),
+		'console_log' => []
+	];
+
+	print_r(json_encode($linkedin_user_data_for_ajax));
 		
 	die();
 
@@ -1673,8 +1775,6 @@ function add_work_user_data_with_ajax() {
 		return;
 	}
 
-	print_r(json_encode($_POST));
-	
 	$current_user = wp_get_current_user();
 	
 	$current_user_nickname = $current_user->user_login;
@@ -1700,6 +1800,17 @@ function add_work_user_data_with_ajax() {
 
         //Update ACF field for user post
         update_field( "translator_work", $user_work, $user_post_id );
+
+
+	
+	$work_user_data_for_ajax  = (object) [
+		'user_work' => $user_work,
+		'percent_value_of_account_fill_completness' => get_percent_value_of_account_fill_completness(),
+		'labels_of_empty_translator_fields' => get_labels_of_empty_translator_fields(),
+		'console_log' => []
+	];
+
+	print_r(json_encode($work_user_data_for_ajax));
 		
     die();
 
@@ -1770,7 +1881,6 @@ function profile_picture_uploader_form_messages() {
  */
 function handle_profile_picture_upload() {
 
-
 	// Verify nonce
 	if ( ! wp_verify_nonce( $_POST['profile_picture_nonce'], 'handle_profile_picture_upload' ) ) {
 		wp_die( esc_html__( 'Nonce mismatched', 'theme-text-domain' ) );
@@ -1781,6 +1891,14 @@ function handle_profile_picture_upload() {
 		wp_die( esc_html__( 'Please choose a file', 'theme-text-domain' ) );
 	}
 
+	// Get post_id
+	$post_id = $_POST['post_id'];
+
+	$profile_picture_data_for_ajax  = (object) [
+		'percent_value_of_account_fill_completness' => get_percent_value_of_account_fill_completness(),
+		'labels_of_empty_translator_fields' => get_labels_of_empty_translator_fields(),
+		'console_log' => []
+	];
 
 	$finfo = new finfo(FILEINFO_MIME_TYPE);
     if (false === $ext = array_search(
@@ -1809,9 +1927,6 @@ function handle_profile_picture_upload() {
 		;
 	}
 
-	// Get post_id
-	$post_id = $_POST['post_id'];
-
 	// upload.
 
 	$attachment_id = media_handle_upload( 'profile-picture__input', $post_id );
@@ -1822,6 +1937,8 @@ function handle_profile_picture_upload() {
 		// There was an error uploading the image.
 		wp_die( $attachment_id->get_error_message() );
 	}
+
+	print_r(json_encode($profile_picture_data_for_ajax));
 
 	die();
 }
@@ -1973,14 +2090,14 @@ function handle_sound_to_gallery_upload() {
 
 	$post_id = $_POST['post_id'];
 
-
 	$sounds_object_for_ajax  = (object) [
 		'added_files_ids' => [],
 		'added_rows' => [],
 		'deleted_rows' => [],
-		'console_log' => []
+		'percent_value_of_account_fill_completness' => get_percent_value_of_account_fill_completness(),
+		'labels_of_empty_translator_fields' => get_labels_of_empty_translator_fields(),
+		'console_log' => [],
 	];
-
 
 	// Handle file and text inputs
 	
@@ -2093,14 +2210,12 @@ function handle_sound_to_gallery_upload() {
 	
 				array_push($sounds_object_for_ajax->deleted_rows, $sound_to_delete);
 
-
 				// in acf way, row #1 has index 1, not 0
 				$index_of_row_to_delete = $sound_to_delete - $number_of_deleted_rows;
 
 				delete_row('translator_sound_gallery', $index_of_row_to_delete, $post_id);
 
-
-				// -1 because acf rows count starts at 1 and array from 0
+				// -1 because acf rows count starts at index 1 and array from 0
 
 				$url = $sounds_gallery_array[$index_of_row_to_delete - 1]["translator_single_voice_recording"];
 				$deleted_file_id = attachment_url_to_postid($url);
@@ -2121,7 +2236,6 @@ function handle_sound_to_gallery_upload() {
 	//if file has been attached
 
 	if ( count($array_of_objects) > 0 ) {
-
 
 		foreach ($array_of_objects as $file_object) :
 
@@ -2318,6 +2432,8 @@ function handle_image_to_gallery_upload() {
 	$image_gallery_object_for_ajax  = (object) [
 		'added_files_ids' => [],
 		'deleted_files' => [],
+		'percent_value_of_account_fill_completness' => get_percent_value_of_account_fill_completness(),
+		'labels_of_empty_translator_fields' => get_labels_of_empty_translator_fields(),
 		'console_log' => []
 	];
 
@@ -2579,6 +2695,8 @@ function handle_video_to_gallery_upload() {
 		'added_files_ids' => [],
 		'added_rows' => [],
 		'deleted_rows' => [],
+		'percent_value_of_account_fill_completness' => get_percent_value_of_account_fill_completness(),
+		'labels_of_empty_translator_fields' => get_labels_of_empty_translator_fields(),
 		'console_log' => []
 	];
 

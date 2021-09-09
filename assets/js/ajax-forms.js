@@ -343,6 +343,53 @@ jQuery(document).ready(function($) {
 		});
 	});
 
+	const removeArrayOfNodes = arr => {
+		arr &&
+			arr.forEach(node => {
+				node && node.remove();
+			});
+	};
+
+	const updateProfileCompletness = dataJSON => {
+		console.log(dataJSON);
+
+		const percentValueOfAccountFillCompletnessHolder = document.querySelector(
+			"#percentValueOfAccountFillCompletness"
+		);
+
+		// Refresh percent Value Of Account Fill Completness
+
+		const percentValueOfAccountFillCompletness =
+			dataJSON.percent_value_of_account_fill_completness;
+
+		percentValueOfAccountFillCompletnessHolder.textContent = percentValueOfAccountFillCompletness;
+
+		// Refresh list of empty fields
+
+		const emptyProfileFieldsLabelsContainer = document.querySelector(
+			"#emptyProfileFieldsLabels"
+		);
+
+		const oldlabelsOfEmptyTranslatorFields = document.querySelectorAll(
+			"#emptyProfileFieldsLabels .empty-field-label"
+		);
+
+		const labelsOfEmptyTranslatorFieldsAjax =
+			dataJSON.labels_of_empty_translator_fields;
+
+		oldlabelsOfEmptyTranslatorFields &&
+			removeArrayOfNodes(oldlabelsOfEmptyTranslatorFields);
+
+		labelsOfEmptyTranslatorFieldsAjax &&
+			labelsOfEmptyTranslatorFieldsAjax.forEach(label => {
+				const newParagraph = document.createElement("P");
+				newParagraph.classList.add("empty-field-label");
+				newParagraph.textContent = label;
+
+				emptyProfileFieldsLabelsContainer.appendChild(newParagraph);
+			});
+	};
+
 	/******************************* FORMS ***********************************/
 
 	/* 	AJAX URL path */
@@ -392,7 +439,7 @@ jQuery(document).ready(function($) {
 				const postData = dataJSON.post_data;
 
 				const accountUserName = document.querySelector(".account__user-name");
-				const userBioText = document.querySelector("#user_bio_text");
+				const userBioText = document.querySelector("#user_about_short_text");
 				const userLanguagesText = document.querySelector(
 					"#user_languages_text"
 				);
@@ -401,7 +448,7 @@ jQuery(document).ready(function($) {
 				);
 
 				accountUserName.innerText = `${postData.user_first_name} ${postData.user_last_name}`;
-				userBioText.innerText = `${postData.user_bio}`;
+				userBioText.innerText = `${postData.user_about_short}`;
 
 				postData.user_languages && postData.user_languages.length > 0
 					? (userLanguagesText.innerText = `${postData.user_languages.join(
@@ -416,55 +463,7 @@ jQuery(document).ready(function($) {
 					  )}`)
 					: (userSpecializationsText.innerText = "");
 
-				const percentValueOfAccountFillCompletnessHolder = document.querySelector(
-					"#percentValueOfAccountFillCompletness"
-				);
-
-				const percentValueOfAccountFillCompletness =
-					dataJSON.percent_value_of_account_fill_completness;
-
-					percentValueOfAccountFillCompletnessHolder.textContent = percentValueOfAccountFillCompletness;
-
-				const labelsOfEmptyTranslatorCurrent = document.querySelectorAll(
-					"#emptyProfileFieldsLabels .empty-field-label"
-				);
-				const labelsOfEmptyTranslatorFieldsAjax =
-					dataJSON.labels_of_empty_translator_fields;
-
-				const labelsCurrent = [];
-				const labelsToBeAdded = [];
-				const labelsToBeDeleted = [];
-
-				labelsOfEmptyTranslatorCurrent.forEach(labelCurrent => {
-					labelsCurrent.push(labelsCurrent.innerText);
-
-					let comperativeArray = [];
-					let isOnTheCurrentList;
-					// console.log(`labelCurrent: ${labelCurrent.innerText}`);
-
-					labelsOfEmptyTranslatorFieldsAjax.forEach(labelAjax => {
-						// console.log(`labelAjax: ${labelAjax}`);
-						// console.log(labelCurrent.innerText === labelAjax);
-
-						comperativeArray.push(labelCurrent.innerText === labelAjax);
-
-						if (comperativeArray.includes(true)) {
-							isOnTheCurrentList = true;
-						}
-
-						// if (labelCurrent.innerText !== labelAjax) {
-						// 	// isOnTheCurrentList = true;
-						// 	console.log(labelAjax);
-						// }
-
-						// !isOnTheCurrentList ? labelsToBeAdded.push(labelAjax) : "";
-					});
-
-					console.log(comperativeArray);
-
-					// console.log(isOnTheCurrentList);
-					// console.log(`to be added: ${labelsToBeAdded}`);
-				});
+				updateProfileCompletness(dataJSON);
 
 				return data;
 			},
@@ -517,14 +516,7 @@ jQuery(document).ready(function($) {
 				const userAboutText = document.querySelector("#user_about_text");
 				userAboutText.innerText = `${postData.user_about}`;
 
-				const percentValueOfAccountFillCompletness =
-					dataJSON.percent_value_of_account_fill_completness;
-
-				const percentValueOfAccountFillCompletnessText = document.querySelector(
-					"#percentValueOfAccountFillCompletness"
-				);
-
-				percentValueOfAccountFillCompletnessText.innerText = percentValueOfAccountFillCompletness;
+				updateProfileCompletness(dataJSON);
 
 				return data;
 			},
@@ -655,14 +647,7 @@ jQuery(document).ready(function($) {
 					});
 				}
 
-				const percentValueOfAccountFillCompletness =
-					dataJSON.percent_value_of_account_fill_completness;
-
-				const percentValueOfAccountFillCompletnessText = document.querySelector(
-					"#percentValueOfAccountFillCompletness"
-				);
-
-				percentValueOfAccountFillCompletnessText.innerText = percentValueOfAccountFillCompletness;
+				updateProfileCompletness(dataJSON);
 
 				return data;
 			},
@@ -924,6 +909,10 @@ jQuery(document).ready(function($) {
 						block: "start",
 						inline: "nearest"
 					});
+
+				updateProfileCompletness(dataJSON);
+
+				return data;
 			},
 			error: function(jqXHR, textStatus, errorThrown) {
 				console.log(jqXHR);
@@ -983,10 +972,13 @@ jQuery(document).ready(function($) {
 				console.log(data);
 
 				const dataJSON = JSON.parse(data);
+				console.log(dataJSON);
 
 				const userlinkedinText = document.querySelector("#user_linkedin_text");
 
 				userlinkedinText.innerText = `${dataJSON.user_linkedin}`;
+
+				updateProfileCompletness(dataJSON);
 
 				return data;
 			},
@@ -1033,10 +1025,13 @@ jQuery(document).ready(function($) {
 				console.log(data);
 
 				const dataJSON = JSON.parse(data);
+				console.log(dataJSON);
 
 				const userworkText = document.querySelector("#user_work_text");
 
 				userworkText.innerText = `${dataJSON.user_work}`;
+
+				updateProfileCompletness(dataJSON);
 
 				return data;
 			},
@@ -1067,8 +1062,6 @@ jQuery(document).ready(function($) {
 			".my-ajax-loader"
 		);
 
-		console.log(this);
-
 		var profilePictureformData = new FormData(this);
 
 		$.ajax({
@@ -1095,8 +1088,10 @@ jQuery(document).ready(function($) {
 				console.log("SUCCESS!");
 				console.log(data);
 
-				// const dataJSON = JSON.parse(data);
-				// console.log(dataJSON);
+				const dataJSON = JSON.parse(data);
+				console.log(dataJSON);
+
+				updateProfileCompletness(dataJSON);
 
 				return data;
 			},
@@ -1194,10 +1189,10 @@ jQuery(document).ready(function($) {
 
 			success: function(data) {
 				console.log("SUCCESS!");
-				// console.log(data);
+				console.log(data);
 
 				const dataJSON = JSON.parse(data);
-				// console.log(dataJSON);
+				console.log(dataJSON);
 
 				let addedFilesIds = dataJSON.added_files_ids;
 				let addedRows = dataJSON.added_rows;
@@ -1273,6 +1268,8 @@ jQuery(document).ready(function($) {
 						block: "start",
 						inline: "nearest"
 					});
+
+				updateProfileCompletness(dataJSON);
 
 				return data;
 			},
@@ -1405,6 +1402,8 @@ jQuery(document).ready(function($) {
 				//clear input
 
 				videoToGalleryInput.value = null;
+
+				updateProfileCompletness(dataJSON);
 
 				return data;
 			},
@@ -1646,14 +1645,20 @@ jQuery(document).ready(function($) {
 
 				const isProfilePublic = dataJSON.profile_is_public;
 
-				isProfilePublicStatusIcon = document.querySelector(
-					".account__public SVG"
+				isProfilePublicStatus = document.querySelector(
+					".account__privacy-status"
+				);
+
+				profileStatusIcon = document.querySelector(
+					".account__privacy-status SVG"
 				);
 
 				if (isProfilePublic) {
-					isProfilePublicStatusIcon.style.fill = "green";
+					profileStatusIcon.style.fill = "green";
+					isProfilePublicStatus.classList.add("account__public");
 				} else {
-					isProfilePublicStatusIcon.style.fill = "#cacaca";
+					profileStatusIcon.style.fill = "#cacaca";
+					isProfilePublicStatus.classList.add("account__private");
 				}
 
 				// accountIsPublicIcon.style.
