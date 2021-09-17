@@ -20,12 +20,15 @@
 
             if ($login === "failed" ) {
                 echo '<p class="login-msg php-error__text">Invalid username and/or password.</p>';
+            }
 
-              } elseif ( $login === "empty" ) {
+            if ( $login === "empty" ) {
                 echo '<p class="login-msg php-error__text">Username and/or Password is empty.</p>';
-              } elseif ($_POST && $login === "false" ) {
+            }
+
+            if ($login === "false" ) {
                 echo '<p class="login-msg php-success__text">Zostałeś pomyślnie wylogowany.</p>';
-              }
+            }
 
 
             //Additional messages to be displayed when user is redirected from the lost-password page

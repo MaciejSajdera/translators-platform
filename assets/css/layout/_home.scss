@@ -5,6 +5,15 @@
 	}
 
 	.home-search__container {
+	}
+}
 
+.get-to-know-us {
+	&__element-wrapper {
+		flex: 1;
+
+		img {
+			max-width: 300px;
+		}
 	}
 }

@@ -25,6 +25,7 @@ h6 {
 
 p {
 	margin-bottom: 1.5em;
+	font-weight: 300;
 }
 
 dfn,
@@ -75,4 +76,78 @@ ins {
 
 big {
 	font-size: 125%;
+}
+
+@font-face {
+	font-family: "Gotham";
+	src: url(../dist/fonts/Gotham-Thin.otf);
+	font-weight: 100;
+	font-style: normal;
+}
+
+@font-face {
+	font-family: "Gotham";
+	src: url(../dist/fonts/Gotham-ThinItalic.otf);
+	font-weight: 100;
+	font-style: italic;
+}
+
+@font-face {
+	font-family: "Gotham";
+	src: url(../dist/fonts/Gotham-Light.otf);
+	font-weight: 300;
+	font-style: normal;
+}
+
+@font-face {
+	font-family: "Gotham";
+	src: url(../dist/fonts/Gotham-LightItalic.otf);
+	font-weight: 300;
+	font-style: italic;
+}
+
+@font-face {
+	font-family: "Gotham";
+	src: url(../dist/fonts/Gotham-Medium.otf);
+	font-weight: 500;
+	font-style: normal;
+}
+
+@font-face {
+	font-family: "Gotham";
+	src: url(../dist/fonts/Gotham-MediumItalic.otf);
+	font-weight: 500;
+	font-style: italic;
+}
+
+@font-face {
+	font-family: "Gotham";
+	src: url(../dist/fonts/Gotham-Bold.otf);
+	font-weight: 700;
+	font-style: normal;
+}
+
+@font-face {
+	font-family: "Gotham";
+	src: url(../dist/fonts/Gotham-BoldItalic.otf);
+	font-weight: 700;
+	font-style: italic;
+}
+
+@font-face {
+	font-family: "Gotham";
+	src: url(../dist/fonts/Gotham-Ultra.otf);
+	font-weight: 900;
+	font-style: normal;
+}
+
+@font-face {
+	font-family: "Gotham";
+	src: url(../dist/fonts/Gotham-UltraItalic.otf);
+	font-weight: 900;
+	font-style: normal;
+}
+
+.fw-100 {
+	font-weight: 100;
 }

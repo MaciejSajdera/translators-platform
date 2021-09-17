@@ -92,7 +92,7 @@
 			if ( $translator_specializations ) {
 				foreach( $translator_specializations as $term ) :
 
-							echo '<div class="info-tile">'.$term->name.'</div>';
+							echo '<div class="info-tile"><p>'.$term->name.'</p></div>';
 						
 				endforeach;
 			}

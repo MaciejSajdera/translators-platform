@@ -1,3 +1,5 @@
+import "../../node_modules/progressbar.js/dist/progressbar.js";
+
 jQuery(document).ready(function($) {
 	/***************** ADDITIONAL FUNCTIONALITIES RELATED TO FORMS ******************/
 
@@ -159,16 +161,15 @@ jQuery(document).ready(function($) {
 					
 						<div class="new-attachment__icon ">
 					
-							<svg viewBox="0 0 384 384" xmlns="http://www.w3.org/2000/svg">
-							<path d="m176 288c0 8.832031 7.167969 16 16 16s16-7.167969 16-16v-192c0-8.832031-7.167969-16-16-16s-16 7.167969-16 16zm0 0"/>
-							<path d="m16 96c-8.832031 0-16 7.167969-16 16v160c0 8.832031 7.167969 16 16 16s16-7.167969 16-16v-160c0-8.832031-7.167969-16-16-16zm0 0"/>
-							<path d="m152 256v-128c0-8.832031-7.167969-16-16-16s-16 7.167969-16 16v128c0 8.832031 7.167969 16 16 16s16-7.167969 16-16zm0 0"/>
-							<path d="m80 240c8.832031 0 16-7.167969 16-16v-64c0-8.832031-7.167969-16-16-16s-16 7.167969-16 16v64c0 8.832031 7.167969 16 16 16zm0 0"/>
-							<path d="m264 256v-128c0-8.832031-7.167969-16-16-16s-16 7.167969-16 16v128c0 8.832031 7.167969 16 16 16s16-7.167969 16-16zm0 0"/>
-							<path d="m368 96c-8.832031 0-16 7.167969-16 16v160c0 8.832031 7.167969 16 16 16s16-7.167969 16-16v-160c0-8.832031-7.167969-16-16-16zm0 0"/>
-							<path d="m304 144c-8.832031 0-16 7.167969-16 16v64c0 8.832031 7.167969 16 16 16s16-7.167969 16-16v-64c0-8.832031-7.167969-16-16-16zm0 0"/>
-							<path d="m176 368c0 8.832031 7.167969 16 16 16s16-7.167969 16-16v-16c0-8.832031-7.167969-16-16-16s-16 7.167969-16 16zm0 0"/>
-							<path d="m192 48c8.832031 0 16-7.167969 16-16v-16c0-8.832031-7.167969-16-16-16s-16 7.167969-16 16v16c0 8.832031 7.167969 16 16 16zm0 0"/></svg>
+							<svg width="44" height="38" viewBox="0 0 44 38" fill="none" xmlns="http://www.w3.org/2000/svg">
+							<path d="M26.4822 19.0011C26.4822 13.3803 26.4822 7.74847 26.4822 2.12766C26.4822 1.44301 26.681 0.857736 27.2221 0.438109C27.8405 -0.0477762 28.5362 -0.136119 29.254 0.206209C29.9828 0.548537 30.3362 1.14485 30.3804 1.93993C30.3804 2.00619 30.3804 2.08349 30.3804 2.14975C30.3804 13.3803 30.3804 24.6219 30.3804 35.8525C30.3804 36.6917 30.0822 37.3543 29.3313 37.7629C28.0834 38.4365 26.5595 37.5752 26.4822 36.1617C26.4712 36.0181 26.4712 35.8746 26.4712 35.731C26.4822 30.1544 26.4822 24.5778 26.4822 19.0011Z" fill="#18A0AA"/>
+							<path d="M23.744 19.0233C23.744 23.0428 23.744 27.0624 23.744 31.082C23.744 32.098 23.1587 32.8599 22.2201 33.0697C21.0385 33.3458 19.8901 32.4513 19.8569 31.2366C19.8569 31.1704 19.8569 31.0931 19.8569 31.0268C19.8569 23.0097 19.8569 14.9816 19.8569 6.96447C19.8569 6.13626 20.1661 5.49577 20.895 5.10928C22.1649 4.42462 23.733 5.34118 23.744 6.78779C23.7661 8.95218 23.7551 11.1055 23.7551 13.2699C23.744 15.1803 23.744 17.1018 23.744 19.0233Z" fill="#16538C"/>
+							<path d="M6.62239 18.9791C6.62239 15.7877 6.62239 12.5853 6.62239 9.39391C6.62239 8.46631 7.05306 7.78166 7.81502 7.46141C9.0739 6.93136 10.4543 7.81478 10.5205 9.19514C10.5205 9.2614 10.5205 9.31661 10.5205 9.38287C10.5205 15.7877 10.5205 22.2036 10.5205 28.6084C10.5205 29.536 10.0457 30.2649 9.25059 30.552C8.00274 31.0158 6.6776 30.1434 6.63343 28.8293C6.61135 28.0784 6.62239 27.3275 6.62239 26.5766C6.62239 24.0478 6.62239 21.5079 6.62239 18.9791Z" fill="#16538C"/>
+							<path d="M36.9919 19.001C36.9919 22.1924 36.9919 25.3948 36.9919 28.5862C36.9919 29.3702 36.7158 29.9996 36.0422 30.3972C34.7723 31.1591 33.1821 30.2868 33.0938 28.807C33.0938 28.7408 33.0938 28.6856 33.0938 28.6193C33.0938 22.2034 33.0938 15.7875 33.0938 9.37163C33.0938 8.4109 33.6017 7.68208 34.4741 7.40601C35.6557 7.01951 36.9256 7.89189 36.9808 9.12869C37.0029 9.55936 36.9919 10.0011 36.9919 10.4317C36.9919 13.2808 36.9919 16.1409 36.9919 19.001Z" fill="#16538C"/>
+							<path d="M17.1435 18.9906C17.1435 21.3869 17.1435 23.7832 17.1435 26.1795C17.1435 26.9967 16.8233 27.6261 16.0945 28.0126C14.8135 28.6972 13.3006 27.7917 13.2344 26.312C13.2344 26.2678 13.2344 26.2126 13.2344 26.1684C13.2344 21.3869 13.2344 16.5943 13.2344 11.8127C13.2344 10.8741 13.7203 10.1453 14.5264 9.85817C15.7411 9.41645 17.0662 10.2778 17.1215 11.5698C17.1546 12.3649 17.1325 13.171 17.1325 13.9661C17.1435 15.6336 17.1435 17.3121 17.1435 18.9906Z" fill="#18A0AA"/>
+							<path d="M0.0110428 18.9687C0.0110428 17.3454 0.0110428 15.7221 0.0110428 14.1099C0.0110428 13.1933 0.66257 12.4203 1.55704 12.2215C2.44047 12.0228 3.36806 12.4866 3.72144 13.3258C3.83186 13.5798 3.89812 13.878 3.89812 14.154C3.90916 17.3896 3.90916 20.6251 3.89812 23.8607C3.89812 24.965 3.01469 25.8373 1.94354 25.8263C0.850298 25.8153 0 24.9429 0 23.8165C0.0110428 22.2043 0.0110428 20.581 0.0110428 18.9687Z" fill="#18A0AA"/>
+							<path d="M39.7158 18.9904C39.7158 18.1732 39.7048 17.345 39.7158 16.5278C39.7268 15.6002 40.3784 14.8383 41.2949 14.6505C42.1783 14.4738 43.0949 14.9376 43.4483 15.7879C43.5477 16.0198 43.6029 16.2959 43.6139 16.5499C43.625 18.1842 43.625 19.8186 43.6139 21.464C43.6139 22.5241 42.7526 23.3744 41.6925 23.3854C40.6103 23.3965 39.7489 22.5682 39.7158 21.4971C39.7158 21.475 39.7158 21.4529 39.7158 21.4308C39.7048 20.6026 39.7048 19.7965 39.7158 18.9904C39.7048 18.9904 39.7158 18.9904 39.7158 18.9904Z" fill="#18A0AA"/>
+							</svg>
 					
 						</div>
 					
@@ -300,16 +301,16 @@ jQuery(document).ready(function($) {
 								
 									<div class="new-attachment__icon ">
 								
-										<svg viewBox="0 0 384 384" xmlns="http://www.w3.org/2000/svg">
-										<path d="m176 288c0 8.832031 7.167969 16 16 16s16-7.167969 16-16v-192c0-8.832031-7.167969-16-16-16s-16 7.167969-16 16zm0 0"/>
-										<path d="m16 96c-8.832031 0-16 7.167969-16 16v160c0 8.832031 7.167969 16 16 16s16-7.167969 16-16v-160c0-8.832031-7.167969-16-16-16zm0 0"/>
-										<path d="m152 256v-128c0-8.832031-7.167969-16-16-16s-16 7.167969-16 16v128c0 8.832031 7.167969 16 16 16s16-7.167969 16-16zm0 0"/>
-										<path d="m80 240c8.832031 0 16-7.167969 16-16v-64c0-8.832031-7.167969-16-16-16s-16 7.167969-16 16v64c0 8.832031 7.167969 16 16 16zm0 0"/>
-										<path d="m264 256v-128c0-8.832031-7.167969-16-16-16s-16 7.167969-16 16v128c0 8.832031 7.167969 16 16 16s16-7.167969 16-16zm0 0"/>
-										<path d="m368 96c-8.832031 0-16 7.167969-16 16v160c0 8.832031 7.167969 16 16 16s16-7.167969 16-16v-160c0-8.832031-7.167969-16-16-16zm0 0"/>
-										<path d="m304 144c-8.832031 0-16 7.167969-16 16v64c0 8.832031 7.167969 16 16 16s16-7.167969 16-16v-64c0-8.832031-7.167969-16-16-16zm0 0"/>
-										<path d="m176 368c0 8.832031 7.167969 16 16 16s16-7.167969 16-16v-16c0-8.832031-7.167969-16-16-16s-16 7.167969-16 16zm0 0"/>
-										<path d="m192 48c8.832031 0 16-7.167969 16-16v-16c0-8.832031-7.167969-16-16-16s-16 7.167969-16 16v16c0 8.832031 7.167969 16 16 16zm0 0"/></svg>
+										<svg width="44" height="38" viewBox="0 0 44 38" fill="none" xmlns="http://www.w3.org/2000/svg">
+										<path d="M26.4822 19.0011C26.4822 13.3803 26.4822 7.74847 26.4822 2.12766C26.4822 1.44301 26.681 0.857736 27.2221 0.438109C27.8405 -0.0477762 28.5362 -0.136119 29.254 0.206209C29.9828 0.548537 30.3362 1.14485 30.3804 1.93993C30.3804 2.00619 30.3804 2.08349 30.3804 2.14975C30.3804 13.3803 30.3804 24.6219 30.3804 35.8525C30.3804 36.6917 30.0822 37.3543 29.3313 37.7629C28.0834 38.4365 26.5595 37.5752 26.4822 36.1617C26.4712 36.0181 26.4712 35.8746 26.4712 35.731C26.4822 30.1544 26.4822 24.5778 26.4822 19.0011Z" fill="#18A0AA"/>
+										<path d="M23.744 19.0233C23.744 23.0428 23.744 27.0624 23.744 31.082C23.744 32.098 23.1587 32.8599 22.2201 33.0697C21.0385 33.3458 19.8901 32.4513 19.8569 31.2366C19.8569 31.1704 19.8569 31.0931 19.8569 31.0268C19.8569 23.0097 19.8569 14.9816 19.8569 6.96447C19.8569 6.13626 20.1661 5.49577 20.895 5.10928C22.1649 4.42462 23.733 5.34118 23.744 6.78779C23.7661 8.95218 23.7551 11.1055 23.7551 13.2699C23.744 15.1803 23.744 17.1018 23.744 19.0233Z" fill="#16538C"/>
+										<path d="M6.62239 18.9791C6.62239 15.7877 6.62239 12.5853 6.62239 9.39391C6.62239 8.46631 7.05306 7.78166 7.81502 7.46141C9.0739 6.93136 10.4543 7.81478 10.5205 9.19514C10.5205 9.2614 10.5205 9.31661 10.5205 9.38287C10.5205 15.7877 10.5205 22.2036 10.5205 28.6084C10.5205 29.536 10.0457 30.2649 9.25059 30.552C8.00274 31.0158 6.6776 30.1434 6.63343 28.8293C6.61135 28.0784 6.62239 27.3275 6.62239 26.5766C6.62239 24.0478 6.62239 21.5079 6.62239 18.9791Z" fill="#16538C"/>
+										<path d="M36.9919 19.001C36.9919 22.1924 36.9919 25.3948 36.9919 28.5862C36.9919 29.3702 36.7158 29.9996 36.0422 30.3972C34.7723 31.1591 33.1821 30.2868 33.0938 28.807C33.0938 28.7408 33.0938 28.6856 33.0938 28.6193C33.0938 22.2034 33.0938 15.7875 33.0938 9.37163C33.0938 8.4109 33.6017 7.68208 34.4741 7.40601C35.6557 7.01951 36.9256 7.89189 36.9808 9.12869C37.0029 9.55936 36.9919 10.0011 36.9919 10.4317C36.9919 13.2808 36.9919 16.1409 36.9919 19.001Z" fill="#16538C"/>
+										<path d="M17.1435 18.9906C17.1435 21.3869 17.1435 23.7832 17.1435 26.1795C17.1435 26.9967 16.8233 27.6261 16.0945 28.0126C14.8135 28.6972 13.3006 27.7917 13.2344 26.312C13.2344 26.2678 13.2344 26.2126 13.2344 26.1684C13.2344 21.3869 13.2344 16.5943 13.2344 11.8127C13.2344 10.8741 13.7203 10.1453 14.5264 9.85817C15.7411 9.41645 17.0662 10.2778 17.1215 11.5698C17.1546 12.3649 17.1325 13.171 17.1325 13.9661C17.1435 15.6336 17.1435 17.3121 17.1435 18.9906Z" fill="#18A0AA"/>
+										<path d="M0.0110428 18.9687C0.0110428 17.3454 0.0110428 15.7221 0.0110428 14.1099C0.0110428 13.1933 0.66257 12.4203 1.55704 12.2215C2.44047 12.0228 3.36806 12.4866 3.72144 13.3258C3.83186 13.5798 3.89812 13.878 3.89812 14.154C3.90916 17.3896 3.90916 20.6251 3.89812 23.8607C3.89812 24.965 3.01469 25.8373 1.94354 25.8263C0.850298 25.8153 0 24.9429 0 23.8165C0.0110428 22.2043 0.0110428 20.581 0.0110428 18.9687Z" fill="#18A0AA"/>
+										<path d="M39.7158 18.9904C39.7158 18.1732 39.7048 17.345 39.7158 16.5278C39.7268 15.6002 40.3784 14.8383 41.2949 14.6505C42.1783 14.4738 43.0949 14.9376 43.4483 15.7879C43.5477 16.0198 43.6029 16.2959 43.6139 16.5499C43.625 18.1842 43.625 19.8186 43.6139 21.464C43.6139 22.5241 42.7526 23.3744 41.6925 23.3854C40.6103 23.3965 39.7489 22.5682 39.7158 21.4971C39.7158 21.475 39.7158 21.4529 39.7158 21.4308C39.7048 20.6026 39.7048 19.7965 39.7158 18.9904C39.7048 18.9904 39.7158 18.9904 39.7158 18.9904Z" fill="#18A0AA"/>
+										</svg>
+									
 								
 									</div>
 								
@@ -350,8 +351,53 @@ jQuery(document).ready(function($) {
 			});
 	};
 
+	// Animate progress bar
+
+	const progressRingHolder = document.querySelector("#progressRing");
+
+	var progressRing = new ProgressBar.Circle(progressRingHolder, {
+		color: "#16538c",
+		// This has to be the same size as the maximum width to
+		// prevent clipping
+		strokeWidth: 0,
+		trailWidth: 0,
+		easing: "easeInOut",
+		duration: 1400,
+		text: {
+			autoStyleContainer: false
+		},
+		from: { color: "#ffa500", width: 10 },
+		to: { color: "#24b82be6", width: 14 },
+		// Set default step function for all animate calls
+		step: function(state, circle) {
+			circle.path.setAttribute("stroke", state.color);
+			circle.path.setAttribute("stroke-width", state.width);
+
+			var value = Math.round(circle.value() * 100);
+			if (value === 0) {
+				circle.setText("0%");
+			} else {
+				circle.setText(`${value}%`);
+			}
+		}
+	});
+
+	progressRing.text.style.fontSize = "1.25rem";
+	progressRing.text.style.fontWeight = "700";
+	progressRing.text.style.zIndex = "1";
+	progressRing.animate(
+		ajax_forms_params.initial_percent_value_of_account_fill_completness / 100
+	);
+
 	const updateProfileCompletness = dataJSON => {
 		console.log(dataJSON);
+
+		const accountFillCompletenessWrapper = document.querySelector(
+			".account__fill-completeness-wrapper"
+		);
+		const accountFillCompletness = document.querySelector(
+			"#accountFillCompletness"
+		);
 
 		const percentValueOfAccountFillCompletnessHolder = document.querySelector(
 			"#percentValueOfAccountFillCompletness"
@@ -363,6 +409,39 @@ jQuery(document).ready(function($) {
 			dataJSON.percent_value_of_account_fill_completness;
 
 		percentValueOfAccountFillCompletnessHolder.textContent = percentValueOfAccountFillCompletness;
+
+		progressRing.animate(percentValueOfAccountFillCompletness / 100);
+
+		if (dataJSON.percent_value_of_account_fill_completness < 49) {
+			accountFillCompletness.className = "";
+			accountFillCompletness.classList.add("value__low");
+		}
+
+		if (
+			dataJSON.percent_value_of_account_fill_completness > 49 &&
+			75 > dataJSON.percent_value_of_account_fill_completness
+		) {
+			accountFillCompletness.className = "";
+			accountFillCompletness.classList.add("value__medium");
+		}
+
+		if (
+			dataJSON.percent_value_of_account_fill_completness > 75 &&
+			95 > dataJSON.percent_value_of_account_fill_completness
+		) {
+			accountFillCompletness.className = "";
+			accountFillCompletness.classList.add("value__high");
+		}
+
+		if (dataJSON.percent_value_of_account_fill_completness < 100) {
+			accountFillCompletenessWrapper.classList.remove("hide");
+			accountFillCompletenessWrapper.classList.add("show");
+		}
+
+		if (dataJSON.percent_value_of_account_fill_completness === 100) {
+			accountFillCompletenessWrapper.classList.remove("show");
+			accountFillCompletenessWrapper.classList.add("hide");
+		}
 
 		// Refresh list of empty fields
 
@@ -495,11 +574,11 @@ jQuery(document).ready(function($) {
 				thisAjaxLoader.classList.add("my-ajax-loader--active");
 
 				// And scroll intro view
-				aboutUserDataForm.closest(".account__box-container").scrollIntoView({
-					behavior: "smooth",
-					block: "start",
-					inline: "nearest"
-				});
+				// aboutUserDataForm.closest(".account__box-container").scrollIntoView({
+				// 	behavior: "smooth",
+				// 	block: "start",
+				// 	inline: "nearest"
+				// });
 			},
 
 			complete: function() {
@@ -553,11 +632,11 @@ jQuery(document).ready(function($) {
 				thisAjaxLoader.classList.add("my-ajax-loader--active");
 
 				// And scroll intro view
-				contactUserDataForm.closest(".account__box-container").scrollIntoView({
-					behavior: "smooth",
-					block: "start",
-					inline: "nearest"
-				});
+				// contactUserDataForm.closest(".account__box-container").scrollIntoView({
+				// 	behavior: "smooth",
+				// 	block: "start",
+				// 	inline: "nearest"
+				// });
 			},
 
 			complete: function() {
@@ -610,7 +689,9 @@ jQuery(document).ready(function($) {
 
 					//display all checked localizations
 
-					allUniqueLocalizations = [...new Set(postData.user_localizations)];
+					let allUniqueLocalizations = [
+						...new Set(postData.user_localizations)
+					];
 
 					allUniqueLocalizations
 						.filter(
@@ -709,7 +790,7 @@ jQuery(document).ready(function($) {
 						// console.log("gallery");
 						thisSoundWrapper = e.target.closest(".row-wrapper");
 
-						thisSoundPreview = thisSoundWrapper.querySelector(
+						let thisSoundPreview = thisSoundWrapper.querySelector(
 							".new-attachment__preview"
 						);
 
@@ -788,18 +869,20 @@ jQuery(document).ready(function($) {
 				thisAjaxLoader.classList.add("my-ajax-loader--active");
 
 				// And scroll intro view
-				uploadSoundToGalleryForm
-					.closest(".account__box-container")
-					.scrollIntoView({
-						behavior: "smooth",
-						block: "start",
-						inline: "nearest"
-					});
+				// uploadSoundToGalleryForm
+				// 	.closest(".account__box-container")
+				// 	.scrollIntoView({
+				// 		behavior: "smooth",
+				// 		block: "start",
+				// 		inline: "nearest"
+				// 	});
 			},
 
-			complete: function() {
+			complete: function(data) {
 				thisAjaxLoader.classList.remove("my-ajax-loader--active");
 				progress.classList.remove("progress-show");
+				const dataJSON = JSON.parse(data.responseText);
+				updateProfileCompletness(dataJSON);
 			},
 
 			success: function(data) {
@@ -887,32 +970,33 @@ jQuery(document).ready(function($) {
 				//re-index fields
 
 				$(".my-sounds__gallery .row-wrapper").each(function(index) {
-					console.log($(this));
-
 					//because ACF repeater row indexes starts at 1
 					$(this)
 						.find("A")
 						.attr("data-id", index + 1);
 				});
 
-				//clear data
+				// Change is-gallery-empty status
 
-				data = {};
+				const soundsGallery = document.querySelector(".my-sounds__gallery");
 
-				//scroll to the top of the block
+				let addedSounds = soundsGallery.querySelectorAll(
+					".my-sounds__gallery-row-wrapper"
+				);
 
-				document
-					.querySelector("#upload_sound_to_gallery_form")
-					.closest(".account__box-container")
-					.scrollIntoView({
-						behavior: "smooth",
-						block: "start",
-						inline: "nearest"
-					});
+				const isGalleryEmptyStatusTextHolder = soundsGallery.querySelector(
+					".is-gallery-empty__status-text-holder"
+				);
 
-				updateProfileCompletness(dataJSON);
-
-				return data;
+				if (addedSounds.length > 0) {
+					isGalleryEmptyStatusTextHolder.textContent = soundsGallery.querySelector(
+						".is-gallery-empty__no"
+					).textContent;
+				} else {
+					isGalleryEmptyStatusTextHolder.textContent = soundsGallery.querySelector(
+						".is-gallery-empty__yes"
+					).textContent;
+				}
 			},
 			error: function(jqXHR, textStatus, errorThrown) {
 				console.log(jqXHR);
@@ -956,11 +1040,11 @@ jQuery(document).ready(function($) {
 				thisAjaxLoader.classList.add("my-ajax-loader--active");
 
 				// And scroll intro view
-				linkedinUserDataForm.closest(".account__box-container").scrollIntoView({
-					behavior: "smooth",
-					block: "start",
-					inline: "nearest"
-				});
+				// linkedinUserDataForm.closest(".account__box-container").scrollIntoView({
+				// 	behavior: "smooth",
+				// 	block: "start",
+				// 	inline: "nearest"
+				// });
 			},
 
 			complete: function() {
@@ -1009,11 +1093,11 @@ jQuery(document).ready(function($) {
 				thisAjaxLoader.classList.add("my-ajax-loader--active");
 
 				// And scroll intro view
-				workUserDataForm.closest(".account__box-container").scrollIntoView({
-					behavior: "smooth",
-					block: "start",
-					inline: "nearest"
-				});
+				// workUserDataForm.closest(".account__box-container").scrollIntoView({
+				// 	behavior: "smooth",
+				// 	block: "start",
+				// 	inline: "nearest"
+				// });
 			},
 
 			complete: function() {
@@ -1081,7 +1165,8 @@ jQuery(document).ready(function($) {
 
 			complete: function() {
 				thisAjaxLoader.classList.remove("my-ajax-loader--active");
-				uploadPicturePreview.classList.remove("has-image");
+				// uploadPicturePreview.classList.remove("has-image");
+				uploadPicturePreview.classList.remove("preview-mode");
 			},
 
 			success: function(data) {
@@ -1114,6 +1199,7 @@ jQuery(document).ready(function($) {
 
 				originalImage.style.opacity = "1";
 				uploadPicturePreview.classList.remove("has-image");
+				uploadPicturePreview.classList.remove("preview-mode");
 			}
 		});
 	});
@@ -1171,20 +1257,13 @@ jQuery(document).ready(function($) {
 			beforeSend: function() {
 				// Before we send the request, remove the .hidden class from the spinner and default to inline-block.
 				thisAjaxLoader.classList.add("my-ajax-loader--active");
-
-				uploadImageToGalleryForm
-					.closest(".account__box-container")
-					.scrollIntoView({
-						behavior: "smooth",
-						block: "start",
-						inline: "nearest"
-					});
 			},
 
-			complete: function() {
+			complete: function(data) {
 				thisAjaxLoader.classList.remove("my-ajax-loader--active");
 				progress.classList.remove("progress-show");
-				// uploadPicturePreview.classList.remove("has-image");
+				const dataJSON = JSON.parse(data.responseText);
+				updateProfileCompletness(dataJSON);
 			},
 
 			success: function(data) {
@@ -1260,16 +1339,27 @@ jQuery(document).ready(function($) {
 					}
 				});
 
-				document
-					.querySelector("#upload_image_to_gallery_form")
-					.closest(".account__box-container")
-					.scrollIntoView({
-						behavior: "smooth",
-						block: "start",
-						inline: "nearest"
-					});
+				// Change is-gallery-empty status
 
-				updateProfileCompletness(dataJSON);
+				const picturesGallery = document.querySelector(".my-pictures__gallery");
+
+				let addedPictures = picturesGallery.querySelectorAll(
+					".my-pictures__gallery-attachment"
+				);
+
+				const isGalleryEmptyStatusTextHolder = picturesGallery.querySelector(
+					".is-gallery-empty__status-text-holder"
+				);
+
+				if (addedPictures.length > 0) {
+					isGalleryEmptyStatusTextHolder.textContent = picturesGallery.querySelector(
+						".is-gallery-empty__no"
+					).textContent;
+				} else {
+					isGalleryEmptyStatusTextHolder.textContent = picturesGallery.querySelector(
+						".is-gallery-empty__yes"
+					).textContent;
+				}
 
 				return data;
 			},
@@ -1354,19 +1444,20 @@ jQuery(document).ready(function($) {
 				// Before we send the request, remove the .hidden class from the spinner and default to inline-block.
 				thisAjaxLoader.classList.add("my-ajax-loader--active");
 
-				uploadVideoToGalleryForm
-					.closest(".account__box-container")
-					.scrollIntoView({
-						behavior: "smooth",
-						block: "start",
-						inline: "nearest"
-					});
+				// uploadVideoToGalleryForm
+				// 	.closest(".account__box-container")
+				// 	.scrollIntoView({
+				// 		behavior: "smooth",
+				// 		block: "start",
+				// 		inline: "nearest"
+				// 	});
 			},
 
-			complete: function() {
+			complete: function(data) {
 				thisAjaxLoader.classList.remove("my-ajax-loader--active");
 				progress.classList.remove("progress-show");
-				// uploadPicturePreview.classList.remove("has-image");
+				const dataJSON = JSON.parse(data.responseText);
+				updateProfileCompletness(dataJSON);
 			},
 
 			success: function(data) {
@@ -1383,29 +1474,49 @@ jQuery(document).ready(function($) {
 
 				let newlyAddedVideo = $("#newVideoInGalleryPlaceholder").clone();
 
-				newlyAddedVideo
-					.css("transform", "scale(0)")
-					.css("transition", "all 0.3s ease-in")
-					.appendTo(".my-videos__gallery")
-					.attr("id", "newlyAddedVideo");
+				if (addedRows > 0) {
+					newlyAddedVideo
+						.css("transform", "scale(0)")
+						.css("transition", "all 0.3s ease-in")
+						.appendTo(".my-videos__gallery")
+						.attr("id", "newlyAddedVideo");
 
-				setTimeout(function() {
-					$("#newlyAddedVideo .remove-item").attr("data-id", addedRows[0]);
+					setTimeout(function() {
+						$("#newlyAddedVideo .remove-item").attr("data-id", addedRows[0]);
 
-					$("#newlyAddedVideo")
-						.css("transform", "scale(1)")
-						.attr("id", "");
-				}, 100);
+						$("#newlyAddedVideo")
+							.css("transform", "scale(1)")
+							.attr("id", "");
+					}, 100);
 
-				$("#newVideoInGalleryPlaceholder").css("display", "none");
+					$("#newVideoInGalleryPlaceholder").css("display", "none");
+				}
 
 				//clear input
 
 				videoToGalleryInput.value = null;
 
-				updateProfileCompletness(dataJSON);
+				// Change is-gallery-empty status
 
-				return data;
+				const videosGallery = document.querySelector(".my-videos__gallery");
+
+				let addedVideos = videosGallery.querySelectorAll(
+					".my-videos__gallery-attachment"
+				);
+
+				const isGalleryEmptyStatusTextHolder = videosGallery.querySelector(
+					".is-gallery-empty__status-text-holder"
+				);
+
+				if (addedVideos.length > 0) {
+					isGalleryEmptyStatusTextHolder.textContent = videosGallery.querySelector(
+						".is-gallery-empty__no"
+					).textContent;
+				} else {
+					isGalleryEmptyStatusTextHolder.textContent = videosGallery.querySelector(
+						".is-gallery-empty__yes"
+					).textContent;
+				}
 			},
 			error: function(jqXHR, textStatus, errorThrown) {
 				console.log(jqXHR);
@@ -1465,13 +1576,13 @@ jQuery(document).ready(function($) {
 				// Before we send the request, remove the .hidden class from the spinner and default to inline-block.
 				thisAjaxLoader.classList.add("my-ajax-loader--active");
 
-				changeSettingsUserLoginEmail
-					.closest(".account__box-container")
-					.scrollIntoView({
-						behavior: "smooth",
-						block: "start",
-						inline: "nearest"
-					});
+				// changeSettingsUserLoginEmail
+				// 	.closest(".account__box-container")
+				// 	.scrollIntoView({
+				// 		behavior: "smooth",
+				// 		block: "start",
+				// 		inline: "nearest"
+				// 	});
 			},
 
 			complete: function() {
@@ -1625,13 +1736,13 @@ jQuery(document).ready(function($) {
 				// Before we send the request, remove the .hidden class from the spinner and default to inline-block.
 				thisAjaxLoader.classList.add("my-ajax-loader--active");
 
-				userDataVisibilityForm
-					.closest(".account__box-container")
-					.scrollIntoView({
-						behavior: "smooth",
-						block: "start",
-						inline: "nearest"
-					});
+				// userDataVisibilityForm
+				// 	.closest(".account__box-container")
+				// 	.scrollIntoView({
+				// 		behavior: "smooth",
+				// 		block: "start",
+				// 		inline: "nearest"
+				// 	});
 			},
 
 			complete: function() {
@@ -1654,10 +1765,12 @@ jQuery(document).ready(function($) {
 				);
 
 				if (isProfilePublic) {
-					profileStatusIcon.style.fill = "green";
+					// profileStatusIcon.style.fill = "green";
+					isProfilePublicStatus.classList.remove("account__private");
 					isProfilePublicStatus.classList.add("account__public");
 				} else {
-					profileStatusIcon.style.fill = "#cacaca";
+					// profileStatusIcon.style.fill = "#cacaca";
+					isProfilePublicStatus.classList.remove("account__public");
 					isProfilePublicStatus.classList.add("account__private");
 				}
 

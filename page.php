@@ -36,13 +36,16 @@ get_header();
 
 		endwhile; // End of the loop.
 
-
-		echo do_shortcode("[childpages]");
 		?>
 
-
-
 		</main><!-- #main -->
+
+		<?php get_template_part( 'template-parts/blog-new-posts' ); ?>
+
+		<?php
+			get_template_part( 'template-parts/back-to-home-page' );
+		?>
+
 	</div><!-- #primary -->
 
 <?php

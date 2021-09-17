@@ -208,6 +208,8 @@ document.addEventListener("DOMContentLoaded", () => {
 	mediaQueryDesktop.addListener(handleDesktopChange);
 	handleDesktopChange(mediaQueryDesktop);
 
+	/* SEARCH AND FILTER PRO PLUGIN FIX */
+
 	const allCheckboxesSwitches = document.querySelectorAll(".options__switch");
 
 	allCheckboxesSwitches &&
@@ -289,11 +291,43 @@ document.addEventListener("DOMContentLoaded", () => {
 			}
 		});
 
-		const allSearchFields = document.querySelectorAll(".select2-search__field");
+		const allSingleChoiceBoxes = [
+			document.querySelector(".sf-field-taxonomy-translator_localization")
+		];
 
-		allSearchFields.forEach(field => {
-			field.addEventListener("focus", e => {
-				console.log(e);
+		allSingleChoiceBoxes.forEach(box => {
+			console.log(box);
+			let boxSelection = box.querySelector(".select2-selection");
+
+			//Dynamic
+			const observer = new MutationObserver(function(mutations) {
+				mutations.forEach(function(mutation) {
+					console.log(mutation);
+
+					if (mutation.type === "attributes") {
+						console.log("attributes changed");
+
+						setTimeout(() => {
+							const dropDownBelow = document.querySelector(
+								".select2-dropdown--below"
+							);
+
+							const searchField = dropDownBelow?.querySelector(
+								".select2-search__field"
+							);
+
+							searchField?.focus();
+
+							if (searchField) {
+								searchField.placeholder = "Wpisz miasto...";
+							}
+						}, 0);
+					}
+				});
+			});
+
+			observer.observe(boxSelection, {
+				attributes: true //configure it to listen to attribute changes
 			});
 		});
 	}, 100);
@@ -346,63 +380,7 @@ document.addEventListener("DOMContentLoaded", () => {
 		}, 100);
 	};
 
-	// const hideInfoPopUp = (eventTarget, showPopUpTriggerTarget) => {
-	// 	if (
-	// 		!eventTarget ||
-	// 		!showPopUpTriggerTarget ||
-	// 		typeof showPopUpTriggerTarget !== "string"
-	// 	) {
-	// 		console.error("To few arguments used in hideInfoPopUp function call");
-	// 		return;
-	// 	}
-
-	// 	if (typeof showPopUpTriggerTarget !== "string") {
-	// 		console.error(
-	// 			"Second argument in hideInfoPopUp must be a string that contains a css classname"
-	// 		);
-	// 		return;
-	// 	}
-
-	// 	if (
-	// 		!eventTarget.classList.contains(showPopUpTriggerTarget) ||
-	// 		!eventTarget.closest(`.${showPopUpTriggerTarget}`) ||
-	// 		!eventTarget.classList.contains("info-pop-up") ||
-	// 		!eventTarget.closest(".info-pop-up")
-	// 	) {
-	// 		const infoPopUp = document.querySelector(".info-pop-up");
-	// 		infoPopUp ? (infoPopUp.style.opacity = 0) : "";
-	// 		infoPopUp
-	// 			? setTimeout(() => {
-	// 					infoPopUp.remove();
-	// 					isPopUpActive = false;
-	// 			  }, 300)
-	// 			: "";
-	// 	}
-	// };
-
 	const hideInfoPopUp = (eventTarget, showPopUpTriggerTarget) => {
-		// if (
-		// 	!eventTarget ||
-		// 	!showPopUpTriggerTarget ||
-		// 	typeof showPopUpTriggerTarget !== "string"
-		// ) {
-		// 	console.error("To few arguments used in hideInfoPopUp function call");
-		// 	return;
-		// }
-
-		// if (typeof showPopUpTriggerTarget !== "string") {
-		// 	console.error(
-		// 		"Second argument in hideInfoPopUp must be a string that contains a css classname"
-		// 	);
-		// 	return;
-		// }
-
-		// if (
-		// 	!eventTarget.classList.contains(showPopUpTriggerTarget) ||
-		// 	!eventTarget.closest(`.${showPopUpTriggerTarget}`) ||
-		// 	!eventTarget.classList.contains("info-pop-up") ||
-		// 	!eventTarget.closest(".info-pop-up")
-		// ) {
 		const infoPopUp = document.querySelector(".info-pop-up");
 		infoPopUp ? (infoPopUp.style.opacity = 0) : "";
 		infoPopUp
@@ -411,13 +389,12 @@ document.addEventListener("DOMContentLoaded", () => {
 					isPopUpActive = false;
 			  }, 300)
 			: "";
-		// }
 	};
 
 	/* Global mouseover event listener */
 
 	document.addEventListener("mouseover", e => {
-		console.log(e.target);
+		// console.log(e.target);
 
 		const handleInfoPopUp = e => {
 			let isOneOfTargets;

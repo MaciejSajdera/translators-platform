@@ -18,7 +18,9 @@ get_header();
 		}
 		?>
 
-		<a href="<?php echo home_url(); ?>" class="button button__go-back go-back">Powrót</a>
+		<?php
+			get_template_part( 'template-parts/back-to-home-page' );
+		?>
 
 		<main id="main" class="site-main single-translator">
 

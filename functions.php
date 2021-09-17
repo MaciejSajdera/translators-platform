@@ -143,31 +143,18 @@ function pstk_scripts() {
 	// wp_add_inline_style( 'pstk-style', $custom_css );
 
 	wp_enqueue_script( 'pstk-app', get_template_directory_uri() . '/dist/js/main.js', array(), '', true );
-	wp_enqueue_script( 'multiselect', get_template_directory_uri() . '/dist/js/multiselect.js', array(), '', true );
+	// wp_enqueue_script( 'multiselect', get_template_directory_uri() . '/dist/js/multiselect.js', array(), '', true );
 
 	if (is_page(18)) {
 
 		wp_enqueue_script('jquery');
-		
 		wp_enqueue_script( 'pstk-user-profile', get_template_directory_uri() . '/dist/js/user-profile.js', array(), '', true );
-
 		wp_register_script('ajax_forms', get_template_directory_uri() . '/assets/js/ajax-forms.js', array('jquery') ); 
 
 		wp_localize_script('ajax_forms', 'ajax_forms_params', 
 			array(
 				'ajaxurl' => admin_url('admin-ajax.php'),
-				'basic_user_data_form' => '#basic_user_data_form',
-				'about_user_data_form' => '#about_user_data_form',
-				'contact_user_data_form' => '#contact_user_data_form',
-				'upload_profile_picture_form' => '#upload_profile_picture_form',
-				'linkedin_user_data_form' => '#linkedin_user_data_form',
-				'work_user_data_form' => '#work_user_data_form',
-				'upload_image_to_gallery_form' => "#upload_image_to_gallery_form",
-				'upload_video_to_gallery_form' => "#upload_video_to_gallery_form",
-				'settings_user_login_email_form' => "#settings_user_login_email_form",
-				'settings_user_password_form' => "#settings_user_password_form",
-				'settings_user_data_visibility_form' => "#settings_user_data_visibility_form",
-				'upload_sound_to_gallery_form' => "#upload_sound_to_gallery_form",
+				'initial_percent_value_of_account_fill_completness' => get_percent_value_of_account_fill_completness(),
 			)
 		);
 	
@@ -178,6 +165,10 @@ function pstk_scripts() {
 		wp_enqueue_script( 'swipers', get_template_directory_uri() . '/dist/js/swipers.js', array(), '', true );
 	}
 
+	if (is_page(1139)) {
+		wp_enqueue_script( 'pstk-user-profile', get_template_directory_uri() . '/dist/js/tabs.js', array(), '', true );
+	}
+
 	if ( is_singular() && comments_open() && get_option( 'thread_comments' ) ) {
 		wp_enqueue_script( 'comment-reply' );
 	}
@@ -185,10 +176,22 @@ function pstk_scripts() {
 
 add_action( 'wp_enqueue_scripts', 'pstk_scripts' );
 
-function wpb_add_google_fonts() {
-	wp_enqueue_style( 'wpb-google-fonts', 'https://fonts.googleapis.com/css2?family=Montserrat:wght@200;400;700&display=swap', false );
+add_filter('script_loader_tag', 'add_type_attribute' , 10, 3);
+
+function add_type_attribute($tag, $handle, $src) {
+    // if not your script, do nothing and return original $tag
+    if ( 'ajax_forms' !== $handle ) {
+        return $tag;
+    }
+    // change the script tag by adding type="module" and return it.
+    $tag = '<script type="module" src="' . esc_url( $src ) . '"></script>';
+    return $tag;
 }
-add_action( 'wp_enqueue_scripts', 'wpb_add_google_fonts' );
+
+// function wpb_add_google_fonts() {
+// 	wp_enqueue_style( 'wpb-google-fonts', 'https://fonts.googleapis.com/css2?family=Montserrat:wght@200;400;700&display=swap', false );
+// }
+// add_action( 'wp_enqueue_scripts', 'wpb_add_google_fonts' );
 
 
 add_action( 'set_logged_in_cookie', 'my_update_cookie' );
@@ -343,57 +346,52 @@ function distance($lat1, $lon1, $lat2, $lon2, $unit) {
 	}
 }
 
-//change url of the lost password page
-// add_filter( 'lostpassword_url',  'my_lostpassword_url', 10, 0 );
-// function my_lostpassword_url() {
-//     return site_url('/password-reset/');
-// }
+// ADDITIONAL DASHBOARD FUNCTIONALITIES
 
-// // Information needed for creating the plugin's pages
-// $page_definitions = array(
-//     'member-login' => array(
-//         'title' => __( 'Sign In', 'personalize-login' ),
-//         'content' => '[custom-login-form]'
-//     ),
-//     'member-account' => array(
-//         'title' => __( 'Your Account', 'personalize-login' ),
-//         'content' => '[account-info]'
-//     ),
-//     'member-register' => array(
-//         'title' => __( 'Register', 'personalize-login' ),
-//         'content' => '[custom-register-form]'
-//     ),
-//     'member-password-lost' => array(
-//         'title' => __( 'Forgot Your Password?', 'personalize-login' ),
-//         'content' => '[custom-password-lost-form]'
-//     ),
-//     'member-password-reset' => array(
-//         'title' => __( 'Pick a New Password', 'personalize-login' ),
-//         'content' => '[custom-password-reset-form]'
-//     )
-// );
+// display ACF fiels on the post listing
 
-// add_action( 'login_form_lostpassword', array( $this, 'redirect_to_custom_lostpassword' ) );
+function add_admin_column($column_title, $post_type, $cb){
 
-/**
- * Redirects the user to the custom "Forgot your password?" page instead of
- * wp-login.php?action=lostpassword.
- */
-// public function redirect_to_custom_lostpassword() {
-//     if ( 'GET' == $_SERVER['REQUEST_METHOD'] ) {
-//         if ( is_user_logged_in() ) {
-//             $this->redirect_logged_in_user();
-//             exit;
-//         }
- 
-//         wp_redirect( home_url( 'member-password-lost' ) );
-//         exit;
-//     }
-// }
+    // Column Header
+    add_filter( 'manage_' . $post_type . '_posts_columns', function($columns) use ($column_title) {
+        $columns[ sanitize_title($column_title) ] = $column_title;
+        return $columns;
+    } );
 
-//helper functions
+    // Column Content
+    add_action( 'manage_' . $post_type . '_posts_custom_column' , function( $column, $post_id ) use ($column_title, $cb) {
 
-function list_child_pages() { 
+        if(sanitize_title($column_title) === $column){
+            $cb($post_id);
+        }
+
+    }, 10, 2 );
+}
+
+add_admin_column(__('Name'), 'translator', function($post_id){
+
+	$translator_first_name = get_post_meta( $post_id , 'translator_first_name' , true );
+	$translator_last_name = get_post_meta( $post_id , 'translator_last_name' , true );
+
+    echo $translator_first_name.' '.$translator_last_name; 
+});
+
+
+add_filter('acf/fields/post_object/result', 'my_acf_fields_post_object_result', 10, 4);
+function my_acf_fields_post_object_result( $text, $post, $field, $post_id ) {
+	
+	$translator_first_name = get_field('translator_first_name', $post->ID );
+	$translator_last_name = get_field('translator_last_name', $post->ID );
+
+	if ($translator_first_name && $translator_last_name) {
+		$text = $translator_first_name.' '.$translator_last_name;
+	}
+
+    return $text;
+}
+// HELPER FUNCTIONS	
+
+function list_of_child_pages() { 
  
 	global $post; 
 	 
@@ -405,7 +403,7 @@ function list_child_pages() {
 	 
 	if ( $childpages ) {
 	 
-		$string = '<ul class="wpb_page_list">' . $childpages . '</ul>';
+		$string = '<ul class="child-pages-list">' . $childpages . '</ul>';
 
 		return $string;
 
@@ -414,10 +412,7 @@ function list_child_pages() {
 		return;
 
 	}
-	 
 }
-	 
-add_shortcode('childpages', 'list_child_pages');
 
 
 /* https://support.advancedcustomfields.com/forums/topic/fix-for-displaying-fields-according-to-field-order-using-get_field_objects/ */
@@ -456,43 +451,6 @@ function array_sort($array, $on, $order=SORT_ASC){
 	return $new_array;
 }
 
-// Mark posts when they are published for the first time (Approved by moderator)
-
-// function add_field_if_post_approved($post_id) {
-//     $is_approved = get_post_meta($post_id, 'is_approved', true);
-//     if( !$is_approved ) {
-// 		add_post_meta( $post_id, 'is_approved', 'yes' );
-//     }
-// }
-
-// add_action('save_post', 'add_field_if_post_approved', 99);
-
-
-
-
-// function add_custom_field_automatically($post_id) {
-
-// 	global $wpdb;
-
-//     $is_approved = get_post_meta($post_id, 'is_approved', true);
-// 	if( $is_approved == '') {
-// 		add_post_meta($post_id, 'is_approved', 'yes');
-// 	}
-
-// }
-
-// add_action('publish_post', 'add_custom_field_automatically');
-
-
-// function wpse120996_add_custom_field_automatically($post_id) {
-//     global $wpdb;
-//     $votes_count = get_post_meta($post_id, 'votes_count', true);
-//     if( empty( $votes_count ) && ! wp_is_post_revision( $post_id ) ) {
-//         update_post_meta($post_id, 'votes_count', '0');
-//     }
-// }
-// add_action('publish_post', 'wpse120996_add_custom_field_automatically');
-
 
 function add_field_if_post_approved( $post_id, $post ) {
 	//do whatever
@@ -506,6 +464,10 @@ function add_field_if_post_approved( $post_id, $post ) {
 }
 
 add_action('save_post', 'add_field_if_post_approved', 10, 2);
+
+
+// TODO: Send email when post is added to the term translator-of-the-month
+
 
 ///////////////////////// MENUS ////////////////////////////
 
@@ -597,24 +559,24 @@ function vicode_registration_fields() {
 					<input name="vicode_user_email" id="vicode_user_email" class="vicode_user_email" type="email"/>
 				</p>
 				<p>
-					<label for="vicode_user_first"><?php _e('First Name'); ?></label>
+					<label for="vicode_user_first"><?php _e('Imię'); ?></label>
 					<input name="vicode_user_first" id="vicode_user_first" type="text" class="vicode_user_first" />
 				</p>
 				<p>
-					<label for="vicode_user_last"><?php _e('Last Name'); ?></label>
+					<label for="vicode_user_last"><?php _e('Nazwisko'); ?></label>
 					<input name="vicode_user_last" id="vicode_user_last" type="text" class="vicode_user_last"/>
 				</p>
 				<p>
-					<label for="password"><?php _e('Password'); ?></label>
+					<label for="password"><?php _e('Hasło'); ?></label>
 					<input name="vicode_user_pass" id="password" class="password" type="password"/>
 				</p>
 				<p>
-					<label for="password_again"><?php _e('Password Again'); ?></label>
+					<label for="password_again"><?php _e('Powtórz hasło'); ?></label>
 					<input name="vicode_user_pass_confirm" id="password_again" class="password_again" type="password"/>
 				</p>
 				<p>
 					<input type="hidden" name="vicode_csrf" value="<?php echo wp_create_nonce('vicode-csrf'); ?>"/>
-					<input type="submit" name="register_new_account" value="<?php _e('Register Your Account'); ?>"/>
+					<input type="submit" name="register_new_account" class="button button__filled--blue"  value="<?php _e('Załóż konto'); ?>"/>
 				</p>
 		</form>
 	<?php
@@ -782,10 +744,54 @@ function get_current_user_post_id() {
 }
 
 function get_count_of_all_valueable_fields() {
-	$count_of_all_valueable_fields = 0;
-	$all_acf_fields_of_post = get_field_objects(get_current_user_post_id());
 
-	if ( is_array($all_acf_fields_of_post) && count($all_acf_fields_of_post) > 0 ) {
+	if (!get_current_user_post_id()) {
+		return;
+	}
+
+	// print_r(json_encode(acf_get_fields($groups[0]['key'])));
+
+	$count_of_all_valueable_fields = 0;
+	// $all_acf_fields_of_post = get_field_objects(get_current_user_post_id());
+
+	// print_r(json_encode($all_acf_fields_of_post));
+
+	// if ( is_array($all_acf_fields_of_post) && count($all_acf_fields_of_post) > 0 ) {
+	// 	$all_acf_fields_of_post_sorted = array_sort($all_acf_fields_of_post, 'menu_order', SORT_ASC);
+
+	// 	foreach($all_acf_fields_of_post_sorted as $acf_field) {
+
+	// 		$field_object_name = $acf_field['name'];
+
+	// 		//Dont include privacy settings
+	// 		if (str_contains($field_object_name, 'public') || !$acf_field) {
+	// 			continue;
+	// 		} else {
+	// 			$count_of_all_valueable_fields++;
+	// 		}
+	// 	}
+	// }
+
+	$non_acf_valueable_fields = ['profile-picture', 'languages-taxonomy', 'specializations-taxonomy', 'localizations-taxonomy'];
+
+	if ($non_acf_valueable_fields) {
+		foreach($non_acf_valueable_fields as $field) :
+			$count_of_all_valueable_fields++;
+		endforeach;
+	}
+
+
+	
+	$groups = acf_get_field_groups(array('post_id' => get_current_user_post_id()));
+
+
+	if ($groups) {
+		$all_acf_fields_of_post = acf_get_fields($groups[0]['key']);
+	}
+
+	// var_dump($all_acf_fields_of_post_2);
+
+	if ($all_acf_fields_of_post && is_array($all_acf_fields_of_post) && count($all_acf_fields_of_post) > 0 ) {
 		$all_acf_fields_of_post_sorted = array_sort($all_acf_fields_of_post, 'menu_order', SORT_ASC);
 
 		foreach($all_acf_fields_of_post_sorted as $acf_field) {
@@ -801,18 +807,15 @@ function get_count_of_all_valueable_fields() {
 		}
 	}
 
-	$non_acf_valueable_fields = ['profile-picture'];
-
-	if ($non_acf_valueable_fields) {
-		foreach($non_acf_valueable_fields as $field) :
-			$count_of_all_valueable_fields++;
-		endforeach;
-	}
-
 	return $count_of_all_valueable_fields;
 }
 
 function get_count_of_all_filled_fields() {
+
+	if (!get_current_user_post_id()) {
+		return;
+	}
+
 	$count_of_all_filled_fields = 0;
 	$all_acf_fields_of_post = get_field_objects(get_current_user_post_id());
 
@@ -866,11 +869,33 @@ function get_count_of_all_filled_fields() {
 	if ($is_profile_picture_added) {
 		$count_of_all_filled_fields++;
 	}
+	
+	$is_language_added = has_term( '', 'translator_language', get_current_user_post_id() );
+
+	if ($is_language_added) {
+		$count_of_all_filled_fields++;
+	}
+
+	$is_specialization_added = has_term( '', 'translator_specialization', get_current_user_post_id() );
+
+	if ($is_specialization_added) {
+		$count_of_all_filled_fields++;
+	}
+
+	$is_localization_added = has_term( '', 'translator_localization', get_current_user_post_id() );
+
+	if ($is_localization_added) {
+		$count_of_all_filled_fields++;
+	}
 
 	return $count_of_all_filled_fields;
 }
 
 function get_percent_value_of_account_fill_completness() {
+
+	if (!get_current_user_post_id()) {
+		return;
+	}
 
 	$percent_value_of_account_fill_completness = 0;
 	
@@ -885,38 +910,34 @@ function get_percent_value_of_account_fill_completness() {
 
 
 function get_labels_of_empty_translator_fields() {
-	$all_user_acf_field_objects = get_field_objects(get_current_user_post_id());
+
+	if (!get_current_user_post_id()) {
+		return;
+	}
+
+	$groups = acf_get_field_groups(array('post_id' => get_current_user_post_id()));
+	// $all_user_acf_field_objects = acf_get_fields($groups[0]['key']);
+
+	// $all_user_acf_field_objects = get_field_objects(get_current_user_post_id());
 	$empty_field_labels = [];
-	$all_user_acf_field_objects_sorted = array_sort($all_user_acf_field_objects, 'menu_order', SORT_ASC);
 
-	if ($all_user_acf_field_objects) {
+	foreach( $groups as $group_key => $group ) {
+		$fields = acf_get_fields($group);
 
-		foreach($all_user_acf_field_objects_sorted as $field_object_name => $field_object_content) :
+		if( $fields ) {
+			foreach( $fields as $field_name => $field ){
 
-			//Dont include privacy settings
-			if (str_contains($field_object_name, 'public') || !$field_object_content) {
-				continue;
+				//Dont include privacy settings
+				if (str_contains($field["name"], 'public')) {
+					continue;
+				}
+
+				if (!get_field($field['name'], get_current_user_post_id())) {
+					array_push($empty_field_labels, $field['label']);
+				}
+
 			}
-
-			$is_string = gettype($field_object_content["value"]) == 'string';
-			$is_array = gettype($field_object_content["value"]) == 'array';
-			$is_false = gettype($field_object_content["value"]) == 'boolean';
-
-			// var_dump($field_object_name).'<br>';
-			
-			//for empty array type fields
-			// if (str_contains($field_object_name, 'gallery') && $is_false) {
-			// 	array_push($empty_field_labels, $field_object_content["label"]);
-			// }
-
-			if ( $is_string ) {
-
-				if (strlen($field_object_content["value"]) == 0) {
-					array_push($empty_field_labels, $field_object_content["label"]);
-				} 
-			}
-
-		endforeach;
+		}
 	}
 
 	// For non acf fields
@@ -924,7 +945,25 @@ function get_labels_of_empty_translator_fields() {
 	$is_profile_picture_added = has_post_thumbnail(get_current_user_post_id());
 
 	if (!$is_profile_picture_added) {
-		array_push($empty_field_labels, "Profile Picture");
+		array_push($empty_field_labels, "Zdjęcie profilowe");
+	}
+
+	$is_language_added = has_term( '', 'translator_language', get_current_user_post_id() );
+
+	if (!$is_language_added) {
+		array_push($empty_field_labels, "Języki");
+	}
+
+	$is_specialization_added = has_term( '', 'translator_specialization', get_current_user_post_id() );
+
+	if (!$is_specialization_added) {
+		array_push($empty_field_labels, "Specjalizacje");
+	}
+
+	$is_localization_added = has_term( '', 'translator_localization', get_current_user_post_id() );
+
+	if (!$is_localization_added) {
+		array_push($empty_field_labels, "Lokalizacje");
 	}
 
 	return $empty_field_labels;
@@ -1836,6 +1875,8 @@ function profile_picture_uploader($user_post_id) {
 
 	<form id="upload_profile_picture_form" method="post" enctype="multipart/form-data">
 
+				<a class="remove-item remove" data-id="clear-profile-picture" href="#"></a>
+
 				<label class="file-input__label">
 
 					<div class="input-preview__wrapper">
@@ -1847,7 +1888,7 @@ function profile_picture_uploader($user_post_id) {
 				</label>
 
 				<input type="hidden" name="post_id" value="<?php echo $user_post_id ?>"><br>
-				<input type="submit" name="submit_profile_picture" value="Zaktualizuj zdjęcie" />
+				<input type="submit" class="submit_profile_picture" name="submit_profile_picture" value="Zaktualizuj zdjęcie" />
 				<?php wp_nonce_field( "handle_profile_picture_upload", "profile_picture_nonce" ); ?>
 	</form>
 
@@ -1894,11 +1935,6 @@ function handle_profile_picture_upload() {
 	// Get post_id
 	$post_id = $_POST['post_id'];
 
-	$profile_picture_data_for_ajax  = (object) [
-		'percent_value_of_account_fill_completness' => get_percent_value_of_account_fill_completness(),
-		'labels_of_empty_translator_fields' => get_labels_of_empty_translator_fields(),
-		'console_log' => []
-	];
 
 	$finfo = new finfo(FILEINFO_MIME_TYPE);
     if (false === $ext = array_search(
@@ -1938,6 +1974,13 @@ function handle_profile_picture_upload() {
 		wp_die( $attachment_id->get_error_message() );
 	}
 
+	
+	$profile_picture_data_for_ajax  = (object) [
+		'percent_value_of_account_fill_completness' => get_percent_value_of_account_fill_completness(),
+		'labels_of_empty_translator_fields' => get_labels_of_empty_translator_fields(),
+		'console_log' => []
+	];
+
 	print_r(json_encode($profile_picture_data_for_ajax));
 
 	die();
@@ -1955,6 +1998,8 @@ add_action( 'wp_ajax_handle_profile_picture_upload','handle_profile_picture_uplo
 function gallery_sound_uploader($user_post_id) {
 
 	ob_start(); 
+
+	echo '<p class="info-box__subbox-header">Wpisz tekst i dodaj nagranie</p>';
 
 	// show any error messages after form submission
 	// gallery_sound_uploader_form_messages();
@@ -1981,7 +2026,7 @@ function gallery_sound_uploader($user_post_id) {
 									</p>
 
 									<p>
-										<textarea form="upload_sound_to_gallery_form" name="sound-textarea__input[]" id="sound-textarea__input" class="input-textarea input-preview__src" type="text" maxlength="100"></textarea>
+										<textarea form="upload_sound_to_gallery_form" name="sound-textarea__input[]" id="sound-textarea__input" class="input-textarea input-preview__src" type="text" maxlength="100" placeholder="Tekst"></textarea>
 										<label for="user_work">0/100</label>
 									</p>
 
@@ -2061,7 +2106,7 @@ function gallery_sound_uploader($user_post_id) {
 
 				<input type="hidden" name="sounds_to_delete" id="sounds_to_delete" value=""/>
 
-				<input type="submit" name="submit_sound_to_gallery" value="Zaktualizuj galerię" />
+				<input type="submit" class="button button__outline--blue" name="submit_sound_to_gallery" value="Zaktualizuj galerię" />
 
 				<?php wp_nonce_field( "handle_sound_to_gallery_upload", "sound_to_gallery_nonce" ); ?>
 
@@ -2094,8 +2139,6 @@ function handle_sound_to_gallery_upload() {
 		'added_files_ids' => [],
 		'added_rows' => [],
 		'deleted_rows' => [],
-		'percent_value_of_account_fill_completness' => get_percent_value_of_account_fill_completness(),
-		'labels_of_empty_translator_fields' => get_labels_of_empty_translator_fields(),
 		'console_log' => [],
 	];
 
@@ -2303,14 +2346,13 @@ function handle_sound_to_gallery_upload() {
 				$count = count(get_field('translator_sound_gallery', $post_id));
 
 				array_push($sounds_object_for_ajax->added_rows, $count);
-				
 			}
 
 		endforeach;
-
 	}
 
-
+	$sounds_object_for_ajax->percent_value_of_account_fill_completness = get_percent_value_of_account_fill_completness();
+	$sounds_object_for_ajax->labels_of_empty_translator_fields = get_labels_of_empty_translator_fields();
 
 	print_r(json_encode($sounds_object_for_ajax ));
 
@@ -2379,7 +2421,7 @@ function gallery_image_uploader($user_post_id) {
 
 			<input type="hidden" name="post_id" value="<?php echo $user_post_id ?>"><br>
 			<input type="hidden" name="pictures_to_delete" id="pictures_to_delete" value=""/>
-			<input type="submit" name="submit_image_to_gallery" value="Zaktualizuj galerię" />
+			<input type="submit" class="button button__outline--blue" name="submit_image_to_gallery" value="Zaktualizuj galerię" />
 			<?php wp_nonce_field( "handle_image_to_gallery_upload", "image_to_gallery_nonce" ); ?>
 
 			<div class="progress">
@@ -2432,8 +2474,6 @@ function handle_image_to_gallery_upload() {
 	$image_gallery_object_for_ajax  = (object) [
 		'added_files_ids' => [],
 		'deleted_files' => [],
-		'percent_value_of_account_fill_completness' => get_percent_value_of_account_fill_completness(),
-		'labels_of_empty_translator_fields' => get_labels_of_empty_translator_fields(),
 		'console_log' => []
 	];
 
@@ -2575,6 +2615,9 @@ function handle_image_to_gallery_upload() {
 
 	update_field('translator_gallery', $images_to_upload, $post_id);
 
+	$image_gallery_object_for_ajax->percent_value_of_account_fill_completness = get_percent_value_of_account_fill_completness();
+	$image_gallery_object_for_ajax->labels_of_empty_translator_fields = get_labels_of_empty_translator_fields();
+
 	// print_r(json_encode($attachment_ids));
 	// array_push($image_gallery_object_for_ajax->console_log, $single_file_obj);
 	print_r(json_encode( $image_gallery_object_for_ajax ));
@@ -2613,7 +2656,7 @@ function gallery_video_uploader($user_post_id) {
 
 				<input type="hidden" name="videos_to_delete" id="videos_to_delete" value=""/>
 
-				<input type="submit" name="submit_video_to_gallery" value="Zaktualizuj galerię" />
+				<input type="submit" class="button button__outline--blue" name="submit_video_to_gallery" value="Zaktualizuj galerię" />
 				
 				<?php wp_nonce_field( "handle_video_to_gallery_upload", "video_to_gallery_nonce" ); ?>
 
@@ -2695,8 +2738,6 @@ function handle_video_to_gallery_upload() {
 		'added_files_ids' => [],
 		'added_rows' => [],
 		'deleted_rows' => [],
-		'percent_value_of_account_fill_completness' => get_percent_value_of_account_fill_completness(),
-		'labels_of_empty_translator_fields' => get_labels_of_empty_translator_fields(),
 		'console_log' => []
 	];
 
@@ -2792,6 +2833,9 @@ function handle_video_to_gallery_upload() {
 
 	}
 
+	$videos_object_for_ajax->percent_value_of_account_fill_completness = get_percent_value_of_account_fill_completness();
+	$videos_object_for_ajax->labels_of_empty_translator_fields = get_labels_of_empty_translator_fields();
+
 	print_r(json_encode($videos_object_for_ajax ));
 
 	die();
@@ -2805,10 +2849,6 @@ function handle_video_to_gallery_upload() {
 
 add_action( 'wp_ajax_nopriv_handle_video_to_gallery_upload',  'handle_video_to_gallery_upload' );
 add_action( 'wp_ajax_handle_video_to_gallery_upload','handle_video_to_gallery_upload' );
-
-
-
-
 
 
 

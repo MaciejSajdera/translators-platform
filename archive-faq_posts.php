@@ -17,27 +17,15 @@ get_header();
 		<main id="main" class="site-main">
 
 		<?php
-		while ( have_posts() ) :
-			the_post();
 
-			get_template_part( 'template-parts/content', 'page' );
+		//This template is for both page FAQ and FAQ post archive so we need to pull the_content() differently
 
-			// If comments are open or we have at least one comment, load up the comment template.
-			if ( comments_open() || get_comments_number() ) :
-				comments_template();
-			endif;
-
-		endwhile; // End of the loop.
-
-
-
-		// wp_list_categories(array(
-		// 	'title_li' => '',
-		// 	'taxonomy' => 'faq_categories',
-		// 	'orderby'    => 'name',
-		// 	'show_count' => true,
-			
-		// ));
+		$my_id = 1093;
+		$post_id_1093 = get_post($my_id);
+		$content = $post_id_1093->post_content;
+		$content = apply_filters('the_content', $content);
+		$content = str_replace(']]>', ']]>', $content);
+		echo $content;
 
 		$cat_terms = get_terms(
 			array('faq_categories'),
@@ -71,12 +59,12 @@ get_header();
 											),
 					'ignore_sticky_posts'   => true //caller_get_posts is deprecated since 3.1
 				);
-			$_posts = new WP_Query( $args );
+			$posts = new WP_Query( $args );
 
 			echo '<ul class="list--clear">';
 
-			if( $_posts->have_posts() ) :
-				while( $_posts->have_posts() ) : $_posts->the_post();
+			if( $posts->have_posts() ) :
+				while( $posts->have_posts() ) : $posts->the_post();
 
 					echo '<li class="list-item--classic">';
 
@@ -92,14 +80,11 @@ get_header();
 
 		endforeach;
 
+		the_posts_navigation();
+
 		endif;
 
-
-
-
 		?>
-
-
 
 		</main><!-- #main -->
 	</div><!-- #primary -->

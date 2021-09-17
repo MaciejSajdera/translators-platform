@@ -13,6 +13,7 @@ $color__link: inherit; //royalblue
 $color__link-visited: inherit; //purple
 $color__link-hover: inherit; //midnightblue
 $color__text-main: #404040;
+$color__text-white: #fff;
 
 $color__border-button: #ccc #ccc #bbb;
 $color__border-button-hover: #ccc #bbb #aaa;
@@ -24,13 +25,18 @@ $color__border-element: #e0e0e0;
 $color_special-elements: #6ec9cf;
 $color__inactive-element: #cacaca;
 
-$color__error-red: red;
-$color__success-green: green;
+$color__error-red: #ff0000;
+$color__success-green: #24b82be6;
+$color__verified-blue: #5698e7;
 $color__text--light-grey: #999;
 $color__pending: #ffb618;
 
+$color__main-theme--blue: #16538c;
+$color__main-theme--turquise: #18a0aa;
+$color__main-theme--turquise-transparent: #18a0aa31;
+
 /* TYPOGRAPHY */
-$font__main: sans-serif;
+$font__main: "Gotham";
 $font__code: monaco, consolas, "Andale Mono", "DejaVu Sans Mono", monospace;
 $font__pre: "Courier 10 Pitch", courier, monospace;
 $font__line-height-body: 1.5;

@@ -18,16 +18,21 @@
 
 	<div class="entry-content">
 		<?php
+
 		the_content();
 
-		wp_link_pages(
-			array(
-				'before' => '<div class="page-links">' . esc_html__( 'Pages:', 'pstk' ),
-				'after'  => '</div>',
-			)
-		);
+		echo '<div class="child-pages__menu">';
+
+			echo list_of_child_pages();
+
+		echo '</div>';
 		?>
 	</div><!-- .entry-content -->
+
+
+	<?php
+		get_template_part( 'template-parts/searchfilter-basic' );
+	?>
 
 	<?php if ( get_edit_post_link() ) : ?>
 		<footer class="entry-footer">

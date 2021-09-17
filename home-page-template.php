@@ -25,10 +25,14 @@ $section_4_title = $section_4['title'];
 $section_4_paragraph = $section_4['paragraph'];
 $section_4_link = $section_4['link'];
 
+$section_6 = get_field("section_6");
+$translator_of_the_month = $section_6['translator_of_the_month'];
+$management_member_of_the_month = $section_6["management_member_of_the_month"];
+
 ?>
 
 	<div id="primary" class="content-area">
-		<main id="main" class="site-main">
+		<main id="main" class="site-main home">
 
 
 		<section class="home__section-1 home__welcome-view">
@@ -67,7 +71,7 @@ $section_4_link = $section_4['link'];
 
 						$textarea = $row['textarea'];
 
-						echo '<li>'.$textarea.'</li>';
+						echo '<li><p>'.$textarea.'</p></li>';
 
 					endforeach;
 
@@ -127,7 +131,97 @@ $section_4_link = $section_4['link'];
 
 		</section>
 
-		<?php get_template_part( 'template-parts/blog-new-posts' ); ?>
+		<section class="home__section-5">
+
+			<?php get_template_part( 'template-parts/blog-new-posts' ); ?>
+
+		</section>
+
+		<section class="home__section-6">
+
+				<div class="get-to-know-us">
+					<div class="wrapper-flex-drow-mcol get-to-know-us__container">
+
+						<div class="get-to-know-us__element-wrapper wrapper-flex-col-center">
+
+							Tłumacz miesiąca
+
+							<?php
+
+							// Relationship field approach
+
+							echo '<a href="'.get_permalink($translator_of_the_month->ID).'">';
+							
+								echo '<img src="'.get_the_post_thumbnail_url($translator_of_the_month->ID).'">';
+
+								$translator_of_the_month_first_name =  get_field('translator_first_name', $translator_of_the_month->ID);
+								$translator_of_the_month_last_name =  get_field('translator_last_name', $translator_of_the_month->ID);
+
+
+								echo '<p>'.$translator_of_the_month_first_name.' '.$translator_of_the_month_last_name.'</p>';
+							
+							echo '</a>';
+
+							// Custom Taxonomy approach
+
+							// $args = array(
+							// 	'post_type' => 'translator', 
+							// 	'posts_per_page'        => 1, 
+							// 	'post_status'           => 'publish',
+							// 	'tax_query' => array(
+							// 		array(
+							// 			'taxonomy' => 'merits', 
+							// 			'field'    => 'slug',
+							// 			'terms'    => 'translator-of-the-month',
+							// 		),
+							// 	),
+							// );
+							// $posts = new WP_Query( $args );
+
+							// if( $posts->have_posts() ) :
+							// 	while( $posts->have_posts() ) : $posts->the_post();
+
+				
+							// 		echo '<a href="'.get_permalink().'">'. get_the_title();
+									
+							// 		echo '<img src="'.get_the_post_thumbnail_url().'">';
+									
+							// 		echo '</a>';
+				
+							// 	endwhile;
+							// endif;
+							// wp_reset_postdata(); //important
+							?>
+
+						</div>
+
+						<div class="get-to-know-us__element-wrapper wrapper-flex-col-center">
+
+							<p>Członek władz</p>
+
+							<?php
+
+							$management_member_of_the_month_image = $management_member_of_the_month['image'];
+							$management_member_of_the_month_title = $management_member_of_the_month['title'];
+							$management_member_of_the_month_paragraph = $management_member_of_the_month['paragraph'];
+
+							echo '<a href="'.get_permalink(1139).'">';
+							
+								echo '<img src="'.$management_member_of_the_month_image['url'].'" alt="'.$management_member_of_the_month_image['alt'].'">';
+
+								echo '<p>'.$management_member_of_the_month_title.'</p>';
+								echo '<p>'.$management_member_of_the_month_paragraph.'</p>';
+						
+							echo '</a>';
+
+							?>
+						</div>
+
+
+					</div>
+				</div>
+
+		</section>
 
 		</main><!-- #main -->
 	</div><!-- #primary -->

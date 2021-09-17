@@ -24,15 +24,65 @@
 
 	&__approved {
 		svg {
-			fill: $color__success-green;
+			fill: $color__verified-blue;
 			pointer-events: none;
 		}
 	}
 
 	&__approval-status-holder {
 		position: absolute;
-		bottom: 0px;
-		right: 0;
+		// bottom: 0px;
+		// right: 0;
+		bottom: -6.5%;
+		right: -6.5%;
+	}
+
+	&__welcome-message {
+		margin-bottom: 2rem;
+
+		#progressRing {
+			position: relative;
+			width: 125px;
+			min-width: 125px;
+			height: 125px;
+			min-height: 125px;
+			overflow: visible;
+			padding: 0.65rem;
+			border: 2px solid $color__border-element;
+			border-radius: 100%;
+
+			@media screen and (min-width: 992px) {
+				margin-left: 3rem;
+			}
+
+			// &:after {
+			// 	position: absolute;
+			// 	content: "";
+			// 	width: 150px;
+			// 	height: 150px;
+			// 	top: 15px;
+			// 	left: -85px;
+			// 	background: white;
+			// 	filter: blur(30px);
+			// }
+		}
+
+		svg {
+			overflow: visible;
+		}
+	}
+
+	&__fill-completeness-wrapper.show {
+		display: flex;
+		align-items: center;
+
+		h2 {
+			z-index: 1;
+		}
+	}
+
+	&__fill-completeness-wrapper.hide {
+		display: none;
 	}
 
 	.logout-link {
@@ -74,12 +124,6 @@
 		}
 	}
 
-	// &__header {
-	// 	p {
-	// 		font-size: 2.5rem;
-	// 	}
-	// }
-
 	&__navigation {
 		ul {
 			margin: 0;
@@ -98,6 +142,10 @@
 		}
 	}
 
+	.profile-section {
+		scroll-margin-top: 3rem;
+	}
+
 	.profile-section--active {
 	}
 
@@ -106,9 +154,6 @@
 		z-index: -10;
 		opacity: 0;
 		display: none;
-	}
-
-	&__welcome-message {
 	}
 
 	&__box-container {
@@ -149,6 +194,7 @@
 
 	input[type="file"] {
 		color: transparent;
+		max-width: 320px;
 	}
 
 	&__settings {
@@ -340,6 +386,27 @@ $login-and-registration-height: 80vh;
 			&__wrapper {
 				position: relative;
 			}
+
+			&__decoration {
+				position: absolute;
+				width: 25%;
+				height: 80%;
+				border: 2px solid $color__main-theme--turquise;
+
+				&--left {
+					left: -6.5%;
+					bottom: -6.5%;
+					border-top: 0;
+					border-right: 0;
+				}
+
+				&--right {
+					right: -6.5%;
+					top: -6.5%;
+					border-bottom: 0;
+					border-left: 0;
+				}
+			}
 		}
 
 		form#upload_profile_picture_form {
@@ -410,9 +477,19 @@ $login-and-registration-height: 80vh;
 					}
 				}
 
-				.has-image {
+				.preview-mode {
 					&:before {
 						background-color: rgba(50, 50, 50, 0.25);
+					}
+				}
+
+				.has-image {
+					.input-preview {
+						visibility: unset;
+					}
+
+					&:before {
+						// background-color: rgba(50, 50, 50, 0.25);
 					}
 				}
 
@@ -423,6 +500,7 @@ $login-and-registration-height: 80vh;
 					height: $profile_picture_height;
 					width: $profile_picture_width;
 					object-fit: contain;
+					visibility: hidden;
 				}
 
 				.input-preview__src {
@@ -459,7 +537,7 @@ $login-and-registration-height: 80vh;
 	}
 }
 
-#contact-info-container {
+.contact-info-container {
 	.wrapper-flex-drow-mcol {
 		margin: 2rem 0;
 
@@ -548,6 +626,7 @@ $login-and-registration-height: 80vh;
 
 			&--file-info {
 				pointer-events: none;
+				padding: 0 2rem;
 			}
 		}
 	}
@@ -643,4 +722,16 @@ $login-and-registration-height: 80vh;
 			padding: 1rem 0;
 		}
 	}
+}
+
+#emptyProfileFieldsLabels {
+	display: none;
+	margin: 2rem 0;
+	p {
+		margin-bottom: 0.5rem;
+	}
+}
+
+.show-empty-fields {
+	display: block !important;
 }

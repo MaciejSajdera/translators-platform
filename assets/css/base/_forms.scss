@@ -3,20 +3,20 @@ button,
 input[type="button"],
 input[type="reset"],
 input[type="submit"] {
-	border: 1px solid;
-	border-color: $color__border-button;
-	border-radius: 3px;
-	background: $color__background-button;
-	color: rgba(0, 0, 0, 0.8);
-	@include font-size(0.75);
-	line-height: 1;
-	padding: 0.6em 1em 0.4em;
+	// border: 1px solid;
+	// border-color: $color__border-button;
+	// border-radius: 3px;
+	// background: $color__background-button;
+	// color: rgba(0, 0, 0, 0.8);
+	// @include font-size(0.75);
+	// line-height: 1;
+	// padding: 0.6em 1em 0.4em;
 
-	&:active,
-	&:focus,
-	&:hover {
-		border-color: $color__border-button-focus;
-	}
+	// &:active,
+	// &:focus,
+	// &:hover {
+	// 	border-color: $color__border-button-focus;
+	// }
 }
 
 /* FIELDS */
@@ -92,6 +92,10 @@ input[type="checkbox"] {
 		width: $checkbox_width;
 		height: $checkbox_height;
 
+		line-height: $checkbox_height;
+		background: transparent;
+		color: $color__main-theme--blue;
+
 		&--add {
 			left: calc(#{-$checkbox_width} - #{$checkbox_margin-right});
 			margin-right: $checkbox_margin-right;
@@ -161,6 +165,11 @@ label {
 		min-width: 35px;
 		width: 35px;
 	}
+}
+
+#settings_user_password_form {
+	display: flex;
+	flex-flow: column;
 }
 
 /* Profile Picture Form */

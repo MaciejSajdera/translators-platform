@@ -1,0 +1,1 @@
+<a href="<?php echo home_url(); ?>" class="button button__go-back go-back">Powrót do strony głównej</a>

@@ -48,9 +48,45 @@ document.addEventListener("DOMContentLoaded", () => {
 
 					targetSection.classList.remove("profile-section--not-active");
 					targetSection.classList.add("profile-section--active");
+
+					localStorage.setItem("activeProfileSectionID", sectionId);
 				}
 			});
 		});
+	}
+
+	//keep the right tab active after page reload
+
+	if (localStorage && accountNavigation) {
+		const activeProfileSectionID = document.querySelector(
+			".profile-section--active"
+		).id;
+
+		const lastChosenProfileSectionID = localStorage.getItem(
+			"activeProfileSectionID"
+		);
+
+		// console.log(activeProfileSectionID);
+
+		// console.log(lastChosenProfileSectionID);
+
+		// console.log(activeProfileSectionID === lastChosenProfileSectionID);
+
+		if (activeProfileSectionID !== lastChosenProfileSectionID) {
+			const activeProfileSection = document.querySelector(
+				`#${activeProfileSectionID}`
+			);
+
+			const lastChosenProfileSection = document.querySelector(
+				`#${lastChosenProfileSectionID}`
+			);
+
+			activeProfileSection.classList.remove("profile-section--active");
+			activeProfileSection.classList.add("profile-section--not-active");
+
+			lastChosenProfileSection.classList.remove("profile-section--not-active");
+			lastChosenProfileSection.classList.add("profile-section--active");
+		}
 	}
 
 	const allButtonsEditAccountContent = document.querySelectorAll(
@@ -214,11 +250,14 @@ document.addEventListener("DOMContentLoaded", () => {
 				// get loaded data and render thumbnail.
 				filePreview.src = e.target.result;
 				filePreviewWrapper.classList.add("has-image");
+				filePreviewWrapper.classList.add("preview-mode");
 			};
 
 			// read the image file as a data URL.
 			reader.readAsDataURL(this.files[0]);
 		};
+
+		// TODO: Delete profile picture option
 	}
 
 	//Character limit counter for all textareas with "maxlength" attribute
@@ -373,5 +412,17 @@ document.addEventListener("DOMContentLoaded", () => {
 					thisVideoWrapper.remove();
 				});
 			}
+		});
+
+	// Fields to be filled
+
+	const fillTheseFieldsButton = document.querySelector("#fillTheseFields");
+	const emptyProfileFieldsLabels = document.querySelector(
+		"#emptyProfileFieldsLabels"
+	);
+
+	fillTheseFieldsButton &&
+		fillTheseFieldsButton.addEventListener("click", e => {
+			emptyProfileFieldsLabels.classList.toggle("show-empty-fields");
 		});
 });
