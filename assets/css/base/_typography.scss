@@ -21,6 +21,27 @@ h6 {
 	clear: both;
 }
 
+h1 {
+	margin: 0.67em 0;
+	@include fluid-type($min_width, $max_width, 28px, 46px);
+	text-transform: uppercase;
+	font-weight: 900;
+	color: $color__main-theme--blue;
+	overflow-wrap: anywhere;
+	letter-spacing: 3px;
+	line-height: 1.25;
+}
+
+h2 {
+	color: $color__main-theme--turquise;
+	overflow-wrap: anywhere;
+}
+
+h4 {
+	@include fluid-type($min_width, $max_width, 18px, 22px);
+	font-weight: 500;
+}
+
 /* COPY */
 
 p {
@@ -145,9 +166,16 @@ big {
 	font-family: "Gotham";
 	src: url(../dist/fonts/Gotham-UltraItalic.otf);
 	font-weight: 900;
-	font-style: normal;
+	font-style: italic;
 }
 
 .fw-100 {
 	font-weight: 100;
+}
+
+.text {
+	&--outline-turquise {
+		color: transparent;
+		-webkit-text-stroke: 1px $color__main-theme--turquise;
+	}
 }

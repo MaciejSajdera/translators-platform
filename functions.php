@@ -991,17 +991,17 @@ function basic_user_data_form() {
 			<fieldset>
 
 				<p>
-					<label for="user_first_name"><?php _e('First Name'); ?></label>
+					<label class="info-box__subbox-header" for="user_first_name"><?php _e('Imię'); ?></label>
 					<input name="user_first_name" id="user_first_name" class="user_first_name" type="text" value="<?php echo $current_user->first_name ?>"/>
 				</p>
 
 				<p>
-					<label for="user_last_name"><?php _e('Last Name'); ?></label>
+					<label class="info-box__subbox-header" for="user_last_name"><?php _e('Nazwisko'); ?></label>
 					<input name="user_last_name" id="user_last_name" class="user_last_name" type="text" value="<?php echo $current_user->last_name ?>"/>
 				</p>
 
 				<p>
-					<label for="user_about_short"><?php _e('About Short'); ?></label>
+					<label class="info-box__subbox-header" for="user_about_short"><?php _e('Jedno zdanie o mnie'); ?></label>
 					<textarea form="basic_user_data_form" name="user_about_short" id="user_about_short" class="user_about_short" type="text"><?php echo get_field("translator_about_short", $user_post_id) ?></textarea>
 				</p>
 
@@ -1011,7 +1011,7 @@ function basic_user_data_form() {
 					$translator_languages_taxonomy = get_taxonomy( 'translator_language' );
 					?>
 
-					<label for="user_languages"><?php echo $translator_languages_taxonomy->label ?></label>
+					<label class="info-box__subbox-header" for="user_languages"><?php echo $translator_languages_taxonomy->label ?></label>
 
 					<?php
 					
@@ -1058,7 +1058,7 @@ function basic_user_data_form() {
 						$translator_specializations_taxonomy = get_taxonomy( 'translator_specialization' );
 					?>
 
-					<label for="user_specializations"><?php echo $translator_specializations_taxonomy->label ?></label>
+					<label class="info-box__subbox-header" for="user_specializations"><?php echo $translator_specializations_taxonomy->label ?></label>
 
 					<?php
 					
@@ -1265,6 +1265,8 @@ function about_user_data_form() {
 		<?php 
 		// show any error messages after form submission
 		about_user_data_form_messages(); ?>
+
+		<p>Napisz o sobie kilka zdań, które pozwolą potencjalnym klientom poznać Cię z najlepszej strony, zrozumieć, w czym masz doświadczenie i co Cię wyróżnia.</p>
 		
 		<form name="about_user_data_form" id="about_user_data_form" class="vicode_form" action="" method="POST">
 
@@ -1364,7 +1366,7 @@ function contact_user_data_form() {
 			<fieldset>
 
 				<p>
-					<label for="user_contact_phone"><?php _e('Numer telefonu'); ?></label>
+					<label class="info-box__subbox-header" for="user_contact_phone"><?php _e('Numer telefonu'); ?></label>
 					<input name="user_contact_phone" id="user_contact_phone" class="user_contact_phone" type="text" value="<?php if(strlen(get_field("translator_contact_phone") > 0)) { echo get_field("translator_contact_phone"); } else { echo "+48 123 456 789"; }  ?>"/>
 				</p>
 
@@ -1381,7 +1383,7 @@ function contact_user_data_form() {
 
 					<div class="wrapper-flex-drow-mcol">
 
-						<p class="wrapper-flex-drow-mcol__first-element">Miasto zamieszkania</p>
+						<p class="wrapper-flex-drow-mcol__first-element">Miejsce zamieszkania</p>
 
 						<input name="user_city" id="user_city" class="user_city_input" placeholder="Nazwa miasta" type="text" value="<?php echo get_field("translator_city") ?>"/>
 
@@ -1466,19 +1468,19 @@ function contact_user_data_form() {
 
 										<div class="repeater__holder">
 
-										<button class="repeater__button repeater__button--add">+</button>
+											<div class="repeater__field-wrapper">
 
-										<div class="repeater__field-wrapper">
+												<div class="repeater__field" data-repeater-id="0">
 
-											<div class="repeater__field" data-repeater-id="0">
+													<input name="user_localizations[]" id="user_localizations" class="user_localizations user_localizations__repeater" placeholder="Nazwa lokalizacji" type="text" value="" />
 
-												<input name="user_localizations[]" id="user_localizations" class="user_localizations user_localizations__repeater" placeholder="Dodaj inną lokalizację" type="text" value="" />
+													<!-- <button class="repeater__button repeater__button--delete">-</button> -->
 
-												<!-- <button class="repeater__button repeater__button--delete">-</button> -->
+												</div>
 
 											</div>
 
-										</div>
+											<button class="button button__filled--blue repeater__button repeater__button--add">Dodaj nową lokalizację</button>
 
 										</div>
 
@@ -1765,6 +1767,8 @@ function work_user_data_form() {
 		<?php 
 		// show any error messages after form submission
 		work_user_data_form_messages(); ?>
+
+		<p>Napisz kilka zdań o tym gdzie najczęściej pracujesz</p>
 		
 		<form name="work_user_data_form" id="work_user_data_form" class="vicode_form" action="" method="POST">
 
@@ -1999,7 +2003,7 @@ function gallery_sound_uploader($user_post_id) {
 
 	ob_start(); 
 
-	echo '<p class="info-box__subbox-header">Wpisz tekst i dodaj nagranie</p>';
+
 
 	// show any error messages after form submission
 	// gallery_sound_uploader_form_messages();
@@ -2011,11 +2015,12 @@ function gallery_sound_uploader($user_post_id) {
 
 				<div class="repeater__holder">
 
-					<button class="repeater__button repeater__button--add">+</button>
 
 					<div class="repeater__field-wrapper">
 
 						<div class="repeater__field" data-repeater-id="0">
+
+							<p class="info-box__subbox-header">Wpisz tekst i dodaj nagranie</p>
 
 							<div class="row-wrapper wrapper-flex-drow-mcol">
 
@@ -2038,57 +2043,7 @@ function gallery_sound_uploader($user_post_id) {
 
 									<div class="new-attachment__wrapper my-sounds__gallery-row-wrapper ">
 
-										<div id="newSoundInGalleryPlaceholder" class="new-attachment__placeholder" style="display:none;" width="">
-											<?php
-
-											// echo '<div class="new-attachment__preview row-wrapper my-sounds__gallery-attachment my-sounds__gallery-row-wrapper">';
-
-											// 		echo '<a class="remove-item remove" data-id="clear-input" href="#"></a>';
-
-											// 		echo '<div class="my-sounds__gallery-text-wrapper">';
-
-											// 			echo '<div class="my-sounds__gallery-attachment--label" style="display: none">';
-
-											// 				echo '<p></p>';
-
-											// 			echo '</div>';
-
-											// 			echo '<div class="my-sounds__gallery-attachment--description" style="display: none">';
-
-											// 				echo '<p></p>';
-
-											// 			echo '</div>';
-
-											// 		echo '</div>';
-
-											// 		echo '<div class="my-sounds__gallery-attachment my-sounds__gallery-attachment--file-info">';
-
-											// 			echo '<div class="new-attachment__icon ">';
-
-											// 				echo '<svg viewBox="0 0 384 384" xmlns="http://www.w3.org/2000/svg">
-											// 				<path d="m176 288c0 8.832031 7.167969 16 16 16s16-7.167969 16-16v-192c0-8.832031-7.167969-16-16-16s-16 7.167969-16 16zm0 0"/>
-											// 				<path d="m16 96c-8.832031 0-16 7.167969-16 16v160c0 8.832031 7.167969 16 16 16s16-7.167969 16-16v-160c0-8.832031-7.167969-16-16-16zm0 0"/>
-											// 				<path d="m152 256v-128c0-8.832031-7.167969-16-16-16s-16 7.167969-16 16v128c0 8.832031 7.167969 16 16 16s16-7.167969 16-16zm0 0"/>
-											// 				<path d="m80 240c8.832031 0 16-7.167969 16-16v-64c0-8.832031-7.167969-16-16-16s-16 7.167969-16 16v64c0 8.832031 7.167969 16 16 16zm0 0"/>
-											// 				<path d="m264 256v-128c0-8.832031-7.167969-16-16-16s-16 7.167969-16 16v128c0 8.832031 7.167969 16 16 16s16-7.167969 16-16zm0 0"/>
-											// 				<path d="m368 96c-8.832031 0-16 7.167969-16 16v160c0 8.832031 7.167969 16 16 16s16-7.167969 16-16v-160c0-8.832031-7.167969-16-16-16zm0 0"/>
-											// 				<path d="m304 144c-8.832031 0-16 7.167969-16 16v64c0 8.832031 7.167969 16 16 16s16-7.167969 16-16v-64c0-8.832031-7.167969-16-16-16zm0 0"/>
-											// 				<path d="m176 368c0 8.832031 7.167969 16 16 16s16-7.167969 16-16v-16c0-8.832031-7.167969-16-16-16s-16 7.167969-16 16zm0 0"/>
-											// 				<path d="m192 48c8.832031 0 16-7.167969 16-16v-16c0-8.832031-7.167969-16-16-16s-16 7.167969-16 16v16c0 8.832031 7.167969 16 16 16zm0 0"/></svg>';
-
-											// 			echo '</div>';
-
-											// 			echo '<div class="new-attachment__description">';
-
-											// 				echo '<p class="sound-title"></p>';
-
-											// 			echo '</div>';
-
-											// 		echo '</div>';
-
-											// echo '</div>';
-											?>
-										</div>
+										<div id="newSoundInGalleryPlaceholder" class="new-attachment__placeholder" style="display:none;" width=""></div>
 
 									</div>
 
@@ -2099,6 +2054,8 @@ function gallery_sound_uploader($user_post_id) {
 						</div>
 
 					</div>
+
+					<button class="button repeater__button button__filled--blue repeater__button--add">Dodaj próbkę głosu</button>
 
 				</div>
 
@@ -2386,8 +2343,6 @@ function gallery_image_uploader($user_post_id) {
 
 			<div class="repeater__holder">
 
-				<button class="repeater__button repeater__button--add">+</button>
-
 				<div class="repeater__field-wrapper">
 
 					<div class="repeater__field" data-repeater-id="0">
@@ -2416,6 +2371,8 @@ function gallery_image_uploader($user_post_id) {
 					<!-- <button class="repeater__button repeater__button--delete">-</button> -->
 
 				</div>
+
+				<button class="button button__filled--blue repeater__button repeater__button--add">Dodaj zdjęcie</button>
 
 			</div>
 
@@ -3242,7 +3199,7 @@ function settings_user_data_visibility_form() {
 
 							<li>
 
-								<div class="options__position">Miasto zamieszkania</div>
+								<div class="options__position">Miejsce zamieszkania</div>
 
 								<div class="options__switch
 								<?php if ($translator_city_public_status) { echo 'options__switch--on'; } ?>

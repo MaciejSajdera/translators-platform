@@ -355,39 +355,38 @@ jQuery(document).ready(function($) {
 
 	const progressRingHolder = document.querySelector("#progressRing");
 
-	var progressRing = new ProgressBar.Circle(progressRingHolder, {
-		color: "#16538c",
-		// This has to be the same size as the maximum width to
-		// prevent clipping
-		strokeWidth: 0,
-		trailWidth: 0,
-		easing: "easeInOut",
-		duration: 1400,
-		text: {
-			autoStyleContainer: false
-		},
-		from: { color: "#ffa500", width: 10 },
-		to: { color: "#24b82be6", width: 14 },
-		// Set default step function for all animate calls
-		step: function(state, circle) {
-			circle.path.setAttribute("stroke", state.color);
-			circle.path.setAttribute("stroke-width", state.width);
+	if (progressRingHolder) {
+		var progressRing = new ProgressBar.Circle(progressRingHolder, {
+			color: "#16538c",
+			// This has to be the same size as the maximum width to
+			// prevent clipping
+			strokeWidth: 10,
+			trailWidth: 10,
+			easing: "easeInOut",
+			duration: 1400,
+			text: {
+				autoStyleContainer: false
+			},
+			from: { color: "#18a0aa", width: 10 },
+			to: { color: "#16538c", width: 14 },
+			// Set default step function for all animate calls
+			step: function(state, circle) {
+				circle.path.setAttribute("stroke", state.color);
+				circle.path.setAttribute("stroke-width", state.width);
 
-			var value = Math.round(circle.value() * 100);
-			if (value === 0) {
-				circle.setText("0%");
-			} else {
-				circle.setText(`${value}%`);
+				var value = Math.round(circle.value() * 100);
+				if (value === 0) {
+					circle.setText("0%");
+				} else {
+					circle.setText(`${value}%`);
+				}
 			}
-		}
-	});
+		});
 
-	progressRing.text.style.fontSize = "1.25rem";
-	progressRing.text.style.fontWeight = "700";
-	progressRing.text.style.zIndex = "1";
-	progressRing.animate(
-		ajax_forms_params.initial_percent_value_of_account_fill_completness / 100
-	);
+		progressRing.animate(
+			ajax_forms_params.initial_percent_value_of_account_fill_completness / 100
+		);
+	}
 
 	const updateProfileCompletness = dataJSON => {
 		console.log(dataJSON);
@@ -517,7 +516,17 @@ jQuery(document).ready(function($) {
 
 				const postData = dataJSON.post_data;
 
-				const accountUserName = document.querySelector(".account__user-name");
+				const allAccountFirstNames = document.querySelectorAll(
+					".account__user-first-name"
+				);
+
+				const allAccountLastNames = document.querySelectorAll(
+					".account__user-last-name"
+				);
+
+				const accountUserName = document.querySelector(
+					".account__user-fullname"
+				);
 				const userBioText = document.querySelector("#user_about_short_text");
 				const userLanguagesText = document.querySelector(
 					"#user_languages_text"
@@ -525,6 +534,16 @@ jQuery(document).ready(function($) {
 				const userSpecializationsText = document.querySelector(
 					"#user_specializations_text"
 				);
+
+				allAccountFirstNames &&
+					allAccountFirstNames.forEach(field => {
+						field.innerText = postData.user_first_name;
+					});
+
+				allAccountLastNames &&
+					allAccountLastNames.forEach(field => {
+						field.innerText = postData.user_last_name;
+					});
 
 				accountUserName.innerText = `${postData.user_first_name} ${postData.user_last_name}`;
 				userBioText.innerText = `${postData.user_about_short}`;
@@ -1756,15 +1775,11 @@ jQuery(document).ready(function($) {
 
 				const isProfilePublic = dataJSON.profile_is_public;
 
-				isProfilePublicStatus = document.querySelector(
+				let isProfilePublicStatus = document.querySelector(
 					".account__privacy-status"
 				);
 
-				profileStatusIcon = document.querySelector(
-					".account__privacy-status SVG"
-				);
-
-				if (isProfilePublic) {
+				if (isProfilePublic && isProfilePublicStatus) {
 					// profileStatusIcon.style.fill = "green";
 					isProfilePublicStatus.classList.remove("account__private");
 					isProfilePublicStatus.classList.add("account__public");

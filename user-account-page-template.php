@@ -89,7 +89,7 @@ get_header();
 
 					echo '<div class="account__container">';
 
-						echo '<div class="account__side-menu">';
+						echo '<div class="account__side-menu content-box">';
 
 							$is_approved = get_post_meta( $user_post_id, 'is_approved', true );
 
@@ -170,7 +170,7 @@ get_header();
 
 							echo '</div>';
 
-							echo '<h3 class="account__user-name">'.$translator_first_name.' '.$translator_last_name.'</h3>';
+							echo '<h3 class="account__user-fullname">'.$translator_first_name.' '.$translator_last_name.'</h3>';
 
 							 echo '<div class="account__navigation">';
 
@@ -200,9 +200,9 @@ get_header();
 
 								echo '<div class="account__welcome-message">';
 
-									echo '<div>';
+									echo '<div class="content-box">';
 
-										echo '<h1>Cześć '.$translator_first_name.'!</h1>';
+										echo '<h1>Cześć <span class="account__user-first-name">'.$translator_first_name.'</span>!</h1>';
 
 										echo '<h3>Witaj na swoim koncie PSTK.</h3>';
 
@@ -295,6 +295,20 @@ get_header();
 
 											echo '<div class="info-box__subbox">';
 
+												echo '<p class="info-box__subbox-header">Imię</p>';
+												echo '<p class="info-box__content account__user-first-name">'.$translator_first_name .'</p>';
+
+											echo '</div>';
+
+											echo '<div class="info-box__subbox">';
+
+												echo '<p class="info-box__subbox-header">Nazwisko</p>';
+												echo '<p class="info-box__content account__user-last-name">'.$translator_last_name .'</p>';
+
+											echo '</div>';
+
+											echo '<div class="info-box__subbox">';
+
 												if (strlen(get_field('translator_about_short')) > 0) {
 													$translator_about_short = get_field('translator_about_short');
 													$placeholder_mode = '';
@@ -303,6 +317,7 @@ get_header();
 													$placeholder_mode = 'placeholder_mode';
 												}
 
+												echo '<p class="info-box__subbox-header">Jedno zdanie o mnie</p>';
 												echo '<p id="user_about_short_text" class="info-box__content '.$placeholder_mode.'">'.$translator_about_short.'</p>';
 
 											echo '</div>';
@@ -368,7 +383,7 @@ get_header();
 
 										/* EDIT BOX */
 
-										echo '<div id="edit-basic-info" class="edit-box info-box">';
+										echo '<div id="edit-basic-info" class="edit-box content-box info-box">';
 
 											echo basic_user_data_form();
 
@@ -422,7 +437,7 @@ get_header();
 
 										/* EDIT BOX */
 
-										echo '<div id="edit-about-info" class="edit-box info-box">';
+										echo '<div id="edit-about-info" class="edit-box content-box info-box">';
 
 											echo about_user_data_form();
 
@@ -469,7 +484,7 @@ get_header();
 														$placeholder_mode = 'placeholder_mode';
 													}
 
-
+												echo '<p class="info-box__subbox-header">Numer telefonu</p>';
 												echo '<p id="user_contact_phone_text" class="info-box__content '.$placeholder_mode.'">'.$translator_contact_phone.'</p>';
 
 											echo '</div>';
@@ -486,6 +501,7 @@ get_header();
 														$placeholder_mode = 'placeholder_mode';
 													}
 
+												echo '<p class="info-box__subbox-header">Adres e-mail</p>';
 												echo '<p id="user_contact_email_text" class="info-box__content '.$placeholder_mode.'">'.$translator_contact_email.'</p>';
 
 											echo '</div>';
@@ -516,7 +532,7 @@ get_header();
 
 											echo '<div class="wrapper-flex-drow-mcol">';
 
-												echo '<p class="wrapper-flex-drow-mcol__first-element info-box__content">Miasto zamieszkania</p>';
+												echo '<p class="wrapper-flex-drow-mcol__first-element info-box__content">Miejsce zamieszkania</p>';
 
 												echo '<p id="user_city_text" class="info-box__content">'.get_field("translator_city").'</p>';
 
@@ -546,7 +562,7 @@ get_header();
 										
 										/* EDIT BOX */
 										
-										echo '<div id="edit-contact-info" class="edit-box info-box">';
+										echo '<div id="edit-contact-info" class="edit-box content-box info-box">';
 										
 											echo contact_user_data_form();
 										
@@ -754,7 +770,7 @@ get_header();
 
 										/* EDIT BOX */
 
-										echo '<div id="edit-linkedin-info" class="edit-box info-box">';
+										echo '<div id="edit-linkedin-info" class="edit-box content-box info-box">';
 
 											echo '<div class="info-box__subbox">';
 
@@ -819,7 +835,7 @@ get_header();
 
 										/* EDIT BOX */
 
-										echo '<div id="edit-work-info" class="edit-box info-box">';
+										echo '<div id="edit-work-info" class="edit-box content-box info-box">';
 
 											echo work_user_data_form();
 
@@ -1014,7 +1030,7 @@ get_header();
 
 								echo '<div>';
 								
-									echo '<p>Edycja ustawień</p>';
+									echo '<p class="content-box">Edycja ustawień</p>';
 
 								echo '</div>';
 
@@ -1026,7 +1042,7 @@ get_header();
 								<div class="info-box">
 
 									<p class="info-box__header">Adres e-mail</p>
-									<p class="info-box__tip">Adres ten wyświetla się na Twoim profilu i służy do logowania do konta PSTK </p>
+									<p class="info-box__tip content-box">Adres ten wyświetla się na Twoim profilu i służy do logowania do konta PSTK </p>
 				
 				
 									<div class="info-box__subbox info-box__subbox--max-width account__box-container ajax-content-wrapper">
@@ -1064,7 +1080,7 @@ get_header();
 								<div class="info-box">
 
 									<p class="info-box__header">Hasło</p>
-									<p class="info-box__tip">Hasło służy do logowania do konta PSTK. Musi zawierać minimum 8 znaków, w tym jedną wielką literę i jeden znak specjalny.</p>
+									<p class="info-box__tip content-box">Hasło służy do logowania do konta PSTK. Musi zawierać minimum 8 znaków, w tym jedną wielką literę i jeden znak specjalny.</p>
 
 
 									<div class="info-box__subbox info-box__subbox--max-width account__box-container ajax-content-wrapper">
@@ -1109,7 +1125,7 @@ get_header();
 											?>
 										</div>
 
-										<div id="edit-settings-password" class="edit-box info-box">
+										<div id="edit-settings-password" class="edit-box content-box info-box">
 
 											<?php echo settings_user_password_form(); ?>
 
@@ -1129,7 +1145,7 @@ get_header();
 
 									<div><p class="info-box__header">Widoczność profilu</p></div>
 
-									<div class="info-box__subbox account__box-container info-box__subbox--max-width ajax-content-wrapper">
+									<div class="info-box__subbox content-box account__box-container info-box__subbox--max-width ajax-content-wrapper">
 
 										<div class="my-ajax-loader">
 

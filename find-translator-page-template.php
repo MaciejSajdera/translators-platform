@@ -15,9 +15,9 @@ get_header();
 
 		<div class="home__welcome-view">
 
-			<h1>Eksperci od tłumaczeń symultanicznych i konsekutywnych</h1>
+			<h1><span class="text--outline-blue">Eksperci</span> od tłumaczeń symultanicznych i konsekutywnych</h1>
 
-			<div class="home-search__container">
+			<div class="search__container">
 
 				<h2>Znajdź tłumacza na zdarzenie</h2>
 

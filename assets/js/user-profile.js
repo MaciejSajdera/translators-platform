@@ -43,13 +43,13 @@ document.addEventListener("DOMContentLoaded", () => {
 						".profile-section--active"
 					);
 
-					activeProfileSection.classList.remove("profile-section--active");
-					activeProfileSection.classList.add("profile-section--not-active");
+					activeProfileSection?.classList.remove("profile-section--active");
+					activeProfileSection?.classList.add("profile-section--not-active");
 
-					targetSection.classList.remove("profile-section--not-active");
-					targetSection.classList.add("profile-section--active");
+					targetSection?.classList.remove("profile-section--not-active");
+					targetSection?.classList.add("profile-section--active");
 
-					localStorage.setItem("activeProfileSectionID", sectionId);
+					localStorage?.setItem("activeProfileSectionID", sectionId);
 				}
 			});
 		});
@@ -81,11 +81,11 @@ document.addEventListener("DOMContentLoaded", () => {
 				`#${lastChosenProfileSectionID}`
 			);
 
-			activeProfileSection.classList.remove("profile-section--active");
-			activeProfileSection.classList.add("profile-section--not-active");
+			activeProfileSection?.classList.remove("profile-section--active");
+			activeProfileSection?.classList.add("profile-section--not-active");
 
-			lastChosenProfileSection.classList.remove("profile-section--not-active");
-			lastChosenProfileSection.classList.add("profile-section--active");
+			lastChosenProfileSection?.classList.remove("profile-section--not-active");
+			lastChosenProfileSection?.classList.add("profile-section--active");
 		}
 	}
 
@@ -146,11 +146,14 @@ document.addEventListener("DOMContentLoaded", () => {
 				if (e.target.classList.contains("repeater__button--add")) {
 					e.preventDefault();
 
-					const container = this.closest(".repeater__holder").querySelector(
-						".repeater__field-wrapper"
-					);
+					console.log(this);
 
-					let clonedField = this.closest(".repeater__holder")
+					const container = e.target
+						.closest(".repeater__holder")
+						.querySelector(".repeater__field-wrapper");
+
+					let clonedField = e.target
+						.closest(".repeater__holder")
 						.querySelector(".repeater__field")
 						.cloneNode(true);
 
@@ -161,6 +164,8 @@ document.addEventListener("DOMContentLoaded", () => {
 					let deleteFieldButton = document.createElement("BUTTON");
 
 					deleteFieldButton.classList.add(
+						"button",
+						"button__filled--blue",
 						"repeater__button",
 						"repeater__button--delete"
 					);

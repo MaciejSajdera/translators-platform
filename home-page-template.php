@@ -11,6 +11,7 @@ get_header();
 $section_1 = get_field("section_1");
 $h1 = $section_1['h1'];
 $h2 = $section_1['h2'];
+$image = $section_1['image'];
 
 $section_2 = get_field("section_2");
 $section_2_title = $section_2['title'];
@@ -35,22 +36,30 @@ $management_member_of_the_month = $section_6["management_member_of_the_month"];
 		<main id="main" class="site-main home">
 
 
-		<section class="home__section-1 home__welcome-view">
+		<section class="home__section-1">
 
-			<h1><?php echo $h1 ?></h1>
+			<div class="grid">
+				<div class="text-holder">
+					<h1><?php echo $h1 ?></h1>
 
-			<div class="home-search__container">
+					<h2><?php echo $h2 ?></h2>
+				</div>
 
-				<h2><?php echo $h2 ?></h2>
+				<div class="search__container">
 
-				<!--
-				Example of multidropdown checkbox select
-				https://codepen.io/elmahdim/embed/hlmri?height=565&theme-id=0&slug-hash=hlmri&default-tab=result&user=elmahdim&embed-version=2&pen-title=Dropdown%20with%20Multiple%20checkbox%20select%20with%20jQuery -->
+					<!--
+					Example of multidropdown checkbox select
+					https://codepen.io/elmahdim/embed/hlmri?height=565&theme-id=0&slug-hash=hlmri&default-tab=result&user=elmahdim&embed-version=2&pen-title=Dropdown%20with%20Multiple%20checkbox%20select%20with%20jQuery -->
 
-				<?php
-					get_template_part( 'template-parts/searchfilter-basic' );
-				?>
+					<?php
+						get_template_part( 'template-parts/searchfilter-basic' );
+					?>
 
+				</div>
+
+				<div class="image-holder">
+					<img src="<?php echo $image['url'] ?>" alt="<?php echo $image['alt'] ?>">
+				</div>
 			</div>
 
 		</section>

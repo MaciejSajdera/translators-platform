@@ -24,7 +24,13 @@
 
 				/* Get name of the city user was looking for */
 
+				//TODO: handle edge case where no city was chosen
+
+			if ($_GET && $_GET['_sft_translator_localization']) {
 				$target_city_name = $_GET['_sft_translator_localization'];
+			}
+
+			if ($target_city_name) {
 
 				/* Get geolocation of the city user was looking for */
 
@@ -331,6 +337,7 @@
 					
 				}
 			}
+		}
 
 			wp_reset_postdata();
 

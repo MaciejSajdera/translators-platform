@@ -40,19 +40,38 @@
 	&__welcome-message {
 		margin-bottom: 2rem;
 
+		h3:first-of-type {
+			margin-bottom: 0;
+		}
+
 		#progressRing {
 			position: relative;
-			width: 125px;
-			min-width: 125px;
-			height: 125px;
-			min-height: 125px;
 			overflow: visible;
-			padding: 0.65rem;
-			border: 2px solid $color__border-element;
+			// border: 2px solid $color__border-element;
 			border-radius: 100%;
+			font-weight: 500;
+			z-index: 1;
+
+			width: 75px;
+			min-width: 75px;
+			height: 75px;
+			min-height: 75px;
+			padding: 0.35rem;
 
 			@media screen and (min-width: 992px) {
 				margin-left: 3rem;
+				width: 125px;
+				min-width: 125px;
+				height: 125px;
+				min-height: 125px;
+				padding: 0.65rem;
+			}
+
+			.progressbar-text {
+				font-size: 0.75rem;
+				@media screen and (min-width: 992px) {
+					font-size: 1.25rem;
+				}
 			}
 
 			// &:after {
@@ -65,6 +84,11 @@
 			// 	background: white;
 			// 	filter: blur(30px);
 			// }
+		}
+
+		#fillTheseFields {
+			display: block;
+			margin-top: 1rem;
 		}
 
 		svg {
@@ -109,7 +133,7 @@
 			width: 25%;
 		}
 
-		.account__user-name {
+		.account__user-fullname {
 			text-align: center;
 		}
 	}
@@ -158,12 +182,13 @@
 
 	&__box-container {
 		position: relative;
-		border: 1px solid black;
+		border: 2px solid $color__main-theme--blue;
 		scroll-margin: 4rem;
-
-		@media screen and (min-width: 992px) {
-			padding: 3em 4em;
-		}
+		border-radius: 20px;
+		box-shadow: $box-shadow_standard;
+		// @media screen and (min-width: 992px) {
+		// 	padding: 3em 4em;
+		// }
 	}
 
 	.edit-box {
@@ -223,7 +248,10 @@
 
 .info-box {
 	&__header {
-		font-size: 1.5rem;
+		font-size: 1.75rem;
+		margin: 0;
+		font-weight: 700;
+		color: $color__main-theme--blue;
 	}
 
 	&__subbox {
@@ -255,8 +283,13 @@
 		display: flex;
 		flex-flow: column;
 		word-break: break-word;
-		margin: 0 0 1em 0;
+		// margin: 0 0 1em 0;
 	}
+}
+
+.info-box__header,
+.content-box {
+	padding: 2rem;
 }
 
 $login-and-registration-height: 80vh;
@@ -443,7 +476,7 @@ $login-and-registration-height: 80vh;
 						height: 100%;
 						width: 100%;
 						background-color: transparent;
-						transition: all 0.2s ease-in-out;
+						transition: $transition__button--standard;
 						// border: 1px solid $color__border-element;
 						border-radius: 100%;
 					}
@@ -463,7 +496,7 @@ $login-and-registration-height: 80vh;
 						color: white;
 						z-index: 2;
 						opacity: 0;
-						transition: all 0.2s ease-in-out;
+						transition: $transition__button--standard;
 					}
 
 					&:hover {
@@ -496,7 +529,7 @@ $login-and-registration-height: 80vh;
 				.input-preview {
 					display: flex;
 					background-color: transparent;
-					transition: all 0.2s ease-in-out;
+					transition: $transition__button--standard;
 					height: $profile_picture_height;
 					width: $profile_picture_width;
 					object-fit: contain;

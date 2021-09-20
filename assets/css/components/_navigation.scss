@@ -46,6 +46,10 @@
 	text-decoration: none;
 }
 
+.current_page_item {
+	border-bottom: 2px solid $color__main-theme--turquise;
+}
+
 $mobile-menu-padding-top: 10rem;
 
 .mobile-menu-container {
@@ -183,13 +187,12 @@ $mobile-menu-padding-top: 10rem;
 			justify-content: center;
 			align-items: center;
 			flex-wrap: wrap;
-			padding: 0.5em 0;
 			// border-bottom: 1px solid $color__background-screen;
 			transition: all 0.75s ease-in-out;
 			height: 100%;
 			width: 100%;
 			position: relative;
-			padding: 0 0 15px 0;
+			padding: 0 0 0.5em 0;
 			z-index: 999;
 
 			// position: relative;

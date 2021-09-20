@@ -1,19 +1,34 @@
-.site-content,
 .site-header {
-	padding: 0 1rem;
+	padding-top: 1rem;
+	position: fixed;
+	z-index: 1;
+	width: 100%;
+	top: 0;
+	background-color: $color__background-body;
+}
+
+// section,
+.site-header,
+.site-content {
+	padding-left: 1rem;
+	padding-right: 1rem;
 
 	@media screen and (min-width: 992px) {
-		padding: 0 7.5%;
+		padding-left: 7.5%;
+		padding-right: 7.5%;
+	}
+}
+
+.site-content {
+	padding-top: 6rem;
+
+	@media screen and (min-width: 992px) {
+		padding-top: 8rem;
 	}
 }
 
 ::selection {
 	background: $color__main-theme--turquise-transparent;
-}
-
-.site-content {
-	min-height: 90vh;
-	margin-top: 3rem;
 }
 
 .list {
@@ -208,8 +223,8 @@
 // 	}
 // }
 
-body.page,
-body.blog {
+.page,
+.blog {
 	.searchfilter {
 		&__wrapper {
 			form > ul {
@@ -234,6 +249,26 @@ body.blog {
 			// 		min-width: 220px;
 			// 	}
 			// }
+
+			.sf-field-submit input[name="_sf_submit"] {
+				width: 100% !important;
+				// min-width: 220px;
+
+				// @media screen and (min-width: 992px) {
+				// 	width: auto !important;
+				// }
+			}
+
+			.select2-container {
+				width: 100% !important;
+				// min-width: 220px;
+				background: white;
+				border-radius: 100rem;
+
+				// @media screen and (min-width: 992px) {
+				// 	width: auto !important;
+				// }
+			}
 		}
 
 		// ul li li {
@@ -241,18 +276,49 @@ body.blog {
 		// }
 	}
 
+	.searchandfilter {
+		h4 {
+			padding: 0.618rem 1rem !important;
+			color: $color__main-theme--blue;
+		}
+
+		li {
+			flex: 1 1 0px;
+			z-index: 1;
+			// .select2-container label {
+			// 	border: 2px solid #16538c;
+			// 	border-radius: 100rem;
+			// 	background: transparent;
+			// 	box-shadow: 0px 0px 7px #16538c3a;
+			// 	overflow: hidden;
+			// }
+		}
+	}
+
 	.select2-selection--multiple,
 	.select2-selection--single,
 	.sf-field-sort_order select {
 		cursor: pointer;
 		height: auto;
-		border: none !important;
-		box-shadow: 0 4px 16px 0 #162a5a36;
-		padding: 0.618rem 1rem !important;
-		line-height: 1.5 !important;
-		border-radius: 8px !important;
+		padding: 0.75em 1.25em !important;
+		line-height: 0 !important;
 		font-size: 1rem;
-		min-height: 44px;
+		min-height: 52px;
+		min-width: 220px;
+		border: 2px solid #16538c !important;
+		border-radius: 100rem !important;
+		background: transparent !important;
+		box-shadow: 0px 0px 7px #16538c3a;
+		overflow: hidden;
+
+		display: flex;
+		justify-content: space-between;
+		align-items: center;
+
+		&:after {
+			content: url(../dist/svg/arrow_down_blue.svg);
+			align-self: flex-end;
+		}
 
 		.select2-selection__rendered {
 			padding: 0;
@@ -262,7 +328,51 @@ body.blog {
 		}
 	}
 
-	.select2-container--open {
+	.sf-field-sort_order label {
+		position: relative;
+		select {
+			// position: relative;
+			// -webkit-appearance: none;
+			// -moz-appearance: none;
+			// text-indent: 1px;
+			// text-overflow: "";
+			// appearance: none;
+
+			// -o-appearance: none;
+			// -ms-appearance: none;
+			// -webkit-appearance: none;
+			// -moz-appearance: none;
+			// appearance: none;
+		}
+
+		/* For IE10 */
+		// select::-ms-expand {
+		// 	display: none;
+		// }
+
+		&:after {
+			content: url(../dist/svg/arrow_down_blue.svg);
+			align-self: flex-end;
+			position: absolute;
+			top: 28%;
+			right: 5px;
+			background: white;
+			border-radius: 100rem;
+			width: 25%;
+			display: flex;
+			justify-content: center;
+		}
+	}
+
+	// .select2-container--open {
+	// 	.select2-results__options {
+	// 		transform: translate(0, 12px) scale(1) !important;
+	// 		opacity: 1 !important;
+	// 		filter: drop-shadow(0 16px 24px rgba(22, 42, 90, 0.16));
+	// 	}
+	// }
+
+	.show-dropdown {
 		.select2-results__options {
 			transform: translate(0, 12px) scale(1) !important;
 			opacity: 1 !important;
@@ -270,12 +380,28 @@ body.blog {
 		}
 	}
 
-	.select2 {
-		&-container {
-			width: auto !important;
-			min-width: 220px;
+	li.sf-field-submit {
+		h4 {
+			color: transparent;
 		}
 
+		input {
+			color: $color__text-white;
+			padding: 0.75em 1.25em;
+			border: 2px solid #16538c;
+			border-radius: 100rem;
+			background: #16538c;
+			box-shadow: 0px 0px 7px #16538c3a;
+			transition: $transition__button--standard;
+
+			&:hover {
+				color: #16538c;
+				background: transparent;
+			}
+		}
+	}
+
+	.select2 {
 		&-dropdown {
 			border: none;
 			box-shadow: 0 4px 16px 0 #162a5a36;
@@ -292,9 +418,12 @@ body.blog {
 				.select2-search__field {
 					outline: none;
 					border: none;
-					transform: translateY(-115%);
-					padding-left: 1rem !important;
+					transform: translateY(-190%);
+					line-height: 0 !important;
+					padding: 0;
+					margin-left: calc(1rem + 5px) !important; //border width
 					position: absolute;
+					max-width: 75%;
 				}
 			}
 		}
@@ -315,8 +444,6 @@ body.blog {
 		}
 
 		&-selection {
-			border-radius: 8px !important;
-
 			&__arrow {
 				b {
 					display: none;
@@ -390,7 +517,7 @@ body.blog {
 			$right_optionbox: 1em;
 
 			&__option {
-				padding: 0.618rem 1rem;
+				padding: 0.75em 1.25em;
 				position: relative;
 
 				&:after {
@@ -402,6 +529,24 @@ body.blog {
 					top: 50%;
 					transform: translateY(-50%);
 					right: $right_optionbox;
+				}
+
+				&--highlighted {
+					background-color: $color__main-theme--blue !important;
+
+					&:before {
+						filter: brightness(0) invert(1);
+						// background-image: url(../dist/svg/remove.svg);
+					}
+				}
+
+				&--highlighted[aria-selected="true"] {
+					background-color: $color__main-theme--blue !important;
+
+					&:before {
+						filter: brightness(0) invert(1);
+						// background-image: url(../dist/svg/remove.svg);
+					}
 				}
 			}
 
@@ -419,15 +564,6 @@ body.blog {
 					top: 50%;
 					transform: translate(50%, -50%);
 					right: calc(#{$right_optionbox} + (#{$width_optionbox} / 2));
-				}
-			}
-
-			&__option--highlighted[aria-selected="true"] {
-				background-color: $color__main-theme--blue;
-
-				&:before {
-					filter: brightness(0) invert(1);
-					// background-image: url(../dist/svg/remove.svg);
 				}
 			}
 
@@ -464,12 +600,12 @@ body.blog {
 	text-decoration: none;
 	font-size: 32px;
 	transform: scale(0);
-	transition: all 0.2s ease-in-out;
+	transition: $transition__button--standard;
 
 	&:after {
 		color: white;
 		content: "\d7";
-		transition: all 0.2s ease-in-out;
+		transition: $transition__button--standard;
 	}
 
 	&:hover {

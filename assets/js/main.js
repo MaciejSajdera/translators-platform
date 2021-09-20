@@ -227,10 +227,12 @@ document.addEventListener("DOMContentLoaded", () => {
 
 	setTimeout(() => {
 		const allComboboxes = document.querySelectorAll(
-			'[data-sf-field-input-type="multiselect"]'
+			'[data-sf-field-input-type="multiselect"], .sf-field-taxonomy-translator_localization'
 		);
 
 		allComboboxes.forEach(box => {
+			console.log(box);
+
 			const selectionCounter = document.createElement("SPAN");
 			selectionCounter.classList.add("my-selection-counter");
 
@@ -242,16 +244,24 @@ document.addEventListener("DOMContentLoaded", () => {
 			//Dynamic
 			const observer = new MutationObserver(function(mutations) {
 				mutations.forEach(function(mutation) {
-					console.log(mutation);
-
 					if (mutation.type === "attributes") {
-						console.log("attributes changed");
+						// console.log(mutation);
+						// console.log("attribute aria-expanded changed");
+
+						const select2Dropdown = document.querySelector(".select2-dropdown");
+
+						if (
+							select2Dropdown &&
+							select2Dropdown.classList.contains("show-dropdown")
+						) {
+							select2Dropdown.classList.remove("show-dropdown");
+						}
+
+						select2Dropdown && select2Dropdown.classList.add("show-dropdown");
 
 						let allOptionsChosen = box.querySelectorAll(
 							".select2-selection__choice"
 						);
-
-						console.log(allOptionsChosen.length);
 
 						let boxTitle = box.querySelector("H4").innerHTML;
 
@@ -265,7 +275,27 @@ document.addEventListener("DOMContentLoaded", () => {
 						if (allOptionsChosen.length > 1) {
 							boxSearchField.placeholder = `${boxTitle} (${allOptionsChosen.length})`;
 						}
+
+						// setTimeout(() => {
+
+						const searchField = select2Dropdown?.querySelector(
+							".select2-search__field"
+						);
+
+						searchField?.focus();
+
+						if (searchField) {
+							searchField.placeholder = "Wpisz miasto...";
+						}
+						// }, 0);
 					}
+
+					// if (
+					// 	mutation.type === "attributes" &&
+					// 	mutation.target.ariaExpanded === "false"
+					// ) {
+					// 	boxSearchField.blur();
+					// }
 				});
 			});
 
@@ -291,46 +321,51 @@ document.addEventListener("DOMContentLoaded", () => {
 			}
 		});
 
-		const allSingleChoiceBoxes = [
-			document.querySelector(".sf-field-taxonomy-translator_localization")
-		];
+		// const allSingleChoiceBoxes = [
+		// 	document.querySelector(".sf-field-taxonomy-translator_localization")
+		// ];
 
-		allSingleChoiceBoxes.forEach(box => {
-			console.log(box);
-			let boxSelection = box.querySelector(".select2-selection");
+		// const allSingleChoiceBoxes = document.querySelectorAll(
+		// 	".sf-field-taxonomy-translator_localization"
+		// );
 
-			//Dynamic
-			const observer = new MutationObserver(function(mutations) {
-				mutations.forEach(function(mutation) {
-					console.log(mutation);
+		// allSingleChoiceBoxes.length > 0 &&
+		// 	allSingleChoiceBoxes.forEach(box => {
+		// 		console.log(box);
+		// 		let boxSelection = box.querySelector(".select2-selection");
 
-					if (mutation.type === "attributes") {
-						console.log("attributes changed");
+		// 		//Dynamic
+		// 		const observer = new MutationObserver(function(mutations) {
+		// 			mutations.forEach(function(mutation) {
+		// 				console.log(mutation);
 
-						setTimeout(() => {
-							const dropDownBelow = document.querySelector(
-								".select2-dropdown--below"
-							);
+		// 				if (mutation.type === "attributes") {
+		// 					console.log("attributes changed");
 
-							const searchField = dropDownBelow?.querySelector(
-								".select2-search__field"
-							);
+		// 					setTimeout(() => {
+		// 						const dropDownBelow = document.querySelector(
+		// 							".select2-dropdown--below"
+		// 						);
 
-							searchField?.focus();
+		// 						const searchField = dropDownBelow?.querySelector(
+		// 							".select2-search__field"
+		// 						);
 
-							if (searchField) {
-								searchField.placeholder = "Wpisz miasto...";
-							}
-						}, 0);
-					}
-				});
-			});
+		// 						searchField?.focus();
 
-			observer.observe(boxSelection, {
-				attributes: true //configure it to listen to attribute changes
-			});
-		});
-	}, 100);
+		// 						if (searchField) {
+		// 							searchField.placeholder = "Wpisz miasto...";
+		// 						}
+		// 					}, 0);
+		// 				}
+		// 			});
+		// 		});
+
+		// 		observer.observe(boxSelection, {
+		// 			attributes: true //configure it to listen to attribute changes
+		// 		});
+		// 	});
+	}, 10);
 
 	let isPopUpActive = false;
 

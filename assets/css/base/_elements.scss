@@ -56,7 +56,7 @@ a {
 	}
 
 	&:focus {
-		outline: thin dotted;
+		outline: 0;
 	}
 
 	&:hover,
@@ -340,9 +340,11 @@ table {
 
 /* BUTTONS */
 
-.button {
+.button,
+.lostpassword-submit,
+.lostpassword-submit input {
 	cursor: pointer;
-	transition: 0.2s ease-in-out;
+	transition: $transition__button--standard;
 
 	&:focus {
 		outline: none;
@@ -351,6 +353,7 @@ table {
 	&__edit-account-content {
 		content: "";
 		position: absolute;
+		z-index: 1;
 		right: 1rem;
 		top: 1rem;
 		width: 25px;
@@ -386,7 +389,8 @@ table {
 	}
 
 	&__filled--blue,
-	&-primary {
+	&-primary,
+	.lostpassword-button {
 		color: $color__text-white;
 		padding: 0.75em 1.25em;
 		border: 2px solid #16538c;
@@ -406,7 +410,6 @@ table {
 	z-index: 9999;
 	// width: 100%;
 	height: auto;
-
 	padding: 0 1em;
 	left: 50%;
 	opacity: 0;
