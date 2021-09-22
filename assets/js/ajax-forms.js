@@ -360,15 +360,15 @@ jQuery(document).ready(function($) {
 			color: "#16538c",
 			// This has to be the same size as the maximum width to
 			// prevent clipping
-			strokeWidth: 10,
-			trailWidth: 10,
+			strokeWidth: 0,
+			trailWidth: 0,
 			easing: "easeInOut",
 			duration: 1400,
 			text: {
 				autoStyleContainer: false
 			},
 			from: { color: "#18a0aa", width: 10 },
-			to: { color: "#16538c", width: 14 },
+			to: { color: "#16538c", width: 12 },
 			// Set default step function for all animate calls
 			step: function(state, circle) {
 				circle.path.setAttribute("stroke", state.color);
@@ -411,36 +411,36 @@ jQuery(document).ready(function($) {
 
 		progressRing.animate(percentValueOfAccountFillCompletness / 100);
 
-		if (dataJSON.percent_value_of_account_fill_completness < 49) {
-			accountFillCompletness.className = "";
-			accountFillCompletness.classList.add("value__low");
-		}
+		// if (dataJSON.percent_value_of_account_fill_completness < 49) {
+		// 	accountFillCompletness.className = "";
+		// 	accountFillCompletness.classList.add("value__low");
+		// }
 
-		if (
-			dataJSON.percent_value_of_account_fill_completness > 49 &&
-			75 > dataJSON.percent_value_of_account_fill_completness
-		) {
-			accountFillCompletness.className = "";
-			accountFillCompletness.classList.add("value__medium");
-		}
+		// if (
+		// 	dataJSON.percent_value_of_account_fill_completness > 49 &&
+		// 	75 > dataJSON.percent_value_of_account_fill_completness
+		// ) {
+		// 	accountFillCompletness.className = "";
+		// 	accountFillCompletness.classList.add("value__medium");
+		// }
 
-		if (
-			dataJSON.percent_value_of_account_fill_completness > 75 &&
-			95 > dataJSON.percent_value_of_account_fill_completness
-		) {
-			accountFillCompletness.className = "";
-			accountFillCompletness.classList.add("value__high");
-		}
+		// if (
+		// 	dataJSON.percent_value_of_account_fill_completness > 75 &&
+		// 	95 > dataJSON.percent_value_of_account_fill_completness
+		// ) {
+		// 	accountFillCompletness.className = "";
+		// 	accountFillCompletness.classList.add("value__high");
+		// }
 
-		if (dataJSON.percent_value_of_account_fill_completness < 100) {
-			accountFillCompletenessWrapper.classList.remove("hide");
-			accountFillCompletenessWrapper.classList.add("show");
-		}
+		// if (dataJSON.percent_value_of_account_fill_completness < 100) {
+		// 	accountFillCompletenessWrapper.classList.remove("hide");
+		// 	accountFillCompletenessWrapper.classList.add("show");
+		// }
 
-		if (dataJSON.percent_value_of_account_fill_completness === 100) {
-			accountFillCompletenessWrapper.classList.remove("show");
-			accountFillCompletenessWrapper.classList.add("hide");
-		}
+		// if (dataJSON.percent_value_of_account_fill_completness === 100) {
+		// 	accountFillCompletenessWrapper.classList.remove("show");
+		// 	accountFillCompletenessWrapper.classList.add("hide");
+		// }
 
 		// Refresh list of empty fields
 

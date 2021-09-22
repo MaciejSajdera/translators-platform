@@ -19,7 +19,8 @@
             vicode_error_messages();
 
             if ($login === "failed" ) {
-                echo '<p class="login-msg php-error__text">Invalid username and/or password.</p>';
+                echo '<p class="login-msg php-error__text">Niepoprawny login lub hasło.</p>';
+                // Invalid username and/or password.
             }
 
             if ( $login === "empty" ) {

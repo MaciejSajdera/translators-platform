@@ -57,9 +57,9 @@
 
 		</div>
 
-		<div class="single-translator__info">
+		<div class="info-box single-translator__info">
 
-			<div class="content-box info-box">
+			<div class="content-box">
 
 				<header class="entry-header">
 					

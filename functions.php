@@ -188,10 +188,10 @@ function add_type_attribute($tag, $handle, $src) {
     return $tag;
 }
 
-// function wpb_add_google_fonts() {
-// 	wp_enqueue_style( 'wpb-google-fonts', 'https://fonts.googleapis.com/css2?family=Montserrat:wght@200;400;700&display=swap', false );
-// }
-// add_action( 'wp_enqueue_scripts', 'wpb_add_google_fonts' );
+function wpb_add_google_fonts() {
+	wp_enqueue_style( 'wpb-google-fonts', 'https://fonts.googleapis.com/css2?family=Poppins:wght@200;400;700&display=swap', false );
+}
+add_action( 'wp_enqueue_scripts', 'wpb_add_google_fonts' );
 
 
 add_action( 'set_logged_in_cookie', 'my_update_cookie' );
@@ -540,9 +540,16 @@ add_shortcode('register_form', 'vicode_registration_form');
 
 // registration form fields
 function vicode_registration_fields() {
-	
+
 	ob_start(); ?>	
-		<h3 class="vicode_header"><?php _e('Register New Account'); ?></h3>
+
+		<div class="login-branding">
+			<div class="login-logo">
+				<img height="auto" width="50" src="<?php echo get_site_icon_url() ?>" />
+			</div>
+		</div>
+<!-- 
+		<h3 class="vicode_header"><?php _e('Zarejestruj się'); ?></h3> -->
 		
 		<?php 
 		// show any error messages after form submission
@@ -550,27 +557,27 @@ function vicode_registration_fields() {
 		?>
 		
 		<form id="vicode_registration_form" class="vicode_form" action="" method="POST">
-				<p>
+				<p class="animated-label-holder">
 					<label for="vicode_user_Login"><?php _e('Username'); ?></label>
 					<input name="vicode_user_login" id="vicode_user_login" class="vicode_user_login" type="text"/>
 				</p>
-				<p>
+				<p class="animated-label-holder">
 					<label for="vicode_user_email"><?php _e('Email'); ?></label>
 					<input name="vicode_user_email" id="vicode_user_email" class="vicode_user_email" type="email"/>
 				</p>
-				<p>
+				<p class="animated-label-holder">
 					<label for="vicode_user_first"><?php _e('Imię'); ?></label>
 					<input name="vicode_user_first" id="vicode_user_first" type="text" class="vicode_user_first" />
 				</p>
-				<p>
+				<p class="animated-label-holder">
 					<label for="vicode_user_last"><?php _e('Nazwisko'); ?></label>
 					<input name="vicode_user_last" id="vicode_user_last" type="text" class="vicode_user_last"/>
 				</p>
-				<p>
+				<p class="animated-label-holder">
 					<label for="password"><?php _e('Hasło'); ?></label>
 					<input name="vicode_user_pass" id="password" class="password" type="password"/>
 				</p>
-				<p>
+				<p class="animated-label-holder">
 					<label for="password_again"><?php _e('Powtórz hasło'); ?></label>
 					<input name="vicode_user_pass_confirm" id="password_again" class="password_again" type="password"/>
 				</p>
@@ -1094,7 +1101,7 @@ function basic_user_data_form() {
 					?>
 				</p>
 
-				<p class="status"></p>
+				<!-- <p class="status"></p> -->
 
 				<p>
 
@@ -1663,6 +1670,7 @@ function linkedin_user_data_form() {
 			<fieldset>
 
 				<p>
+					<label>Adres do profilu Linkedin</label>
 					<input name="user_linkedin" id="user_linkedin" class="user_linkedin" type="text" value="<?php echo get_field("translator_linkedin_link", $user_post_id) ?>"></textarea>
 				</p>
 
@@ -2836,7 +2844,8 @@ function settings_user_login_email_form() {
 		
 		<form name="settings_user_login_email_form" id="settings_user_login_email_form" class="vicode_form" action="" method="POST">
 
-			<p>
+			<p class="animated-label-holder">
+				<label>Nowy adres e-mail</label>
 				<input name="user_new_login_email" id="user_new_login_email" class="user_new_login_email" type="text" value="<?php echo $current_user_login_email; ?>"/>
 			</p>
 
@@ -2931,14 +2940,20 @@ function settings_user_password_form() {
 
 		<form name="settings_user_password_form" id="settings_user_password_form" class="vicode_form" action="" method="POST">
 
+				<p class="animated-label-holder">
+					<label for="current_password">Wprowadź aktualne hasło:</label>
+					<input id="current_password" type="password" name="current_password" title="current_password" placeholder="">
+				</p>
 
-				<label for="current_password">Wprowadź aktualne hasło:</label>
-				<input id="current_password" type="password" name="current_password" title="current_password" placeholder="">
-				<label for="new_password">Nowe hasło:</label>
-				<input id="new_password" type="password" name="new_password" title="new_password" placeholder="">
-				<label for="confirm_new_password">Potwierdź nowe hasło:</label>
-				<input id="confirm_new_password" type="password" name="confirm_new_password" title="confirm_new_password" placeholder="">
+				<p class="animated-label-holder">
+					<label for="new_password">Nowe hasło:</label>
+					<input id="new_password" type="password" name="new_password" title="new_password" placeholder="">
+				</p>
 
+				<p class="animated-label-holder">
+					<label for="confirm_new_password">Potwierdź nowe hasło:</label>
+					<input id="confirm_new_password" type="password" name="confirm_new_password" title="confirm_new_password" placeholder="">
+				</p>
 				
 				<p>
 					<input type="submit" name="submit_user_new_password" value="<?php _e('Zmień hasło'); ?>"/>
@@ -3297,9 +3312,6 @@ function change_settings_user_data_visibility_with_ajax() {
 	
 add_action( 'wp_ajax_nopriv_change_settings_user_data_visibility_with_ajax',  'change_settings_user_data_visibility_with_ajax' );
 add_action( 'wp_ajax_change_settings_user_data_visibility_with_ajax','change_settings_user_data_visibility_with_ajax' );
-
-
-
 
 
 

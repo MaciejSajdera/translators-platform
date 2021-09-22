@@ -1,6 +1,6 @@
 <div class="common-box__new-posts">
 
-    <h2>Aktualności PSTK</h2>
+    <h2 class="text--big-header text--outline-blue">Aktualności</h2>
 
     <div class="wrapper-flex-drow-mcol">
 

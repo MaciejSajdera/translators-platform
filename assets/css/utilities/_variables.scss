@@ -20,20 +20,21 @@ $color__border-button-hover: #ccc #bbb #aaa;
 $color__border-button-focus: #aaa #bbb #bbb;
 $color__border-input: #ccc;
 $color__border-abbr: #666;
-$color__border-element: #e0e0e0;
+$color__border-element: #e5e5e5;
 
 $color_special-elements: #6ec9cf;
 $color__inactive-element: #cacaca;
 
 $color__error-red: #ff0000;
-$color__success-green: #24b82be6;
+// $color__success-green: #24b82be6;
+$color__success-green: lightgreen;
 $color__verified-blue: #5698e7;
 $color__text--light-grey: #999;
 $color__pending: #ffb618;
 
 $color__main-theme--blue: #16538c;
 $color__main-theme--turquise: #18a0aa;
-$color__main-theme--turquise-transparent: #18a0aa31;
+$color__main-theme--turquise-transparent: #18a0aa20;
 
 /* TYPOGRAPHY */
 $font__main: "Gotham";
@@ -54,21 +55,21 @@ $break__large: 64.063em;
 // $box-shadow_standard: 0 0px 15px 5px rgb(0 0 0 / 10%),
 // 	0 0px 6px 0px rgb(0 0 0 / 5%);
 
-$box-shadow_standard: 0px 0px 7px rgb(0 0 0 / 25%);
-
-/* ELEMENTS */
-$profile_picture_top_distance: 4rem;
-$profile_picture_height: 175px;
-$profile_picture_width: 175px;
+$box-shadow_standard: 0px 0px 5px rgb(0 0 0 / 15%);
 
 /* GRADIENTS */
 
 $gradient--turquise: linear-gradient(
-	247.16deg,
-	rgba(24, 160, 170, 0.076) 6.59%,
-	rgba(22, 83, 140, 0) 110.67%
+	15deg,
+	rgba(24, 160, 170, 0.15) 0%,
+	rgba(24, 160, 170, 0.075) 50%,
+	rgba(255, 255, 255, 0) 100%
 );
 
 /* TRANSITIONS */
-
+$transition_regular: all 0.3s ease-in-out;
 $transition__button--standard: all 0.2s ease-in-out;
+
+/* ELEMENTS */
+$padding__side-main--desktop: 10%;
+$padding__content-box: 2rem;

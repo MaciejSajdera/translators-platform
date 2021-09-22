@@ -1,3 +1,7 @@
+/* VARIABLES */
+
+$input-padding: 5px;
+
 /* BUTTONS */
 button,
 input[type="button"],
@@ -27,7 +31,7 @@ input[type="url"],
 input[type="password"],
 input[type="search"],
 textarea {
-	padding: 10px;
+	padding: $input-padding;
 }
 
 input[type="text"],
@@ -37,13 +41,24 @@ input[type="password"],
 input[type="search"],
 select,
 textarea {
-	color: $color__text-input;
-	border: 1px solid $color__border-input;
-	border-radius: 3px;
+	border: none;
+	border-bottom: 1px solid $color__border-element;
 
-	&:focus {
-		color: $color__text-input-focus;
+	// &:focus {
+	// 	color: $color__text-input-focus;
+	// }
+
+	&:focus-visible {
+		outline: none;
 	}
+}
+
+/* Change the white to any color */
+input:-webkit-autofill,
+input:-webkit-autofill:hover,
+input:-webkit-autofill:focus,
+input:-webkit-autofill:active {
+	-webkit-background-clip: text;
 }
 
 input[type="submit"] {
@@ -60,6 +75,156 @@ input[type="checkbox"] {
 	width: $checkbox_width;
 	height: $checkbox_height;
 	margin-right: $checkbox_margin-right;
+}
+
+$login-and-registration-height: 80vh;
+
+.login-and-registration {
+	&__welcome-view {
+		display: flex;
+		min-height: $login-and-registration-height;
+	}
+
+	&__forms {
+		height: 100%;
+		border: 1px solid $color__border-element;
+		position: relative;
+		display: flex;
+		justify-content: center;
+		align-items: center;
+
+		@media screen and (min-width: 992px) {
+			width: 35%;
+			min-height: $login-and-registration-height;
+		}
+
+		// .login-panel,
+		// .registration-panel {
+		// 	position: absolute;
+		// }
+
+		& > * {
+			padding: 1.5em;
+		}
+
+		form {
+			p {
+				display: flex;
+				flex-flow: column;
+				margin: 1rem auto 2rem;
+				position: relative;
+			}
+		}
+
+		.login-branding {
+			margin-bottom: 4rem;
+		}
+
+		.login-msg {
+			margin-bottom: 2rem;
+		}
+
+		.login-panel,
+		.registration-panel {
+			transition: all 0.5s cubic-bezier(0.17, 0.04, 0.32, 1);
+			transform: translateY(5%);
+			opacity: 0;
+			width: 100%;
+		}
+
+		.forgot-password-link {
+			text-align: center;
+			width: 100%;
+			display: block;
+		}
+
+		#switch-sign-in,
+		#switch-sign-up {
+			cursor: pointer;
+			text-align: center;
+		}
+
+		.form-deactivated {
+			display: none;
+		}
+
+		.form-activated {
+			display: block;
+		}
+
+		.form-active {
+			opacity: 1;
+			transform: translateY(0%);
+		}
+
+		.login-logo {
+			display: flex;
+			width: 100%;
+			justify-content: center;
+			align-items: center;
+			padding: 1em;
+		}
+
+		.login-remember label {
+			position: static;
+		}
+	}
+
+	&__our-mission {
+		display: flex;
+		justify-content: center;
+		align-items: center;
+
+		border: 1px solid $color__border-element;
+
+		@media screen and (min-width: 992px) {
+			width: 65%;
+		}
+	}
+}
+
+/* 	Animations */
+
+.animated-label-holder,
+.login-form p {
+	label {
+		position: absolute;
+		padding: calc(#{$input-padding} + 1px); // +1px for border width
+		background-clip: content-box;
+		background-color: $color__background-body;
+		transition: all 150ms ease-out;
+	}
+
+	input {
+		transition: all 150ms ease-out;
+	}
+}
+
+.input-holder {
+	&__active {
+		label {
+			transform: translateY(-75%);
+			font-size: 0.75em;
+		}
+
+		input {
+			border-bottom: 1px solid $color__main-theme--turquise;
+		}
+	}
+
+	&__filled {
+		input {
+			border-bottom: 1px solid $color__success-green;
+		}
+	}
+}
+
+#lostpasswordform {
+	p {
+		display: flex;
+		flex-flow: column;
+		margin: 1rem auto;
+	}
 }
 
 .repeater {
@@ -178,6 +343,7 @@ label {
 	display: flex;
 	align-items: center;
 	cursor: pointer;
+	color: $color__text--light-grey;
 }
 
 .new-attachment {

@@ -23,4 +23,14 @@ export default class Navigation {
 			}
 		};
 	}
+
+	makeNavSticky() {
+		const siteHeader = document.querySelector(".site-header");
+
+		if (window.pageYOffset > siteHeader.offsetTop) {
+			siteHeader.classList.add("site-header__fixed", "box-shadow__standard");
+		} else {
+			siteHeader.classList.remove("site-header__fixed", "box-shadow__standard");
+		}
+	}
 }

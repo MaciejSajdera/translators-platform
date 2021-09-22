@@ -38,11 +38,16 @@ $management_member_of_the_month = $section_6["management_member_of_the_month"];
 
 		<section class="home__section-1">
 
-			<div class="grid">
+			<div class="welcome-view-container">
+
 				<div class="text-holder">
 					<h1><?php echo $h1 ?></h1>
 
 					<h2><?php echo $h2 ?></h2>
+
+					<div class="image-holder">
+						<img src="<?php echo $image['url'] ?>" alt="<?php echo $image['alt'] ?>">
+					</div>
 				</div>
 
 				<div class="search__container">
@@ -55,11 +60,19 @@ $management_member_of_the_month = $section_6["management_member_of_the_month"];
 						get_template_part( 'template-parts/searchfilter-basic' );
 					?>
 
+					<div class="prizes-wrapper">
+
+						<img src="http://pstk.local/wp-content/uploads/2021/09/HSYTP_main_image-removebg-preview-1.png">
+						<img src="http://pstk.local/wp-content/uploads/2021/09/society-removebg-preview-1.png">
+
+					</div>
+
+
+
+
 				</div>
 
-				<div class="image-holder">
-					<img src="<?php echo $image['url'] ?>" alt="<?php echo $image['alt'] ?>">
-				</div>
+
 			</div>
 
 		</section>

@@ -1,3 +1,5 @@
+$profile-picture-decoration-spacing: -8.5%;
+
 .account {
 	position: relative;
 
@@ -13,6 +15,12 @@
 			fill: $color__success-green;
 			pointer-events: none;
 		}
+	}
+
+	&__privacy-status-holder {
+		// position: absolute;
+		// top: $profile-picture-decoration-spacing;
+		// left: $profile-picture-decoration-spacing;
 	}
 
 	&__not-approved {
@@ -31,10 +39,8 @@
 
 	&__approval-status-holder {
 		position: absolute;
-		// bottom: 0px;
-		// right: 0;
-		bottom: -6.5%;
-		right: -6.5%;
+		bottom: $profile-picture-decoration-spacing;
+		right: $profile-picture-decoration-spacing;
 	}
 
 	&__welcome-message {
@@ -47,7 +53,7 @@
 		#progressRing {
 			position: relative;
 			overflow: visible;
-			// border: 2px solid $color__border-element;
+			// border: 2px solid $color__main-theme--turquise;
 			border-radius: 100%;
 			font-weight: 500;
 			z-index: 1;
@@ -58,13 +64,41 @@
 			min-height: 75px;
 			padding: 0.35rem;
 
+			&:after,
+			&:before {
+				content: "";
+				position: absolute;
+			}
+
+			&:after {
+				height: 100%;
+				background: linear-gradient(225deg, #18a0aa, transparent);
+				width: 100%;
+				top: 0;
+				border-radius: 100%;
+				left: 50%;
+				transform: translateX(-50%) scale(1.05);
+				z-index: -2;
+			}
+
+			&:before {
+				height: 100%;
+				background: $color__background-body;
+				width: 100%;
+				top: 0;
+				border-radius: 100%;
+				left: 50%;
+				transform: translateX(-50%);
+				z-index: -1;
+			}
+
 			@media screen and (min-width: 992px) {
 				margin-left: 3rem;
 				width: 125px;
 				min-width: 125px;
 				height: 125px;
 				min-height: 125px;
-				padding: 0.65rem;
+				padding: 0.85rem;
 			}
 
 			.progressbar-text {
@@ -96,7 +130,7 @@
 		}
 	}
 
-	&__fill-completeness-wrapper.show {
+	&__fill-completeness-wrapper {
 		display: flex;
 		align-items: center;
 
@@ -105,15 +139,9 @@
 		}
 	}
 
-	&__fill-completeness-wrapper.hide {
-		display: none;
-	}
-
-	.logout-link {
-		position: absolute;
-		right: 3rem;
-		top: 1rem;
-	}
+	// &__fill-completeness-wrapper.hide {
+	// 	display: none;
+	// }
 
 	&__container {
 		display: flex;
@@ -135,6 +163,8 @@
 
 		.account__user-fullname {
 			text-align: center;
+			@include fluid-type($min_width, $max_width, 24px, 28px);
+			color: $color__main-theme--blue;
 		}
 	}
 
@@ -167,7 +197,11 @@
 	}
 
 	.profile-section {
-		scroll-margin-top: 3rem;
+		scroll-margin-top: 6rem;
+
+		@media screen and (min-width: 992px) {
+			scroll-margin-top: 8rem;
+		}
 	}
 
 	.profile-section--active {
@@ -223,18 +257,15 @@
 	}
 
 	&__settings {
-		.info-box {
-			margin-bottom: 3rem;
-		}
-
 		.account__box-container {
 			border: none;
+			box-shadow: none;
 		}
 
-		.button__edit-account-content {
-			right: 0rem;
-			top: 1rem;
-		}
+		// .button__edit-account-content {
+		// 	right: 0rem;
+		// 	top: 1rem;
+		// }
 
 		input[type="text"] {
 			width: 100%;
@@ -247,6 +278,8 @@
 }
 
 .info-box {
+	margin-bottom: 4rem;
+
 	&__header {
 		font-size: 1.75rem;
 		margin: 0;
@@ -264,8 +297,7 @@
 	}
 
 	&__subbox--max-width {
-		max-width: 350px;
-		padding: 1rem 0;
+		max-width: 375px;
 	}
 
 	&__subbox-header {
@@ -289,109 +321,12 @@
 
 .info-box__header,
 .content-box {
-	padding: 2rem;
+	padding: $padding__content-box;
 }
 
-$login-and-registration-height: 80vh;
-
-.login-and-registration {
-	&__welcome-view {
-		display: flex;
-		min-height: $login-and-registration-height;
-	}
-
-	&__forms {
-		height: 100%;
-		border: 1px solid $color__border-element;
-		position: relative;
-		display: flex;
-		justify-content: center;
-		align-items: center;
-
-		@media screen and (min-width: 992px) {
-			width: 35%;
-			min-height: $login-and-registration-height;
-		}
-
-		// .login-panel,
-		// .registration-panel {
-		// 	position: absolute;
-		// }
-
-		& > * {
-			padding: 1.5em;
-		}
-
-		form {
-			p {
-				display: flex;
-				flex-flow: column;
-				margin: 1rem auto;
-			}
-		}
-
-		.login-panel,
-		.registration-panel {
-			transition: all 0.5s cubic-bezier(0.17, 0.04, 0.32, 1);
-			transform: translateY(5%);
-			opacity: 0;
-			width: 100%;
-		}
-
-		.forgot-password-link {
-			text-align: center;
-			width: 100%;
-			display: block;
-		}
-
-		#switch-sign-in,
-		#switch-sign-up {
-			cursor: pointer;
-			text-align: center;
-		}
-
-		.form-deactivated {
-			display: none;
-		}
-
-		.form-activated {
-			display: block;
-		}
-
-		.form-active {
-			opacity: 1;
-			transform: translateY(0%);
-		}
-
-		.login-logo {
-			display: flex;
-			width: 100%;
-			justify-content: center;
-			align-items: center;
-			padding: 1em;
-		}
-	}
-
-	&__our-mission {
-		display: flex;
-		justify-content: center;
-		align-items: center;
-
-		border: 1px solid $color__border-element;
-
-		@media screen and (min-width: 992px) {
-			width: 65%;
-		}
-	}
-}
-
-#lostpasswordform {
-	p {
-		display: flex;
-		flex-flow: column;
-		margin: 1rem auto;
-	}
-}
+$profile_picture_top_distance: 0rem;
+$profile_picture_height: 175px;
+$profile_picture_width: 175px;
 
 .profile-picture {
 	&__wrapper {
@@ -427,15 +362,15 @@ $login-and-registration-height: 80vh;
 				border: 2px solid $color__main-theme--turquise;
 
 				&--left {
-					left: -6.5%;
-					bottom: -6.5%;
+					left: $profile-picture-decoration-spacing;
+					bottom: $profile-picture-decoration-spacing;
 					border-top: 0;
 					border-right: 0;
 				}
 
 				&--right {
-					right: -6.5%;
-					top: -6.5%;
+					right: $profile-picture-decoration-spacing;
+					top: $profile-picture-decoration-spacing;
 					border-bottom: 0;
 					border-left: 0;
 				}

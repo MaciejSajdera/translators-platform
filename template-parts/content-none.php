@@ -36,7 +36,7 @@
 
 				$apiKey = 'AIzaSyAPJ8o7xD9vqydfgZ6XrJKvLdnhmL_YTxA'; // Google maps now requires an API key.
 
-				$geo_target_city = file_get_contents('https://maps.googleapis.com/maps/api/geocode/json?address='.urlencode($target_city_name).'&sensor=false&key='.$apiKey);
+				$geo_target_city = @file_get_contents('https://maps.googleapis.com/maps/api/geocode/json?address='.urlencode($target_city_name).'&sensor=false&key='.$apiKey);
 				$geo_target_city = json_decode($geo_target_city, true); // Convert the JSON to an array
 
 				if (isset($geo_target_city['status']) && ($geo_target_city['status'] == 'OK')) {
@@ -74,7 +74,7 @@
 					$translator_city_name = $term->name; // Address
 
 					/* Get JSON results from this request */
-					$geo_translator_city = file_get_contents('https://maps.googleapis.com/maps/api/geocode/json?address='.urlencode($translator_city_name).'&sensor=false&key='.$apiKey);
+					$geo_translator_city = @file_get_contents('https://maps.googleapis.com/maps/api/geocode/json?address='.urlencode($translator_city_name).'&sensor=false&key='.$apiKey);
 					$geo_translator_city = json_decode($geo_translator_city, true); // Convert the JSON to an array
 
 					if (isset($geo_translator_city['status']) && ($geo_translator_city['status'] == 'OK')) {

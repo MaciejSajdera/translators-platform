@@ -28,6 +28,43 @@ document.addEventListener("DOMContentLoaded", () => {
 		});
 	}
 
+	/* 	Animate input labels */
+
+	const allAnimatedLabelHolders = document.querySelectorAll(
+		".animated-label-holder input, #loginform p input"
+	);
+
+	console.log(allAnimatedLabelHolders);
+
+	allAnimatedLabelHolders &&
+		allAnimatedLabelHolders.forEach(input => {
+			if (
+				!input.closest("P").classList.contains("login-remember") ||
+				!input.closest("P").classList.contains("login-submit")
+			) {
+				input.addEventListener("focus", function(e) {
+					this.closest("P").classList.add("input-holder__active");
+				});
+
+				input.addEventListener("blur", function(e) {
+					let isInputFilled = this.value;
+
+					console.log(isInputFilled);
+
+					if (isInputFilled) {
+						this.closest("P").classList.add("input-holder__filled");
+					}
+
+					if (!isInputFilled) {
+						this.closest("P").classList.remove(
+							"input-holder__active",
+							"input-holder__filled"
+						);
+					}
+				});
+			}
+		});
+
 	const accountNavigation = document.querySelector(".account__navigation");
 
 	if (accountNavigation) {
@@ -57,7 +94,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
 	//keep the right tab active after page reload
 
-	if (localStorage && accountNavigation) {
+	if (localStorage.activeProfileSectionID && accountNavigation) {
 		const activeProfileSectionID = document.querySelector(
 			".profile-section--active"
 		).id;

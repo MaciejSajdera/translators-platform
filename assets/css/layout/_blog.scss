@@ -1,0 +1,29 @@
+.blog {
+	.searchfilter {
+		&__wrapper {
+			form > ul {
+				display: flex;
+				flex-flow: row;
+				justify-content: center;
+				align-items: center;
+				padding: 0;
+				margin: 0;
+
+				@media screen and (min-width: 992px) {
+					// flex-flow: row;
+					// justify-content: space-between;
+					// flex-wrap: wrap;
+					column-gap: 1.5rem;
+				}
+			}
+		}
+
+		li.sf-field-submit {
+			h4 {
+				color: transparent;
+				// height: 1rem;
+				// display: none;
+			}
+		}
+	}
+}

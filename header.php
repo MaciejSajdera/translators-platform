@@ -23,7 +23,7 @@
 <body <?php body_class(); ?>>
 
 <?php
-//  get_template_part( 'template-parts/preloader', 'page' );
+ get_template_part( 'template-parts/preloader', 'page' );
 ?>
 
 <div class="modal">
@@ -34,18 +34,26 @@
 </div>
  
 <?php wp_body_open(); ?>
-<div id="page" class="site">
+<div id="page" class="site" style="visibility: hidden">
 	<a class="skip-link screen-reader-text" href="#content"><?php esc_html_e( 'Skip to content', 'pstk' ); ?></a>
 
 	<header id="masthead" class="site-header">
 
-				<div class="site-branding">
+				<div class="site-header__top">
+					<div class="site-branding">
+						<a href="<?php echo esc_url( home_url( '/' ) ); ?>" rel="home"><?php bloginfo( 'name' ); ?>
+							<?php the_custom_logo(); ?>
+						</a>
+					</div>
 
-					<a href="<?php echo esc_url( home_url( '/' ) ); ?>" rel="home"><?php bloginfo( 'name' ); ?>
-						<?php the_custom_logo(); ?>
-					</a>
-
-				</div><!-- .site-branding -->
+					<button class="menu-toggle" aria-controls="primary-menu" aria-expanded="false">
+						<div class="span-wrapper">
+							<span class="burger-menu-piece"></span>
+							<span class="burger-menu-piece"></span>
+							<span class="burger-menu-piece"></span>
+						</div>
+					</button>
+				</div>
 
 				<div class="desktop-menu-container">
 
@@ -81,7 +89,7 @@
 				</div>
 
 
-				<button class="menu-toggle" aria-controls="primary-menu" aria-expanded="false"><?php esc_html_e( 'Primary Menu', 'pstk' ); ?></button>
+
 
 
 	</header><!-- #masthead -->

@@ -11,14 +11,16 @@ document.addEventListener("DOMContentLoaded", () => {
 	const myPreloader = document.querySelector(".my-preloader");
 	const page = document.querySelector("#page");
 
-	// setTimeout(() => {
-	// 	myPreloader.classList.add("my-preloader-off");
-	// }, 600);
+	setTimeout(() => {
+		myPreloader.classList.add("my-preloader-off");
+		page.classList.add("page-loaded");
+		document.querySelector("body").classList.add("body-loaded");
+	}, 600);
 
-	// setTimeout(() => {
-	// 	myPreloader.classList.add("my-preloader-none");
-	// 	page.classList.add("page-loaded");
-	// }, 700);
+	setTimeout(() => {
+		myPreloader.classList.add("my-preloader-none");
+		page.classList.add("page-loaded");
+	}, 700);
 
 	// setTimeout(() => {
 	// 	cookiesNotification();
@@ -39,6 +41,12 @@ document.addEventListener("DOMContentLoaded", () => {
 				});
 			return;
 		}
+	};
+
+	/* 	HEADER */
+
+	window.onscroll = function() {
+		navigation.makeNavSticky();
 	};
 
 	///// MENUS /////
@@ -507,5 +515,11 @@ document.addEventListener("DOMContentLoaded", () => {
 
 	/* Global click event listener */
 
-	// document.addEventListener("click", e => {});
+	document.addEventListener("click", e => {
+		console.log(e);
+		if (e.target.name === "_sf_submit") {
+			const searchButton = document.querySelector(".sf-field-submit");
+			searchButton.classList.add("search-button--clicked");
+		}
+	});
 });

@@ -4,12 +4,12 @@
 	}
 
 	section {
-		padding-left: 1rem;
-		padding-right: 1rem;
+		padding-left: 2rem;
+		padding-right: 2rem;
 
 		@media screen and (min-width: 992px) {
-			padding-left: 7.5%;
-			padding-right: 7.5%;
+			padding-left: $padding__side-main--desktop;
+			padding-right: $padding__side-main--desktop;
 		}
 
 		&:first-of-type {
@@ -23,7 +23,7 @@
 
 	&__section-1 {
 		position: relative;
-		background: $gradient--turquise;
+		// background: $gradient--turquise;
 		min-height: 100vh;
 
 		&:after {
@@ -45,30 +45,69 @@
 		}
 
 		.search__container {
-			grid-row: 2;
+			grid-row: 1;
+			flex-flow: column;
+			display: flex;
+			justify-self: center;
+			width: -webkit-fill-available;
+			justify-content: space-between;
+
+			li.sf-field-submit {
+				margin-top: 1rem;
+				position: relative;
+
+				h4 {
+					// color: transparent;
+					// height: 1rem;
+					display: none;
+				}
+			}
 
 			@media screen and (min-width: 992px) {
-				grid-column-start: 1;
-				grid-column-end: 3;
+				max-width: 400px;
+			}
+
+			.searchfilter__wrapper {
+				@media screen and (min-width: 992px) {
+					margin-top: 25%;
+				}
 			}
 		}
 
 		.image-holder {
-			text-align: center;
+			// text-align: center;
 			display: flex;
-			justify-content: center;
+			// justify-content: center;
 			align-items: center;
+			// padding: 2rem;
 
-			grid-row: 3;
+			// grid-row: 3;
 
 			img {
-				max-width: 300px;
-			}
+				object-fit: contain;
 
-			@media screen and (min-width: 992px) {
-				grid-row: 1;
-				img {
-					max-width: 350px;
+				max-height: 350px;
+
+				@media screen and (min-width: 992px) {
+					// grid-row: 1;
+
+					// max-width: 350px;
+				}
+			}
+		}
+
+		.prizes-wrapper {
+			display: flex;
+			flex-flow: row;
+			justify-self: flex-end;
+			align-self: flex-end;
+
+			img {
+				max-width: 150px;
+				object-fit: contain;
+
+				&:first-of-type {
+					margin-right: 2rem;
 				}
 			}
 		}
@@ -82,5 +121,16 @@
 		img {
 			max-width: 300px;
 		}
+	}
+}
+
+.welcome-view-container {
+	display: flex;
+	flex-flow: column;
+
+	@media screen and (min-width: 992px) {
+		display: grid;
+		grid-column-gap: 2rem;
+		grid-template-columns: 50%;
 	}
 }

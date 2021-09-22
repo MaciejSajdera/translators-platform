@@ -20,4 +20,10 @@
 
 .grid {
 	display: grid;
+
+	&--desktop-2x2 {
+		@media screen and (min-width: 992px) {
+			grid-template-columns: 50%;
+		}
+	}
 }

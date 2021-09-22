@@ -15,6 +15,30 @@ body {
 	background: $color__background-body; // Fallback for when there is no custom background color defined.
 }
 
+body.page-template-home-page-template {
+	background: linear-gradient(
+		180deg,
+		rgba(22, 83, 140, 0.26) 0%,
+		rgba(22, 83, 140, 0.06) 15%,
+		rgba(24, 160, 170, 0.032) 30%,
+		rgba(24, 160, 170, 0) 60%,
+		rgba(24, 160, 170, 0.04) 70%,
+		rgba(225, 243, 244, 0.092) 100%
+	);
+}
+
+.page.gradient {
+	background: linear-gradient(
+		186.43deg,
+		rgba(22, 83, 140, 0.26) 0.49%,
+		rgba(22, 83, 140, 0.06) 18.29%,
+		rgba(24, 160, 170, 0.032) 39.55%,
+		rgba(24, 160, 170, 0) 55.87%,
+		rgba(24, 160, 170, 0.04) 71.69%,
+		rgba(225, 243, 244, 0.092) 91.62%
+	);
+}
+
 blockquote,
 q {
 	quotes: "" "";
@@ -73,7 +97,9 @@ ol {
 }
 
 ul {
-	list-style: disc;
+	margin: 0;
+	padding: 0;
+	list-style: none;
 }
 
 ol {
@@ -153,13 +179,15 @@ table {
 	display: none;
 }
 
-// .site {
-// 	opacity: 0;
-// 	transition: all 0.3s ease-in;
-// }
+.site {
+	opacity: 0;
+	transition: all 0.3s ease-in;
+}
 
 .page-loaded {
 	opacity: 1 !important;
+	display: block;
+	visibility: visible !important;
 }
 
 .cookie-law-notification {
@@ -354,8 +382,8 @@ table {
 		content: "";
 		position: absolute;
 		z-index: 1;
-		right: 1rem;
-		top: 1rem;
+		right: $padding__content-box;
+		top: $padding__content-box;
 		width: 25px;
 		height: 25px;
 		background-image: url(../dist/svg/edit-blue.svg);

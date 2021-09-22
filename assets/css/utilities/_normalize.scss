@@ -9,6 +9,12 @@
  * 2. Prevent adjustments of font size after orientation changes in iOS.
  */
 
+* {
+	&:focus-visible {
+		outline: none;
+	}
+}
+
 html {
 	line-height: 1.5;
 	-webkit-text-size-adjust: 100%;
@@ -212,7 +218,7 @@ button:-moz-focusring,
 [type="button"]:-moz-focusring,
 [type="reset"]:-moz-focusring,
 [type="submit"]:-moz-focusring {
-	outline: 1px dotted ButtonText;
+	outline: none;
 }
 
 /**

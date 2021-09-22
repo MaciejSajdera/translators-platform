@@ -56,9 +56,6 @@ get_header();
 		
 		if ( is_user_logged_in() && !current_user_can( 'manage_options' ) ) {
 
-			?>
-				<a class="logout-link" href="<?php echo wp_logout_url() ?>">Wyloguj</a>
-			<?php
 
 				//User data from wp_usermeta
 	
@@ -92,31 +89,28 @@ get_header();
 						echo '<div class="account__side-menu content-box">';
 
 							$is_approved = get_post_meta( $user_post_id, 'is_approved', true );
-
 							$account_privacy_status = get_post_status($user_post_id);
-
 							$account_privacy_icon = file_get_contents(get_stylesheet_directory_uri().'/dist/dist/svg/earth.svg');
 							
 							if ( !$is_approved ) {
-
-								echo '<div>';
-									echo '<div class="icon account__privacy-status account__private">'.$account_privacy_icon.'</div>';
-								echo '</div>';
+								$account_privacy_status_icon = '<div class="account__privacy-status-holder">
+																	<div class="icon account__privacy-status account__private">'.$account_privacy_icon.'</div>
+																</div>';
 							}
 
 							if( $is_approved && $account_privacy_status !== "publish" ) {
-
-								echo '<div>';
-									echo '<div class="icon account__privacy-status account__private">'.$account_privacy_icon.'</div>';
-								echo '</div>';
+								$account_privacy_status_icon = '<div class="account__privacy-status-holder">
+																	<div class="icon account__privacy-status account__private">'.$account_privacy_icon.'</div>
+																</div>';
 							}
 
 							if ( $is_approved && $account_privacy_status == "publish" ) {
-
-								echo '<div>';
-									echo '<div class="icon account__privacy-status account__public">'.$account_privacy_icon.'</div>';
-								echo '</div>';
+								$account_privacy_status_icon = '<div class="account__privacy-status-holder">
+																	<div class="icon account__privacy-status account__public">'.$account_privacy_icon.'</div>
+																</div>';
 							}
+
+							echo $account_privacy_status_icon;
 
 							echo '<div class="profile-picture__wrapper ajax-content-wrapper">';
 
@@ -181,6 +175,8 @@ get_header();
 									echo '<li><a href="#profile-section-2" class="button button__outline--blue" data-profile-section="profile-section-2">Ustawienia</a></li>';
 									// echo '<li><a href="#" class="button button__outline--blue" data-profile-section="profile-section-3">Płatności</a></li>';
 									echo '<li><a href="#profile-section-3" class="button button__outline--blue" data-profile-section="profile-section-3">Materiały tylko dla członków PSTK</a></li>';
+									echo '<li><a href="'.wp_logout_url().'" class="button button__outline--blue logout-link">Wyloguj</a></li>';
+								
 
 								echo '</ul>';
 
@@ -198,46 +194,37 @@ get_header();
 
 								$user_nickname = $current_user->user_login;
 
-								echo '<div class="account__welcome-message">';
+								echo '<div class="info-box account__welcome-message">';
 
 									echo '<div class="content-box">';
 
 										echo '<h1>Cześć <span class="account__user-first-name">'.$translator_first_name.'</span>!</h1>';
 
-										echo '<h3>Witaj na swoim koncie PSTK.</h3>';
+										echo '<h2>Witaj na swoim koncie PSTK.</h2>';
 
 										$completness_value_class = '';
+										$account_fill_completeness_display = '';
 
-										if (get_percent_value_of_account_fill_completness() < 49) {
-											$completness_value_class = "value__low";
-										}
-
-										if (get_percent_value_of_account_fill_completness() >= 49 && 75 > get_percent_value_of_account_fill_completness()) {
-											$completness_value_class = "value__medium";
-										}
-
-										if (get_percent_value_of_account_fill_completness() >= 75 && 95 >= get_percent_value_of_account_fill_completness()) {
-											$completness_value_class = "value__high";
-										}
-
-										$account_fill_completeness_display = "show";
-
-										if (get_percent_value_of_account_fill_completness() == 100) {
-											$account_fill_completeness_display = "hide";
-										}
-
-										// if (get_percent_value_of_account_fill_completness() == 0) {
-
-										// 	$default_starting_number = 15;
-
-										// 	echo '<div class="account__fill-completeness-wrapper '.$account_fill_completeness_display.'">';
-										// 		echo '<h2>';
-										// 		echo 'Twój profil jest kompletny w <span id="accountFillCompletness" class="'.$completness_value_class.'"><span id="percentValueOfAccountFillCompletness">'.$default_starting_number.'</span><span >%</span></span>. <span class="button button__link-cta" id="fillTheseFields">Uzupełnij go.</span>';		
-										// 		echo '</h2>';
-										// 	echo '</div>';
+										// if (get_percent_value_of_account_fill_completness() < 49) {
+										// 	$completness_value_class = "value__low";
 										// }
 
-										if (get_percent_value_of_account_fill_completness() > 0) {
+										// if (get_percent_value_of_account_fill_completness() >= 49 && 75 > get_percent_value_of_account_fill_completness()) {
+										// 	$completness_value_class = "value__medium";
+										// }
+
+										// if (get_percent_value_of_account_fill_completness() >= 75 && 95 >= get_percent_value_of_account_fill_completness()) {
+										// 	$completness_value_class = "value__high";
+										// }
+
+										// $account_fill_completeness_display = "show";
+
+										// if (get_percent_value_of_account_fill_completness() == 100) {
+										// 	$account_fill_completeness_display = "hide";
+										// }
+
+
+										if (get_percent_value_of_account_fill_completness()) {
 
 											echo '<div class="account__fill-completeness-wrapper '.$account_fill_completeness_display.'">';
 
@@ -271,7 +258,7 @@ get_header();
 
 								/* BASIC INFO CONTAINER */
 
-								echo '<div class="basic-info-container">';
+								echo '<div class="info-box basic-info-container">';
 
 									echo '<div><p class="info-box__header">Podstawowe dane</p></div>';
 
@@ -291,7 +278,7 @@ get_header();
 
 										/* CONTENT BOX */
 
-										echo '<div class="content-box info-box">';
+										echo '<div class="content-box">';
 
 											echo '<div class="info-box__subbox">';
 
@@ -383,7 +370,7 @@ get_header();
 
 										/* EDIT BOX */
 
-										echo '<div id="edit-basic-info" class="edit-box content-box info-box">';
+										echo '<div id="edit-basic-info" class="edit-box content-box">';
 
 											echo basic_user_data_form();
 
@@ -397,7 +384,7 @@ get_header();
 
 								/* ABOUT INFO CONTAINER */
 
-								echo '<div class="about-info-container">';
+								echo '<div class="info-box about-info-container">';
 
 									echo '<div><p class="info-box__header">O mnie</p></div>';
 
@@ -417,7 +404,7 @@ get_header();
 
 										/* CONTENT BOX */
 
-										echo '<div class="content-box info-box ajax-content-wrapper">';
+										echo '<div class="content-box ajax-content-wrapper">';
 
 											echo '<div class="info-box__subbox">';
 
@@ -437,7 +424,7 @@ get_header();
 
 										/* EDIT BOX */
 
-										echo '<div id="edit-about-info" class="edit-box content-box info-box">';
+										echo '<div id="edit-about-info" class="edit-box content-box">';
 
 											echo about_user_data_form();
 
@@ -452,7 +439,7 @@ get_header();
 
 								/* CONTACT INFO CONTAINER */
 
-								echo '<div class="contact-info-container">';
+								echo '<div class="info-box contact-info-container">';
 					
 									echo '<div><p class="info-box__header">Dane kontaktowe</p></div>';
 
@@ -472,7 +459,7 @@ get_header();
 										
 										/* CONTENT BOX */
 										
-										echo '<div class="content-box info-box ajax-content-wrapper">';
+										echo '<div class="content-box ajax-content-wrapper">';
 
 											echo '<div class="info-box__subbox">';
 
@@ -562,7 +549,7 @@ get_header();
 										
 										/* EDIT BOX */
 										
-										echo '<div id="edit-contact-info" class="edit-box content-box info-box">';
+										echo '<div id="edit-contact-info" class="edit-box content-box">';
 										
 											echo contact_user_data_form();
 										
@@ -576,7 +563,7 @@ get_header();
 
 								/* SOUND GALLERY CONTAINER */
 
-								echo '<div class="sound-gallery-container">';
+								echo '<div class="info-box sound-gallery-container">';
 
 									echo '<div><p class="info-box__header">Próbka głosu</p></div>';
 
@@ -584,7 +571,7 @@ get_header();
 
 										/* CONTENT BOX */
 
-										echo '<div class="content-box info-box">';
+										echo '<div class="content-box">';
 
 											echo '<div class="info-box__subbox">';
 
@@ -717,7 +704,7 @@ get_header();
 
 								/* LINKEDIN INFO CONTAINER */
 
-								echo '<div class="linkeding-info-container">';
+								echo '<div class="info-box linkeding-info-container">';
 
 									echo '<div><p class="info-box__header">Profil LinkedIn</p></div>';
 
@@ -737,7 +724,7 @@ get_header();
 
 										/* CONTENT BOX */
 
-										echo '<div class="content-box info-box ajax-content-wrapper">';
+										echo '<div class="content-box ajax-content-wrapper">';
 
 
 
@@ -770,7 +757,7 @@ get_header();
 
 										/* EDIT BOX */
 
-										echo '<div id="edit-linkedin-info" class="edit-box content-box info-box">';
+										echo '<div id="edit-linkedin-info" class="edit-box content-box">';
 
 											echo '<div class="info-box__subbox">';
 
@@ -795,7 +782,7 @@ get_header();
 
 								/* WORK INFO CONTAINER */
 
-								echo '<div class="work-info-container">';
+								echo '<div class="info-box work-info-container">';
 
 									echo '<div><p class="info-box__header">Gdzie najczęściej pracuję?</p></div>';
 
@@ -815,7 +802,7 @@ get_header();
 
 										/* CONTENT BOX */
 
-										echo '<div class="content-box info-box ajax-content-wrapper">';
+										echo '<div class="content-box ajax-content-wrapper">';
 
 											echo '<div class="info-box__subbox">';
 
@@ -835,7 +822,7 @@ get_header();
 
 										/* EDIT BOX */
 
-										echo '<div id="edit-work-info" class="edit-box content-box info-box">';
+										echo '<div id="edit-work-info" class="edit-box content-box">';
 
 											echo work_user_data_form();
 
@@ -851,7 +838,7 @@ get_header();
 
 								/* PICTURES AND VIDEOS CONTAINER */
 
-								echo '<div class="pictures-and-videos-container">';
+								echo '<div class="info-box pictures-and-videos-container">';
 
 									echo '<div><p class="info-box__header">Zdjęcia i filmy</p></div>';
 
@@ -859,7 +846,7 @@ get_header();
 
 										/* CONTENT BOX */
 
-										echo '<div class="content-box info-box">';
+										echo '<div class="content-box">';
 
 											echo '<div class="info-box__subbox wrapper-flex-drow-mcol">';
 
@@ -1125,7 +1112,7 @@ get_header();
 											?>
 										</div>
 
-										<div id="edit-settings-password" class="edit-box content-box info-box">
+										<div id="edit-settings-password" class="edit-box content-box">
 
 											<?php echo settings_user_password_form(); ?>
 
@@ -1175,15 +1162,19 @@ get_header();
 
 							echo '<div id="profile-section-3" class="profile-section profile-section--not-active account__settings">';
 
-								echo '<div>';
-								
-									echo '<p>Materiały tylko dla członków PSTK</p>';
+								echo '<div class="info-box">';
 
-								echo '</div>';
+									echo '<div>';
+									
+										echo '<p>Materiały tylko dla członków PSTK</p>';
 
-								echo '<div class="account__subheader">';
-								
-									echo '<p>Znajdziesz tu materiały bonusowe tylko dla członków oraz materiały poufne, których zasięg ograniczamy do osób zrzeszonych w PSTK.</p>';
+									echo '</div>';
+
+									echo '<div class="account__subheader">';
+									
+										echo '<p>Znajdziesz tu materiały bonusowe tylko dla członków oraz materiały poufne, których zasięg ograniczamy do osób zrzeszonych w PSTK.</p>';
+
+									echo '</div>';
 
 								echo '</div>';
 
