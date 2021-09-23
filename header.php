@@ -41,7 +41,6 @@
 
 				<div class="site-header__top">
 					<div class="site-branding">
-						<a href="<?php echo esc_url( home_url( '/' ) ); ?>" rel="home"><?php bloginfo( 'name' ); ?>
 							<?php the_custom_logo(); ?>
 						</a>
 					</div>

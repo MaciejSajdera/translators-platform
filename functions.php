@@ -130,19 +130,29 @@ function pstk_widgets_init() {
 }
 add_action( 'widgets_init', 'pstk_widgets_init' );
 
+/* Remove admin bar margin-top */
 
+add_theme_support( 'admin-bar', array( 'callback' => 'my_admin_bar_css') );
+function my_admin_bar_css()
+{
+?>
+<style type="text/css" media="screen">	
+	html body { margin-top: 28px !important; }
+</style>
+<?php
+}
 
 /**
  * Enqueue scripts and styles.
  */
 function pstk_scripts() {
-	wp_enqueue_style( 'pstk-style', get_template_directory_uri() . '/dist/css/style.css' );
+	wp_enqueue_style( 'pstk-style', get_template_directory_uri() . '/dist/css/style.css', array(), '1.13');
 
 	// Include our dynamic styles.
 	// $custom_css = pstk_dynamic_styles();
 	// wp_add_inline_style( 'pstk-style', $custom_css );
 
-	wp_enqueue_script( 'pstk-app', get_template_directory_uri() . '/dist/js/main.js', array(), '', true );
+	wp_enqueue_script( 'pstk-app', get_template_directory_uri() . '/dist/js/main.js', array(), '1.13', true );
 	// wp_enqueue_script( 'multiselect', get_template_directory_uri() . '/dist/js/multiselect.js', array(), '', true );
 
 	if (is_page(18)) {
@@ -242,7 +252,7 @@ function redirect_users_after_login() {
 	if(!current_user_can( 'manage_options' )){
 		$url  = get_permalink(18);
 		// wp_redirect($login_page);
-		return $url;
+		return $url ."";
 		die; // You have to die here
 	}
 
@@ -277,7 +287,7 @@ add_filter( 'authenticate', 'verify_username_password', 1, 3);
 
 function logout_page() {
 	$login_page  = get_permalink(18);
-	wp_redirect( $login_page . "?login=false" );
+	wp_redirect( $login_page . "?login=logged-out" );
 	exit;
 }
 
@@ -390,6 +400,13 @@ function my_acf_fields_post_object_result( $text, $post, $field, $post_id ) {
     return $text;
 }
 // HELPER FUNCTIONS	
+
+if (!function_exists('str_contains')) {
+    function str_contains(string $haystack, string $needle): bool
+    {
+        return '' === $needle || false !== strpos($haystack, $needle);
+    }
+}
 
 function list_of_child_pages() { 
  
@@ -641,6 +658,10 @@ function vicode_add_new_user() {
       }
       
       $errors = vicode_errors()->get_error_messages();
+
+	//   if (!empty($errors)) {
+	// 	add_query_arg( 'registration', 'error');
+	//   }
       
       // if no errors then create user
       if(empty($errors)) {
@@ -672,7 +693,6 @@ function vicode_add_new_user() {
           }
           
       }
-  
   }
 }
 add_action('init', 'vicode_add_new_user');
@@ -707,6 +727,13 @@ function create_post_for_user( $user_id ) {
 		update_field( "translator_last_name", $user_last_name, $user_post_id );
 		update_field( "translator_contact_email", $user_info->user_email, $user_post_id );
 		// update_field( "translator_id", $user_id, $user_post_id );
+
+		$to = $user_info->user_email;
+		$subject = 'Potwierdzenie założenia konta';
+		$body = 'Witamy w gronie tłumaczy PSTK';
+		$headers = array('Content-Type: text/html; charset=UTF-8');
+		
+		wp_mail( $to, $subject, $body, $headers );
     }
 }
 add_action( 'user_register', 'create_post_for_user', 10, 1 );

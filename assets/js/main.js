@@ -243,13 +243,11 @@ document.addEventListener("DOMContentLoaded", () => {
 
 			const selectionCounter = document.createElement("SPAN");
 			selectionCounter.classList.add("my-selection-counter");
-
-			let boxSelection = box.querySelector(".select2-selection");
+			let boxSelection = box.querySelector(".select2-selection"); //Desktop
 			boxSelection.appendChild(selectionCounter);
-
 			let boxSearchField = box.querySelector(".select2-search__field");
 
-			//Dynamic
+			//Dynamic - DESKTOP
 			const observer = new MutationObserver(function(mutations) {
 				mutations.forEach(function(mutation) {
 					if (mutation.type === "attributes") {
@@ -311,7 +309,31 @@ document.addEventListener("DOMContentLoaded", () => {
 				attributes: true //configure it to listen to attribute changes
 			});
 
-			//Static - to display allOptionsChosen counter after form is submitted and page is loaded again
+			// //Dynamic - 	MOBILE
+
+			let optionSelection = box.querySelector("SELECT");
+			console.log(optionSelection);
+
+			optionSelection.addEventListener("change", e => {
+				let allOptionsChosen = box.querySelectorAll(
+					".select2-selection__choice"
+				);
+
+				let boxTitle = box.querySelector("H4").innerHTML;
+
+				if (allOptionsChosen.length === 1) {
+					console.log(allOptionsChosen[0].title.trim().split("("));
+					boxSearchField.placeholder = `${
+						allOptionsChosen[0].title.trim().split("(")[0]
+					}`;
+				}
+
+				if (allOptionsChosen.length > 1) {
+					boxSearchField.placeholder = `${boxTitle} (${allOptionsChosen.length})`;
+				}
+			});
+
+			// Static - to display allOptionsChosen counter after form is submitted and page is loaded again
 
 			let allOptionsChosen = box.querySelectorAll(".select2-selection__choice");
 
@@ -328,51 +350,6 @@ document.addEventListener("DOMContentLoaded", () => {
 				boxSearchField.placeholder = `${boxTitle} (${allOptionsChosen.length})`;
 			}
 		});
-
-		// const allSingleChoiceBoxes = [
-		// 	document.querySelector(".sf-field-taxonomy-translator_localization")
-		// ];
-
-		// const allSingleChoiceBoxes = document.querySelectorAll(
-		// 	".sf-field-taxonomy-translator_localization"
-		// );
-
-		// allSingleChoiceBoxes.length > 0 &&
-		// 	allSingleChoiceBoxes.forEach(box => {
-		// 		console.log(box);
-		// 		let boxSelection = box.querySelector(".select2-selection");
-
-		// 		//Dynamic
-		// 		const observer = new MutationObserver(function(mutations) {
-		// 			mutations.forEach(function(mutation) {
-		// 				console.log(mutation);
-
-		// 				if (mutation.type === "attributes") {
-		// 					console.log("attributes changed");
-
-		// 					setTimeout(() => {
-		// 						const dropDownBelow = document.querySelector(
-		// 							".select2-dropdown--below"
-		// 						);
-
-		// 						const searchField = dropDownBelow?.querySelector(
-		// 							".select2-search__field"
-		// 						);
-
-		// 						searchField?.focus();
-
-		// 						if (searchField) {
-		// 							searchField.placeholder = "Wpisz miasto...";
-		// 						}
-		// 					}, 0);
-		// 				}
-		// 			});
-		// 		});
-
-		// 		observer.observe(boxSelection, {
-		// 			attributes: true //configure it to listen to attribute changes
-		// 		});
-		// 	});
 	}, 10);
 
 	let isPopUpActive = false;
@@ -518,8 +495,46 @@ document.addEventListener("DOMContentLoaded", () => {
 	document.addEventListener("click", e => {
 		console.log(e);
 		if (e.target.name === "_sf_submit") {
-			const searchButton = document.querySelector(".sf-field-submit");
-			searchButton.classList.add("search-button--clicked");
+			const searchButtonHolder = document.querySelector(".sf-field-submit");
+			searchButtonHolder.classList.add("search-button--clicked");
+
+			const loadingMessages = {
+				loadingMessage_1:
+					"Zbieramy dane aby dostarczyć Ci najbardziej trafne wyniki wyszukiwania.",
+				loadingMessage_2:
+					"W naszej bazie danych znajduje się blisko 500 tłumaczy z całego świata."
+			};
+
+			setTimeout(() => {
+				const interval = 2000; // how much time should the delay between two iterations be (in milliseconds)?
+				let promise = Promise.resolve();
+				Object.values(loadingMessages).forEach(function(value) {
+					promise = promise.then(function() {
+						console.log(value);
+
+						let loadingMessage = document.createElement("DIV");
+						loadingMessage.classList.add("search-loading-message");
+						loadingMessage.textContent = value;
+						searchButtonHolder.appendChild(loadingMessage);
+
+						return new Promise(function(resolve) {
+							setTimeout(() => {
+								loadingMessage.classList.add("search-loading-message__show");
+							}, 100);
+
+							setTimeout(() => {
+								loadingMessage.classList.remove("search-loading-message__show");
+								loadingMessage.classList.add("search-loading-message__hide");
+								resolve();
+							}, interval);
+						});
+					});
+				});
+
+				promise.then(function() {
+					console.log("Loop finished.");
+				});
+			}, 1000);
 		}
 	});
 });

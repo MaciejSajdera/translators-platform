@@ -16,7 +16,7 @@
 			padding-top: 6rem;
 
 			@media screen and (min-width: 992px) {
-				padding-top: 8rem;
+				padding-top: 10rem;
 			}
 		}
 	}
@@ -25,6 +25,13 @@
 		position: relative;
 		// background: $gradient--turquise;
 		min-height: 100vh;
+
+		h1 {
+			color: $color__main-theme--blue;
+			font-weight: 900;
+			letter-spacing: 3px;
+			text-transform: uppercase;
+		}
 
 		&:after {
 			position: absolute;

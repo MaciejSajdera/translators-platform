@@ -43,7 +43,19 @@ foreach( $cat_terms as $term ) :
 
                 echo '<div class="tile">';
 
-                echo '<a href="'.get_permalink().'">'. get_the_title() .'</a>';
+                echo '<a href="'.get_permalink().'">
+
+                    '. get_the_title() .'
+
+                        <div>
+
+                        '.the_excerpt().'
+
+                        </div>
+                
+                     </a>';
+
+
 
                 echo '</div>';
 

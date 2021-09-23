@@ -17,25 +17,21 @@ body {
 
 body.page-template-home-page-template {
 	background: linear-gradient(
-		180deg,
-		rgba(22, 83, 140, 0.26) 0%,
-		rgba(22, 83, 140, 0.06) 15%,
-		rgba(24, 160, 170, 0.032) 30%,
-		rgba(24, 160, 170, 0) 60%,
-		rgba(24, 160, 170, 0.04) 70%,
+		200deg,
+		rgba(22, 83, 140, 0.159) 4.5%,
+		rgba(22, 83, 140, 0.045) 30%,
+		rgba(24, 160, 170, 0.024) 60%,
 		rgba(225, 243, 244, 0.092) 100%
 	);
 }
 
 .page.gradient {
 	background: linear-gradient(
-		186.43deg,
-		rgba(22, 83, 140, 0.26) 0.49%,
-		rgba(22, 83, 140, 0.06) 18.29%,
-		rgba(24, 160, 170, 0.032) 39.55%,
-		rgba(24, 160, 170, 0) 55.87%,
-		rgba(24, 160, 170, 0.04) 71.69%,
-		rgba(225, 243, 244, 0.092) 91.62%
+		200deg,
+		rgba(22, 83, 140, 0.159) 4.5%,
+		rgba(22, 83, 140, 0.045) 30%,
+		rgba(24, 160, 170, 0.024) 60%,
+		rgba(225, 243, 244, 0.092) 100%
 	);
 }
 
@@ -68,6 +64,7 @@ figure {
 /* LINKS */
 a {
 	color: $color__link;
+	text-decoration: none;
 
 	&:visited {
 		color: $color__link-visited;
@@ -109,7 +106,7 @@ ol {
 li > ul,
 li > ol {
 	margin-bottom: 0;
-	margin-left: 1.5em;
+	// margin-left: 1.5em;
 }
 
 dt {
@@ -227,7 +224,7 @@ table {
 	display: flex;
 	opacity: 1;
 	animation: cookieInfoUp 1s forwards;
-	transition: all 0.3s ease-in-out;
+	transition: $transition_regular;
 
 	@keyframes cookieInfoUp {
 		0% {
@@ -285,7 +282,7 @@ table {
 	cursor: pointer;
 	border-radius: 50px;
 	margin: auto 2em;
-	transition: all 0.3s ease-in-out;
+	transition: $transition_regular;
 	padding: 0 2em !important;
 
 	&:focus,
@@ -315,7 +312,7 @@ table {
 		background-repeat: no-repeat;
 		display: block;
 		margin: 1rem;
-		transition: all 0.3s ease-in-out;
+		transition: $transition_regular;
 
 		&:hover {
 			transform: scale(1.1);
@@ -346,8 +343,8 @@ table {
 	display: flex;
 	justify-content: center;
 	align-items: center;
-	background: rgba(255, 255, 255, 0.5);
-	transition: all 0.3s ease-in-out;
+	background: rgba(255, 255, 255, 0.85);
+	transition: $transition_regular;
 
 	&--active {
 		z-index: 1;
@@ -382,8 +379,8 @@ table {
 		content: "";
 		position: absolute;
 		z-index: 1;
-		right: $padding__content-box;
-		top: $padding__content-box;
+		right: 1.25rem;
+		top: 1.25rem;
 		width: 25px;
 		height: 25px;
 		background-image: url(../dist/svg/edit-blue.svg);
@@ -486,4 +483,13 @@ table {
 	// &__complete {
 	// 	color: $color__success-green;
 	// }
+}
+
+.checkpoints-box {
+	&__title {
+		max-height: 60%;
+	}
+
+	&__list-holder {
+	}
 }

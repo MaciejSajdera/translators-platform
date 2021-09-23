@@ -9,7 +9,7 @@
 	position: fixed;
 	top: 0;
 	background: transparent;
-	transition: all 0.25s ease-in-out;
+	transition: $transition_regular;
 	z-index: 9999;
 
 	&__top {
@@ -32,7 +32,7 @@
 
 			img {
 				max-width: 150px;
-				transition: all 0.3s ease-in-out;
+				transition: $transition_regular;
 				object-fit: contain;
 			}
 		}
@@ -221,6 +221,9 @@
 
 	&__fixed {
 		background-color: $color__background-body;
+		padding-top: 1rem;
+		padding-bottom: 1rem;
+
 		.custom-logo-link {
 			img {
 				padding-right: 2em;
@@ -259,9 +262,9 @@
 	text-decoration: none;
 }
 
-.current_page_item {
-	border-bottom: 2px solid $color__main-theme--turquise;
-}
+// .current_page_item {
+// 	border-bottom: 2px solid $color__main-theme--turquise;
+// }
 
 $mobile-menu-padding-top: 10rem;
 
@@ -380,7 +383,7 @@ $mobile-menu-padding-top: 10rem;
 			height: 24px;
 			margin-right: 0.5em;
 			transform: rotate(0deg);
-			transition: all 0.3s ease-in-out;
+			transition: $transition_regular;
 		}
 	}
 }
@@ -404,8 +407,12 @@ $mobile-menu-padding-top: 10rem;
 			height: 100%;
 			width: 100%;
 			position: relative;
-			padding: 0 0 0.5em 0;
+
 			z-index: 999;
+
+			li {
+				padding: 0 0 0.5em 0;
+			}
 
 			// position: relative;
 
@@ -430,7 +437,7 @@ $mobile-menu-padding-top: 10rem;
 			align-items: center;
 			font-weight: 700;
 			// text-transform: uppercase;
-			transition: all 0.3s ease-in-out;
+			transition: $transition_regular;
 			width: 100%;
 			white-space: nowrap;
 			justify-content: center;
@@ -477,7 +484,7 @@ $mobile-menu-padding-top: 10rem;
 		// position: absolute;
 		// opacity: 0;
 		// z-index: -1;
-		transition: all 0.3s ease-in-out;
+		transition: $transition_regular;
 
 		overflow: hidden;
 		// transition:height 0.3s ease-out;

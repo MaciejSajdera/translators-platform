@@ -26,8 +26,8 @@ $color_special-elements: #6ec9cf;
 $color__inactive-element: #cacaca;
 
 $color__error-red: #ff0000;
-// $color__success-green: #24b82be6;
-$color__success-green: lightgreen;
+$color__success-green: #24b82be6;
+// $color__success-green: lightgreen;
 $color__verified-blue: #5698e7;
 $color__text--light-grey: #999;
 $color__pending: #ffb618;
@@ -38,6 +38,7 @@ $color__main-theme--turquise-transparent: #18a0aa20;
 
 /* TYPOGRAPHY */
 $font__main: "Gotham";
+$font__secondary: "Poppins";
 $font__code: monaco, consolas, "Andale Mono", "DejaVu Sans Mono", monospace;
 $font__pre: "Courier 10 Pitch", courier, monospace;
 $font__line-height-body: 1.5;
@@ -71,5 +72,5 @@ $transition_regular: all 0.3s ease-in-out;
 $transition__button--standard: all 0.2s ease-in-out;
 
 /* ELEMENTS */
-$padding__side-main--desktop: 10%;
+$padding__side-main--desktop: 12.5%;
 $padding__content-box: 2rem;

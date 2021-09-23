@@ -41,6 +41,7 @@
 	@media screen and (min-width: 992px) {
 		flex-flow: row;
 		column-gap: 2rem;
+		row-gap: 2rem;
 	}
 }
 
@@ -76,6 +77,15 @@
 	align-items: center;
 }
 
+.wrapper-flex-row-spbt {
+	display: flex;
+	flex-flow: row;
+	flex-wrap: wrap;
+	align-items: center;
+	justify-content: space-between;
+	width: 100%;
+}
+
 .col-d50 {
 	@media screen and (min-width: 992px) {
 		width: 50%;
@@ -89,7 +99,8 @@
 }
 
 .tile {
-	border: 1px solid grey;
+	// border: 1px solid grey;
+	padding: 1em;
 }
 
 .modal {
@@ -217,6 +228,14 @@
 .body-loaded {
 	.searchfilter {
 		&__wrapper {
+			&--basic {
+				max-width: 400px;
+
+				@media screen and (max-width: 992px) {
+					margin-bottom: 6rem;
+				 }
+			}
+
 			form > ul {
 				// display: flex;
 				// flex-flow: column;
@@ -242,15 +261,12 @@
 
 			.sf-field-submit input[name="_sf_submit"] {
 				width: 100% !important;
+				min-width: 150px;
 				// min-width: 220px;
 
 				// @media screen and (min-width: 992px) {
 				// 	width: auto !important;
 				// }
-
-				&:after {
-					content: "q";
-				}
 			}
 
 			.select2-container {
@@ -262,6 +278,38 @@
 				// @media screen and (min-width: 992px) {
 				// 	width: auto !important;
 				// }
+			}
+
+			//Default options on mobile
+
+			@media screen and (max-width: 992px) {
+				[data-sf-field-input-type="multiselect"] .sf-input-select,
+				[data-sf-field-input-type="select"] .sf-input-select {
+					height: 100% !important;
+					width: 100% !important;
+					clip: unset !important;
+					clip-path: unset !important;
+					z-index: 1;
+					opacity: 0;
+
+					label {
+						position: relative;
+					}
+
+					.select2-selection {
+						pointer-events: none;
+					}
+
+					.select2-search__field {
+						z-index: 1;
+					}
+				}
+
+				// exceptions
+
+				[name="_sf_sort_order[]"] {
+					opacity: 1 !important;
+				}
 			}
 		}
 
@@ -278,6 +326,11 @@
 
 		li {
 			flex: 1 1 0px;
+			display: flex;
+			flex-flow: column;
+			align-self: flex-end;
+			width: 100%;
+			position: relative;
 			// z-index: 1;
 			// .select2-container label {
 			// 	border: 2px solid #16538c;
@@ -286,6 +339,12 @@
 			// 	box-shadow: 0px 0px 7px #16538c3a;
 			// 	overflow: hidden;
 			// }
+		}
+
+		.sf-field-sort_order {
+			@media screen and (min-width: 992px) {
+				margin-left: 4rem;
+			}
 		}
 	}
 
@@ -324,7 +383,10 @@
 
 	.sf-field-sort_order label {
 		position: relative;
+		width: 100%;
+
 		select {
+			width: 100%;
 			// position: relative;
 			// -webkit-appearance: none;
 			// -moz-appearance: none;
@@ -466,7 +528,7 @@
 				transform: translate(0, 20px) scale(0.8);
 				transform-origin: 0 0;
 				filter: drop-shadow(0 12px 20px rgba(22, 42, 90, 0.08));
-				transition: all 0.4s ease;
+				transition: all 0.2s ease;
 				// transition: all 0.4s ease,
 				// 	transform 0.4s cubic-bezier(0.87, -0.41, 0.19, 1.44),
 				// 	filter 0.3s ease 0.2s;
@@ -493,6 +555,7 @@
 			&__option {
 				padding: 0.75em 1.25em;
 				position: relative;
+				transition: all 0.1s ease-in;
 
 				&:after {
 					content: "";
@@ -563,7 +626,8 @@
 			border-radius: 100rem;
 			background: #16538c;
 			box-shadow: 0px 0px 7px #16538c3a;
-			transition: $transition__button--standard;
+			transition: color 0.2s ease-in-out, border 0.2s ease-in-out,
+				background 0.2s ease-in-out;
 		}
 
 		h4 {
@@ -620,6 +684,26 @@
 			opacity: 1;
 		}
 	}
+
+	.search-loading-message {
+		position: absolute;
+		bottom: -4rem;
+		opacity: 0;
+		transition: all 0.5s ease;
+		transform: translateX(50%);
+		font-weight: 300;
+		font-family: $font__secondary;
+
+		&__show {
+			opacity: 1;
+			transform: translateX(0%);
+		}
+
+		&__hide {
+			opacity: 0;
+			transform: translateX(-50%);
+		}
+	}
 }
 
 .remove-item {
@@ -665,7 +749,7 @@
 	width: 100px;
 	z-index: 99999;
 	opacity: 0;
-	transition: all 0.3s ease-in-out;
+	transition: $transition_regular;
 
 	&-show {
 		opacity: 1;
@@ -704,8 +788,11 @@
 }
 
 .common-box {
+	margin: 4em 0;
+
 	&__new-posts {
-		margin: 4em 0;
+		flex-wrap: wrap;
+		justify-content: space-between;
 
 		h2 {
 			text-align: center;
@@ -715,18 +802,35 @@
 			flex: 1;
 			min-height: 300px;
 			overflow: hidden;
+			flex: 0 0 47.5%;
+
+			padding: 0;
 
 			a {
 				display: block;
-				height: 100%;
+				// height: 100%;
+				width: 100%;
+			}
+
+			p {
+				margin-top: 0;
 				width: 100%;
 			}
 
 			.thumbnail {
 				background-size: cover;
-				height: 100%;
+				height: 250px;
+				display: flex;
 			}
 		}
+	}
+
+	&__text {
+		padding: 1.5em;
+		transform: translateY(-1.5rem);
+		width: 90%;
+		margin: auto;
+		background: $color__background-body;
 	}
 }
 

@@ -1,10 +1,10 @@
 <?php
 
-/*
- * Template Name: Find Translator Page Template
- * description: >-
-  Page template without sidebar
- */
+// /*
+//  * Template Name: Find Translator Page Template
+//  * description: >-
+//   Page template without sidebar
+//  */
 
 get_header();
 ?>
@@ -19,7 +19,7 @@ get_header();
 
 			<div class="search__container">
 
-				<h2>Znajdź tłumacza na zdarzenie</h2>
+				<h2>Znajdź tłumacza na wydarzenie</h2>
 
 				<?php
 					get_template_part( 'template-parts/searchfilter-full' );

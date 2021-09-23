@@ -122,6 +122,7 @@ $login-and-registration-height: 80vh;
 
 		.login-msg {
 			margin-bottom: 2rem;
+			padding: calc(#{$input-padding} + 1px); // +1px for border width
 		}
 
 		.login-panel,
@@ -214,7 +215,7 @@ $login-and-registration-height: 80vh;
 
 	&__filled {
 		input {
-			border-bottom: 1px solid $color__success-green;
+			border-bottom: 1px solid lightgreen;
 		}
 	}
 }

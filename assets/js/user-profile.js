@@ -39,30 +39,32 @@ document.addEventListener("DOMContentLoaded", () => {
 	allAnimatedLabelHolders &&
 		allAnimatedLabelHolders.forEach(input => {
 			if (
-				!input.closest("P").classList.contains("login-remember") ||
-				!input.closest("P").classList.contains("login-submit")
+				input.closest("P").classList.contains("login-remember") ||
+				input.closest("P").classList.contains("login-submit")
 			) {
-				input.addEventListener("focus", function(e) {
-					this.closest("P").classList.add("input-holder__active");
-				});
-
-				input.addEventListener("blur", function(e) {
-					let isInputFilled = this.value;
-
-					console.log(isInputFilled);
-
-					if (isInputFilled) {
-						this.closest("P").classList.add("input-holder__filled");
-					}
-
-					if (!isInputFilled) {
-						this.closest("P").classList.remove(
-							"input-holder__active",
-							"input-holder__filled"
-						);
-					}
-				});
+				return;
 			}
+
+			input.addEventListener("focus", function(e) {
+				this.closest("P").classList.add("input-holder__active");
+			});
+
+			input.addEventListener("blur", function(e) {
+				let isInputFilled = this.value;
+
+				console.log(isInputFilled);
+
+				if (isInputFilled) {
+					this.closest("P").classList.add("input-holder__filled");
+				}
+
+				if (!isInputFilled) {
+					this.closest("P").classList.remove(
+						"input-holder__active",
+						"input-holder__filled"
+					);
+				}
+			});
 		});
 
 	const accountNavigation = document.querySelector(".account__navigation");

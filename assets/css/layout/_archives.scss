@@ -1,4 +1,33 @@
-.archive-translator {
+.post-type-archive-translator {
+	.search {
+		&__container {
+			margin-bottom: 4rem;
+		}
+	}
+
+	.searchfilter {
+		&__wrapper {
+			ul {
+				display: flex;
+				flex-flow: row;
+				flex-wrap: wrap;
+				column-gap: 1.5rem;
+				// justify-content: center;
+				// align-items: center;
+				padding: 0;
+				margin: 0;
+			}
+		}
+
+		li.sf-field-submit {
+			h4 {
+				color: transparent;
+				// height: 1rem;
+				// display: none;
+			}
+		}
+	}
+
 	article.translator {
 		display: flex;
 		justify-content: space-between;

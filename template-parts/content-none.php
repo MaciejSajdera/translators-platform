@@ -11,7 +11,7 @@
 
 <section class="no-results not-found">
 	<header class="page-header">
-		<h1 class="page-title"><?php esc_html_e( 'Nothing Found', 'pstk' ); ?></h1>
+		<h1 class="page-title"><?php esc_html_e( 'Wyniki wyszukiwania', 'pstk' ); ?></h1>
 	</header><!-- .page-header -->
 
 	<div class="page-content">
@@ -19,7 +19,7 @@
 
 			?>
 
-			<p><?php esc_html_e( 'Brak wyników w wybranym mieście. Sprawdź tłumaczy najbliżej wybranego miasta:', 'pstk' ); ?></p>
+			<p><?php esc_html_e( 'Brak wyników w wybranym mieście. Sprawdź innych tłumaczy najbliżej wybranego miasta:', 'pstk' ); ?></p>
 			<?php
 
 				/* Get name of the city user was looking for */
@@ -36,19 +36,37 @@
 
 				$apiKey = 'AIzaSyAPJ8o7xD9vqydfgZ6XrJKvLdnhmL_YTxA'; // Google maps now requires an API key.
 
-				$geo_target_city = @file_get_contents('https://maps.googleapis.com/maps/api/geocode/json?address='.urlencode($target_city_name).'&sensor=false&key='.$apiKey);
-				$geo_target_city = json_decode($geo_target_city, true); // Convert the JSON to an array
+
+				$ch_geo_target_city = curl_init();
+
+				$options_geo_target_city = [
+					CURLOPT_SSL_VERIFYPEER => false,
+					CURLOPT_RETURNTRANSFER => true,
+					CURLOPT_URL            => 'https://maps.googleapis.com/maps/api/geocode/json?address='.urlencode($target_city_name).'&sensor=false&key='.$apiKey
+				];
+
+				curl_setopt_array($ch_geo_target_city, $options_geo_target_city);
+
+				$data_curl_geo_target_city = json_decode(curl_exec($ch_geo_target_city));
+				curl_close($ch_geo_target_city);
+
+
+
+				$geo_target_city = $data_curl_geo_target_city;
+
+				// $geo_target_city = @file_get_contents_curl('https://maps.googleapis.com/maps/api/geocode/json?address='.urlencode($target_city_name).'&sensor=false&key='.$apiKey);
+				// $geo_target_city = json_decode($geo_target_city, true); // Convert the JSON to an array
+				$geo_target_city = json_decode(json_encode($geo_target_city), true); // Convert the JSON to an array
+
+				// var_dump(json_encode($geo_target_city['results'][0]['geometry']['location']['lat']));
+				// var_dump(json_encode($geo_target_city['results'][0]['geometry']['location']['lng']));
+
+				// echo '<br />';
 
 				if (isset($geo_target_city['status']) && ($geo_target_city['status'] == 'OK')) {
 					$target_city_latitude = $geo_target_city['results'][0]['geometry']['location']['lat']; // Latitude
 					$target_city_longitude = $geo_target_city['results'][0]['geometry']['location']['lng']; // Longitude
 				}
-
-				print_r('Szukane miasto: '.$target_city_name);
-				echo '<br />';
-				print_r('Latitude: '.$target_city_latitude);
-				echo '<br />';
-				print_r('Longitude: '.$target_city_longitude);
 
 				/* Get all not empty cities from the database and calculate distance from target city */
 
@@ -73,26 +91,52 @@
 
 					$translator_city_name = $term->name; // Address
 
+
+					$ch_geo_translator_city = curl_init();
+
+					$options_geo_translator_city = [
+						CURLOPT_SSL_VERIFYPEER => false,
+						CURLOPT_RETURNTRANSFER => true,
+						CURLOPT_URL            => 'https://maps.googleapis.com/maps/api/geocode/json?address='.urlencode($translator_city_name).'&sensor=false&key='.$apiKey
+					];
+	
+					curl_setopt_array($ch_geo_translator_city, $options_geo_translator_city);
+	
+					$data_curl_geo_translator_city = json_decode(curl_exec($ch_geo_translator_city));
+					curl_close($ch_geo_translator_city);
+
 					/* Get JSON results from this request */
-					$geo_translator_city = @file_get_contents('https://maps.googleapis.com/maps/api/geocode/json?address='.urlencode($translator_city_name).'&sensor=false&key='.$apiKey);
-					$geo_translator_city = json_decode($geo_translator_city, true); // Convert the JSON to an array
+					// $geo_translator_city = @file_get_contents_curl('https://maps.googleapis.com/maps/api/geocode/json?address='.urlencode($translator_city_name).'&sensor=false&key='.$apiKey);
+					// $geo_translator_city = json_decode($geo_translator_city, true); // Convert the JSON to an array
+
+
+
+					$geo_translator_city = $data_curl_geo_translator_city;
+
+					$geo_translator_city = json_decode(json_encode($geo_translator_city), true); // Convert the JSON to an array
+
+
+					// var_dump(json_encode($geo_translator_city['results'][0]['geometry']['location']['lat']));
+					// var_dump(json_encode($geo_translator_city['results'][0]['geometry']['location']['lng']));
+
+					// echo '<br />';
 
 					if (isset($geo_translator_city['status']) && ($geo_translator_city['status'] == 'OK')) {
-					$translator_city_latitude = $geo_translator_city['results'][0]['geometry']['location']['lat']; // Latitude
-					$translator_city_longitude = $geo_translator_city['results'][0]['geometry']['location']['lng']; // Longitude
+						$translator_city_latitude = $geo_translator_city['results'][0]['geometry']['location']['lat']; // Latitude
+						$translator_city_longitude = $geo_translator_city['results'][0]['geometry']['location']['lng']; // Longitude
 
-					$distance_from_target = distance($target_city_latitude, $target_city_longitude, $translator_city_latitude, $translator_city_longitude, "K");
-		
-					//   echo '<p>'.$translator_city_latitude.'</p>';
-					//   echo '<p>'.$translator_city_longitude.'</p>';
-					//   echo $distance_from_target . " Kilometers<br>";
+						$distance_from_target = distance($target_city_latitude, $target_city_longitude, $translator_city_latitude, $translator_city_longitude, "K");
+			
+						//   echo '<p>'.$translator_city_latitude.'</p>';
+						//   echo '<p>'.$translator_city_longitude.'</p>';
+						//   echo $distance_from_target . " Kilometers<br>";
 
-					$city_object = (object)[];
+						$city_object = (object)[];
 
-					$city_object->city_name = $term->name;
-					$city_object->distance_from_target = round($distance_from_target, 0);
+						$city_object->city_name = $term->name;
+						$city_object->distance_from_target = round($distance_from_target, 0);
 
-					array_push($cities_objects_arr, $city_object);
+						array_push($cities_objects_arr, $city_object);
 
 					}
 
@@ -112,8 +156,19 @@
 
 				/* Get names of the 3 closest cities */
 
-				echo '<br />';
-				echo 'Najbliższe miasta: ';
+				echo '<div style="margin-bottom: 2rem">';
+
+					echo '<p>For dev purposes:</p>';
+
+					print_r('Szukane miasto: '.$target_city_name);
+					echo '<br />';
+					print_r('Latitude: '.$target_city_latitude);
+					echo '<br />';
+					print_r('Longitude: '.$target_city_longitude);
+
+					echo '<br />';
+					echo 'Najbliższe miasta: ';
+
 
 				$closest_cities_names = array();
 
@@ -124,6 +179,8 @@
 					echo $city_obj->city_name.', ';
 
 				endforeach;
+
+				echo '</div>';
 
 
 				/* Get IDs of translators in order with closest cities */
@@ -241,15 +298,16 @@
 
 						<?php
 
-							$index_of_matched_city;
-
-							$i = 0;
 
 							if ( $translator_localizations ) {
 
 								$matched_cities_arr = array();
 
 								foreach( $translator_localizations as $term ) :
+
+									$index_of_matched_city;
+
+									$i = 0;
 
 											if (in_array($term->name, array_column($closest_cities_arr, "city_name"))) { 
 

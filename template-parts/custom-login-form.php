@@ -27,7 +27,7 @@
                 echo '<p class="login-msg php-error__text">Username and/or Password is empty.</p>';
             }
 
-            if ($login === "false" ) {
+            if ($login === "logged-out" ) {
                 echo '<p class="login-msg php-success__text">Zostałeś pomyślnie wylogowany.</p>';
             }
 
