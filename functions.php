@@ -490,6 +490,35 @@ function add_field_if_post_approved( $post_id, $post ) {
 add_action('save_post', 'add_field_if_post_approved', 10, 2);
 
 
+function update_post_title_and_slug( $post_id, $new_title ) {
+	// if new_title isn't defined, return
+	if ( empty ( $new_title ) ) {
+		return;
+	}
+
+	$current_title = get_the_title($post_id);
+
+	// ensure title case of $new_title
+	$new_title = mb_convert_case( $new_title, MB_CASE_TITLE, "UTF-8" );
+  
+	// if $new_title is defined, but it matches the current title, return
+	if ( $current_title === $new_title ) {
+		return;
+	}
+
+	$new_slug = sanitize_title($new_title);
+  
+	// place the current post and $new_title into array
+	$post_update = array(
+	  'ID'         => $post_id,
+	  'post_title' => $new_title,
+	  'post_name' => $new_slug,
+	);
+  
+	wp_update_post( $post_update );
+  }
+
+
 // TODO: Send email when post is added to the term translator-of-the-month
 
 
@@ -645,7 +674,7 @@ function vicode_add_new_user() {
       }
       if(email_exists($user_email)) {
           //Email address already registered
-          vicode_errors()->add('email_used', __('Email already registered'));
+          vicode_errors()->add('email_used', __('Istnieje już konto z podanym adresem e-mail.'));
       }
 	  if($user_first == '') {
 		// empty username
@@ -721,8 +750,13 @@ function create_post_for_user( $user_id ) {
             'post_status'  => 'private', 
             'post_type'    => 'translator', 
         );
+
         // Insert the post into the database
         $user_post_id = wp_insert_post( $user_post );
+
+		// Add custom meta data to be able to easily find post by users_id;
+
+		add_post_meta( $user_post_id, 'user_id', $user_id, true );
 
 		// Save values from register form as ACFs in post
 
@@ -769,18 +803,33 @@ function vicode_error_messages() {
 // Tool functions for forms at account page
 
 function get_current_user_post_id() {
-	$current_user = wp_get_current_user();
 
-	//Get ID of the current user post
-	$current_user_nickname = $current_user->user_login;
-	$user_post_title = $current_user_nickname; 
+	$current_user_id = get_current_user_id();
 
-	if ( $post = get_page_by_path( $user_post_title, OBJECT, 'translator' ) )
-		$user_post_id = $post->ID;
-	else
-		$user_post_id = 0;
+	$args = array(
+		'post_type' => 'translator',
+		'post_status' => array('publish', 'pending', 'draft', 'auto-draft', 'future', 'private', 'inherit', 'trash'),
+		'meta_query' => array(
+			array(
+				'key' => 'user_id',
+				'value' => $current_user_id
+			)
+		)
+	 );
 
-	return $user_post_id;
+	 $my_posts = get_posts( $args ); // fetch post and store in array
+
+	if (!$my_posts) {
+		return;
+	} 
+	
+	if ($my_posts) {
+		$current_user_post = $my_posts[0];
+
+		$current_user_post_id = $current_user_post->ID;
+
+		return $current_user_post_id;
+	}
 }
 
 function get_count_of_all_valueable_fields() {
@@ -820,10 +869,7 @@ function get_count_of_all_valueable_fields() {
 		endforeach;
 	}
 
-
-	
 	$groups = acf_get_field_groups(array('post_id' => get_current_user_post_id()));
-
 
 	if ($groups) {
 		$all_acf_fields_of_post = acf_get_fields($groups[0]['key']);
@@ -1018,7 +1064,7 @@ function basic_user_data_form() {
 	$current_user_languages_array_terms = wp_get_post_terms($user_post_id, 'translator_language', array('fields' => 'names'));
 	$current_user_specializations_array_terms = wp_get_post_terms($user_post_id, 'translator_specialization', array('fields' => 'names'));
 
-		// var_dump($current_user_languages_array_terms);
+	// var_dump($current_user_languages_array_terms);
 
 	ob_start(); ?>	
 
@@ -1204,6 +1250,7 @@ function add_basic_user_data_with_ajax() {
 			update_user_meta( $user_id, 'first_name', $user_first_name);
 			//Update ACF field for user post
 			update_field( "translator_first_name", $user_first_name, $user_post_id );
+
 		}
 
 		if (isset( $user_last_name )) {
@@ -1214,6 +1261,13 @@ function add_basic_user_data_with_ajax() {
 			update_field( "translator_last_name", $user_last_name, $user_post_id );
 		}
 
+		if (isset( $user_first_name ) || isset( $user_last_name )) {
+			// Update post title and slug
+
+			$new_title = $user_first_name.' '.$user_last_name;
+
+			update_post_title_and_slug( $user_post_id, $new_title );
+		}
 
 		if (isset( $user_about_short )) {
 			
@@ -1534,8 +1588,6 @@ function contact_user_data_form() {
 
 					</div>
 
-
-
 				<p>
 					<input type="submit" name="submit_contact_user_data" value="<?php _e('Zaktualizuj informacje o sobie'); ?>"/>
 					<?php wp_nonce_field( 'add_contact_user_data', 'add_contact_user_data_nonce' ); ?>
@@ -1601,7 +1653,6 @@ function contact_user_data_form_messages() {
 }
 
 //Ajaxify about user data form https://support.advancedcustomfields.com/forums/topic/use-update_field-with-ajax/
-
 
 function add_contact_user_data_with_ajax() {
 
@@ -1679,18 +1730,7 @@ add_action( 'wp_ajax_add_contact_user_data_with_ajax','add_contact_user_data_wit
 /* ADD LINKEDIN USER DATA FORM */
 function linkedin_user_data_form() {
 
-	$current_user = wp_get_current_user();
-
-	//Get ID of the current user post
-	$current_user_nickname = $current_user->user_login;
-	$user_post_title = $current_user_nickname; 
-
-	if ( $post = get_page_by_path( $user_post_title, OBJECT, 'translator' ) )
-		$user_post_id = $post->ID;
-	else
-		$user_post_id = 0;
-
-		// var_dump($current_user_languages_array_terms);
+	$user_post_id = get_current_user_post_id();
 
 	ob_start(); ?>	
 
@@ -1742,27 +1782,13 @@ function linkedin_user_data_form_messages() {
 
 function add_linkedin_user_data_with_ajax() {
 
-
-	
-	$current_user = wp_get_current_user();
-	
-	$current_user_nickname = $current_user->user_login;
-
-	$user_linkedin		= $_POST["user_linkedin"];
+	$user_linkedin = $_POST["user_linkedin"];
 
 	if ( ! wp_verify_nonce( $_POST["add_linkedin_user_data_nonce"], "add_linkedin_user_data") ) {
 		die ( 'Nonce mismatched!');
 	}
 
-	$user_id = get_current_user_id();
-
-	//Get ID of the current user post
-	$user_post_title = $current_user_nickname; 
-
-	if ( $post = get_page_by_path( $user_post_title, OBJECT, 'translator' ) )
-		$user_post_id = $post->ID;
-	else
-		$user_post_id = 0;
+	$user_post_id = get_current_user_post_id();
 
 	// Save/Update values to user meta data or user post
 
@@ -1791,14 +1817,7 @@ function work_user_data_form() {
 
 	$current_user = wp_get_current_user();
 
-	//Get ID of the current user post
-	$current_user_nickname = $current_user->user_login;
-	$user_post_title = $current_user_nickname; 
-
-	if ( $post = get_page_by_path( $user_post_title, OBJECT, 'translator' ) )
-		$user_post_id = $post->ID;
-	else
-		$user_post_id = 0;
+	$user_post_id = get_current_user_post_id();
 
 		// var_dump($current_user_languages_array_terms);
 
@@ -1858,34 +1877,18 @@ function add_work_user_data_with_ajax() {
 		return;
 	}
 
-	$current_user = wp_get_current_user();
-	
-	$current_user_nickname = $current_user->user_login;
-
-    $user_work = $_POST["user_work"];
-
-
 	if ( ! wp_verify_nonce( $_POST["add_work_user_data_nonce"], "add_work_user_data") ) {
 		die ( 'Nonce mismatched!');
 	}
 
-		$user_id = get_current_user_id();
+	$user_work = $_POST["user_work"];
 
-		//Get ID of the current user post
-		$user_post_title = $current_user_nickname; 
+	$user_post_id = get_current_user_post_id();
 
-		if ( $post = get_page_by_path( $user_post_title, OBJECT, 'translator' ) )
-			$user_post_id = $post->ID;
-		else
-			$user_post_id = 0;
-
-		// Save/Update values to user meta data or user post
-
-        //Update ACF field for user post
-        update_field( "translator_work", $user_work, $user_post_id );
+	//Update ACF field for user post
+	update_field( "translator_work", $user_work, $user_post_id );
 
 
-	
 	$work_user_data_for_ajax  = (object) [
 		'user_work' => $user_work,
 		'percent_value_of_account_fill_completness' => get_percent_value_of_account_fill_completness(),
@@ -3078,28 +3081,12 @@ add_action( 'init',  'change_settings_user_password' );
 /* CHANGE USER'S DATA VISIBILITY FORM */
 function settings_user_data_visibility_form() {
 
-	$current_user = wp_get_current_user();
-
-	$current_user_id = $current_user->id;
-
-	
-	//Get ID of the current user post
-	$current_user_login_email = $current_user->user_email;
-	$current_user_nickname = $current_user->user_login;
-	$user_post_title = $current_user_nickname; 
-
-	if ( $post = get_page_by_path( $user_post_title, OBJECT, 'translator' ) )
-		$user_post_id = $post->ID;
-	else
-		$user_post_id = 0;
-
+	$user_post_id = get_current_user_post_id();
 	$user_post_status = get_post_status($user_post_id);
 
-	$translator_contact_phone_status = get_field("translator_contact_phone_public");
-	$translator_contact_email_status = get_field("translator_contact_email_public");
-	$translator_city_public_status = get_field("translator_city_public");
-
-		// var_dump(get_field("translator_contact_email_public", $user_post_id));
+	$translator_contact_phone_status = get_field("translator_contact_phone_public", $user_post_id);
+	$translator_contact_email_status = get_field("translator_contact_email_public", $user_post_id);
+	$translator_city_public_status = get_field("translator_city_public", $user_post_id);
 
 	ob_start(); ?>	
 
@@ -3131,6 +3118,9 @@ function settings_user_data_visibility_form() {
 									<?php
 
 								} else {
+
+									$not_activated_yet_icon = file_get_contents(get_template_directory() . "/dist/dist/svg/not_activated_yet_icon.svg");
+
 									?>
 									<li>
 
@@ -3140,64 +3130,9 @@ function settings_user_data_visibility_form() {
 										">
 
 											<label for="switch">
-												<svg version="1.1" id="Capa_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
-														viewBox="0 0 512 512" style="enable-background:new 0 0 512 512;" xml:space="preserve">
-													<g>
-														<g>
-															<g>
-																<path d="M458.406,380.681c-8.863-6.593-21.391-4.752-27.984,4.109c-3.626,4.874-7.506,9.655-11.533,14.21
-																	c-7.315,8.275-6.538,20.915,1.737,28.231c3.806,3.364,8.531,5.016,13.239,5.016c5.532,0,11.04-2.283,14.992-6.754
-																	c4.769-5.394,9.364-11.056,13.658-16.829C469.108,399.803,467.269,387.273,458.406,380.681z"/>
-																<path d="M491.854,286.886c-10.786-2.349-21.447,4.496-23.796,15.288c-1.293,5.937-2.855,11.885-4.646,17.681
-																	c-3.261,10.554,2.651,21.752,13.204,25.013c1.967,0.607,3.955,0.896,5.911,0.896c8.54,0,16.448-5.514,19.102-14.102
-																	c2.126-6.878,3.98-13.937,5.514-20.98C509.492,299.89,502.647,289.236,491.854,286.886z"/>
-																<path d="M362.139,444.734c-5.31,2.964-10.808,5.734-16.34,8.233c-10.067,4.546-14.542,16.392-9.996,26.459
-																	c3.34,7.396,10.619,11.773,18.239,11.773c2.752,0,5.549-0.571,8.22-1.777c6.563-2.964,13.081-6.249,19.377-9.764
-																	c9.645-5.384,13.098-17.568,7.712-27.212C383.968,442.803,371.784,439.35,362.139,444.734z"/>
-																<path d="M236,96v151.716l-73.339,73.338c-7.81,7.811-7.81,20.474,0,28.284c3.906,3.906,9.023,5.858,14.143,5.858
-																	c5.118,0,10.237-1.953,14.143-5.858l79.196-79.196c3.75-3.75,5.857-8.838,5.857-14.142V96c0-11.046-8.954-20-20-20
-																	C244.954,76,236,84.954,236,96z"/>
-																<path d="M492,43c-11.046,0-20,8.954-20,20v55.536C425.448,45.528,344.151,0,256,0C187.62,0,123.333,26.629,74.98,74.98
-																	C26.629,123.333,0,187.62,0,256s26.629,132.667,74.98,181.02C123.333,485.371,187.62,512,256,512c0.169,0,0.332-0.021,0.5-0.025
-																	c0.168,0.004,0.331,0.025,0.5,0.025c7.208,0,14.487-0.304,21.637-0.902c11.007-0.922,19.183-10.592,18.262-21.599
-																	c-0.923-11.007-10.58-19.187-21.6-18.261C269.255,471.743,263.099,472,257,472c-0.169,0-0.332,0.021-0.5,0.025
-																	c-0.168-0.004-0.331-0.025-0.5-0.025c-119.103,0-216-96.897-216-216S136.897,40,256,40c76.758,0,147.357,40.913,185.936,106
-																	h-54.993c-11.046,0-20,8.954-20,20s8.954,20,20,20H448c12.18,0,23.575-3.423,33.277-9.353c0.624-0.356,1.224-0.739,1.796-1.152
-																	C500.479,164.044,512,144.347,512,122V63C512,51.954,503.046,43,492,43z"/>
-															</g>
-														</g>
-													</g>
-													<g>
-													</g>
-													<g>
-													</g>
-													<g>
-													</g>
-													<g>
-													</g>
-													<g>
-													</g>
-													<g>
-													</g>
-													<g>
-													</g>
-													<g>
-													</g>
-													<g>
-													</g>
-													<g>
-													</g>
-													<g>
-													</g>
-													<g>
-													</g>
-													<g>
-													</g>
-													<g>
-													</g>
-													<g>
-													</g>
-													</svg>
+
+											<?php echo $not_activated_yet_icon ?>
+
 											</label>
 
 										</div>
@@ -3273,31 +3208,22 @@ function settings_user_data_visibility_form() {
 }
 
 function change_settings_user_data_visibility_with_ajax() {
-	
-		$user_id = get_current_user_id();
-		$current_user = wp_get_current_user();
-		$current_user_nickname = $current_user->user_login;
-		$user_post_title = $current_user_nickname; 
-
-		$user_data_visibility_object_for_ajax = (object) [
-			'profile_is_public' => "",
-			'console_log' => [],
-		];
-
-		if ( $post = get_page_by_path( $user_post_title, OBJECT, 'translator' ) )
-			$user_post_id = $post->ID;
-		else
-			$user_post_id = 0;
 
 		if ( ! wp_verify_nonce( $_POST["settings_user_data_visibility_form_nonce"], "settings_user_data_visibility_form") ) {
 			die ( 'Nonce mismatched!');
 		}
+	
+		$user_post_id = get_current_user_post_id();
 
 		$user_settings_visibility_public_profile = $_POST["user_settings_visibility_public_profile"];
 		$user_settings_visibility_contact_phone = $_POST["user_settings_visibility_contact_phone"];
 		$user_settings_visibility_contact_email = $_POST["user_settings_visibility_contact_email"];
 		$user_settings_visibility_city = $_POST["user_settings_visibility_city"];
 
+		$user_data_visibility_object_for_ajax = (object) [
+			'profile_is_public' => "",
+			'console_log' => [],
+		];
 
 		if ($user_settings_visibility_public_profile === "on") {
 			wp_update_post(array(

@@ -18,10 +18,6 @@ get_header();
 		}
 		?>
 
-		<?php
-			get_template_part( 'template-parts/back-to-home-page' );
-		?>
-
 		<main id="main" class="site-main single-translator">
 
 		<!-- <div class="breadcrumbs">

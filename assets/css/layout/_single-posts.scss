@@ -1,6 +1,5 @@
 .single-translator {
-
-	article.translator {
+	.translator {
 		margin: 4rem 0;
 	}
 
@@ -16,6 +15,84 @@
 			display: flex;
 			justify-content: space-between;
 			flex-wrap: wrap;
+
+			.translator {
+				&__top {
+					margin: auto;
+					max-width: 250px;
+					width: 75%;
+
+					@media screen and (min-width: 1024px) {
+						margin: unset;
+						max-width: 350px;
+						width: 20%;
+					}
+
+					img {
+						height: 10rem;
+						width: 10rem;
+					}
+				}
+
+				&__middle {
+					@media screen and (min-width: 1024px) {
+						width: 40%;
+					}
+				}
+
+				&__bottom {
+					@media screen and (min-width: 1024px) {
+						width: 30%;
+					}
+
+					p,
+					li {
+						padding: 0.75rem 0;
+						border-bottom: 1px solid $color__main-theme--turquoise;
+					}
+
+					p {
+						margin-right: 3rem;
+					}
+
+					li {
+						margin-right: 6rem;
+					}
+
+					.wrapper-flex {
+						&:first-of-type {
+							margin-bottom: 1rem;
+						}
+					}
+				}
+			}
+
+			&__about {
+				margin: 2rem 0 0;
+
+				@media screen and (min-width: 1024px) {
+					margin: 2rem 0;
+				}
+
+				p {
+					padding: 0.75rem 0;
+
+					&:first-of-type {
+						border-bottom: 1px solid $color__main-theme--turquoise;
+					}
+				}
+			}
+
+			&__languages {
+				li {
+					text-transform: lowercase;
+				}
+			}
+
+			&__icons-wrapper {
+				margin-top: 2rem;
+				text-align: right;
+			}
 		}
 
 		&--3 {

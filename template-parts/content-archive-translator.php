@@ -9,6 +9,8 @@
 $translator__linkedin_link = get_field("translator_linkedin_link"); 
 $linkedin_icon = file_get_contents(get_template_directory() . "/dist/dist/svg/linkedin.svg");
 
+var_dump($translator__linkedin_link);
+
 // data is currenty passed from the following files:
 // - content-none.php
 
@@ -32,7 +34,6 @@ if ( $args['data'] ) {
 	<div class="translator__top">
 
 		<div class="profile-picture__wrapper text--center">
-			<a href="<?php get_permalink() ?>" rel="bookmark">
 
 				<div class="post-thumbnail__decoration post-thumbnail__decoration--left"></div>
 
@@ -40,7 +41,6 @@ if ( $args['data'] ) {
 
 				<div class="post-thumbnail__decoration post-thumbnail__decoration--right"></div>
 
-			</a>
 		</div>
 
 		<div class="translator__icons-wrapper">
@@ -48,14 +48,13 @@ if ( $args['data'] ) {
 
 			if ($translator__linkedin_link)  {
 
-				echo  '<a href="'.$translator__linkedin_link.'" class="contact-icon contact-icon__linkedin" target="_blank">
+				echo '<a href="'.esc_url($translator__linkedin_link).'" class="contact-icon contact-icon__linkedin" target="_blank">
 				'.$linkedin_icon.'
 				</a>';
 			}
 
 		?>
 		</div>
-
 
 
 	</div>

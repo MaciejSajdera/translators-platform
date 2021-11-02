@@ -67,15 +67,26 @@ get_header();
 				$current_user_last_name = $current_user->last_name;
 	
 				$user_post_title = $current_user_nickname; 
-	
-				if ( $post = get_page_by_path( $user_post_title, OBJECT, 'translator' ) )
-					$user_post_id = $post->ID;
-				else
-					$user_post_id = 0;
+
+				$user_post_id = get_current_user_post_id();
 
 				if ( ! ( $current_user instanceof WP_User ) ) {
 					 return;
 				} else {
+
+					//ACFs
+
+					$translator_about_short = get_field('translator_about_short', $user_post_id);
+					$translator_about = get_field('translator_about', $user_post_id);
+					$translator_contact_phone = get_field('translator_contact_phone', $user_post_id);
+					$translator_contact_email = get_field('translator_contact_email', $user_post_id);
+					$translator_city = get_field('translator_city', $user_post_id);
+					$sounds_to_gallery_array = get_field('translator_sound_gallery', $user_post_id);
+					$translator_linkedin_link = get_field('translator_linkedin_link', $user_post_id);
+					$translator_work = get_field('translator_work', $user_post_id);
+					$images_to_gallery_array = get_field('translator_gallery', $user_post_id);
+					$videos_to_gallery_array = get_field('translator_video_gallery', $user_post_id);
+					$membership_package_file = get_field('membership_package_file', $user_post_id);
 
 					// print_r($_POST);
 					// print_r($_REQUEST);
@@ -198,29 +209,8 @@ get_header();
 												<h2>Witaj na swoim koncie PSTK.</h2>
 											</div>';
 
-										
-
 										$completness_value_class = '';
 										$account_fill_completeness_display = '';
-
-										// if (get_percent_value_of_account_fill_completness() < 49) {
-										// 	$completness_value_class = "value__low";
-										// }
-
-										// if (get_percent_value_of_account_fill_completness() >= 49 && 75 > get_percent_value_of_account_fill_completness()) {
-										// 	$completness_value_class = "value__medium";
-										// }
-
-										// if (get_percent_value_of_account_fill_completness() >= 75 && 95 >= get_percent_value_of_account_fill_completness()) {
-										// 	$completness_value_class = "value__high";
-										// }
-
-										// $account_fill_completeness_display = "show";
-
-										// if (get_percent_value_of_account_fill_completness() == 100) {
-										// 	$account_fill_completeness_display = "hide";
-										// }
-
 
 										if (get_percent_value_of_account_fill_completness()) {
 
@@ -294,8 +284,7 @@ get_header();
 
 											echo '<div class="info-box__subbox">';
 
-												if (strlen(get_field('translator_about_short')) > 0) {
-													$translator_about_short = get_field('translator_about_short');
+												if (strlen($translator_about_short) > 0) {
 													$placeholder_mode = '';
 												} else {
 													$translator_about_short = 'Napisz jedno zdanie o sobie';
@@ -406,8 +395,7 @@ get_header();
 
 											echo '<div class="info-box__subbox">';
 
-												if (strlen(get_field("translator_about")) > 0) {
-													$translator_about = get_field("translator_about");
+												if (strlen($translator_about) > 0) {
 													$placeholder_mode = '';
 												} else {
 													$translator_about = 'Napisz o sobie kilka zdań, które pozwolą potencjalnym klientom poznać Cię z najlepszej strony, zrozumieć, w czym masz doświadczenie i co Cię wyróżnia.';
@@ -461,8 +449,7 @@ get_header();
 
 											echo '<div class="info-box__subbox">';
 
-													if (strlen(get_field("translator_contact_phone")) > 0) {
-														$translator_contact_phone = get_field("translator_contact_phone");
+													if (strlen($translator_contact_phone) > 0) {
 														$placeholder_mode = '';
 													} else {
 														$translator_contact_phone = '+48 123 456 789';
@@ -476,10 +463,8 @@ get_header();
 
 											echo '<div class="info-box__subbox">';
 
-												$translator_contact_email = get_field("translator_contact_email");
 
-													if (strlen(get_field("translator_contact_email")) > 0) {
-														$translator_contact_email = get_field("translator_contact_email");
+													if (strlen($translator_contact_email) > 0) {
 														$placeholder_mode = '';
 													} else {
 														$translator_contact_email = $current_user_login_email;
@@ -497,11 +482,16 @@ get_header();
 
 											//Exclude #user_city from being displayed in the list
 
-											if (get_field("translator_city") && strlen(get_field("translator_city")) > 0) {
-												$excluded_term = get_term_by( 'name', get_field("translator_city"), 'translator_localization' );
-												$excluded_term_ID = $excluded_term->term_id;
-											} else {
-												$excluded_term_ID = false;
+											$excluded_term_ID = false;
+
+
+											if ($translator_city && strlen($translator_city) > 0) {
+												$excluded_term = get_term_by( 'name', $translator_city, 'translator_localization' );
+
+												if ( $excluded_term ) {
+													$excluded_term_ID = $excluded_term->term_id;
+												}
+
 											}
 
 											$translator_localizations = get_terms( array(
@@ -519,7 +509,7 @@ get_header();
 
 												echo '<p class="wrapper-flex-drow-mcol__first-element info-box__content">Miejsce zamieszkania</p>';
 
-												echo '<p id="user_city_text" class="info-box__content">'.get_field("translator_city").'</p>';
+												echo '<p id="user_city_text" class="info-box__content">'.$translator_city.'</p>';
 
 											echo '</div>';
 
@@ -572,8 +562,6 @@ get_header();
 										echo '<div class="content-box">';
 
 											echo '<div class="info-box__subbox">';
-
-												$sounds_to_gallery_array = get_field('translator_sound_gallery');
 
 												$sound_icon = file_get_contents(get_stylesheet_directory_uri().'/dist/dist/svg/radio-waves.svg');
 
@@ -641,9 +629,7 @@ get_header();
 
 																	echo '</div>';
 																
-															
-
-
+														
 																if($sound_link) {
 
 																	$sound_id = attachment_url_to_postid($sound_link);
@@ -739,8 +725,7 @@ get_header();
 
 											echo '<div class="info-box__subbox">';
 
-												if (strlen(get_field("translator_linkedin_link")) > 0) {
-													$translator_linkedin_link = get_field("translator_linkedin_link");
+												if (strlen($translator_linkedin_link) > 0) {
 													$placeholder_mode = '';
 												} else {
 													$translator_linkedin_link = 'linkedin.com/';
@@ -804,8 +789,7 @@ get_header();
 
 											echo '<div class="info-box__subbox">';
 
-												if (strlen(get_field("translator_work")) > 0) {
-													$translator_work = get_field("translator_work");
+												if (strlen($translator_work) > 0) {
 													$placeholder_mode = '';
 												} else {
 													$translator_work = 'Napisz kilka zdań o tym gdzie najczęściej pracujesz';
@@ -849,8 +833,6 @@ get_header();
 											echo '<div class="info-box__subbox wrapper-flex-drow-mcol">';
 
 											/* IMAGES GALLERY PANEL */
-
-											$images_to_gallery_array = get_field('translator_gallery');
 
 												echo '<div class="my-pictures__wrapper ajax-content-wrapper col-d50">';
 
@@ -904,8 +886,6 @@ get_header();
 												echo '</div>';
 
 												/* VIDEO GALLERY PANEL */
-
-												$videos_to_gallery_array = get_field('translator_video_gallery');
 
 												echo '<div class="my-videos__wrapper ajax-content-wrapper col-d50">';
 
@@ -1207,13 +1187,13 @@ get_header();
 											while ($membership_package_query->have_posts()) {
 												$membership_package_query->the_post();
 
-												if (get_field('membership_package_file')) {
+												if ($membership_package_file) {
 
 													echo '<li>';
 
 														echo '<div class="membership_package__label">'.get_the_title().'</div>';
 
-														echo '<a href="'.get_field('membership_package_file')['url'].'" class="button button__download" download>Pobierz</a>';
+														echo '<a href="'.$membership_package_file['url'].'" class="button button__download" download>Pobierz</a>';
 
 													echo '</li>';
 
