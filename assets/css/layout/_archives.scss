@@ -1,12 +1,48 @@
+.blog {
+	.page-title {
+		padding: 0.75rem 0;
+		width: fit-content;
+		border-bottom: 1px solid $color__main-theme--turquoise;
+		margin-bottom: 4rem;
+	}
+}
+
+.post-count {
+	color: $color__main-theme--turquoise;
+	position: relative;
+	width: fit-content;
+
+	&:before {
+		content: "";
+		position: absolute;
+		top: -1rem;
+		height: 1px;
+		width: 125%;
+		left: 50%;
+		transform: translateX(-50%);
+		background-color: $color__main-theme--turquoise;
+	}
+}
+
 .post-type-archive-translator {
 	.search {
 		&__container {
-			margin-bottom: 4rem;
+			margin-bottom: 6rem;
+
+			@media screen and (min-width: 1024px) {
+				margin-bottom: 8rem;
+			}
 		}
 	}
 
 	.searchfilter {
 		&__wrapper {
+			padding-top: 4rem;
+
+			@media screen and (min-width: 1024px) {
+				padding-top: 7rem;
+			}
+
 			ul {
 				display: flex;
 				flex-flow: row;
@@ -28,17 +64,108 @@
 		}
 	}
 
-	article.translator {
+	.translator {
 		display: flex;
+		flex-flow: column;
 		justify-content: space-between;
-		padding: 3em;
+		padding: 3rem 0;
+		border-top: 1px solid #f8f3f3;
 
-		& > * {
-			width: 33%;
+		@media screen and (min-width: 1024px) {
+			flex-flow: row;
+			row-gap: 8vw;
 		}
 
-		.post-thumbnail {
-			display: block;
+		&:first-of-type {
+			border-top: 0;
+		}
+
+		& > * {
+			padding: 2rem 0 0;
+
+			@media screen and (min-width: 1024px) {
+				padding: 0 2rem;
+			}
+		}
+
+		p {
+			margin: 0;
+		}
+
+		&__top {
+			margin: auto;
+			max-width: 250px;
+			width: 75%;
+
+			@media screen and (min-width: 1024px) {
+				margin: unset;
+				max-width: 350px;
+				width: 20%;
+			}
+
+			img {
+				height: 10rem;
+				width: 10rem;
+			}
+		}
+
+		&__middle {
+			@media screen and (min-width: 1024px) {
+				width: 40%;
+			}
+		}
+
+		&__bottom {
+			@media screen and (min-width: 1024px) {
+				width: 30%;
+			}
+
+			p,
+			li {
+				padding: 0.75rem 0;
+				border-bottom: 1px solid $color__main-theme--turquoise;
+			}
+
+			p {
+				margin-right: 3rem;
+			}
+
+			li {
+				margin-right: 6rem;
+			}
+
+			.wrapper-flex {
+				&:first-of-type {
+					margin-bottom: 1rem;
+				}
+			}
+		}
+
+		&__about {
+			margin: 2rem 0 0;
+
+			@media screen and (min-width: 1024px) {
+				margin: 2rem 0;
+			}
+
+			p {
+				padding: 0.75rem 0;
+
+				&:first-of-type {
+					border-bottom: 1px solid $color__main-theme--turquoise;
+				}
+			}
+		}
+
+		&__languages {
+			li {
+				text-transform: lowercase;
+			}
+		}
+
+		&__icons-wrapper {
+			margin-top: 2rem;
+			text-align: right;
 		}
 	}
 

@@ -22,7 +22,7 @@
 	display: grid;
 
 	&--desktop-2x2 {
-		@media screen and (min-width: 992px) {
+		@media screen and (min-width: 1024px) {
 			grid-template-columns: 50%;
 		}
 	}

@@ -63,6 +63,8 @@ get_header();
 				$current_user_id = get_current_user_id();
 				$current_user_nickname = $current_user->user_login;
 				$current_user_login_email = $current_user->user_email;
+				$current_user_first_name = $current_user->first_name;
+				$current_user_last_name = $current_user->last_name;
 	
 				$user_post_title = $current_user_nickname; 
 	
@@ -71,12 +73,6 @@ get_header();
 				else
 					$user_post_id = 0;
 
-
-				//User data from user post ACF's
-
-				$translator_first_name = get_field("translator_first_name", $user_post_id);
-				$translator_last_name = get_field("translator_last_name", $user_post_id);
-	
 				if ( ! ( $current_user instanceof WP_User ) ) {
 					 return;
 				} else {
@@ -164,7 +160,7 @@ get_header();
 
 							echo '</div>';
 
-							echo '<h3 class="account__user-fullname">'.$translator_first_name.' '.$translator_last_name.'</h3>';
+							echo '<h3 class="account__user-fullname mb-4">'.$current_user_first_name.' '.$current_user_last_name.'</h3>';
 
 							 echo '<div class="account__navigation">';
 
@@ -196,11 +192,13 @@ get_header();
 
 								echo '<div class="info-box account__welcome-message">';
 
-									echo '<div class="content-box">';
+									echo '<div class="content-box">
+											<div class="info-box">
+												<h1>Cześć <span class="account__user-first-name">'.$current_user_first_name.'</span>!</h1>
+												<h2>Witaj na swoim koncie PSTK.</h2>
+											</div>';
 
-										echo '<h1>Cześć <span class="account__user-first-name">'.$translator_first_name.'</span>!</h1>';
-
-										echo '<h2>Witaj na swoim koncie PSTK.</h2>';
+										
 
 										$completness_value_class = '';
 										$account_fill_completeness_display = '';
@@ -283,14 +281,14 @@ get_header();
 											echo '<div class="info-box__subbox">';
 
 												echo '<p class="info-box__subbox-header">Imię</p>';
-												echo '<p class="info-box__content account__user-first-name">'.$translator_first_name .'</p>';
+												echo '<p class="info-box__content account__user-first-name">'.$current_user_first_name .'</p>';
 
 											echo '</div>';
 
 											echo '<div class="info-box__subbox">';
 
 												echo '<p class="info-box__subbox-header">Nazwisko</p>';
-												echo '<p class="info-box__content account__user-last-name">'.$translator_last_name .'</p>';
+												echo '<p class="info-box__content account__user-last-name">'.$current_user_last_name .'</p>';
 
 											echo '</div>';
 

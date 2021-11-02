@@ -93,7 +93,7 @@ $login-and-registration-height: 80vh;
 		justify-content: center;
 		align-items: center;
 
-		@media screen and (min-width: 992px) {
+		@media screen and (min-width: 1024px) {
 			width: 35%;
 			min-height: $login-and-registration-height;
 		}
@@ -178,7 +178,7 @@ $login-and-registration-height: 80vh;
 
 		border: 1px solid $color__border-element;
 
-		@media screen and (min-width: 992px) {
+		@media screen and (min-width: 1024px) {
 			width: 65%;
 		}
 	}
@@ -189,6 +189,7 @@ $login-and-registration-height: 80vh;
 .animated-label-holder,
 .login-form p {
 	label {
+		pointer-events: none;
 		position: absolute;
 		padding: calc(#{$input-padding} + 1px); // +1px for border width
 		background-clip: content-box;
@@ -204,12 +205,12 @@ $login-and-registration-height: 80vh;
 .input-holder {
 	&__active {
 		label {
-			transform: translateY(-75%);
+			transform: translateY(-100%);
 			font-size: 0.75em;
 		}
 
 		input {
-			border-bottom: 1px solid $color__main-theme--turquise;
+			border-bottom: 1px solid $color__main-theme--turquoise;
 		}
 	}
 
@@ -345,6 +346,7 @@ label {
 	align-items: center;
 	cursor: pointer;
 	color: $color__text--light-grey;
+	line-height: 1;
 }
 
 .new-attachment {

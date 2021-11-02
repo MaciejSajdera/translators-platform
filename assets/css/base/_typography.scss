@@ -1,9 +1,4 @@
-body,
-button,
-input,
-select,
-optgroup,
-textarea {
+body {
 	color: $color__text-main;
 	font-family: $font__main;
 	@include font-size(1);
@@ -19,12 +14,51 @@ h4,
 h5,
 h6 {
 	clear: both;
+	margin: 0;
+}
+
+.fs--200 {
+	@include fluid-type($min_width, $max_width, 11px, 13px);
+}
+
+.fs--600 {
+	@include fluid-type($min_width, $max_width, 18px, 22px);
+}
+
+.fs--800 {
+	@include fluid-type($min_width, $max_width, 24px, 28px);
+}
+
+.fs--1000 {
+	@include fluid-type($min_width, $max_width, 30px, 34px);
+}
+
+.fs--1200 {
+	@include fluid-type($min_width, $max_width, 36px, 40px);
+
+	@media screen and (min-width: 1024px) {
+		@include fluid-type($min_width, $max_width, 38px, 46px);
+	}
+}
+
+.fw--100 {
+	font-weight: 100;
+}
+
+.fw--300 {
+	font-weight: 300;
+}
+
+.fw--700 {
+	font-weight: 700;
+}
+
+.ff--secondary {
+	font-family: $font__secondary;
 }
 
 h1 {
-	margin: 0.67rem 0;
 	@include fluid-type($min_width, $max_width, 22px, 46px);
-	// text-transform: uppercase;
 	font-weight: 700;
 	overflow-wrap: anywhere;
 	line-height: 1.25;
@@ -40,7 +74,7 @@ h1 {
 }
 
 h2 {
-	color: $color__main-theme--turquise;
+	@include fluid-type($min_width, $max_width, 18px, 22px);
 	overflow-wrap: anywhere;
 }
 
@@ -176,18 +210,30 @@ big {
 	font-style: italic;
 }
 
-.fw-100 {
-	font-weight: 100;
-}
-
-.fs-small {
-	@include fluid-type($min_width, $max_width, 11px, 13px);
-}
-
 .text {
-	&--outline-turquise {
+	&--center {
+		text-align: center;
+	}
+
+	&--right {
+		text-align: right;
+	}
+
+	&--white {
+		color: $color__text-white;
+	}
+
+	&--blue {
+		color: $color__main-theme--blue;
+	}
+
+	&--turquoise {
+		color: $color__main-theme--turquoise;
+	}
+
+	&--outline-turquoise {
 		color: transparent;
-		-webkit-text-stroke: 2px $color__main-theme--turquise;
+		-webkit-text-stroke: 2px $color__main-theme--turquoise;
 	}
 
 	&--outline-blue {
@@ -195,8 +241,8 @@ big {
 		-webkit-text-stroke: 2px $color__main-theme--blue;
 	}
 
-	&--turquise-bold {
-		color: $color__main-theme--turquise;
+	&--turquoise-bold {
+		color: $color__main-theme--turquoise;
 		font-weight: 700;
 	}
 
@@ -205,8 +251,13 @@ big {
 	}
 
 	&--big-header {
-		@include fluid-type($min_width, $max_width, 52px, 170px);
+		@include fluid-type($min_width, $max_width, 44px, 100px);
 		text-align: center;
 		margin: 0.5em 0;
+		font-weight: 700;
+	}
+
+	&--error {
+		color: $color__error-red;
 	}
 }

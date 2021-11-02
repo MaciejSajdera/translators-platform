@@ -506,7 +506,7 @@ document.addEventListener("DOMContentLoaded", () => {
 			};
 
 			setTimeout(() => {
-				const interval = 2000; // how much time should the delay between two iterations be (in milliseconds)?
+				const interval = 1500; // how much time should the delay between two iterations be (in milliseconds)?
 				let promise = Promise.resolve();
 				Object.values(loadingMessages).forEach(function(value) {
 					promise = promise.then(function() {

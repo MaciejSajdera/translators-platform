@@ -146,13 +146,13 @@ function my_admin_bar_css()
  * Enqueue scripts and styles.
  */
 function pstk_scripts() {
-	wp_enqueue_style( 'pstk-style', get_template_directory_uri() . '/dist/css/style.css', array(), '1.13');
+	wp_enqueue_style( 'pstk-style', get_template_directory_uri() . '/dist/css/style.css', array(), '1.14');
 
 	// Include our dynamic styles.
 	// $custom_css = pstk_dynamic_styles();
 	// wp_add_inline_style( 'pstk-style', $custom_css );
 
-	wp_enqueue_script( 'pstk-app', get_template_directory_uri() . '/dist/js/main.js', array(), '1.13', true );
+	wp_enqueue_script( 'pstk-app', get_template_directory_uri() . '/dist/js/main.js', array(), '1.14', true );
 	// wp_enqueue_script( 'multiselect', get_template_directory_uri() . '/dist/js/multiselect.js', array(), '', true );
 
 	if (is_page(18)) {
@@ -202,6 +202,13 @@ function wpb_add_google_fonts() {
 	wp_enqueue_style( 'wpb-google-fonts', 'https://fonts.googleapis.com/css2?family=Poppins:wght@200;400;700&display=swap', false );
 }
 add_action( 'wp_enqueue_scripts', 'wpb_add_google_fonts' );
+
+
+// Move Yoast to bottom
+function yoasttobottom() {
+	return 'low';
+}
+add_filter( 'wpseo_metabox_prio', 'yoasttobottom');
 
 
 add_action( 'set_logged_in_cookie', 'my_update_cookie' );
@@ -704,16 +711,15 @@ function create_post_for_user( $user_id ) {
     $user_info = get_userdata( $user_id );
     $user_roles = $user_info->roles;
 
-    // New code added 
     $this_user_role = implode(', ', $user_roles );
 
     if ($this_user_role == 'subscriber') {
 
         // Create a new post
         $user_post = array(
-            'post_title'   => $user_info->nickname,
+            'post_title'   => $user_info->first_name.' '.$user_info->last_name,
             'post_status'  => 'private', 
-            'post_type'    => 'translator', // <- change to your cpt
+            'post_type'    => 'translator', 
         );
         // Insert the post into the database
         $user_post_id = wp_insert_post( $user_post );
@@ -1697,8 +1703,7 @@ function linkedin_user_data_form() {
 			<fieldset>
 
 				<p>
-					<label>Adres do profilu Linkedin</label>
-					<input name="user_linkedin" id="user_linkedin" class="user_linkedin" type="text" value="<?php echo get_field("translator_linkedin_link", $user_post_id) ?>"></textarea>
+					<input name="user_linkedin" id="user_linkedin" class="user_linkedin" type="text" value="<?php echo get_field("translator_linkedin_link", $user_post_id) ?>" placeholder="Adres do profilu Linkedin"></textarea>
 				</p>
 
 				<p>
@@ -1811,7 +1816,7 @@ function work_user_data_form() {
 
 				<p>
 					<textarea form="work_user_data_form" name="user_work" id="user_work" class="user_work" type="text" maxlength="250"><?php echo get_field("translator_work", $user_post_id) ?></textarea>
-					<label for="user_work">0/250</label>
+					<label class="characters-counter">0/250</label>
 				</p>
 
 				<p>
@@ -2050,7 +2055,6 @@ function gallery_sound_uploader($user_post_id) {
 
 				<div class="repeater__holder">
 
-
 					<div class="repeater__field-wrapper">
 
 						<div class="repeater__field" data-repeater-id="0">
@@ -2067,7 +2071,7 @@ function gallery_sound_uploader($user_post_id) {
 
 									<p>
 										<textarea form="upload_sound_to_gallery_form" name="sound-textarea__input[]" id="sound-textarea__input" class="input-textarea input-preview__src" type="text" maxlength="100" placeholder="Tekst"></textarea>
-										<label for="user_work">0/100</label>
+										<label class="characters-counter">0/100</label>
 									</p>
 
 								</div>
@@ -2090,7 +2094,7 @@ function gallery_sound_uploader($user_post_id) {
 
 					</div>
 
-					<button class="button repeater__button button__filled--blue repeater__button--add">Dodaj próbkę głosu</button>
+					<button class="button repeater__button button__outline--blue repeater__button--add">Dodaj próbkę głosu</button>
 
 				</div>
 
@@ -2098,7 +2102,7 @@ function gallery_sound_uploader($user_post_id) {
 
 				<input type="hidden" name="sounds_to_delete" id="sounds_to_delete" value=""/>
 
-				<input type="submit" class="button button__outline--blue" name="submit_sound_to_gallery" value="Zaktualizuj galerię" />
+				<input type="submit" class="button button__filled--blue" name="submit_sound_to_gallery" value="Zaktualizuj galerię" />
 
 				<?php wp_nonce_field( "handle_sound_to_gallery_upload", "sound_to_gallery_nonce" ); ?>
 

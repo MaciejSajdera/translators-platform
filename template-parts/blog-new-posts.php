@@ -1,6 +1,6 @@
 <div class="common-box">
 
-    <h2 class="text--big-header text--outline-blue">Aktualności</h2>
+    <p class="text--big-header text--outline-blue">Aktualności</p>
 
     <div class="wrapper-flex-drow-mcol common-box__new-posts">
 
@@ -17,8 +17,8 @@
 
                         <div class="wrapper-flex-col-center common-box__text">
                             <p>'.get_the_title().'</p>
-                            <div class="wrapper-flex-row-spbt fs-small">
-                                <button class="button button__filled--blue fs-small">Czytaj więcej</button>
+                            <div class="flex flex-row w-full items-center wrap content-between xl:red fs--200">
+                                <button class="button button__filled--blue fs--200">Czytaj więcej</button>
                                 '.get_the_date().'
                             </div>
                          </div>

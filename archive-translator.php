@@ -27,7 +27,7 @@ get_header();
 		?>
 
 		<?php
-			get_template_part( 'template-parts/back-to-home-page' );
+			// get_template_part( 'template-parts/back-to-home-page' );
 		?>
 
 		<main id="main" class="site-main archive-translator">
@@ -51,10 +51,20 @@ get_header();
 
 		<?php if ( have_posts() ) : ?>
 
+			
+
 			<div id="search__results-container" class="archive-translator__article-list-wrapper">
 
 
-				<h3 class="page-title"><?php esc_html_e( 'Wyniki wyszukiwania', 'pstk' ); ?></h3>
+				<h3 class="page-title fs--1200">
+					<?php 
+						$count = $GLOBALS['wp_query']->post_count;
+
+						esc_html_e( 'Wyniki wyszukiwania', 'pstk' ); 
+
+						echo ' <span class="post-count">'.$count.'</span>';
+					?>
+				</h3>
 
 
 				<?php

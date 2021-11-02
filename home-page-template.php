@@ -9,26 +9,34 @@
 get_header();
 
 $section_1 = get_field("section_1");
-$h1 = $section_1['h1'];
+$h1_part_1 = $section_1['h1_part_1'];
+$h1_part_2 = $section_1['h1_part_2'];
 $h2 = $section_1['h2'];
 $image = $section_1['image'];
 
 $section_2 = get_field("section_2");
 $section_2_title = $section_2['title'];
 $section_2_repeater_fields = $section_2['repeater_fields'];
+$section_2_image = $section_2['image'];
 
 $section_3 = get_field("section_3");
-$section_3_title = $section_3['title'];
+$section_3_title_part_1 = $section_3['title_part_1'];
+$section_3_title_part_2 = $section_3['title_part_2'];
 $section_3_repeater_fields = $section_3['repeater_fields'];
 
 $section_4 = get_field("section_4");
-$section_4_title = $section_4['title'];
+$section_4_image = $section_4['image'];
+$section_4_title_part_1 = $section_4['title_part_1'];
+$section_4_title_part_2 = $section_4['title_part_2'];
 $section_4_paragraph = $section_4['paragraph'];
 $section_4_link = $section_4['link'];
 
 $section_6 = get_field("section_6");
 $translator_of_the_month = $section_6['translator_of_the_month'];
 $management_member_of_the_month = $section_6["management_member_of_the_month"];
+
+$circles_group = file_get_contents(get_template_directory() . "/dist/dist/svg/circles-group.svg");
+$circles_group_big = file_get_contents(get_template_directory() . "/dist/dist/svg/circles-group-big.svg");
 
 ?>
 
@@ -38,87 +46,91 @@ $management_member_of_the_month = $section_6["management_member_of_the_month"];
 
 		<section class="home__section-1">
 
-			<div class="welcome-view-container">
+			<div class="welcome-view__container">
 
-				<div class="text-holder">
-					<h1><?php echo $h1 ?></h1>
+					<h1><span class="text--outline-blue"><?php echo $h1_part_1 ?></span>
+						<br />
+						<?php echo $h1_part_2 ?>
+					</h1>
 
-					<h2><?php echo $h2 ?></h2>
-
-					<div class="image-holder">
+					<div class="image-holder image-holder-decorated image-holder-decorated--turquoise">
 						<img src="<?php echo $image['url'] ?>" alt="<?php echo $image['alt'] ?>">
 					</div>
-				</div>
 
-				<div class="search__container">
-
-					<!--
-					Example of multidropdown checkbox select
-					https://codepen.io/elmahdim/embed/hlmri?height=565&theme-id=0&slug-hash=hlmri&default-tab=result&user=elmahdim&embed-version=2&pen-title=Dropdown%20with%20Multiple%20checkbox%20select%20with%20jQuery -->
+					<h2 class="fs--800 text--turquoise ff--secondary"><?php echo $h2 ?></h2>
 
 					<?php
 						get_template_part( 'template-parts/searchfilter-basic' );
 					?>
 
-					<div class="prizes-wrapper">
+					<!-- <div class="prizes-wrapper">
 
 						<img src="https://pstk.blossom-is.online/wp-content/uploads/2021/09/HSYTP_main_image-removebg-preview-1.png">
 						<img src="https://pstk.blossom-is.online/wp-content/uploads/2021/09/society-removebg-preview-1.png">
 
-					</div>
-
-
-
-
-				</div>
-
+					</div> -->
 
 			</div>
 
 		</section>
 
-		<!-- <section class="home__section-2">
+		<section class="home__section-2">
 
-			<div class="checkpoints-box">
+			<div class="wrapper-flex-drow-mcol content-between">
+				<div class="bulletpoints-box">
 
-				<div class="checkpoints-box__title">
-					<h3 class="text--turquise-bold text--medium-header"><?php echo $section_2_title ?></h3>
+					<div class="bulletpoints-box__title">
+						<h3 class="text--turquoise fw--700 fs--1200"><?php echo $section_2_title ?></h3>
+					</div>
+
+					<div class="bulletpoints-box__list-holder">
+						<?php
+
+						if ($section_2_repeater_fields) {
+
+							echo '<ul>';
+
+							foreach($section_2_repeater_fields as $row) :
+
+								$textarea = $row['textarea'];
+
+								echo '<li>'.$textarea.'</li>';
+
+							endforeach;
+
+							echo '</ul>';
+						}
+
+						?>
+					</div>
+
 				</div>
 
-				<div class="checkpoints-box__list-holder">
-					<?php
-
-					if ($section_2_repeater_fields) {
-
-						echo '<ul>';
-
-						foreach($section_2_repeater_fields as $row) :
-
-							$textarea = $row['textarea'];
-
-							echo '<li><p>'.$textarea.'</p></li>';
-
-						endforeach;
-
-						echo '</ul>';
-					}
-
-					?>
+				<div class="text--right">
+					<img src="<?php echo $section_2_image['url'] ?>" alt="<?php echo $section_2_image['alt'] ?>">
 				</div>
-
 			</div>
 
+			<div class="bg-decoration__holder">
+				<div class="bg-decoration__content">
+					<?php
+					echo $circles_group;
+					?>
+				</div>
+			</div>
+
+		</section>
 
 
-		</section> -->
-<!-- 
+
 		<section class="home__section-3">
 
 			<div class="section-3__title">
-				<h3><?php echo $section_3_title ?></h3>
+				<p class="text--big-header"><span class="text--blue"><?php echo $section_3_title_part_1 ?></span> <span class="text--outline-blue"><?php echo $section_3_title_part_2 ?></span></p>
 			</div>
 
-			<div class="section-3__our_translators">
+			<div class="advantages">
+
 				<?php
 
 				if ($section_3_repeater_fields) {
@@ -129,13 +141,13 @@ $management_member_of_the_month = $section_6["management_member_of_the_month"];
 						$title = $row['title'];
 						$paragraph = $row['paragraph'];
 
-						echo '<div class="wrapper-flex-col-center">';
-						
-							echo '<img src="'.$icon["url"].'" alt="'.$icon["alt"].'">';
-							echo '<p>'.$title.'</p>';
-							echo '<p>'.$paragraph.'</p>';
-						
-						echo '</div>';
+						echo '<div class="flex flex-col advantage">
+								<div class="advantage__wrapper">
+									<div class="advantage__img-wrapper pseudo-decoration pseudo-decoration__rb"><img src="'.$icon["url"].'" alt="'.$icon["alt"].'"></div>
+									<div class="advantage__title-wrapper pseudo-decoration pseudo-decoration__lb"><p class="fw--700 fs--600">'.$title.'</p></div>
+									<div class="advantage__paragraph-wrapper pseudo-decoration pseudo-decoration__rb-half"><p class="fw--700">'.$paragraph.'</p></div>
+								</div>
+							</div>';
 
 					endforeach;
 
@@ -144,21 +156,38 @@ $management_member_of_the_month = $section_6["management_member_of_the_month"];
 				?>
 			</div>
 
-		</section> -->
 
-		<!-- <section class="home__section-4">
+			<div class="bg-decoration__holder">
+				<div class="bg-decoration__content">
+					<?php
+					echo $circles_group_big;
+					?>
+				</div>
+			</div>
+
+		</section>
+
+		<section class="home__section-4">
 
 			<div class="section-4__title">
-				<h3><?php echo $section_4_title ?></h3>
+				<div class="section-4__bg" style="background-image: url()">
+					<img width="100%" height="100%" src="<?php echo $section_4_image['url'] ?>" alt="<?php echo $section_4_image['url'] ?>" loading="lazy"/>
+					<p class="fs--1200 fw--700 text--white"><?php echo $section_4_title_part_1 ?></p>
+				</div>
+				<p class="fs--1200 fw--700 text--blue"><?php echo $section_4_title_part_2 ?></p>
+
 			</div>
 
 			<div class="section-4__paragraph-wrapper">
 				<p><?php echo $section_4_paragraph ?></p>
 			</div>
 
-			<a href="<?php echo $section_4_link ?>" class="read-more">Czytaj więcej</a>
+			<div class="section-4__cta-wrapper text--center">
+				<a href="<?php echo $section_4_link ?>" class="read-more button button__filled--turquoise">Czytaj więcej</a>
+			</div>
 
-		</section> -->
+
+		</section>
 
 		<section class="home__section-5">
 

@@ -1,25 +1,39 @@
 // section,
 .site-header,
 .site-content {
-	padding-left: 2rem;
-	padding-right: 2rem;
+	padding-left: $padding-site-content;
+	padding-right: $padding-site-content;
 
-	@media screen and (min-width: 992px) {
-		padding-left: $padding__side-main--desktop;
-		padding-right: $padding__side-main--desktop;
+	@media screen and (min-width: 1024px) {
+		padding-left: $padding-site-content-1024;
+		padding-right: $padding-site-content-1024;
+	}
+
+	@media screen and (min-width: 1280px) {
+		padding-left: $padding-site-content-1280;
+		padding-right: $padding-site-content-1280;
+	}
+
+	@media screen and (min-width: 1536px) {
+		padding-left: $padding-site-content-1536;
+		padding-right: $padding-site-content-1536;
 	}
 }
 
 .site-content {
 	padding-top: 6rem;
 
-	@media screen and (min-width: 992px) {
+	@media screen and (min-width: 1024px) {
 		padding-top: 8rem;
 	}
 }
 
+section {
+	margin-bottom: 10rem;
+}
+
 ::selection {
-	background: $color__main-theme--turquise-transparent;
+	background: $color__main-theme--turquoise-transparent;
 }
 
 .list {
@@ -38,7 +52,7 @@
 	display: flex;
 	flex-flow: column;
 
-	@media screen and (min-width: 992px) {
+	@media screen and (min-width: 1024px) {
 		flex-flow: row;
 		column-gap: 2rem;
 		row-gap: 2rem;
@@ -86,8 +100,56 @@
 	width: 100%;
 }
 
+.w-full {
+	width: 100%;
+}
+
+.mb-4 {
+	margin-bottom: 1rem;
+}
+
+.mb-8 {
+	margin-bottom: 2rem;
+}
+
+.mb-12 {
+	margin-bottom: 3rem;
+}
+
+.mb-16 {
+	margin-bottom: 4rem;
+}
+
+.wrap {
+	flex-wrap: wrap;
+}
+
+.flex {
+	display: flex;
+}
+
+.flex-row {
+	flex-flow: row;
+}
+
+.flex-col {
+	flex-flow: column;
+}
+
+.items-center {
+	align-items: center;
+}
+
+.items-baseline {
+	align-items: baseline;
+}
+
+.content-between {
+	justify-content: space-between;
+}
+
 .col-d50 {
-	@media screen and (min-width: 992px) {
+	@media screen and (min-width: 1024px) {
 		width: 50%;
 	}
 }
@@ -230,10 +292,6 @@
 		&__wrapper {
 			&--basic {
 				max-width: 400px;
-
-				@media screen and (max-width: 992px) {
-					margin-bottom: 6rem;
-				 }
 			}
 
 			form > ul {
@@ -242,7 +300,7 @@
 				// padding: 0;
 				// margin: 0;
 
-				// @media screen and (min-width: 992px) {
+				// @media screen and (min-width: 1024px) {
 				// 	// flex-flow: row;
 				// 	// justify-content: space-between;
 				// 	// flex-wrap: wrap;
@@ -264,7 +322,7 @@
 				min-width: 150px;
 				// min-width: 220px;
 
-				// @media screen and (min-width: 992px) {
+				// @media screen and (min-width: 1024px) {
 				// 	width: auto !important;
 				// }
 			}
@@ -275,14 +333,14 @@
 				background: white;
 				border-radius: 100rem;
 
-				// @media screen and (min-width: 992px) {
+				// @media screen and (min-width: 1024px) {
 				// 	width: auto !important;
 				// }
 			}
 
 			//Default options on mobile
 
-			@media screen and (max-width: 992px) {
+			@media screen and (max-width: 1024px) {
 				[data-sf-field-input-type="multiselect"] .sf-input-select,
 				[data-sf-field-input-type="select"] .sf-input-select {
 					height: 100% !important;
@@ -320,17 +378,25 @@
 
 	.searchandfilter {
 		h4 {
-			padding: 0.618rem 1rem !important;
+			padding: 0 1.25em 0.618em 1.25em !important;
+
+			@media screen and (min-width: 1024px) {
+				padding: 0.618em 1.25em !important;
+			}
 			color: $color__main-theme--blue;
 		}
 
 		li {
-			flex: 1 1 0px;
 			display: flex;
 			flex-flow: column;
 			align-self: flex-end;
 			width: 100%;
 			position: relative;
+
+			@media screen and (min-width: 1024px) {
+				flex: 1 1 0px;
+			}
+
 			// z-index: 1;
 			// .select2-container label {
 			// 	border: 2px solid #16538c;
@@ -341,9 +407,16 @@
 			// }
 		}
 
+		li.sf-field-taxonomy-translator_language {
+			.select2-selection__rendered input {
+				text-transform: lowercase;
+			}
+		}
+
 		.sf-field-sort_order {
-			@media screen and (min-width: 992px) {
-				margin-left: 4rem;
+			@media screen and (min-width: 1024px) {
+				margin-left: 51%;
+				max-width: 200px;
 			}
 		}
 	}
@@ -357,7 +430,7 @@
 		line-height: 0 !important;
 		font-size: 1rem;
 		min-height: 52px;
-		min-width: 220px;
+		// min-width: 220px;
 		border: 2px solid #16538c !important;
 		border-radius: 100rem !important;
 		background: transparent !important;
@@ -544,7 +617,7 @@
 				}
 				&::-webkit-scrollbar-thumb {
 					border-radius: 10px;
-					background: $color__main-theme--turquise-transparent;
+					background: $color__main-theme--turquoise-transparent;
 				}
 			}
 
@@ -585,6 +658,10 @@
 						// background-image: url(../dist/svg/remove.svg);
 					}
 				}
+			}
+
+			&__option[id*="language"] {
+				text-transform: lowercase;
 			}
 
 			&__option[aria-selected="true"] {
@@ -842,5 +919,117 @@
 .box-shadow {
 	&__standard {
 		box-shadow: $box-shadow_standard;
+	}
+}
+
+.characters-counter {
+	margin-top: 1rem;
+}
+
+.bg-decoration {
+	&__holder {
+		position: relative;
+		z-index: -1;
+	}
+
+	&__content {
+		position: absolute;
+	}
+}
+
+.pseudo-decoration {
+	&:before,
+	&:after {
+		position: absolute;
+		content: "";
+		background: $color__main-theme--turquoise;
+	}
+
+	&__rb {
+		&:before {
+			right: 0;
+			top: 0;
+			height: 100%;
+			width: 1px;
+		}
+
+		&:after {
+			right: 0;
+			bottom: 0;
+			height: 1px;
+			width: 100%;
+		}
+	}
+
+	&__lb {
+		&:before {
+			left: 0;
+			top: 0;
+			height: 100%;
+			width: 1px;
+		}
+
+		&:after {
+			left: 0;
+			bottom: 0;
+			height: 1px;
+			width: 100%;
+		}
+	}
+
+	&__rb-half {
+		&:before {
+			right: 0;
+			top: 0;
+			height: 100%;
+			width: 1px;
+		}
+
+		&:after {
+			right: 0;
+			bottom: 0;
+			height: 1px;
+			width: 50%;
+		}
+	}
+}
+
+.desktop-only {
+	display: none;
+	@media screen and (min-width: 1024px) {
+		display: block;
+	}
+}
+
+.mobile-only {
+	@media screen and (min-width: 1024px) {
+		display: none;
+	}
+}
+
+.image-holder {
+	display: flex;
+	width: fit-content;
+}
+
+.image-holder-decorated {
+	position: relative;
+
+	&:after {
+		content: "";
+		position: absolute;
+		height: 100%;
+		width: 100%;
+		border-radius: 20px;
+		border: 1px solid;
+		top: 3rem;
+		left: -3rem;
+		z-index: -1;
+	}
+
+	&--turquoise {
+		&:after {
+			border-color: $color__main-theme--turquoise;
+		}
 	}
 }

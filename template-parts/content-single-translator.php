@@ -147,11 +147,6 @@
 
 		</div>
 
-		<div class="single-translator__certificate">
-
-			[“Certyfikat” jakości PSTK”]
-
-		</div>
 
 	</div>
 	 <!-- end of section-1 -->

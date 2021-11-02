@@ -17,25 +17,29 @@
 	<div class="page-content">
 		<?php
 
-			?>
+			// if no translator has chosen languages
 
-			<p><?php esc_html_e( 'Brak wyników w wybranym mieście. Sprawdź innych tłumaczy najbliżej wybranego miasta:', 'pstk' ); ?></p>
-			<?php
+			if (isset($_GET['_sft_translator_language']) && !isset($_GET['_sft_translator_localization'])) {
+				echo '<p>Brak tłumaczy spełniających podane kryteria. Spróbuj zmienić parametry wyszukiwania.</p>';
+			}
+			
+			// if no translator with chosen langs and in chosen location
 
-				/* Get name of the city user was looking for */
+			if (isset($_GET['_sft_translator_language']) && isset($_GET['_sft_translator_localization'])) {
+				echo '<p>Brak wyników w wybranym mieście. Sprawdź innych tłumaczy najbliżej wybranego miasta:</p>';
+			}
 
-				//TODO: handle edge case where no city was chosen
+			/* Get name of the city user was looking for */
 
-			if ($_GET && $_GET['_sft_translator_localization']) {
+			if (isset($_GET['_sft_translator_localization'])) {
 				$target_city_name = $_GET['_sft_translator_localization'];
 			}
 
-			if ($target_city_name) {
+			if (isset($target_city_name)) {
 
 				/* Get geolocation of the city user was looking for */
 
 				$apiKey = 'AIzaSyAPJ8o7xD9vqydfgZ6XrJKvLdnhmL_YTxA'; // Google maps now requires an API key.
-
 
 				$ch_geo_target_city = curl_init();
 
@@ -50,22 +54,19 @@
 				$data_curl_geo_target_city = json_decode(curl_exec($ch_geo_target_city));
 				curl_close($ch_geo_target_city);
 
-
-
 				$geo_target_city = $data_curl_geo_target_city;
 
-				// $geo_target_city = @file_get_contents_curl('https://maps.googleapis.com/maps/api/geocode/json?address='.urlencode($target_city_name).'&sensor=false&key='.$apiKey);
-				// $geo_target_city = json_decode($geo_target_city, true); // Convert the JSON to an array
 				$geo_target_city = json_decode(json_encode($geo_target_city), true); // Convert the JSON to an array
 
 				// var_dump(json_encode($geo_target_city['results'][0]['geometry']['location']['lat']));
 				// var_dump(json_encode($geo_target_city['results'][0]['geometry']['location']['lng']));
 
-				// echo '<br />';
-
 				if (isset($geo_target_city['status']) && ($geo_target_city['status'] == 'OK')) {
 					$target_city_latitude = $geo_target_city['results'][0]['geometry']['location']['lat']; // Latitude
 					$target_city_longitude = $geo_target_city['results'][0]['geometry']['location']['lng']; // Longitude
+				} else {
+					echo '<p class="text--error">Wystąpił błąd podczas próby uzyskania danych geolokalizacyjnych, prosimy spróbować ponownie za parę minut.</p>';
+					return;
 				}
 
 				/* Get all not empty cities from the database and calculate distance from target city */
@@ -78,19 +79,9 @@
 
 				$cities_objects_arr = array();
 
-				foreach( $translator_localizations as $term ) :
+				foreach( $translator_localizations as $localization ) :
 
-					// echo '<div style="border: 1px solid black; margin: 1rem; padding: 1em;">';
-
-					// echo '<label>';
-
-					// echo $term->name;
-
-					// echo '</label>';
-
-
-					$translator_city_name = $term->name; // Address
-
+					$translator_city_name = $localization->name; // Address
 
 					$ch_geo_translator_city = curl_init();
 
@@ -105,11 +96,6 @@
 					$data_curl_geo_translator_city = json_decode(curl_exec($ch_geo_translator_city));
 					curl_close($ch_geo_translator_city);
 
-					/* Get JSON results from this request */
-					// $geo_translator_city = @file_get_contents_curl('https://maps.googleapis.com/maps/api/geocode/json?address='.urlencode($translator_city_name).'&sensor=false&key='.$apiKey);
-					// $geo_translator_city = json_decode($geo_translator_city, true); // Convert the JSON to an array
-
-
 
 					$geo_translator_city = $data_curl_geo_translator_city;
 
@@ -119,7 +105,6 @@
 					// var_dump(json_encode($geo_translator_city['results'][0]['geometry']['location']['lat']));
 					// var_dump(json_encode($geo_translator_city['results'][0]['geometry']['location']['lng']));
 
-					// echo '<br />';
 
 					if (isset($geo_translator_city['status']) && ($geo_translator_city['status'] == 'OK')) {
 						$translator_city_latitude = $geo_translator_city['results'][0]['geometry']['location']['lat']; // Latitude
@@ -133,14 +118,16 @@
 
 						$city_object = (object)[];
 
-						$city_object->city_name = $term->name;
+						$city_object->city_name = $localization->name;
 						$city_object->distance_from_target = round($distance_from_target, 0);
 
 						array_push($cities_objects_arr, $city_object);
 
+					} else {
+						echo '<p class="text--error">Wystąpił błąd podczas próby uzyskania danych geolokalizacyjnych, prosimy spróbować ponownie za parę minut.</p>';
+						return;
 					}
 
-					// echo '</div>';
 
 				endforeach;
 
@@ -212,7 +199,6 @@
 
 				endforeach;
 
-
 				/* Query translators posts in given order  */
 
 				$post_ids = $closest_translators_ids_in_order;
@@ -238,170 +224,59 @@
 					while ($query->have_posts()) {
 						$query->the_post();
 
-						?>
+						$translator_localizations = wp_get_object_terms( $post->ID, 'translator_localization' );
 
-						<article id="post-<?php the_ID(); ?>" <?php post_class(); ?>>
+						if ( $translator_localizations ) {
 
-						<?php pstk_post_thumbnail(); ?>
-				
-					<div class="archive-translators__translator-info-wrapper">
-				
-						<header class="entry-header">
-							
-							<?php
-				
-								$translator_first_name = get_field("translator_first_name");
-								$translator_last_name = get_field("translator_last_name");
-				
-								echo '<h2 class="entry-title">'.$translator_first_name.' '. $translator_last_name.'</h2>';
-				
-							?>
-				
-							<!-- <?php if ( 'post' === get_post_type() ) : ?>
-							<div class="entry-meta">
-								<?php
-								pstk_posted_on();
-								pstk_posted_by();
-								?>
-							</div>
-				
-							<?php endif; ?> -->
-				
-						</header><!-- .entry-header -->
-				
-						<p>
-							<?php
-								echo get_field("translator_city");
-							?>
-						</p>
-				
-						<p>Other cities:
-							
-						<?php
+							$distances_from_target_city_arr = array();
 
-							$translator_localizations = wp_get_object_terms( $post->ID, 'translator_localization' );
-							
-							if ( $translator_localizations ) {
-								foreach( $translator_localizations as $term ) :
-					
-											echo $term->name;
-											echo ", ";
-										
-								endforeach;
-							}
-				
-							?>
-				
-							</p>
+							foreach( $translator_localizations as $localization ) :
 
-						<p>Odległość:
+								$index_of_matched_city;
 
-						<?php
+								$i = 0;
 
+										if (in_array($localization->name, array_column($closest_cities_arr, "city_name"))) { 
 
-							if ( $translator_localizations ) {
+											foreach($closest_cities_arr as $city) :
 
-								$matched_cities_arr = array();
+												if ($city->city_name == $localization->name) {
+													array_push($distances_from_target_city_arr, $city->distance_from_target);
+													$index_of_matched_city = $i;
+													$i++;
+												}
 
-								foreach( $translator_localizations as $term ) :
+											endforeach;
 
-									$index_of_matched_city;
+										}
 
-									$i = 0;
-
-											if (in_array($term->name, array_column($closest_cities_arr, "city_name"))) { 
-
-												foreach($closest_cities_arr as $obj) :
-
-													if ($obj->city_name == $term->name) {
-														array_push($matched_cities_arr, $obj->distance_from_target);
-														$index_of_matched_city = $i;
-														$i++;
-													}
-
-												endforeach;
-
-											}
-
-								endforeach;
-
-								if (count($matched_cities_arr) > 0) {
-
-									// print_r($matched_cities_arr);
-
-									echo $matched_cities_arr[$index_of_matched_city]. 'KM';
-								} else {
-									echo $matched_cities_arr[0]. 'KM';
-								}
-							}
-
-						?>
-
-						</p>
-				
-						<p>
-				
-						<?php
-				
-						$translator_languages = wp_get_object_terms( $post->ID, 'translator_language' );
-				
-						if ( $translator_languages ) {
-							foreach( $translator_languages as $term ) :
-				
-										echo $term->name;
-										echo ", ";
-									
 							endforeach;
-						}
-				
-						?>
-				
-						</p>
-				
-				
-						<div class="wrapper-flex">
-				
-							<?php
-				
-							$translator_specializations = wp_get_object_terms( $post->ID, 'translator_specialization' );
-				
-							if ( $translator_specializations ) {
-								foreach( $translator_specializations as $term ) :
-				
-											echo '<div class="info-tile"><p>'.$term->name.'</p></div>';
-										
-								endforeach;
-							}
-				
-							?>
-				
-						</div>
-				
-					</div>
-				
-					<div class="entry-summary">
-						<p>
-						<?php echo get_field('translator_about') ?>
-						</p>
-						<?php
-							echo '<a href="'.get_permalink().'" rel="bookmark">Więcej</a>';
-						?>
-					</div><!-- .entry-summary -->
-				
-				</article><!-- #post-<?php the_ID(); ?> -->
 
-			
-				<?php
-					
+							$distance_from_target_city_to_the_closest_city;
+
+							if (count($distances_from_target_city_arr) > 0) {
+
+								$distance_from_target_city_to_the_closest_city = $distances_from_target_city_arr[$index_of_matched_city];
+
+							} else {
+
+								$distance_from_target_city_to_the_closest_city = $distances_from_target_city_arr[0];
+
+							}
+							
+						}
+
+						get_template_part( 'template-parts/content', 'translator', array( 
+							'data'  => array(
+							  'distance_from_target_city_to_the_closest_city' => $distance_from_target_city_to_the_closest_city,
+							)) 
+						  );
 				}
 			}
 		}
 
 			wp_reset_postdata();
 
-			// $arr_vals = array_values((array)$closest_cities_arr);
-
-			// var_dump($arr_vals);
 
 		?>
 	</div><!-- .page-content -->
