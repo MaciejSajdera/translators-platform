@@ -112,12 +112,17 @@
 /*---------------------------
 ## Home
 ---------------------------*/
-@import "layout/_home";
+@import "pages/_home";
 
 /*---------------------------
 ## About
 ---------------------------*/
-@import "layout/_about";
+@import "pages/_about";
+
+/*---------------------------
+## About Manegament
+---------------------------*/
+@import "pages/_about-manegament";
 
 /*---------------------------
 ## Blog

@@ -123,7 +123,7 @@ $profile-picture-decoration-spacing: -8.5%;
 		#fillTheseFields {
 			display: block;
 			margin-top: 1rem;
-			width: fit-content;
+			cursor: pointer;
 		}
 
 		svg {
@@ -359,27 +359,6 @@ $profile_picture_width: 175px;
 
 			&__wrapper {
 				position: relative;
-			}
-
-			&__decoration {
-				position: absolute;
-				width: 25%;
-				height: 80%;
-				border: 2px solid $color__main-theme--turquoise;
-
-				&--left {
-					left: $profile-picture-decoration-spacing;
-					bottom: $profile-picture-decoration-spacing;
-					border-top: 0;
-					border-right: 0;
-				}
-
-				&--right {
-					right: $profile-picture-decoration-spacing;
-					top: $profile-picture-decoration-spacing;
-					border-bottom: 0;
-					border-left: 0;
-				}
 			}
 		}
 

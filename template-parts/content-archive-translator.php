@@ -35,11 +35,11 @@ if ( $args['data'] ) {
 
 		<div class="profile-picture__wrapper text--center">
 
-				<div class="post-thumbnail__decoration post-thumbnail__decoration--left"></div>
+				<div class="corner__decoration corner__decoration--left"></div>
 
 				<img src="<?php echo get_the_post_thumbnail_url() ?>" loading="lazy" />
 
-				<div class="post-thumbnail__decoration post-thumbnail__decoration--right"></div>
+				<div class="corner__decoration corner__decoration--right"></div>
 
 		</div>
 

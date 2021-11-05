@@ -27,7 +27,6 @@
 
 			h1 {
 				color: $color__main-theme--blue;
-				font-weight: 900;
 				letter-spacing: 2px;
 				text-transform: uppercase;
 
@@ -231,32 +230,10 @@
 	}
 
 	&__section-3 {
-		.advantages {
-			display: flex;
-			justify-content: space-around;
-			flex-wrap: wrap;
-			margin-top: 4rem;
-			row-gap: 8rem;
-
-			@media screen and (min-width: 1024px) {
-				margin-top: 10rem;
-				row-gap: 4rem;
-			}
-		}
-
 		.advantage {
-			@media screen and (min-width: 1024px) {
-				min-width: 45%;
-			}
-
 			&__wrapper {
-				@media screen and (min-width: 1024px) {
-					max-width: 525px;
-					margin: 0 auto;
-				}
-
 				& > * {
-					padding: 1rem 2rem;
+					padding: 1.5rem 2rem;
 					position: relative;
 				}
 			}
@@ -286,29 +263,6 @@
 			&__title-wrapper {
 				color: $color__main-theme--turquoise;
 				text-align: center;
-
-				@media screen and (min-width: 1024px) {
-					text-align: right;
-				}
-			}
-
-			// &__paragraph-wrapper {
-			// }
-
-			p {
-				margin: 0;
-			}
-
-			&:nth-of-type(even) {
-				@media screen and (min-width: 1024px) {
-					margin-top: 10rem;
-				}
-
-				.advantage__title-wrapper {
-					p {
-						color: $color__main-theme--blue;
-					}
-				}
 			}
 		}
 

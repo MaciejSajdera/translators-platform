@@ -37,7 +37,23 @@ h6 {
 	@include fluid-type($min_width, $max_width, 36px, 40px);
 
 	@media screen and (min-width: 1024px) {
-		@include fluid-type($min_width, $max_width, 38px, 46px);
+		@include fluid-type($min_width, $max_width, 38px, 42px);
+	}
+}
+
+.fs--1400 {
+	@include fluid-type($min_width, $max_width, 40px, 44px);
+
+	@media screen and (min-width: 1024px) {
+		@include fluid-type($min_width, $max_width, 42px, 46px);
+	}
+}
+
+.fs--1800 {
+	@include fluid-type($min_width, $max_width, 48px, 52px);
+
+	@media screen and (min-width: 1024px) {
+		@include fluid-type($min_width, $max_width, 52px, 56px);
 	}
 }
 
@@ -49,12 +65,41 @@ h6 {
 	font-weight: 300;
 }
 
+.fw--500 {
+	font-weight: 500;
+}
+
 .fw--700 {
 	font-weight: 700;
 }
 
+.fw--900 {
+	font-weight: 900;
+}
+
 .ff--secondary {
 	font-family: $font__secondary;
+}
+
+.lh {
+	&--1 {
+		line-height: 1;
+	}
+
+	&--125 {
+		line-height: 1.25;
+	}
+
+	&--150 {
+		line-height: 1.5;
+	}
+}
+
+h1,
+h2,
+h3,
+h4 {
+	line-height: 1.15;
 }
 
 h1 {
@@ -62,6 +107,15 @@ h1 {
 	font-weight: 700;
 	overflow-wrap: anywhere;
 	line-height: 1.25;
+}
+
+h2 {
+	@include fluid-type($min_width, $max_width, 18px, 22px);
+	overflow-wrap: anywhere;
+}
+
+h4 {
+	@include fluid-type($min_width, $max_width, 16px, 18px);
 }
 
 .page-template-user-account-page-template {
@@ -73,21 +127,12 @@ h1 {
 	}
 }
 
-h2 {
-	@include fluid-type($min_width, $max_width, 18px, 22px);
-	overflow-wrap: anywhere;
-}
-
-h4 {
-	@include fluid-type($min_width, $max_width, 16px, 18px);
-	font-weight: 500;
-}
-
 /* COPY */
 
 p {
-	margin-bottom: 1.5em;
+	margin: 0;
 	font-weight: 300;
+	line-height: 1.25;
 }
 
 dfn,
@@ -191,24 +236,31 @@ big {
 
 @font-face {
 	font-family: "Gotham";
-	src: url(../dist/fonts/Gotham-BoldItalic.otf);
-	font-weight: 700;
-	font-style: italic;
-}
-
-@font-face {
-	font-family: "Gotham";
-	src: url(../dist/fonts/Gotham-Ultra.otf);
+	src: url(../dist/fonts/Gotham-Black.otf);
 	font-weight: 900;
 	font-style: normal;
 }
 
-@font-face {
-	font-family: "Gotham";
-	src: url(../dist/fonts/Gotham-UltraItalic.otf);
-	font-weight: 900;
-	font-style: italic;
-}
+// @font-face {
+// 	font-family: "Gotham";
+// 	src: url(../dist/fonts/Gotham-BlackItalic.otf);
+// 	font-weight: 700;
+// 	font-style: italic;
+// }
+
+// @font-face {
+// 	font-family: "Gotham";
+// 	src: url(../dist/fonts/Gotham-Ultra.otf);
+// 	font-weight: 900;
+// 	font-style: normal;
+// }
+
+// @font-face {
+// 	font-family: "Gotham";
+// 	src: url(../dist/fonts/Gotham-UltraItalic.otf);
+// 	font-weight: 900;
+// 	font-style: italic;
+// }
 
 .text {
 	&--center {
@@ -241,6 +293,12 @@ big {
 		-webkit-text-stroke: 2px $color__main-theme--blue;
 	}
 
+	&--underline-turquoise {
+		width: fit-content;
+		padding: 0.5em 0;
+		border-bottom: 2px solid $color__main-theme--turquoise;
+	}
+
 	&--turquoise-bold {
 		color: $color__main-theme--turquoise;
 		font-weight: 700;
@@ -253,7 +311,7 @@ big {
 	&--big-header {
 		@include fluid-type($min_width, $max_width, 44px, 100px);
 		text-align: center;
-		margin: 0.5em 0;
+		margin: 0em 0 1.5em;
 		font-weight: 700;
 	}
 

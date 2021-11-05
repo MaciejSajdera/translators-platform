@@ -125,7 +125,7 @@ get_header();
 
 									echo '<div class="post-thumbnail__wrapper">';
 
-										echo '<div class="post-thumbnail__decoration post-thumbnail__decoration--left"></div>';
+										echo '<div class="corner__decoration corner__decoration--left"></div>';
 
 									if(wp_get_attachment_image_url(get_post_thumbnail_id($user_post_id))) {
 										// pstk_post_thumbnail($user_post_id);
@@ -155,7 +155,7 @@ get_header();
 
 										echo '</div>';
 
-										echo '<div class="post-thumbnail__decoration post-thumbnail__decoration--right"></div>';
+										echo '<div class="corner__decoration corner__decoration--right"></div>';
 
 									echo '</div>';
 
@@ -171,7 +171,7 @@ get_header();
 
 							echo '</div>';
 
-							echo '<h3 class="account__user-fullname mb-4">'.$current_user_first_name.' '.$current_user_last_name.'</h3>';
+							echo '<h3 class="account__user-fullname mb--1">'.$current_user_first_name.' '.$current_user_last_name.'</h3>';
 
 							 echo '<div class="account__navigation">';
 
@@ -220,7 +220,7 @@ get_header();
 
 													echo 'Twój profil jest kompletny w <span id="accountFillCompletness" class="'.$completness_value_class.'"><span id="percentValueOfAccountFillCompletness">'.get_percent_value_of_account_fill_completness().'</span><span>%</span></span>.
 													<br />
-													<span class="button button__link-cta" id="fillTheseFields">Uzupełnij go.</span>';		
+													<span class="text--underline-turquoise" id="fillTheseFields">Uzupełnij go.</span>';		
 
 												echo '</h3>';
 
