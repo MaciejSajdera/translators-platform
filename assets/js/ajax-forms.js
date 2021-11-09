@@ -1,3 +1,5 @@
+import { confetti } from "./domConfetti.js";
+
 jQuery(document).ready(function($) {
 	// ProgressBar.js 1.1.0
 	// https://kimmobrunfeldt.github.io/progressbar.js
@@ -2718,6 +2720,23 @@ jQuery(document).ready(function($) {
 			});
 	};
 
+	// Confetti config
+	// https://daniel-lundin.github.io/react-dom-confetti/
+
+	const confettiConfig = {
+		angle: "143",
+		spread: 360,
+		startVelocity: 40,
+		elementCount: 70,
+		dragFriction: 0.12,
+		duration: 3000,
+		stagger: 3,
+		width: "10px",
+		height: "10px",
+		perspective: "500px",
+		colors: ["#16538c", "#18a0aa"]
+	};
+
 	// Animate progress bar
 
 	/* 	You need use strokeWidth < 7. If it more then 7 it won't work in the IE. You can detect browser. For IE use less 7. For other use what you want. */
@@ -2746,8 +2765,14 @@ jQuery(document).ready(function($) {
 				var value = Math.round(circle.value() * 100);
 				if (value === 0) {
 					circle.setText("0%");
-				} else {
+				}
+
+				if (value > 0) {
 					circle.setText(`${value}%`);
+				}
+
+				if (value === 100) {
+					confetti(progressRingHolder, confettiConfig);
 				}
 			}
 		});

@@ -43,6 +43,18 @@ document.addEventListener("DOMContentLoaded", () => {
 		}
 	};
 
+	// Animations for specific pages
+
+	const managementPage = document.querySelector(".management");
+
+	if (managementPage) {
+		const welcomeSVGsHolder = document.querySelector(
+			".welcome-view__left .svg-holder"
+		);
+		welcomeSVGsHolder &&
+			welcomeSVGsHolder.classList.add("svg-holder--animated");
+	}
+
 	/* 	HEADER */
 
 	window.onscroll = function() {

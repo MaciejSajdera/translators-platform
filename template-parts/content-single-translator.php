@@ -8,11 +8,11 @@
  */
 $translator__linkedin_link = get_field("translator_linkedin_link"); 
 $linkedin_icon = file_get_contents(get_template_directory() . "/dist/dist/svg/linkedin.svg");
+$translator_about = get_field('translator_about');
 
 $translator_first_name = get_field("translator_first_name");
 $translator_last_name = get_field("translator_last_name");
 
-var_dump($translator__linkedin_link);
 ?>
 
 <article id="post-<?php the_ID(); ?>" <?php post_class(); ?>>
@@ -33,7 +33,7 @@ var_dump($translator__linkedin_link);
 			</a>
 		</div>
 
-		<div class="translator__icons-wrapper">
+		<div class="translator__icons-wrapper text--right">
 		<?php
 
 			if ($translator__linkedin_link)  {
@@ -49,13 +49,11 @@ var_dump($translator__linkedin_link);
 
 	<div class="translator__middle">
 
-		<header class="entry-header">
+		<header class="entry-header mb--2">
 			
 			<?php
 				echo '
-				<a href="'.get_permalink().'" rel="bookmark">
-					<h2 class="entry-title fs--800 text--blue">'.$translator_first_name.' '. $translator_last_name.'</h2>
-				</a>
+					<h1 class="entry-title fs--800 text--blue">'.$translator_first_name.' '. $translator_last_name.'</h1>
 				';
 
 			?>
@@ -91,16 +89,24 @@ var_dump($translator__linkedin_link);
 
 		</header><!-- .entry-header -->
 
-		<div class="translator__about">
-			<p class="text--turquoise fw--700 fs--600">
-				 O mnie
-			</p>
+		<?php
+			if (strlen($translator_about) > 0) {
+			?>
 
-			<p class="fw--300">
-				<?php echo get_field('translator_about') ?>
-			</p>
+			<div class="translator__about mb--2">
+				<p class="text--turquoise fw--700 fs--600 mb--05">
+					O mnie
+				</p>
 
-		</div>
+				<p class="fw--300">
+					<?php echo $translator_about ?>
+				</p>
+
+			</div>
+
+			<?php
+			}
+		?>
 
 	</div>
 

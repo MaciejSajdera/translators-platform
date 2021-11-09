@@ -53,10 +53,13 @@ $break__medium: 40.063em;
 $break__large: 64.063em;
 
 /* BOX-SHADOWS */
-// $box-shadow_standard: 0 0px 15px 5px rgb(0 0 0 / 10%),
+// $box-shadow_standard--theme-color: 0 0px 15px 5px rgb(0 0 0 / 10%),
 // 	0 0px 6px 0px rgb(0 0 0 / 5%);
 
-$box-shadow_standard: 0px 0px 5px rgb(0 0 0 / 15%);
+$box-shadow_standard--theme-color: 0px 3px 5px rgb(22 83 140 / 15%);
+$box-shadow_standard--black: 0px 3px 5px rgb(0 0 0 / 15%);
+$box-shadow_button--theme-color: 0px 2px 7px 1px rgb(22 83 140 / 15%);
+$box-shadow_button--decoration-color: 0px 2px 7px 1px #18a0aa20;
 
 /* GRADIENTS */
 
@@ -75,7 +78,7 @@ $transition__button--standard: all 0.2s ease-in-out;
 
 $padding__content-box: 2rem;
 
-$padding-site-content: 2rem;
+$padding-site-content: 1.5rem;
 
 $padding-site-content-1024: 5%;
 

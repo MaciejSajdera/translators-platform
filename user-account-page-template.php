@@ -119,7 +119,7 @@ get_header();
 
 							echo $account_privacy_status_icon;
 
-							echo '<div class="profile-picture__wrapper ajax-content-wrapper">';
+							echo '<div class="profile-picture__wrapper ajax-content-wrapper mb--3">';
 
 								echo '<div class="post-thumbnail">';
 

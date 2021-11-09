@@ -1,8 +1,133 @@
 .management {
+	.welcome-view {
+		&__right {
+			margin-bottom: 4rem;
+
+			@media screen and (min-width: 1024px) {
+				display: flex;
+				align-items: flex-end;
+				padding-right: 4em;
+				margin-bottom: 0;
+			}
+		}
+
+		.svg-holder {
+			.svg-bg {
+				display: block;
+				background-size: contain;
+				background-repeat: no-repeat;
+				height: 6rem;
+				width: 100%;
+				animation-play-state: paused;
+
+				&:first-of-type {
+					background-image: url(../dist/svg/PSTK_letters_filled.svg);
+				}
+
+				&:nth-of-type(2),
+				&:nth-of-type(3) {
+					background-image: url(../dist/svg/PSTK_letters_outline.svg);
+					animation-duration: 1s;
+					animation-delay: 0.25s;
+					animation-fill-mode: forwards;
+					animation-timing-function: ease-in-out;
+				}
+
+				&:nth-of-type(2) {
+					transform: translateY(-100%);
+
+					opacity: 0.6;
+
+					animation-name: slideDown55;
+
+					@keyframes slideDown55 {
+						0% {
+							transform: translateY(-100%);
+						}
+
+						90% {
+							transform: translateY(-45%);
+						}
+
+						100% {
+							transform: translateY(-45%);
+						}
+					}
+
+					@media screen and (min-width: 1024px) {
+						animation-name: slideDown80;
+
+						@keyframes slideDown80 {
+							0% {
+								transform: translateY(-100%);
+							}
+
+							90% {
+								transform: translateY(-20%);
+							}
+
+							100% {
+								transform: translateY(-20%);
+							}
+						}
+					}
+				}
+
+				&:nth-of-type(3) {
+					transform: translateY(-200%);
+
+					opacity: 0.3;
+
+					animation-name: slideDown125;
+					@keyframes slideDown125 {
+						0% {
+							transform: translateY(-200%);
+						}
+
+						90% {
+							transform: translateY(-75%);
+						}
+
+						100% {
+							transform: translateY(-75%);
+						}
+					}
+
+					@media screen and (min-width: 1024px) {
+						animation-name: slideDown150;
+						@keyframes slideDown150 {
+							0% {
+								transform: translateY(-200%);
+							}
+
+							90% {
+								transform: translateY(-50%);
+							}
+
+							100% {
+								transform: translateY(-50%);
+							}
+						}
+					}
+				}
+			}
+
+			&--animated {
+				.svg-bg {
+					animation-play-state: running;
+				}
+			}
+		}
+	}
+
 	&__squad {
 		display: flex;
 		flex-flow: wrap;
 		justify-content: space-between;
+
+		@media screen and (min-width: 1024px) {
+			padding: 6rem;
+		}
 	}
 
 	&__card-content {
@@ -10,16 +135,49 @@
 		width: 100%;
 		z-index: -1;
 		display: none;
+		scroll-margin-block-start: 6rem;
 	}
 
-	&__card-title {
+	&__tab-title {
 		width: 100%;
 	}
 
+	&__card-title {
+		margin-bottom: 6rem;
+
+		@media screen and (min-width: 1024px) {
+			margin-bottom: 2rem;
+		}
+	}
+
 	&__person {
-		&:first-of-type {
-			width: 100%;
-			justify-content: center;
+		width: 100%;
+		margin: 0 auto 10rem;
+
+		@media screen and (min-width: 1024px) {
+			width: 50%;
+			display: flex;
+			justify-content: flex-start;
+
+			&:nth-of-type(odd) {
+				justify-content: flex-end;
+			}
+
+			&:first-of-type,
+			&--last-even {
+				width: 100%;
+				margin: 0 auto;
+
+				& > * {
+					@media screen and (min-width: 1024px) {
+						margin: auto;
+					}
+				}
+			}
+
+			&--last-pair {
+				justify-content: center !important;
+			}
 		}
 	}
 
@@ -30,37 +188,62 @@
 		align-items: center;
 
 		img {
-			max-width: 150px;
-			height: auto;
+			width: 150px;
+			height: 150px;
 			object-fit: contain;
+		}
+
+		.text-wrapper {
+			text-align: center;
+			width: 200px;
+		}
+
+		.svg-icon-bg--email {
+			position: absolute;
+			bottom: -2rem;
+			right: -2rem;
+		}
+
+		.svg-icon-bg--pointer-right {
+			width: 1rem;
+			height: 1rem;
+			margin-left: 1rem;
+			transition: all 0.3s cubic-bezier(0.445, 0.05, 0.55, 0.95);
+		}
+
+		&:hover {
+			.svg-icon-bg--pointer-right {
+				transform: translateX(15px);
+			}
+		}
+
+		.text--turquoise:hover {
+			color: $color__main-theme--turquoise;
 		}
 	}
 }
 
 .tabs-menu {
 	width: 100%;
-	// height: 18em;
 	display: flex;
 	flex-wrap: wrap;
-	justify-content: center;
-	// justify-content: space-between;
-
-	@media screen and (max-width: 1400px) {
-		// background: $color__background-lightgrey;
-		justify-content: center;
-	}
+	justify-content: space-around;
+	margin-bottom: 6rem;
 
 	.tab-menu__position {
-		// width: 40%;
 		cursor: pointer;
-		display: flex;
-		justify-content: space-between;
-		height: 3rem;
+		color: $color__main-theme--blue;
 		transition: $transition__button--standard;
 		-webkit-tap-highlight-color: rgba(0, 0, 0, 0.025);
+		box-shadow: $box-shadow_standard--theme-color;
+		border: 2px solid $color__main-theme--blue;
+		border-radius: 100rem;
+		width: 100%;
+		margin-bottom: 1.5rem;
 
-		@media screen and (min-width: 1400px) {
-			width: 30%;
+		@media screen and (min-width: 1024px) {
+			width: 25%;
+			margin-bottom: 0;
 		}
 
 		p {
@@ -70,69 +253,16 @@
 			text-transform: uppercase;
 			white-space: nowrap;
 			font-weight: 600;
-			height: auto;
-			margin: 0;
 			line-height: 3rem;
 			padding: 0 1em;
-			width: 100%;
 			@include fluid-type($min_width, $max_width, 12px, 14px);
 			user-select: none;
 		}
 
-		// .tab-edge {
-		// 	display: none;
-
-		// 	@media screen and (min-width: 1400px) {
-		// 		display: block;
-		// 		width: 0;
-		// 		height: 0;
-		// 		// border-top: 6em solid $color__background-lightgrey;
-		// 		border-left: 2em solid transparent;
-		// 		border-top: 4em solid $color__background-body;
-		// 		transition: all 0.2s ease-in-out;
-		// 	}
-		// }
-
-		&--active {
-			// @media screen and (max-width: 1400px) {
-			background: $color__main-theme--blue;
-			color: white;
-			border-radius: 5px;
-			// }
-
-			// @media screen and (min-width: 1400px) {
-			// 	// background: $color__background-lightgrey;
-			// 	color: $color__main-theme--blue;
-
-			// 	p {
-			// 		font-weight: 600;
-			// 	}
-			// }
-
-			// @media screen and (max-width: 1400px) {
-			// 	p {
-			// 		// font-weight: 600;
-			// 		border-bottom: 1px solid black;
-			// 	}
-			// }
-
-			// .tab-edge {
-			// 	// border-left: 1em solid transparent;
-			// 	// border-right: 0px solid transparent;
-			// 	// border-top: 6em solid $color__background-lightgrey;
-
-			// 	@media screen and (min-width: 1400px) {
-			// 		display: block;
-			// 		border-left: 2em solid transparent;
-			// 		border-top: 4em solid $color__background-body;
-			// 	}
-			// }
-		}
-
+		&--active,
 		&:hover {
-			@media screen and (min-width: 1400px) {
-				// background: $color__background-lightgrey;
-			}
+			background: $color__main-theme--blue;
+			color: $color__text-white;
 		}
 	}
 }

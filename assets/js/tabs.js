@@ -1,4 +1,4 @@
-const handleTabs = tabsContainer => {
+export default function handleTabs(tabsContainer) {
 	if (tabsContainer) {
 		const allTabMenuPositions = tabsContainer.querySelectorAll(
 			".tab-menu__position"
@@ -21,13 +21,19 @@ const handleTabs = tabsContainer => {
 				currentlyActiveTab.classList.remove("tab--loaded");
 				targetTab.classList.add("tab--active");
 
+				targetTab.scrollIntoView({
+					behavior: "smooth",
+					block: "start",
+					inline: "nearest"
+				});
+
 				setTimeout(() => {
 					targetTab.classList.add("tab--loaded");
 				}, 200);
 			});
 		});
 	}
-};
+}
 
 console.log("test");
 

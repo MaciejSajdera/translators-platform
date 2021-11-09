@@ -91,13 +91,15 @@ if (mix.inProduction()) {
  * @link https://laravel.com/docs/5.6/mix#working-with-scripts
  */
 mix
-	.js(`${devPath}/js/main.js`, "js")
+
 	.js(`${devPath}/js/user-profile.js`, "js")
-	.js(`${devPath}/js/ajax-forms.js`, "js")
 	.js(`${devPath}/js/swipers.js`, "js")
 	.js(`${devPath}/js/tabs.js`, "js")
 	.js(`${devPath}/js/multiselect.js`, "js")
 	.js(`${devPath}/js/progressbar.js`, "js")
+	.js(`${devPath}/js/domConfetti.js`, "js")
+	.js(`${devPath}/js/ajax-forms.js`, "js")
+	.js(`${devPath}/js/main.js`, "js")
 	.js(`${devPath}/js/admin/customizer.js`, "js");
 
 /*

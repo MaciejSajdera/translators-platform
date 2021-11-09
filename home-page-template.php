@@ -48,9 +48,9 @@ $circles_group_big = file_get_contents(get_template_directory() . "/dist/dist/sv
 
 			<div class="welcome-view__container">
 
-					<h1><span class="text--outline-blue"><?php echo $h1_part_1 ?></span>
+					<h1 class="fw--900"><span class="text--outline-blue"><?php echo $h1_part_1 ?></span>
 						<br />
-						<?php echo $h1_part_2 ?>
+						<span class="text--blue"><?php echo $h1_part_2 ?></span>
 					</h1>
 
 					<div class="image-holder image-holder-decorated image-holder-decorated--turquoise">

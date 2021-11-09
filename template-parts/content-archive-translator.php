@@ -8,8 +8,8 @@
  */
 $translator__linkedin_link = get_field("translator_linkedin_link"); 
 $linkedin_icon = file_get_contents(get_template_directory() . "/dist/dist/svg/linkedin.svg");
-
-var_dump($translator__linkedin_link);
+$translator_about = get_field('translator_about');
+// var_dump($translator__linkedin_link);
 
 // data is currenty passed from the following files:
 // - content-none.php
@@ -43,7 +43,7 @@ if ( $args['data'] ) {
 
 		</div>
 
-		<div class="translator__icons-wrapper">
+		<div class="translator__icons-wrapper text--right">
 		<?php
 
 			if ($translator__linkedin_link)  {
@@ -61,7 +61,7 @@ if ( $args['data'] ) {
 
 	<div class="translator__middle">
 
-		<header class="entry-header">
+		<header class="entry-header mb--2">
 			
 			<?php
 
@@ -70,7 +70,7 @@ if ( $args['data'] ) {
 
 				echo '
 				<a href="'.get_permalink().'" rel="bookmark">
-					<h2 class="entry-title fs--800 text--blue">'.$translator_first_name.' '. $translator_last_name.'</h2>
+					<h2 class="entry-title fs--800 text--blue mb--05">'.$translator_first_name.' '. $translator_last_name.'</h2>
 				</a>
 				';
 
@@ -114,17 +114,24 @@ if ( $args['data'] ) {
 
 		</header><!-- .entry-header -->
 
+		<?php
+			if (strlen($translator_about) > 0) {
+			?>
 
-		<div class="translator__about">
-			<p class="text--turquoise fw--700 fs--600">
-				 O mnie
-			</p>
+			<div class="translator__about mb--2">
+				<p class="text--turquoise fw--700 fs--600 mb--05">
+					O mnie
+				</p>
 
-			<p class="fw--300">
-				<?php echo get_field('translator_about') ?>
-			</p>
+				<p class="fw--300">
+					<?php echo $translator_about ?>
+				</p>
 
-		</div>
+			</div>
+
+			<?php
+			}
+		?>
 
 		<div class="read-more desktop-only">
 			<?php

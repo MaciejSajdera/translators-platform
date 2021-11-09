@@ -1,27 +1,6 @@
 .about {
 	.welcome-view {
-		&__container {
-			display: flex;
-			flex-flow: column;
-			row-gap: 2rem;
-			justify-content: space-between;
-
-			@media screen and (min-width: 1024px) {
-				flex-flow: row;
-			}
-		}
-
-		&__text {
-			@media screen and (min-width: 1024px) {
-				width: 40%;
-			}
-		}
-
-		&__image-holder {
-			@media screen and (min-width: 1024px) {
-				width: 55%;
-			}
-
+		&__right {
 			img {
 				object-fit: contain;
 				max-height: 400px;
@@ -35,6 +14,10 @@
 		.text-holder {
 			width: 75%;
 			margin: auto;
+		}
+
+		.advantages {
+			column-gap: 6rem;
 		}
 
 		.image-holder {

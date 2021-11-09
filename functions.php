@@ -176,7 +176,7 @@ function pstk_scripts() {
 	}
 
 	if (is_page(1139)) {
-		wp_enqueue_script( 'pstk-user-profile', get_template_directory_uri() . '/dist/js/tabs.js', array(), '', true );
+		wp_enqueue_script( 'tabs', get_template_directory_uri() . '/dist/js/tabs.js', array(), '', true );
 	}
 
 	if ( is_singular() && comments_open() && get_option( 'thread_comments' ) ) {

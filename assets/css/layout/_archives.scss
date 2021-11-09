@@ -68,32 +68,32 @@
 		display: flex;
 		flex-flow: column;
 		justify-content: space-between;
-		padding: 3rem 0;
+		padding: 8rem 0;
+
 		border-top: 1px solid #f8f3f3;
 
 		@media screen and (min-width: 1024px) {
 			flex-flow: row;
-			row-gap: 8vw;
+			column-gap: 6rem;
+		}
+
+		@media screen and (min-width: 1400px) {
+			column-gap: 10rem;
 		}
 
 		&:first-of-type {
 			border-top: 0;
 		}
 
-		& > * {
-			padding: 2rem 0 0;
-
+		.entry-header {
+			text-align: center;
 			@media screen and (min-width: 1024px) {
-				padding: 0 2rem;
+				text-align: unset;
 			}
 		}
 
-		p {
-			margin: 0;
-		}
-
 		&__top {
-			margin: auto;
+			margin: auto auto 2rem;
 			max-width: 250px;
 			width: 75%;
 
@@ -110,13 +110,20 @@
 		}
 
 		&__middle {
+			margin: auto auto 2rem;
+			width: 100%;
 			@media screen and (min-width: 1024px) {
+				margin: unset;
 				width: 40%;
+				padding: 0 2rem;
 			}
 		}
 
 		&__bottom {
+			margin: auto auto 2rem;
+			width: 100%;
 			@media screen and (min-width: 1024px) {
+				margin: unset;
 				width: 30%;
 			}
 
@@ -142,12 +149,6 @@
 		}
 
 		&__about {
-			margin: 2rem 0 0;
-
-			@media screen and (min-width: 1024px) {
-				margin: 2rem 0;
-			}
-
 			p {
 				padding: 0.75rem 0;
 

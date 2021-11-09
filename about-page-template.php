@@ -31,11 +31,11 @@ $circles_group_big = file_get_contents(get_template_directory() . "/dist/dist/sv
 	<div id="primary" class="content-area">
 		<main id="main" class="site-main about">
 
-		<div class="welcome-view">
+		<div class="welcome-view welcome-view-subpage">
 
 			<div class="welcome-view__container">
 
-				<div class="welcome-view__text">
+				<div class="welcome-view__left">
 
 					<div class="entry-header">
 						<?php
@@ -51,7 +51,7 @@ $circles_group_big = file_get_contents(get_template_directory() . "/dist/dist/sv
 
 				</div>
 
-				<div class="welcome-view__image-holder image-holder">
+				<div class="welcome-view__right image-holder">
 					<img src="<?php echo $image['url'] ?>" alt="<?php echo $image['alt'] ?>">
 				</div>
 
@@ -72,6 +72,8 @@ $circles_group_big = file_get_contents(get_template_directory() . "/dist/dist/sv
 
 						if ($section_2_repeater_fields) {
 
+							$i = 0;
+
 							foreach($section_2_repeater_fields as $row) :
 
 								$title_part_1 = $row['title_part_1'];
@@ -79,17 +81,26 @@ $circles_group_big = file_get_contents(get_template_directory() . "/dist/dist/sv
 								$textarea = $row['textarea'];
 								$image = $row['image'];
 
+								if ( $i % 2) {
+									$decoration_direction_class = 'pseudo-decoration__rt';
+								} else {
+									$decoration_direction_class = 'pseudo-decoration__lt';
+								}
+
+
 								echo '
 									<div class="flex flex-col advantage">
 										<div class="advantage__wrapper flex flex-col content-center items-center">
 											<div class="text-holder">
 												<div class="pd--standard"><p class="fw--700 fs--600"><span class="text--turquoise">'.$title_part_1.'</span> <span class="text--blue">'.$title_part_2.'</span></p></div>
-												<div class="pd--standard pb--4 relative pseudo-decoration pseudo-decoration__lt"><p>'.$textarea.'</p></div>
+												<div class="pd--standard pb--3 relative pseudo-decoration '.$decoration_direction_class.'"><p class="fw--500">'.$textarea.'</p></div>
 											</div>
 											<div class="image-holder"><img src="'.$image['url'].'" alt="'.$image['alt'].'" /></div>
 										</div>
 									</div>
 									';
+
+								$i++;
 
 							endforeach;
 

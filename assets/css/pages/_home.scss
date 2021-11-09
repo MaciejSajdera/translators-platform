@@ -26,14 +26,12 @@
 			}
 
 			h1 {
-				color: $color__main-theme--blue;
-				letter-spacing: 2px;
 				text-transform: uppercase;
 
 				@media screen and (min-width: 1024px) {
 					grid-column: 1;
 					grid-row: 1;
-					align-self: end;
+					align-self: flex-end;
 				}
 
 				.text--outline-turquoise {
@@ -60,7 +58,7 @@
 				@media screen and (min-width: 1024px) {
 					grid-column: 2;
 					grid-row: 1;
-					align-self: end;
+					align-self: flex-end;
 					// text-align: center;
 				}
 			}
@@ -90,8 +88,8 @@
 				display: flex;
 				grid-column: 2;
 				grid-row: 3;
-				align-self: end;
-				justify-self: end;
+				align-self: flex-end;
+				justify-self: flex-end;
 				order: 6;
 				width: 100%;
 				justify-content: center;
@@ -291,7 +289,6 @@
 		.section-4 {
 			&__title {
 				p {
-					margin: 0;
 					padding-left: 4rem;
 				}
 			}
@@ -340,10 +337,6 @@
 				padding: 2rem 15% 4rem 3rem;
 				border-top: 1px solid $color__main-theme--turquoise;
 				border-left: 1px solid $color__main-theme--turquoise;
-
-				p {
-					margin: 0;
-				}
 			}
 
 			&__cta-wrapper {
