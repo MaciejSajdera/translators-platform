@@ -2727,13 +2727,13 @@ jQuery(document).ready(function($) {
 		angle: "143",
 		spread: 360,
 		startVelocity: 40,
-		elementCount: 70,
+		elementCount: 50,
 		dragFriction: 0.12,
-		duration: 3000,
+		duration: 2000,
 		stagger: 3,
 		width: "10px",
 		height: "10px",
-		perspective: "500px",
+		perspective: "1000px",
 		colors: ["#16538c", "#18a0aa"]
 	};
 

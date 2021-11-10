@@ -1,6 +1,6 @@
 <div class="common-box">
 
-    <p class="text--big-header text--outline-blue">Aktualności</p>
+    <h2 class="text--big-header text--outline-blue">Aktualności</h2>
 
     <div class="wrapper-flex-drow-mcol common-box__new-posts">
 

@@ -1,0 +1,19 @@
+.training {
+	img {
+		max-height: 400px;
+	}
+
+	&__section-3 {
+		.bulletpoints-box {
+			@media screen and (min-width: 1024px) {
+				width: 50%;
+			}
+		}
+	}
+
+	&__section-7 {
+		.content-holder {
+			max-width: 1000px;
+		}
+	}
+}

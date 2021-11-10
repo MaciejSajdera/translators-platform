@@ -112,98 +112,22 @@
 	}
 
 	&__section-2 {
+		img {
+			margin-top: 6rem;
+		}
+
 		.bulletpoints-box {
 			@media screen and (min-width: 1024px) {
 				width: 60%;
 			}
 
-			&__title {
-				padding-bottom: 2rem;
-				position: relative;
+			li {
+				padding-right: 3rem;
 
 				@media screen and (min-width: 1024px) {
-					padding-right: 5rem;
-				}
-
-				&:before {
-					position: absolute;
-					right: 0;
-					bottom: 0;
-					content: "";
-					height: 75%;
-					width: 1px;
-					background: $color__main-theme--turquoise;
-				}
-
-				&:after {
-					position: absolute;
-					right: 0;
-					bottom: 0;
-					content: "";
-					height: 1px;
-					width: 100%;
-					background: $color__main-theme--turquoise;
+					padding-right: 20%;
 				}
 			}
-
-			&__list-holder {
-				position: relative;
-				padding-top: 2rem;
-				padding-left: 2rem;
-
-				@media screen and (min-width: 1024px) {
-					padding-left: 4rem;
-				}
-
-				&:before {
-					position: absolute;
-					left: 0;
-					top: 0;
-					content: "";
-					height: 100%;
-					width: 1px;
-					background: $color__main-theme--turquoise;
-				}
-
-				li {
-					margin: 2rem 0;
-					position: relative;
-
-					@media screen and (min-width: 1024px) {
-						padding-right: 33%;
-					}
-
-					&:first-of-type {
-						margin-top: 0;
-					}
-
-					&:before {
-						content: "";
-						position: absolute;
-						left: -2rem;
-						top: 50%;
-						height: 1.5rem;
-						width: 1.5rem;
-						border-radius: 100%;
-						background: $color__main-theme--turquoise;
-						transform: translate(-50%, -50%);
-
-						@media screen and (min-width: 1024px) {
-							left: -4rem;
-						}
-					}
-
-					&:nth-of-type(even) {
-						&:before {
-							background: $color__main-theme--blue;
-						}
-					}
-				}
-			}
-		}
-
-		img {
-			margin-top: 6rem;
 		}
 
 		.bg-decoration {
@@ -288,7 +212,8 @@
 	&__section-4 {
 		.section-4 {
 			&__title {
-				p {
+				p,
+				h2 {
 					padding-left: 4rem;
 				}
 			}
@@ -317,7 +242,7 @@
 					);
 				}
 
-				p {
+				h2 {
 					position: absolute;
 					bottom: 0;
 					left: 0;
@@ -335,8 +260,8 @@
 				}
 
 				padding: 2rem 15% 4rem 3rem;
-				border-top: 1px solid $color__main-theme--turquoise;
-				border-left: 1px solid $color__main-theme--turquoise;
+				border-top: 2px solid $color__main-theme--turquoise;
+				border-left: 2px solid $color__main-theme--turquoise;
 			}
 
 			&__cta-wrapper {

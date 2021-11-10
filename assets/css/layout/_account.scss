@@ -93,7 +93,6 @@ $profile-picture-decoration-spacing: -8.5%;
 			}
 
 			@media screen and (min-width: 1024px) {
-				margin-left: 3rem;
 				width: 125px;
 				min-width: 125px;
 				height: 125px;
@@ -134,6 +133,7 @@ $profile-picture-decoration-spacing: -8.5%;
 	&__fill-completeness-wrapper {
 		display: flex;
 		align-items: center;
+		justify-content: space-between;
 
 		h2 {
 			z-index: 1;

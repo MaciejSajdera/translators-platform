@@ -9,9 +9,9 @@
 get_header();
 
 $section_1 = get_field("section_1");
-$h1_part_1 = $section_1['h1_part_1'];
-$h2 = $section_1['h2'];
-$image = $section_1['image'];
+$section_1_h2 = $section_1['h2'];
+$section_1_paragraph = $section_1['paragraph'];
+$section_1_image = $section_1['image'];
 
 $section_2 = get_field("section_2");
 $section_2_title = $section_2['title'];
@@ -21,7 +21,6 @@ $section_3 = get_field("section_3");
 $section_3_title_part_1 = $section_3['title_part_1'];
 $section_3_title_part_2 = $section_3['title_part_2'];
 $section_3_repeater_fields = $section_3['repeater_fields'];
-
 
 $circles_group = file_get_contents(get_template_directory() . "/dist/dist/svg/circles-group.svg");
 $circles_group_big = file_get_contents(get_template_directory() . "/dist/dist/svg/circles-group-big.svg");
@@ -33,7 +32,7 @@ $circles_group_big = file_get_contents(get_template_directory() . "/dist/dist/sv
 
 		<div class="welcome-view welcome-view-subpage">
 
-			<div class="welcome-view__container">
+			<div class="welcome-view__container image-content-row">
 
 				<div class="welcome-view__left">
 
@@ -44,15 +43,22 @@ $circles_group_big = file_get_contents(get_template_directory() . "/dist/dist/sv
 					</div><!-- .entry-header -->
 
 					<h2 class="mb--2">
-						<span class="fs--1400 fw--700 text--blue"><?php echo $h1_part_1 ?></span>
+						<span class="fs--1400 fw--700 lh--125 text--blue"><?php echo $section_1_h2 ?></span>
 					</h2>
 
-					<p class="fs--800 fw--500 ff--secondary text--turquoise"><?php echo $h2 ?></p>
+					<p class="fs--800 fw--500 ff--secondary text--turquoise"><?php echo $section_1_paragraph ?></p>
 
 				</div>
 
-				<div class="welcome-view__right image-holder">
-					<img src="<?php echo $image['url'] ?>" alt="<?php echo $image['alt'] ?>">
+				<div class="welcome-view__right image-holder image-to-the-right">
+
+					<?php
+						if ($section_1_image) {
+							?>
+								<img src="<?php echo $section_1_image['url'] ?>" alt="<?php echo $section_1_image['alt'] ?>">
+							<?php
+						}
+						?>
 				</div>
 
 			</div>
@@ -95,7 +101,16 @@ $circles_group_big = file_get_contents(get_template_directory() . "/dist/dist/sv
 												<div class="pd--standard"><p class="fw--700 fs--600"><span class="text--turquoise">'.$title_part_1.'</span> <span class="text--blue">'.$title_part_2.'</span></p></div>
 												<div class="pd--standard pb--3 relative pseudo-decoration '.$decoration_direction_class.'"><p class="fw--500">'.$textarea.'</p></div>
 											</div>
-											<div class="image-holder"><img src="'.$image['url'].'" alt="'.$image['alt'].'" /></div>
+											
+											<div class="image-holder">';
+
+											if ($image) {
+
+												 echo '<img class="image-border-shadow" src="'.$image['url'].'" alt="'.$image['alt'].'" />';
+
+											}
+
+											echo '</div>
 										</div>
 									</div>
 									';
@@ -174,26 +189,9 @@ $circles_group_big = file_get_contents(get_template_directory() . "/dist/dist/sv
 
 		<section class="about__section-4">
 
-			<div class="content-holder flex flex-mcol-drow content-between items-center">
-
-				<div class="">
-
-					<p class="fs--1200 fw--700 text--blue lh--125 mb--2">
-						NASI <span class="text--outline-blue">TŁUMACZE</span>
-						SYMULTANICZNI I KONSEKUTYWNI
-					</p>
-
-					<p class="fs--800 fw--500 ff--secondary text--turquoise">
-						Znajdź tłumacza ustnego na swoje wydarzenie.
-					</p>
-
-					</div>
-
-					<?php
-						get_template_part( 'template-parts/searchfilter-basic' );
-					?>
-
-			</div>
+			<?php
+				get_template_part( 'template-parts/search-basic-section' );
+			?>
 
 		</section>
 

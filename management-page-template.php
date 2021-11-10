@@ -192,6 +192,7 @@ $cards = get_field('cards');
 								<div class="management__description">
 									<p class="text--big-header text--center text--turquoise mb--2">
 										<span class="text--outline-turquoise">'.$card['description_title_1'].'</span>
+										<br />
 										<span class="text--turquoise">'.$card['description_title_2'].'</span>
 									</p>
 									<p class="fs--600">'.$card['description_content'].'</p>

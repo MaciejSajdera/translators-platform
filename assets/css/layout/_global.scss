@@ -35,7 +35,11 @@
 }
 
 .welcome-view {
-	min-height: 80vh;
+	min-height: 100vh;
+
+	@media screen and (min-width: 1024px) {
+		min-height: 80vh;
+	}
 
 	&__container {
 		display: flex;
@@ -63,6 +67,10 @@
 
 section {
 	margin-bottom: 10rem;
+
+	@media screen and (min-width: 1024px) {
+		margin-bottom: 15rem;
+	}
 }
 
 ::selection {
@@ -89,6 +97,12 @@ section {
 		flex-flow: row;
 		column-gap: 2rem;
 		row-gap: 2rem;
+	}
+}
+
+.drow-reverse {
+	@media screen and (min-width: 1024px) {
+		flex-flow: row-reverse;
 	}
 }
 
@@ -135,6 +149,12 @@ section {
 
 .w-full {
 	width: 100%;
+}
+
+.m {
+	&--auto {
+		margin: auto;
+	}
 }
 
 .mb {
@@ -949,8 +969,8 @@ section {
 			flex: 0 0 47.5%;
 			padding: 0;
 			box-shadow: $box-shadow_standard--black;
-			margin-bottom: 6rem;
 			border-radius: 5px;
+			margin-bottom: 6rem;
 
 			a {
 				display: block;
@@ -1019,13 +1039,13 @@ section {
 			left: 0;
 			top: 0;
 			height: 100%;
-			width: 1px;
+			width: 2px;
 		}
 
 		&:after {
 			left: 0;
 			top: 0;
-			height: 1px;
+			height: 2px;
 			width: 100%;
 		}
 	}
@@ -1035,13 +1055,13 @@ section {
 			right: 0;
 			top: 0;
 			height: 100%;
-			width: 1px;
+			width: 2px;
 		}
 
 		&:after {
 			right: 0;
 			top: 0;
-			height: 1px;
+			height: 2px;
 			width: 100%;
 		}
 	}
@@ -1051,13 +1071,13 @@ section {
 			right: 0;
 			top: 0;
 			height: 100%;
-			width: 1px;
+			width: 2px;
 		}
 
 		&:after {
 			right: 0;
 			bottom: 0;
-			height: 1px;
+			height: 2px;
 			width: 100%;
 		}
 	}
@@ -1067,13 +1087,13 @@ section {
 			left: 0;
 			top: 0;
 			height: 100%;
-			width: 1px;
+			width: 2px;
 		}
 
 		&:after {
 			left: 0;
 			bottom: 0;
-			height: 1px;
+			height: 2px;
 			width: 100%;
 		}
 	}
@@ -1083,13 +1103,13 @@ section {
 			right: 0;
 			top: 0;
 			height: 100%;
-			width: 1px;
+			width: 2px;
 		}
 
 		&:after {
 			right: 0;
 			bottom: 0;
-			height: 1px;
+			height: 2px;
 			width: 50%;
 		}
 	}
@@ -1159,6 +1179,12 @@ section {
 	width: fit-content;
 }
 
+.image-border-shadow {
+	box-shadow: $box-shadow_standard--black;
+	border-radius: 5px;
+	overflow: hidden;
+}
+
 .image-holder-decorated {
 	position: relative;
 
@@ -1168,7 +1194,7 @@ section {
 		height: 100%;
 		width: 100%;
 		border-radius: 20px;
-		border: 1px solid;
+		border: 2px solid;
 		top: 3rem;
 		left: -3rem;
 		z-index: -1;
@@ -1177,6 +1203,26 @@ section {
 	&--turquoise {
 		&:after {
 			border-color: $color__main-theme--turquoise;
+		}
+	}
+}
+
+.image-content-row {
+	@media screen and (min-width: 1024px) {
+		.image-holder {
+			width: 45%;
+		}
+
+		.image-to-the-right {
+			justify-content: flex-end;
+		}
+
+		.image-to-the-left {
+			justify-content: flex-start;
+		}
+
+		.content-holder {
+			width: 45%;
 		}
 	}
 }
@@ -1296,5 +1342,103 @@ section {
 
 	&--pointer-right {
 		background-image: url(../dist/svg/pointer-right.svg);
+	}
+}
+
+.bulletpoints-box {
+	&__title {
+		padding-bottom: 1em;
+		padding-right: 1.75em;
+		padding-left: 1em;
+		position: relative;
+		width: fit-content;
+
+		h2 {
+			width: fit-content;
+			display: table-caption;
+		}
+
+		&:before {
+			position: absolute;
+			right: 0;
+			bottom: 0;
+			content: "";
+			height: 75%;
+			max-height: 2em;
+			width: 2px;
+			background: $color__main-theme--turquoise;
+		}
+
+		&:after {
+			position: absolute;
+			right: 0;
+			bottom: 0;
+			content: "";
+			height: 2px;
+			width: 100%;
+			background: $color__main-theme--turquoise;
+		}
+	}
+
+	&__list-holder {
+		position: relative;
+		padding-top: 2rem;
+		padding-left: 2rem;
+
+		@media screen and (min-width: 1024px) {
+			padding-left: 4rem;
+		}
+
+		&:before {
+			position: absolute;
+			left: 0;
+			top: 0;
+			content: "";
+			height: 100%;
+			width: 2px;
+			background: $color__main-theme--turquoise;
+		}
+
+		li {
+			margin: 2rem 0;
+			position: relative;
+
+			&:first-of-type {
+				margin-top: 0;
+			}
+
+			&:before {
+				content: "";
+				position: absolute;
+				left: -2rem;
+				top: 50%;
+				height: 1.5rem;
+				width: 1.5rem;
+				border-radius: 100%;
+				background: $color__main-theme--turquoise;
+				transform: translate(-50%, -50%);
+
+				@media screen and (min-width: 1024px) {
+					left: -4rem;
+				}
+			}
+
+			&:nth-of-type(even) {
+				&:before {
+					background: $color__main-theme--blue;
+				}
+			}
+		}
+	}
+}
+
+.search-basic-section-holder {
+	max-width: 1000px;
+	margin: auto;
+
+	& > * {
+		@media screen and (min-width: 1024px) {
+			width: 45%;
+		}
 	}
 }

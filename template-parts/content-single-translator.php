@@ -22,7 +22,6 @@ $translator_last_name = get_field("translator_last_name");
 	<div class="translator__top">
 
 		<div class="profile-picture__wrapper text--center">
-			<a href="<?php get_permalink() ?>" rel="bookmark">
 
 				<div class="corner__decoration corner__decoration--left"></div>
 
@@ -30,7 +29,6 @@ $translator_last_name = get_field("translator_last_name");
 
 				<div class="corner__decoration corner__decoration--right"></div>
 
-			</a>
 		</div>
 
 		<div class="translator__icons-wrapper text--right">

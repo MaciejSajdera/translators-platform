@@ -27,7 +27,7 @@ h6 {
 }
 
 .fs--1200 {
-	@include fluid-type($min_width, $max_width, 36px, 40px);
+	@include fluid-type($min_width, $max_width, 22px, 40px);
 
 	@media screen and (min-width: 1024px) {
 		@include fluid-type($min_width, $max_width, 38px, 42px);
@@ -35,7 +35,7 @@ h6 {
 }
 
 .fs--1400 {
-	@include fluid-type($min_width, $max_width, 40px, 44px);
+	@include fluid-type($min_width, $max_width, 26px, 44px);
 
 	@media screen and (min-width: 1024px) {
 		@include fluid-type($min_width, $max_width, 42px, 46px);
@@ -88,23 +88,15 @@ h6 {
 	}
 }
 
-h1,
-h2,
-h3,
-h4 {
-	line-height: 1.15;
-}
-
 h1 {
 	@include fluid-type($min_width, $max_width, 22px, 46px);
 	font-weight: 700;
-	overflow-wrap: anywhere;
-	line-height: 1.25;
+	line-height: 1.15;
 }
 
 h2 {
 	@include fluid-type($min_width, $max_width, 18px, 22px);
-	overflow-wrap: anywhere;
+	line-height: 1.25;
 }
 
 h4 {
@@ -125,7 +117,6 @@ h4 {
 p {
 	margin: 0;
 	font-weight: 300;
-	line-height: 1.25;
 }
 
 dfn,

@@ -54,7 +54,14 @@ $circles_group_big = file_get_contents(get_template_directory() . "/dist/dist/sv
 					</h1>
 
 					<div class="image-holder image-holder-decorated image-holder-decorated--turquoise">
-						<img src="<?php echo $image['url'] ?>" alt="<?php echo $image['alt'] ?>">
+
+						<?php
+						if ($image) {
+							?>
+							<img src="<?php echo $image['url'] ?>" alt="<?php echo $image['alt'] ?>">
+							<?php
+						}
+						?>
 					</div>
 
 					<h2 class="fs--800 text--turquoise ff--secondary"><?php echo $h2 ?></h2>
@@ -80,7 +87,7 @@ $circles_group_big = file_get_contents(get_template_directory() . "/dist/dist/sv
 				<div class="bulletpoints-box">
 
 					<div class="bulletpoints-box__title">
-						<h3 class="text--turquoise fw--700 fs--1200"><?php echo $section_2_title ?></h3>
+						<h2 class="text--turquoise fw--700 fs--1200"><?php echo $section_2_title ?></h2>
 					</div>
 
 					<div class="bulletpoints-box__list-holder">
@@ -107,7 +114,13 @@ $circles_group_big = file_get_contents(get_template_directory() . "/dist/dist/sv
 				</div>
 
 				<div class="text--right">
-					<img src="<?php echo $section_2_image['url'] ?>" alt="<?php echo $section_2_image['alt'] ?>">
+					<?php
+						if ($section_2_image) {
+							?>
+							<img src="<?php echo $section_2_image['url'] ?>" alt="<?php echo $section_2_image['alt'] ?>">
+							<?php
+						}
+					?>
 				</div>
 			</div>
 
@@ -126,7 +139,7 @@ $circles_group_big = file_get_contents(get_template_directory() . "/dist/dist/sv
 		<section class="home__section-3">
 
 			<div class="section-3__title">
-				<p class="text--big-header"><span class="text--blue"><?php echo $section_3_title_part_1 ?></span> <span class="text--outline-blue"><?php echo $section_3_title_part_2 ?></span></p>
+				<h2 class="text--big-header"><span class="text--blue"><?php echo $section_3_title_part_1 ?></span> <span class="text--outline-blue"><?php echo $section_3_title_part_2 ?></span></h2>
 			</div>
 
 			<div class="advantages">
@@ -170,9 +183,17 @@ $circles_group_big = file_get_contents(get_template_directory() . "/dist/dist/sv
 		<section class="home__section-4">
 
 			<div class="section-4__title">
-				<div class="section-4__bg" style="background-image: url()">
-					<img width="100%" height="100%" src="<?php echo $section_4_image['url'] ?>" alt="<?php echo $section_4_image['url'] ?>" loading="lazy"/>
-					<p class="fs--1200 fw--700 text--white"><?php echo $section_4_title_part_1 ?></p>
+				<div class="section-4__bg image-border-shadow">
+
+					<?php
+						if ($section_4_image) {
+							?>
+							<img width="100%" height="100%" src="<?php echo $section_4_image['url'] ?>" alt="<?php echo $section_4_image['url'] ?>" loading="lazy"/>
+							<?php
+						}
+					?>
+
+					<h2 class="fs--1200 fw--700 text--white"><?php echo $section_4_title_part_1 ?></h2>
 				</div>
 				<p class="fs--1200 fw--700 text--blue"><?php echo $section_4_title_part_2 ?></p>
 
@@ -263,30 +284,35 @@ $circles_group_big = file_get_contents(get_template_directory() . "/dist/dist/sv
 
 					}
 
-					?>
-
+					if ($management_member_of_the_month) {
+						?>
 						<div class="get-to-know-us__element-wrapper wrapper-flex-col-center">
 
-							<p>Członek władz</p>
+						<p>Członek władz</p>
 
-							<?php
+						<?php
 
-							$management_member_of_the_month_image = $management_member_of_the_month['image'];
-							$management_member_of_the_month_title = $management_member_of_the_month['title'];
-							$management_member_of_the_month_paragraph = $management_member_of_the_month['paragraph'];
+						$management_member_of_the_month_image = $management_member_of_the_month['image'];
+						$management_member_of_the_month_title = $management_member_of_the_month['title'];
+						$management_member_of_the_month_paragraph = $management_member_of_the_month['paragraph'];
 
-							echo '<a class="wrapper-flex-col-center" href="'.get_permalink(1139).'">';
-							
+						echo '<a class="wrapper-flex-col-center" href="'.get_permalink(1139).'">';
+
+							if ($management_member_of_the_month_image) {
 								echo '<img src="'.$management_member_of_the_month_image['url'].'" alt="'.$management_member_of_the_month_image['alt'].'">';
+							}
 
-								echo '<p>'.$management_member_of_the_month_title.'</p>';
-								echo '<p>'.$management_member_of_the_month_paragraph.'</p>';
-						
-							echo '</a>';
+							echo '<p>'.$management_member_of_the_month_title.'</p>';
+							echo '<p>'.$management_member_of_the_month_paragraph.'</p>';
+					
+						echo '</a>';
 
-							?>
-						</div>
+						?>
+					</div>
 
+					<?php
+					}
+					?>
 
 					</div>
 				</div>
