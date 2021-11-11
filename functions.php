@@ -159,7 +159,7 @@ function pstk_scripts() {
 
 		wp_enqueue_script('jquery');
 		wp_enqueue_script( 'pstk-user-profile', get_template_directory_uri() . '/dist/js/user-profile.js', array(), '', true );
-		wp_register_script('ajax_forms', get_template_directory_uri() . '/assets/js/ajax-forms.js', array('jquery') ); 
+		wp_register_script('ajax_forms', get_template_directory_uri() . '/dist/js/ajax-forms.js', array('jquery') ); 
 
 		wp_localize_script('ajax_forms', 'ajax_forms_params', 
 			array(
@@ -549,11 +549,11 @@ function wpdocs_add_menu_parent_class( $items ) {
 
 function prefix_add_button_after_menu_item_children( $item_output, $item, $depth, $args ) {
 
-        if ( in_array( 'menu-item-has-children', $item->classes ) || in_array( 'page_item_has_children', $item->classes ) ) {
-            $item_output = str_replace( $args->link_after . '</a>', $args->link_after . '</a><span class="expand-menu-toggle" aria-expanded="false" aria-pressed="false"></span>', $item_output );
-        }
+	if ( in_array( 'menu-item-has-children', $item->classes ) || in_array( 'page_item_has_children', $item->classes ) ) {
+		$item_output = str_replace( $args->link_after . '</a>', $args->link_after . '</a><span class="show-submenu" aria-expanded="false" aria-pressed="false"></span>', $item_output );
+	}
 
-    return $item_output;
+return $item_output;
 }
 add_filter( 'walker_nav_menu_start_el', 'prefix_add_button_after_menu_item_children', 10, 4 );
 
@@ -838,28 +838,7 @@ function get_count_of_all_valueable_fields() {
 		return;
 	}
 
-	// print_r(json_encode(acf_get_fields($groups[0]['key'])));
-
 	$count_of_all_valueable_fields = 0;
-	// $all_acf_fields_of_post = get_field_objects(get_current_user_post_id());
-
-	// print_r(json_encode($all_acf_fields_of_post));
-
-	// if ( is_array($all_acf_fields_of_post) && count($all_acf_fields_of_post) > 0 ) {
-	// 	$all_acf_fields_of_post_sorted = array_sort($all_acf_fields_of_post, 'menu_order', SORT_ASC);
-
-	// 	foreach($all_acf_fields_of_post_sorted as $acf_field) {
-
-	// 		$field_object_name = $acf_field['name'];
-
-	// 		//Dont include privacy settings
-	// 		if (str_contains($field_object_name, 'public') || !$acf_field) {
-	// 			continue;
-	// 		} else {
-	// 			$count_of_all_valueable_fields++;
-	// 		}
-	// 	}
-	// }
 
 	$non_acf_valueable_fields = ['profile-picture', 'languages-taxonomy', 'specializations-taxonomy', 'localizations-taxonomy'];
 
@@ -871,11 +850,11 @@ function get_count_of_all_valueable_fields() {
 
 	$groups = acf_get_field_groups(array('post_id' => get_current_user_post_id()));
 
+	// print_r(json_encode(acf_get_fields($groups[0]['key'])));
+
 	if ($groups) {
 		$all_acf_fields_of_post = acf_get_fields($groups[0]['key']);
 	}
-
-	// var_dump($all_acf_fields_of_post_2);
 
 	if ($all_acf_fields_of_post && is_array($all_acf_fields_of_post) && count($all_acf_fields_of_post) > 0 ) {
 		$all_acf_fields_of_post_sorted = array_sort($all_acf_fields_of_post, 'menu_order', SORT_ASC);

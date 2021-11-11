@@ -2,27 +2,6 @@
 
 $input-padding: 5px;
 
-/* BUTTONS */
-button,
-input[type="button"],
-input[type="reset"],
-input[type="submit"] {
-	// border: 1px solid;
-	// border-color: $color__border-button;
-	// border-radius: 3px;
-	// background: $color__background-button;
-	// color: rgba(0, 0, 0, 0.8);
-	// @include font-size(0.75);
-	// line-height: 1;
-	// padding: 0.6em 1em 0.4em;
-
-	// &:active,
-	// &:focus,
-	// &:hover {
-	// 	border-color: $color__border-button-focus;
-	// }
-}
-
 /* FIELDS */
 
 input[type="text"],
@@ -97,11 +76,6 @@ $login-and-registration-height: 80vh;
 			width: 35%;
 			min-height: $login-and-registration-height;
 		}
-
-		// .login-panel,
-		// .registration-panel {
-		// 	position: absolute;
-		// }
 
 		& > * {
 			padding: 1.5em;

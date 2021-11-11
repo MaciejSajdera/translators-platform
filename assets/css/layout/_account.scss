@@ -50,83 +50,10 @@ $profile-picture-decoration-spacing: -8.5%;
 			margin-bottom: 0;
 		}
 
-		#progressRing {
-			position: relative;
-			overflow: visible;
-			// border: 2px solid $color__main-theme--turquoise;
-			border-radius: 100%;
-			font-weight: 500;
-			z-index: 1;
-
-			width: 75px;
-			min-width: 75px;
-			height: 75px;
-			min-height: 75px;
-			padding: 0.35rem;
-
-			&:after,
-			&:before {
-				content: "";
-				position: absolute;
-			}
-
-			&:after {
-				height: 100%;
-				background: linear-gradient(225deg, #18a0aa, transparent);
-				width: 100%;
-				top: 0;
-				border-radius: 100%;
-				left: 50%;
-				transform: translateX(-50%) scale(1.05);
-				z-index: -2;
-			}
-
-			&:before {
-				height: 100%;
-				background: $color__background-body;
-				width: 100%;
-				top: 0;
-				border-radius: 100%;
-				left: 50%;
-				transform: translateX(-50%);
-				z-index: -1;
-			}
-
-			@media screen and (min-width: 1024px) {
-				width: 125px;
-				min-width: 125px;
-				height: 125px;
-				min-height: 125px;
-				padding: 0.85rem;
-			}
-
-			.progressbar-text {
-				font-size: 0.75rem;
-				@media screen and (min-width: 1024px) {
-					font-size: 1.25rem;
-				}
-			}
-
-			// &:after {
-			// 	position: absolute;
-			// 	content: "";
-			// 	width: 150px;
-			// 	height: 150px;
-			// 	top: 15px;
-			// 	left: -85px;
-			// 	background: white;
-			// 	filter: blur(30px);
-			// }
-		}
-
 		#fillTheseFields {
 			display: block;
 			margin-top: 1rem;
 			cursor: pointer;
-		}
-
-		svg {
-			overflow: visible;
 		}
 	}
 
