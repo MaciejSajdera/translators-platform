@@ -83,7 +83,7 @@ get_header();
 
 								echo '<a href="'.get_permalink().'">';
 
-								echo '<img src="'.get_the_post_thumbnail_url().'">';
+								echo '<img src="'.get_the_post_thumbnail_url().'" loading="lazy">';
 								
 								echo get_the_title();
 								

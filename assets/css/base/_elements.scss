@@ -71,6 +71,7 @@ figure {
 a {
 	color: $color__link;
 	text-decoration: none;
+	transition: $transition_regular;
 
 	&:visited {
 		color: $color__link-visited;
@@ -94,11 +95,6 @@ a {
 
 /* LISTS */
 
-ul,
-ol {
-	margin: 0 0 1.5em 3em;
-}
-
 ul {
 	margin: 0;
 	padding: 0;
@@ -107,6 +103,8 @@ ul {
 
 ol {
 	list-style: decimal;
+	counter-reset: item;
+	padding-left: 1rem;
 }
 
 li > ul,
@@ -384,40 +382,78 @@ table {
 	}
 
 	&__edit-account-content,
-	&:visited {
+	&__edit-account-content:visited {
 		content: "";
-		position: absolute;
+		// position: absolute;
 		z-index: 1;
 		right: 1.25rem;
 		top: 1.25rem;
-		width: 25px;
-		height: 25px;
-		background-image: url(../dist/svg/edit-blue.svg);
-		background-size: contain;
-		background-repeat: no-repeat;
-		background-position: center;
+		// width: 25px;
+		// height: 25px;
+		display: flex;
+		// flex-flow: row-reverse;
+		align-items: center;
+		background-color: $color__main-theme--blue;
+		border: 2px solid $color__main-theme--blue;
+		color: $color__text-white;
+		padding: 0.5em 1em;
+		font-size: 14px;
+		margin-left: auto;
+		border-radius: 8px;
+		box-shadow: $box-shadow_standard--theme-color;
+
+		&:before {
+			content: "";
+			background-image: url(../dist/svg/edit-white.svg);
+			background-size: contain;
+			background-repeat: no-repeat;
+			background-position: center;
+			margin-right: 0.5rem;
+			width: 1rem;
+			height: 1rem;
+		}
+
+		&:hover {
+			background-color: darken($color__main-theme--blue, 7);
+		}
+	}
+
+	&__edit-account-content--back {
 		background-color: transparent;
-		border: 0;
+		color: $color__main-theme--blue;
+
+		&:before {
+			background-image: url(../dist/svg/back-blue.svg);
+		}
+
+		&:hover {
+			color: $color__text-white;
+			background-color: $color__main-theme--blue;
+
+			&:before {
+				background-image: url(../dist/svg/back-white.svg);
+			}
+		}
 	}
 
 	&__link-cta,
-	&:visited {
+	&__link-cta:visited {
 		color: $color__main-theme--blue;
 		cursor: pointer;
 		border-bottom: 2px solid $color__main-theme--turquoise;
 	}
 
 	&__outline--blue,
-	&:visited {
-		color: #16538c;
-		border: 2px solid #16538c;
+	&__outline--blue:visited {
+		color: $color__main-theme--blue;
+		border: 2px solid $color__main-theme--blue;
 		border-radius: 100rem;
 		background: transparent;
 		box-shadow: 0px 0px 7px #16538c3a;
 
 		&:hover {
 			color: $color__text-white;
-			background: #16538c;
+			background: $color__main-theme--blue;
 		}
 	}
 
@@ -426,14 +462,15 @@ table {
 	.lostpassword-button,
 	&:visited {
 		color: $color__text-white;
-		border: 2px solid #16538c;
+		border: 2px solid $color__main-theme--blue;
 		border-radius: 100rem;
-		background: #16538c;
+		background: $color__main-theme--blue;
 		box-shadow: $box-shadow_button--theme-color;
 
 		&:hover {
-			color: #16538c;
-			background: transparent;
+			// color: #16538c;
+			// background: transparent;
+			background-color: darken($color__main-theme--blue, 7);
 		}
 	}
 
@@ -448,6 +485,30 @@ table {
 		&:hover {
 			color: $color__main-theme--turquoise;
 			background: transparent;
+		}
+	}
+
+	&--upload-file {
+		background-color: $color__main-theme--turquoise;
+		color: $color__text-white;
+		width: fit-content;
+		border-radius: 100rem;
+		box-shadow: $box-shadow_button--decoration-color;
+
+		&:before {
+			content: "";
+			background-image: url("../dist/svg/upload.svg");
+			width: 1em;
+			height: 1em;
+			margin-right: 1rem;
+		}
+
+		&:hover {
+			background-color: darken($color__main-theme--turquoise, 7);
+		}
+
+		input[type="file"] {
+			display: none;
 		}
 	}
 }

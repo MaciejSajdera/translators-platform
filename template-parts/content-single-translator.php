@@ -6,12 +6,27 @@
  *
  * @package pstk
  */
-$translator__linkedin_link = get_field("translator_linkedin_link"); 
-$linkedin_icon = file_get_contents(get_template_directory() . "/dist/dist/svg/linkedin.svg");
-$translator_about = get_field('translator_about');
+
 
 $translator_first_name = get_field("translator_first_name");
 $translator_last_name = get_field("translator_last_name");
+$translator_about_short = get_field('translator_about_short');
+$translator_about = get_field('translator_about');
+
+$translator__linkedin_link = get_field("translator_linkedin_link"); 
+$linkedin_icon = file_get_contents(get_template_directory() . "/dist/dist/svg/linkedin.svg");
+
+$translator_contact_phone = get_field("translator_contact_phone");
+$translator_contact_phone_public = get_field("translator_contact_phone_public");
+$phone_icon = file_get_contents(get_template_directory() . "/dist/dist/svg/phone.svg");
+
+$translator_contact_email = get_field("translator_contact_email");
+$translator_contact_email_public = get_field("translator_contact_email_public");
+$at_symbol_icon = file_get_contents(get_template_directory() . "/dist/dist/svg/at-symbol.svg");
+
+$translator_city = get_field("translator_city");
+$translator_city_public = get_field("translator_city_public");
+$localization_icon = file_get_contents(get_template_directory() . "/dist/dist/svg/localization.svg");
 
 ?>
 
@@ -19,156 +34,392 @@ $translator_last_name = get_field("translator_last_name");
 
 	<section class="single-translator__section single-translator__section--1">
 
-	<div class="translator__top">
+		<div class="desktop-only mb--6">
 
-		<div class="profile-picture__wrapper text--center">
+			<div class="flex content-between">
+		
+				<div class="translator__top">
 
-				<div class="corner__decoration corner__decoration--left"></div>
+					<div class="profile-picture__wrapper text--center mb--4">
 
-				<img src="<?php echo get_the_post_thumbnail_url() ?>" loading="lazy" />
+							<div class="corner__decoration corner__decoration--left"></div>
 
-				<div class="corner__decoration corner__decoration--right"></div>
+							<img src="<?php echo get_the_post_thumbnail_url() ?>" loading="lazy" />
 
-		</div>
+							<div class="corner__decoration corner__decoration--right"></div>
 
-		<div class="translator__icons-wrapper text--right">
-		<?php
+					</div>
 
-			if ($translator__linkedin_link)  {
-				echo  '<a href="'.esc_url($translator__linkedin_link).'" class="contact-icon contact-icon__linkedin" target="_blank">
-				'.$linkedin_icon.'
-				</a>';
-			}
+					<div class="translator__icons-wrapper text--right mb--2">
+					<?php
 
-		?>
-		</div>
+						if ($translator__linkedin_link)  {
+							echo  '<a href="'.esc_url($translator__linkedin_link).'" class="contact-icon contact-icon__linkedin" target="_blank">
+							'.$linkedin_icon.'
+							</a>';
+						}
 
-	</div>
+					?>
+					</div>
 
-	<div class="translator__middle">
+					<div class="translator__contact">
+						<h2 class="text--turquoise fw--700 fs--600 mb--05">Kontakt</h2>
 
-		<header class="entry-header mb--2">
-			
-			<?php
-				echo '
-					<h1 class="entry-title fs--800 text--blue">'.$translator_first_name.' '. $translator_last_name.'</h1>
-				';
+						<?php
+							if ($translator_contact_phone_public && strlen($translator_contact_phone) > 0) {
 
-			?>
-
-			<p class="fw--700">
-				<?php
-
-					if (strlen(get_field("translator_city")) > 0) {
-						echo get_field("translator_city").', ';
-					}
-
-					$translator_localizations = wp_get_object_terms( $post->ID, 'translator_localization' );
-				
-					if ( $translator_localizations ) {
-
-						$i = 0;
-
-						foreach( $translator_localizations as $localization ) :
-
-							echo $localization->name;
-
-							$i++;
-
-							if (count($translator_localizations) > $i ) {
-								echo ", ";
+								echo '<div class="flex items-center info-tile">
+										<div class="icon">'.$phone_icon.'</div>
+										<a href="tel:'.$translator_contact_phone.'">'.$translator_contact_phone.'</a>
+									</div>';
 							}
 
-						endforeach;
-					}
-				?>
-			</p>
+							if ($translator_contact_email_public && strlen($translator_contact_email) > 0) {
+								echo '<div class="flex items-center info-tile">
+										<div class="icon">'.$at_symbol_icon.'</div>
+										<a href="mailto:'.$translator_contact_email.'">'.$translator_contact_email.'</a>
+									</div>';
+							}
 
+							if ($translator_city_public && strlen($translator_city) > 0) {
 
-		</header><!-- .entry-header -->
+								echo '<div class="flex items-center info-tile">
+										<div class="icon">'.$localization_icon.'</div>
+										<span>'.$translator_city;
 
-		<?php
-			if (strlen($translator_about) > 0) {
-			?>
+										if (strlen(get_field("translator_city")) > 0) {
+											echo get_field("translator_city").', ';
+										}
+		
+										$translator_localizations = wp_get_object_terms( $post->ID, 'translator_localization' );
+									
+										if ( $translator_localizations ) {
+		
+											$i = 0;
+		
+											foreach( $translator_localizations as $localization ) :
+		
+												echo $localization->name;
+		
+												$i++;
+		
+												if (count($translator_localizations) > $i ) {
+													echo ", ";
+												}
+		
+											endforeach;
+										}
 
-			<div class="translator__about mb--2">
-				<p class="text--turquoise fw--700 fs--600 mb--05">
-					O mnie
-				</p>
+									echo '</span>
 
-				<p class="fw--300">
-					<?php echo $translator_about ?>
-				</p>
+									</div>';
+							}
+
+						?>
+					</div>
+
+				</div>
+
+				<div class="translator__bottom">
+
+					<div class="translator__middle mb--3">
+
+						<header class="entry-header mb--2">
+							
+							<?php
+								echo '
+									<h1 class="entry-title fs--1200 text--blue mb--05">'.$translator_first_name.' '. $translator_last_name.'</h1>
+								';
+
+							?>
+
+						</header><!-- .entry-header -->
+
+						<?php
+							if (strlen($translator_about_short) > 0) {
+							?>
+
+							<div>
+								<h2 class="text--turquoise fw--700 fs--600 mb--05">
+									Jedno zdanie o mnie
+								</h2>
+
+								<p class="fw--500 info-tile">
+									<?php echo $translator_about_short ?>
+								</p>
+
+							</div>
+
+							<?php
+							}
+						?>
+
+					</div>
+
+					<div class="wrapper-flex translator__languages mb--3">
+						<?php
+
+						$tax_label_languages = get_taxonomy('translator_language')->label;
+						$translator_languages = wp_get_object_terms( $post->ID, 'translator_language' );
+
+						if ( $translator_languages ) {
+
+							echo '<ul>
+									<h2 class="text--turquoise fw--700 fs--600">'.$tax_label_languages.'</h2>
+								';
+
+							foreach( $translator_languages as $term ) :
+
+								// $queried_object = get_queried_object();
+								// var_dump($queried_object);
+								// $taxonomy = $queried_object->taxonomy;
+								// $term_id = $queried_object->term_id;
+
+								// 		$flag_image = get_field('flag_image', $taxonomy . '_' . $term_id);
+								// 		echo '<img src="'.$flag_image['url'].'" alt="'.$flag_image['alt'].'" />';
+
+										echo '<li class="info-tile">'.$term->name.'</li>';
+							endforeach;
+
+							echo '</ul>';
+						}
+
+						?>
+					</div>
+
+					<div class="wrapper-flex translator__specializations mb--3">
+						<?php
+
+						$tax_label_specializations = get_taxonomy('translator_specialization')->label;
+
+						$translator_specializations = wp_get_object_terms( $post->ID, 'translator_specialization' );
+
+						if ( $translator_specializations ) {
+
+							echo '<ul>
+									<h2 class="text--turquoise fw--700 fs--600">'.$tax_label_specializations.'</h2>
+									';
+
+							foreach( $translator_specializations as $term ) :
+										echo '<li class="info-tile">'.$term->name.'</li>';
+							endforeach;
+
+							echo '</ul>';
+						}
+						?>
+					</div>
+
+					<div class="translator__about">
+						
+						<h2 class="text--turquoise fw--700 fs--600 mb--1">O mnie</h2>
+
+						<p>
+							<?php
+								echo $translator_about;
+							?>
+						</p>
+
+					</div>
+
+				</div>
 
 			</div>
 
-			<?php
-			}
-		?>
+		</div><!-- desktop-only -->
 
-	</div>
+		<div class="mobile-only mb--4">
 
-	<div class="translator__bottom">
+				<div class="translator__top">
 
-		<div class="wrapper-flex translator__specializations">
-			<?php
+					<div class="profile-picture__wrapper text--center mb--4">
 
-			$tax_label_specializations = get_taxonomy('translator_specialization')->label;
+							<div class="corner__decoration corner__decoration--left"></div>
 
-			$translator_specializations = wp_get_object_terms( $post->ID, 'translator_specialization' );
+							<img src="<?php echo get_the_post_thumbnail_url() ?>" loading="lazy" />
 
-			if ( $translator_specializations ) {
+							<div class="corner__decoration corner__decoration--right"></div>
 
-				echo '<ul>
-						<p class="text--turquoise fw--700 fs--600">'.$tax_label_specializations.'</p>
-						';
+					</div>
 
-				foreach( $translator_specializations as $term ) :
-							echo '<li class="info-tile">'.$term->name.'</li>';
-				endforeach;
+					<div class="translator__middle">
 
-				echo '</ul>';
-			}
-			?>
-		</div>
+						<header class="entry-header mb--2">
+							
+							<?php
+								echo '
+									<h1 class="entry-title fs--800 text--blue mb--05">'.$translator_first_name.' '. $translator_last_name.'</h1>
+								';
 
-		<div class="wrapper-flex translator__languages">
-			<?php
+							?>
 
-			$tax_label_languages = get_taxonomy('translator_language')->label;
-			$translator_languages = wp_get_object_terms( $post->ID, 'translator_language' );
+						</header><!-- .entry-header -->
 
-			if ( $translator_languages ) {
+						<?php
+							if (strlen($translator_about_short) > 0) {
+							?>
 
-				echo '<ul>
-						<p class="text--turquoise fw--700 fs--600">'.$tax_label_languages.'</p>
-					  ';
+							<div class="translator__about mb--2">
+								<h2 class="text--turquoise fw--700 fs--600 mb--05">
+									Jedno zdanie o mnie
+								</h2>
 
-				foreach( $translator_languages as $term ) :
+								<p class="fw--500 info-tile">
+									<?php echo $translator_about_short ?>
+								</p>
 
-					// $queried_object = get_queried_object();
-					// var_dump($queried_object);
-					// $taxonomy = $queried_object->taxonomy;
-					// $term_id = $queried_object->term_id;
+							</div>
 
-					// 		$flag_image = get_field('flag_image', $taxonomy . '_' . $term_id);
-					// 		echo '<img src="'.$flag_image['url'].'" alt="'.$flag_image['alt'].'" />';
+							<?php
+							}
+						?>
 
-							echo '<li class="info-tile">'.$term->name.'</li>';
-				endforeach;
+					</div>
 
-				echo '</ul>';
-			}
+					<div class="translator__contact">
+						<h2 class="text--turquoise fw--700 fs--600 mb--05">Kontakt</h2>
 
-			?>
-		</div>
+						<?php
+							if ($translator_contact_phone_public) {
 
-	</div><!-- .entry-summary -->
+								echo '<div class="flex items-center info-tile">
+										<div class="icon">'.$phone_icon.'</div>
+										<a href="tel:'.$translator_contact_phone.'">'.$translator_contact_phone.'</a>
+									</div>';
+							}
+
+							if ($translator_contact_email_public) {
+								echo '<div class="flex items-center info-tile">
+										<div class="icon">'.$at_symbol_icon.'</div>
+										<a href="mailto:'.$translator_contact_email.'">'.$translator_contact_email.'</a>
+									</div>';
+							}
+
+							if ($translator_city_public) {
+
+								echo '<div class="flex items-center info-tile">
+										<div class="icon">'.$localization_icon.'</div>
+										<span>'.$translator_city;
+
+										if (strlen(get_field("translator_city")) > 0) {
+											echo get_field("translator_city").', ';
+										}
+		
+										$translator_localizations = wp_get_object_terms( $post->ID, 'translator_localization' );
+									
+										if ( $translator_localizations ) {
+		
+											$i = 0;
+		
+											foreach( $translator_localizations as $localization ) :
+		
+												echo $localization->name;
+		
+												$i++;
+		
+												if (count($translator_localizations) > $i ) {
+													echo ", ";
+												}
+		
+											endforeach;
+										}
+
+									echo '</span>
+
+									</div>';
+							}
+
+						?>
+					</div>
+
+					<div class="translator__icons-wrapper text--right mb--4">
+					<?php
+
+						if ($translator__linkedin_link)  {
+							echo  '<a href="'.esc_url($translator__linkedin_link).'" class="contact-icon contact-icon__linkedin" target="_blank">
+							'.$linkedin_icon.'
+							</a>';
+						}
+
+					?>
+					</div>
+
+				</div>
+
+				<div class="translator__bottom">
+
+					<div class="wrapper-flex translator__languages mb--3">
+						<?php
+
+						$tax_label_languages = get_taxonomy('translator_language')->label;
+						$translator_languages = wp_get_object_terms( $post->ID, 'translator_language' );
+
+						if ( $translator_languages ) {
+
+							echo '<ul>
+									<h2 class="text--turquoise fw--700 fs--600">'.$tax_label_languages.'</h2>
+								';
+
+							foreach( $translator_languages as $term ) :
+
+								// $queried_object = get_queried_object();
+								// var_dump($queried_object);
+								// $taxonomy = $queried_object->taxonomy;
+								// $term_id = $queried_object->term_id;
+
+								// 		$flag_image = get_field('flag_image', $taxonomy . '_' . $term_id);
+								// 		echo '<img src="'.$flag_image['url'].'" alt="'.$flag_image['alt'].'" />';
+
+										echo '<li class="info-tile">'.$term->name.'</li>';
+							endforeach;
+
+							echo '</ul>';
+						}
+
+						?>
+					</div>
+
+					<div class="wrapper-flex translator__specializations">
+						<?php
+
+						$tax_label_specializations = get_taxonomy('translator_specialization')->label;
+
+						$translator_specializations = wp_get_object_terms( $post->ID, 'translator_specialization' );
+
+						if ( $translator_specializations ) {
+
+							echo '<ul>
+									<h2 class="text--turquoise fw--700 fs--600">'.$tax_label_specializations.'</h2>
+									';
+
+							foreach( $translator_specializations as $term ) :
+										echo '<li class="info-tile">'.$term->name.'</li>';
+							endforeach;
+
+							echo '</ul>';
+						}
+						?>
+					</div>
+
+					<div class="translator__about">
+
+						<h2 class="text--turquoise fw--700 fs--600 mb--1">O mnie</h2>
+
+						<p>
+							<?php
+								echo $translator_about;
+							?>
+						</p>
+
+					</div>
+
+				</div>
+
+			</div>
 
 
-	</section>
-	 <!-- end of section-1 -->
-	 
+		
+	</section><!-- end of section-1 desktop -->
+		
 	 <?php
 	 	$translator_sounds_repeater = get_field("translator_sound_gallery");
 

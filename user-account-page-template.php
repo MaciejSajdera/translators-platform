@@ -163,15 +163,9 @@ get_header();
 
 								echo profile_picture_uploader($user_post_id);
 
-								echo '<div class="my-ajax-loader">';
-
-									echo '<div class="my-ajax-loader__spinner"></div>';
-								
-								echo '</div>';
-
 							echo '</div>';
 
-							echo '<h3 class="account__user-fullname mb--1">'.$current_user_first_name.' '.$current_user_last_name.'</h3>';
+							echo '<h3 class="account__user-fullname mb--2">'.$current_user_first_name.' '.$current_user_last_name.'</h3>';
 
 							 echo '<div class="account__navigation">';
 
@@ -181,7 +175,7 @@ get_header();
 									echo '<li><a href="#profile-section-1" class="button button__outline--blue" data-profile-section="profile-section-1">Edycja Profilu</a></li>';
 									echo '<li><a href="#profile-section-2" class="button button__outline--blue" data-profile-section="profile-section-2">Ustawienia</a></li>';
 									// echo '<li><a href="#" class="button button__outline--blue" data-profile-section="profile-section-3">Płatności</a></li>';
-									echo '<li><a href="#profile-section-3" class="button button__outline--blue" data-profile-section="profile-section-3">Materiały tylko dla członków PSTK</a></li>';
+									echo '<li><a href="#profile-section-3" class="button button__outline--blue" data-profile-section="profile-section-3">Materiały członkowskie</a></li>';
 									echo '<li><a href="'.wp_logout_url().'" class="button button__outline--blue logout-link">Wyloguj</a></li>';
 								
 
@@ -206,7 +200,6 @@ get_header();
 									echo '<div class="content-box">
 											<div class="info-box">
 												<h1>Cześć <span class="account__user-first-name">'.$current_user_first_name.'</span>!</h1>
-												<h2>Witaj na swoim koncie PSTK.</h2>
 											</div>';
 
 										$completness_value_class = '';
@@ -217,10 +210,10 @@ get_header();
 											echo '<div class="account__fill-completeness-wrapper '.$account_fill_completeness_display.'">';
 
 												echo '<h3>';
-
+													echo 'Witaj na swoim koncie PSTK.<br />';
 													echo 'Twój profil jest kompletny w <span id="accountFillCompletness" class="'.$completness_value_class.'"><span id="percentValueOfAccountFillCompletness">'.get_percent_value_of_account_fill_completness().'</span><span>%</span></span>.
 													<br />
-													<span class="text--underline-turquoise" id="fillTheseFields">Uzupełnij go.</span>';		
+													<span class="text--blue text--underline-turquoise" id="fillTheseFields">Uzupełnij go.</span>';		
 
 												echo '</h3>';
 
@@ -232,7 +225,7 @@ get_header();
 
 											$empty_field_labels = get_labels_of_empty_translator_fields();
 
-											echo '<p>Nieuzupełnione pola</p>';
+											echo '<p>Nieuzupełnione pola:</p>';
 											foreach($empty_field_labels as $label) :
 												echo '<p class="empty-field-label">'.$label.'</p>';
 											endforeach;
@@ -248,13 +241,17 @@ get_header();
 
 								echo '<div class="info-box basic-info-container">';
 
-									echo '<div><p class="info-box__header">Podstawowe dane</p></div>';
-
 									echo '<div class="account__box-container ajax-content-wrapper">';
 
-										/* EDIT BUTTON */
+										/* TITLE & EDIT BUTTON */
 
-										echo '<button data-profile-edit="edit-basic-info" id="button__edit-basic-info" class="button button__edit-account-content"></button>';
+										echo '<div class="info-box__header">';
+
+											echo '<p>Podstawowe dane</p>';
+
+											echo '<button data-profile-edit="edit-basic-info" id="button__edit-basic-info" class="button button__edit-account-content">Edytuj</button>';
+
+										echo '</div>';
 
 										/* AJAX LOADER */
 										
@@ -268,21 +265,21 @@ get_header();
 
 										echo '<div class="content-box">';
 
-											echo '<div class="info-box__subbox">';
+											echo '<div class="info-box__subbox mb--3">';
 
-												echo '<p class="info-box__subbox-header">Imię</p>';
+												echo '<p class="info-box__subbox-header mb--05">Imię</p>';
 												echo '<p class="info-box__content account__user-first-name">'.$current_user_first_name .'</p>';
 
 											echo '</div>';
 
-											echo '<div class="info-box__subbox">';
+											echo '<div class="info-box__subbox mb--3">';
 
-												echo '<p class="info-box__subbox-header">Nazwisko</p>';
+												echo '<p class="info-box__subbox-header mb--05">Nazwisko</p>';
 												echo '<p class="info-box__content account__user-last-name">'.$current_user_last_name .'</p>';
 
 											echo '</div>';
 
-											echo '<div class="info-box__subbox">';
+											echo '<div class="info-box__subbox mb--3">';
 
 												if (strlen($translator_about_short) > 0) {
 													$placeholder_mode = '';
@@ -291,12 +288,12 @@ get_header();
 													$placeholder_mode = 'placeholder_mode';
 												}
 
-												echo '<p class="info-box__subbox-header">Jedno zdanie o mnie</p>';
+												echo '<p class="info-box__subbox-header mb--05">Jedno zdanie o mnie</p>';
 												echo '<p id="user_about_short_text" class="info-box__content '.$placeholder_mode.'">'.$translator_about_short.'</p>';
 
 											echo '</div>';
 											
-											echo '<div class="info-box__subbox">';
+											echo '<div class="info-box__subbox mb--3">';
 
 												$translator_languages_taxonomy = get_taxonomy( 'translator_language' );
 
@@ -307,7 +304,7 @@ get_header();
 
 												$current_user_languages_array_terms = wp_get_post_terms($user_post_id, 'translator_language', array('fields' => 'names'));
 
-												echo '<p class="info-box__subbox-header">'.$translator_languages_taxonomy->label.'</p>';
+												echo '<p class="info-box__subbox-header mb--05">'.$translator_languages_taxonomy->label.'</p>';
 
 												echo '<p id="user_languages_text" class="info-box__content">';
 												
@@ -335,7 +332,7 @@ get_header();
 
 												$current_user_specializations_array_terms = wp_get_post_terms($user_post_id, 'translator_specialization', array('fields' => 'names'));
 
-												echo '<p class="info-box__subbox-header">'.$translator_specializations_taxonomy->label.'</p>';
+												echo '<p class="info-box__subbox-header mb--05">'.$translator_specializations_taxonomy->label.'</p>';
 
 												echo '<p id="user_specializations_text" class="info-box__content">';
 												
@@ -373,13 +370,16 @@ get_header();
 
 								echo '<div class="info-box about-info-container">';
 
-									echo '<div><p class="info-box__header">O mnie</p></div>';
+
 
 									echo '<div class="account__box-container ajax-content-wrapper">';
 
 										/* EDIT BUTTON */
 
-										echo '<button data-profile-edit="edit-about-info" class="button button__edit-account-content"></button>';
+										echo '<div class="info-box__header">
+												<p>O mnie</p>
+												<button data-profile-edit="edit-about-info" class="button button__edit-account-content">Edytuj</button>
+											  </div>';
 
 										/* AJAX LOADER */
 
@@ -427,13 +427,14 @@ get_header();
 
 								echo '<div class="info-box contact-info-container">';
 					
-									echo '<div><p class="info-box__header">Dane kontaktowe</p></div>';
-
 									echo '<div class="account__box-container ajax-content-wrapper">';
 
 										/* EDIT BUTTON */
-										
-										echo '<button data-profile-edit="edit-contact-info" class="button button__edit-account-content"></button>';
+
+										echo '<div class="info-box__header">
+												<p>Dane kontaktowe</p>
+												<button data-profile-edit="edit-contact-info" class="button button__edit-account-content">Edytuj</button>
+											  </div>';
 										
 										/* AJAX LOADER */
 										
@@ -447,21 +448,21 @@ get_header();
 										
 										echo '<div class="content-box ajax-content-wrapper">';
 
-											echo '<div class="info-box__subbox">';
+											echo '<div class="info-box__subbox mb--3">';
 
 													if (strlen($translator_contact_phone) > 0) {
 														$placeholder_mode = '';
 													} else {
-														$translator_contact_phone = '+48 123 456 789';
+														$translator_contact_phone = '';
 														$placeholder_mode = 'placeholder_mode';
 													}
 
-												echo '<p class="info-box__subbox-header">Numer telefonu</p>';
+												echo '<p class="info-box__subbox-header mb--05">Numer telefonu</p>';
 												echo '<p id="user_contact_phone_text" class="info-box__content '.$placeholder_mode.'">'.$translator_contact_phone.'</p>';
 
 											echo '</div>';
 
-											echo '<div class="info-box__subbox">';
+											echo '<div class="info-box__subbox mb--3">';
 
 
 													if (strlen($translator_contact_email) > 0) {
@@ -471,7 +472,7 @@ get_header();
 														$placeholder_mode = 'placeholder_mode';
 													}
 
-												echo '<p class="info-box__subbox-header">Adres e-mail</p>';
+												echo '<p class="info-box__subbox-header mb--05">Adres e-mail</p>';
 												echo '<p id="user_contact_email_text" class="info-box__content '.$placeholder_mode.'">'.$translator_contact_email.'</p>';
 
 											echo '</div>';
@@ -503,26 +504,30 @@ get_header();
 
 											$current_user_localizations_array_terms = wp_get_post_terms($user_post_id, 'translator_localization', array('fields' => 'names'));
 
-											echo '<p class="info-box__subbox-header">'.$translator_localizations_taxonomy->label.'</p>';
+											echo '<p class="info-box__subbox-header mb--05">'.$translator_localizations_taxonomy->label.'</p>';
 
-											echo '<div class="wrapper-flex-drow-mcol">';
+											echo '<div class="info-box__subbox mb--3">';
 
-												echo '<p class="wrapper-flex-drow-mcol__first-element info-box__content">Miejsce zamieszkania</p>';
+												echo '<div class="wrapper-flex-drow-mcol">';
 
-												echo '<p id="user_city_text" class="info-box__content">'.$translator_city.'</p>';
+													echo '<p class="wrapper-flex-drow-mcol__first-element info-box__content">Miejsce zamieszkania:</p>';
+
+													echo '<p id="user_city_text" class="info-box__content">'.$translator_city.'</p>';
+
+												echo '</div>';
 
 											echo '</div>';
 
 											echo '<div class="wrapper-flex-drow-mcol">';
 
-												echo '<p class="wrapper-flex-drow-mcol__first-element">Inne lokalizacje</p>';
+												echo '<p class="wrapper-flex-drow-mcol__first-element">Inne lokalizacje:</p>';
 										
 												echo '<div class="user_localizations__column">';
 
 													if ( $translator_localizations ) {
 														foreach( $translator_localizations as $term ) :
 																if ($current_user_localizations_array_terms && in_array($term->name, $current_user_localizations_array_terms)) {
-																	echo '<p class="user_localization info-box__content">'.$term->name.'</p>';
+																	echo '<p class="user_localization info-box__content mb--1">'.$term->name.'</p>';
 																} 
 														endforeach;
 													}
@@ -553,9 +558,9 @@ get_header();
 
 								echo '<div class="info-box sound-gallery-container">';
 
-									echo '<div><p class="info-box__header">Próbka głosu</p></div>';
-
 									echo '<div class="account__box-container">';
+
+										echo '<div class="info-box__header"><p>Próbka głosu</p></div>';
 
 										/* CONTENT BOX */
 
@@ -582,13 +587,13 @@ get_header();
 													/* DYNAMIC MESSAGES CONTENT HOLDER */
 
 													echo '<div class="is-gallery-empty__messages" style="display: none">';
-													echo '<p class="is-gallery-empty__yes">Aktualnie nie masz dodanych żadnych próbek głosu.</p>';
-													echo '<p class="is-gallery-empty__no">Dodane nagrania</p>';
+													echo '<p class="is-gallery-empty__yes mb--2">Aktualnie nie masz dodanych żadnych próbek głosu.</p>';
+													echo '<p class="is-gallery-empty__no">Dodane nagrania:</p>';
 													echo '</div>';
 
 													if ($sounds_to_gallery_array) {
 
-														echo '<p class="info-box__subbox-header is-gallery-empty__status-text-holder">Dodane nagrania</p>';
+														echo '<p class="info-box__subbox-header mb--2 is-gallery-empty__status-text-holder">Dodane nagrania:</p>';
 
 														//start at 1 because acf repeater rows indexes start with 1
 
@@ -608,16 +613,15 @@ get_header();
 																// echo  '$translator_single_voice_recording_text: '. $translator_single_voice_recording_text;
 																// echo '$sound_link: '.$sound_link;
 
-
-																echo '<div class="row-wrapper my-sounds__gallery-row-wrapper wrapper-flex-drow-mcol">';
+																echo '<div class="row-wrapper my-sounds__gallery-row-wrapper wrapper-flex-drow-mcol pb--2 mb--2">';
 																
 																	echo '<a class="remove-item" href="#" data-id="'.$i.'"></a>';
 
-																	echo '<div class="my-sounds__gallery-text-wrapper col-d50 test">';
+																	echo '<div class="my-sounds__gallery-text-wrapper col-m100-d50">';
 
-																		echo '<div class="my-sounds__gallery-attachment--label">';
+																		echo '<div class="my-sounds__gallery-attachment--label mb--1">';
 
-																			echo '<p>'.$translator_single_voice_recording_label.'</p>';
+																			echo '<p class="fw--500">'.$translator_single_voice_recording_label.'</p>';
 
 																		echo '</div>';
 
@@ -634,13 +638,13 @@ get_header();
 
 																	$sound_id = attachment_url_to_postid($sound_link);
 
-																	echo '<div class="my-sounds__gallery-attachment my-sounds__gallery-attachment--file-info col-d50">';
+																	echo '<div class="my-sounds__gallery-attachment my-sounds__gallery-attachment--file-info col-m100-d50">';
 
 																		echo $sound_icon;
 
 																		$sound_name = basename(get_attached_file( $sound_id ));
 
-																		echo '<p>'.$sound_name.'</p>';
+																		echo '<p class="sound-title">'.$sound_name.'</p>';
 
 																	echo '</div>';
 																} 
@@ -655,7 +659,7 @@ get_header();
 
 													} else {
 
-														echo '<p class="info-box__subbox-header is-gallery-empty__status-text-holder">Aktualnie nie masz dodanych żadnych próbek głosu.</p>';
+														echo '<p class="info-box__subbox-header is-gallery-empty__status-text-holder mb--2">Aktualnie nie masz dodanych żadnych próbek głosu.</p>';
 														
 													};
 
@@ -663,7 +667,7 @@ get_header();
 
 													echo gallery_sound_uploader($user_post_id);
 
-													echo '<div id="newSoundInGalleryPlaceholder" class="my-sounds__gallery-attachment" style="display:none;" >';
+													echo '<div id="newSoundInGalleryPlaceholder" class="" style="display:none;" >';
 
 														echo '<a class="remove-item remove" data-id="clear-input" href="#"></a>';
 
@@ -690,13 +694,16 @@ get_header();
 
 								echo '<div class="info-box linkeding-info-container">';
 
-									echo '<div><p class="info-box__header">Profil LinkedIn</p></div>';
+
 
 									echo '<div class="account__box-container ajax-content-wrapper">';
 
-										/* EDIT BUTTON */
+										/* TITLE & EDIT BUTTON */
 
-										echo '<button data-profile-edit="edit-linkedin-info" class="button button__edit-account-content"></button>';
+										echo '<div class="info-box__header">
+												<p>Profil LinkedIn</p>
+												<button data-profile-edit="edit-linkedin-info" class="button button__edit-account-content">Edytuj</button>
+											</div>';
 
 										/* AJAX LOADER */
 
@@ -712,12 +719,12 @@ get_header();
 
 
 
-											echo '<div class="info-box__subbox">';
+											echo '<div class="info-box__subbox mb--3">';
 
 												$linkedin_subheader_text = "Wpisz lub wklej link do profilu LinkedIn";
 												$linkedin_subheader_note = "Jeśli nie podasz adresu swojego profilu na LinkedIn, to link do niej nie będzie widoczny na Twoim profilu PSTK.";
 
-												echo '<p class="info-box__content">'.$linkedin_subheader_text.'</p>';
+												echo '<p class="info-box__content mb--1">'.$linkedin_subheader_text.'</p>';
 
 												echo '<p class="info-box__note">'.$linkedin_subheader_note.'</p>';
 
@@ -742,12 +749,12 @@ get_header();
 
 										echo '<div id="edit-linkedin-info" class="edit-box content-box">';
 
-											echo '<div class="info-box__subbox">';
+											echo '<div class="info-box__subbox mb--2">';
 
 												$linkedin_subheader_text = "Wpisz lub wklej link do profilu LinkedIn";
 												$linkedin_subheader_note = "Jeśli nie podasz adresu swojego profilu na LinkedIn, to link do niej nie będzie widoczny na Twoim profilu PSTK.";
 
-												echo '<p class="info-box__content">'.$linkedin_subheader_text.'</p>';
+												echo '<p class="info-box__content mb--1">'.$linkedin_subheader_text.'</p>';
 
 												echo '<p class="info-box__note">'.$linkedin_subheader_note.'</p>';
 
@@ -767,13 +774,14 @@ get_header();
 
 								echo '<div class="info-box work-info-container">';
 
-									echo '<div><p class="info-box__header">Gdzie najczęściej pracuję?</p></div>';
-
 									echo '<div class="account__box-container ajax-content-wrapper">';
 
-										/* EDIT BUTTON */
+										/* TITLE & EDIT BUTTON */
 
-										echo '<button data-profile-edit="edit-work-info" class="button button__edit-account-content"></button>';
+										echo '<div class="info-box__header">
+												<p>Gdzie najczęściej pracuję?</p>
+												<button data-profile-edit="edit-work-info" class="button button__edit-account-content">Edytuj</button>
+											</div>';
 
 										/* AJAX LOADER */
 
@@ -822,9 +830,9 @@ get_header();
 
 								echo '<div class="info-box pictures-and-videos-container">';
 
-									echo '<div><p class="info-box__header">Zdjęcia i filmy</p></div>';
-
 									echo '<div class="account__box-container">';
+
+									echo '<div class="info-box__header"><p>Zdjęcia i filmy</p></div>';
 
 										/* CONTENT BOX */
 
@@ -834,7 +842,7 @@ get_header();
 
 											/* IMAGES GALLERY PANEL */
 
-												echo '<div class="my-pictures__wrapper ajax-content-wrapper col-d50">';
+												echo '<div class="my-pictures__wrapper ajax-content-wrapper col-m100-d50">';
 
 													/* AJAX LOADER */
 
@@ -865,7 +873,7 @@ get_header();
 
 																		echo '<a class="remove-item" href="#" data-id="'.attachment_url_to_postid($image).'"></a>';
 
-																		echo '<img src="'.wp_get_attachment_image_url(attachment_url_to_postid($image), 'full').'" width="">';
+																		echo '<img src="'.wp_get_attachment_image_url(attachment_url_to_postid($image), 'full').'" width="" loading="lazy">';
 
 																	echo '</div>';
 																} 
@@ -887,7 +895,7 @@ get_header();
 
 												/* VIDEO GALLERY PANEL */
 
-												echo '<div class="my-videos__wrapper ajax-content-wrapper col-d50">';
+												echo '<div class="my-videos__wrapper ajax-content-wrapper col-m100-d50">';
 
 													/* AJAX LOADER */
 
@@ -993,9 +1001,9 @@ get_header();
 
 							echo '<div id="profile-section-2" class="profile-section profile-section--not-active account__settings">';
 
-								echo '<div>';
+								echo '<div class="content-box">';
 								
-									echo '<p class="content-box">Edycja ustawień</p>';
+									echo '<p class="fw--700 fs--1200">Edycja ustawień</p>';
 
 								echo '</div>';
 
@@ -1006,11 +1014,13 @@ get_header();
 
 								<div class="info-box">
 
-									<p class="info-box__header">Adres e-mail</p>
-									<p class="info-box__tip content-box">Adres ten wyświetla się na Twoim profilu i służy do logowania do konta PSTK </p>
+									<div class="info-box__header mb--1">
+										<p>Adres e-mail</p>
+									</div>
+
+									<p class="info-box__tip content-box-side-padding mb--2">Adres ten służy do logowania do konta PSTK </p>
 				
-				
-									<div class="info-box__subbox info-box__subbox--max-width account__box-container ajax-content-wrapper">
+									<div class="info-box__subbox content-box-side-padding info-box__subbox--max-width account__box-container ajax-content-wrapper mb--3">
 
 										<div class="my-ajax-loader">
 
@@ -1018,7 +1028,7 @@ get_header();
 
 										</div>
 				
-										<button data-profile-edit="edit-settings-login-email-address" id="button__edit-login_email" class="button button__edit-account-content"></button>
+										<button data-profile-edit="edit-settings-login-email-address" id="button__edit-login_email" class="button button__edit-account-content">Edytuj</button>
 				
 										<p id="user_current_login_email" class="content-box info-box__content">
 											<?php
@@ -1026,7 +1036,7 @@ get_header();
 											?>
 										</p>
 
-										<div id="edit-settings-login-email-address" class="edit-box info-box">
+										<div id="edit-settings-login-email-address" class="edit-box info-box content-box">
 
 											<?php echo settings_user_login_email_form(); ?>
 				
@@ -1044,11 +1054,14 @@ get_header();
 
 								<div class="info-box">
 
-									<p class="info-box__header">Hasło</p>
-									<p class="info-box__tip content-box">Hasło służy do logowania do konta PSTK. Musi zawierać minimum 8 znaków, w tym jedną wielką literę i jeden znak specjalny.</p>
+									<div class="info-box__header mb--1">
+										<p>Hasło</p>
+									</div>
+
+									<p class="info-box__tip content-box-side-padding mb--2">Hasło służy do logowania do konta PSTK. Musi zawierać minimum 8 znaków, w tym jedną wielką literę i jeden znak specjalny.</p>
 
 
-									<div class="info-box__subbox info-box__subbox--max-width account__box-container ajax-content-wrapper">
+									<div class="info-box__subbox mb--3 content-box-side-padding info-box__subbox--max-width mb--3 account__box-container ajax-content-wrapper">
 
 										<div class="my-ajax-loader">
 
@@ -1056,9 +1069,9 @@ get_header();
 
 										</div>
 
-										<button data-profile-edit="edit-settings-password" id="button__edit-basic-info" class="button button__edit-account-content"></button>
+										<button data-profile-edit="edit-settings-password" id="button__edit-basic-info" class="button button__edit-account-content">Edytuj</button>
 
-										<div class="content-box info-box__content">
+										<div id="user_current_password" class="content-box info-box__content">
 											<?php
 
 												// show any error messages after form submission
@@ -1083,8 +1096,10 @@ get_header();
 														endforeach;
 
 														echo '</div>';
-													}
 
+														//clear $_POST so ajax forms can still work after error occured
+														$_POST = array();
+													}
 
 												echo '<p>***********</p>';
 											?>
@@ -1108,9 +1123,9 @@ get_header();
 
 								<div class="info-box">
 
-									<div><p class="info-box__header">Widoczność profilu</p></div>
+									<div class="info-box__header"><p>Widoczność profilu</p></div>
 
-									<div class="info-box__subbox content-box account__box-container info-box__subbox--max-width ajax-content-wrapper">
+									<div class="info-box__subbox mb--3 content-box account__box-container info-box__subbox--max-width mb--3 ajax-content-wrapper">
 
 										<div class="my-ajax-loader">
 
@@ -1144,7 +1159,7 @@ get_header();
 
 									echo '<div>';
 									
-										echo '<p>Materiały tylko dla członków PSTK</p>';
+										echo '<p>Materiały członkowskie</p>';
 
 									echo '</div>';
 
@@ -1166,7 +1181,7 @@ get_header();
 									<p class="info-box__header">Pakiet członkowski</p>
 									<!-- <p class="info-box__tip"></p> -->
 				
-									<div class="info-box__subbox">
+									<div class="info-box__subbox mb--3">
 
 									<ul class="membership_package__list">
 
@@ -1215,7 +1230,7 @@ get_header();
 									<p class="info-box__header">Poufne materiały - tylko dla członków</p>
 									<!-- <p class="info-box__tip"></p> -->
 
-									<div class="info-box__subbox wrapper-flex-wrap">
+									<div class="info-box__subbox mb--3 wrapper-flex-wrap">
 
 											<?php
 
@@ -1265,7 +1280,7 @@ get_header();
 									<p class="info-box__header">Wsparcie marketingowe</p>
 									<!-- <p class="info-box__tip"></p> -->
 
-									<div class="info-box__subbox wrapper-flex-wrap">
+									<div class="info-box__subbox mb--3 wrapper-flex-wrap">
 
 									<?php
 

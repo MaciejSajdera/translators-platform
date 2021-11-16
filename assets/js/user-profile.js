@@ -132,18 +132,45 @@ document.addEventListener("DOMContentLoaded", () => {
 		".button__edit-account-content"
 	);
 
+	let editContentButtonClicked = false;
+
 	if (allButtonsEditAccountContent) {
 		allButtonsEditAccountContent.forEach(button => {
 			button.addEventListener("click", function(e) {
 				e.preventDefault();
+				editContentButtonClicked = !editContentButtonClicked;
 
-				let editBoxId = this.dataset.profileEdit;
-				let editBox = document.querySelector(`#${editBoxId}`);
-				let contentBox = this.parentNode.querySelector(".content-box");
+				const editBoxId = this.dataset.profileEdit;
+				const editBox = document.querySelector(`#${editBoxId}`);
+				const contentBox = this.closest(".info-box").querySelector(
+					".content-box"
+				);
+
+				const closestTextInput = editBox.querySelector('input[type="text"]');
+				const closestTextarea = editBox.querySelector("textarea");
 
 				if (editBox && contentBox) {
 					editBox.classList.toggle("box--active");
 					contentBox.classList.toggle("box--not-active");
+					this.classList.toggle("button__edit-account-content--back");
+				}
+
+				if (editContentButtonClicked) {
+					this.innerHTML = `Powrót`;
+				}
+
+				if (!editContentButtonClicked) {
+					this.innerHTML = `Edytuj`;
+				}
+
+				if (closestTextInput) {
+					closestTextInput.focus();
+					return;
+				}
+
+				if (closestTextarea) {
+					closestTextarea.focus();
+					return;
 				}
 			});
 		});
@@ -156,18 +183,33 @@ document.addEventListener("DOMContentLoaded", () => {
 	if (allButtonsSaveAccountContent) {
 		allButtonsSaveAccountContent.forEach(button => {
 			button.addEventListener("click", function() {
-				let editBoxId = this.closest(".account__box-container").querySelector(
-					".button__edit-account-content"
-				).dataset.profileEdit;
+				const editContentButton = this.closest(
+					".account__box-container"
+				).querySelector(".button__edit-account-content");
 
-				let editBox = document.querySelector(`#${editBoxId}`);
-				let contentBox = this.closest(".account__box-container").querySelector(
-					".content-box"
-				);
+				const editBoxId = editContentButton.dataset.profileEdit;
+
+				const editBox = document.querySelector(`#${editBoxId}`);
+				const contentBox = this.closest(
+					".account__box-container"
+				).querySelector(".content-box");
 
 				if (editBox && contentBox) {
 					editBox.classList.toggle("box--active");
 					contentBox.classList.toggle("box--not-active");
+				}
+
+				if (
+					editContentButton &&
+					editContentButton.classList.contains(
+						"button__edit-account-content--back"
+					)
+				) {
+					editContentButton.classList.remove(
+						"button__edit-account-content--back"
+					);
+					editContentButton.innerHTML = `Edytuj`;
+					editContentButtonClicked = false;
 				}
 			});
 		});
@@ -203,13 +245,15 @@ document.addEventListener("DOMContentLoaded", () => {
 					let deleteFieldButton = document.createElement("BUTTON");
 
 					deleteFieldButton.classList.add(
-						"button",
-						"button__filled--blue",
+						// "button",
+						// "button__filled--blue",
 						"repeater__button",
-						"repeater__button--delete"
+						"repeater__button--delete",
+						"remove",
+						"remove-item"
 					);
 
-					deleteFieldButton.innerText = "-";
+					deleteFieldButton.innerText = "";
 
 					clonedField.appendChild(deleteFieldButton);
 
@@ -373,6 +417,7 @@ document.addEventListener("DOMContentLoaded", () => {
 					let pictureId = e.target.dataset.id;
 
 					if (
+						thisPictureWrapper &&
 						thisPictureWrapper.classList.contains(
 							"newImageInGalleryPlaceholder"
 						)
@@ -394,7 +439,7 @@ document.addEventListener("DOMContentLoaded", () => {
 						picturesToDeleteInput.value = picturesToDeleteArray;
 					}
 
-					thisPictureWrapper.remove();
+					thisPictureWrapper && thisPictureWrapper.remove();
 				});
 			}
 		});

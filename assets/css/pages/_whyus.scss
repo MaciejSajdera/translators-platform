@@ -1,0 +1,42 @@
+.whyus {
+	&__section-2 {
+		// h2 {
+		// 	max-width: 300px;
+		// }
+
+		.content {
+			padding: 2rem 1rem 2rem 0;
+
+			@media screen and (min-width: 1024px) {
+				padding: 2rem 15% 4rem 0rem;
+				width: 75%;
+			}
+		}
+
+		svg {
+			display: none;
+
+			@media screen and (min-width: 1024px) {
+				display: block;
+				position: absolute;
+				right: 0;
+				top: 0;
+				transform: translate(50%, -50%);
+				height: 550px;
+			}
+		}
+	}
+
+	&__section-3 {
+		.advantages {
+			.advantage {
+				&__paragraph-wrapper,
+				&__title-wrapper {
+					@media screen and (min-width: 1024px) {
+						width: 80%;
+					}
+				}
+			}
+		}
+	}
+}

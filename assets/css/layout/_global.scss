@@ -34,6 +34,13 @@
 	}
 }
 
+.page-template-user-account-page-template .site-content,
+.single-translator .site-content {
+	@media screen and (min-width: 1024px) {
+		padding-top: 10rem;
+	}
+}
+
 .welcome-view {
 	min-height: 100vh;
 
@@ -147,7 +154,7 @@ section {
 	width: 100%;
 }
 
-.w-full {
+.w--full {
 	width: 100%;
 }
 
@@ -184,6 +191,10 @@ section {
 
 	&--6 {
 		margin-bottom: 6rem;
+	}
+
+	&--8 {
+		margin-bottom: 8rem;
 	}
 }
 
@@ -227,7 +238,8 @@ section {
 	justify-content: center;
 }
 
-.col-d50 {
+.col-m100-d50 {
+	width: 100%;
 	@media screen and (min-width: 1024px) {
 		width: 50%;
 	}
@@ -242,6 +254,10 @@ section {
 .tile {
 	// border: 1px solid grey;
 	padding: 1em;
+}
+
+.dnone {
+	display: none;
 }
 
 .modal {
@@ -476,7 +492,7 @@ section {
 		font-size: 1rem;
 		min-height: 52px;
 		// min-width: 220px;
-		border: 2px solid #16538c !important;
+		border: 2px solid $color__main-theme--blue !important;
 		border-radius: 100rem !important;
 		background: transparent !important;
 		box-shadow: 0px 0px 7px #16538c3a;
@@ -744,9 +760,9 @@ section {
 		input {
 			color: $color__text-white;
 			padding: 0.75em 1.25em;
-			border: 2px solid #16538c;
+			border: 2px solid $color__main-theme--blue;
 			border-radius: 100rem;
-			background: #16538c;
+			background: $color__main-theme--blue;
 			box-shadow: 0px 0px 7px #16538c3a;
 			transition: color 0.2s ease-in-out, border 0.2s ease-in-out,
 				background 0.2s ease-in-out;
@@ -779,7 +795,7 @@ section {
 			background-size: contain;
 			background-repeat: no-repeat;
 			top: 50%;
-			right: 2rem;
+			right: 1.25rem;
 			transform: translateY(-50%);
 			transition: $transition_regular;
 			opacity: 0;
@@ -787,13 +803,13 @@ section {
 
 		&:hover {
 			input {
-				color: #16538c;
-				background: transparent;
+				// color: $color__main-theme--blue;
+				background: darken($color__main-theme--blue, 7);
 			}
 
-			&:before {
-				opacity: 0;
-			}
+			// &:before {
+			// 	opacity: 0;
+			// }
 		}
 	}
 
@@ -838,8 +854,8 @@ section {
 
 .remove-item {
 	position: absolute;
-	right: 0.5rem;
-	top: 0.5rem;
+	right: 0;
+	top: 0;
 	width: 32px;
 	height: 32px;
 	border-radius: 100%;
@@ -848,15 +864,19 @@ section {
 	background-position: center;
 	background-repeat: no-repeat;
 	background-size: 12px;
-
+	border: 0;
+	cursor: pointer;
 	line-height: 32px;
 	display: flex;
 	align-items: center;
 	justify-content: center;
 	text-decoration: none;
 	font-size: 32px;
-	transform: scale(0);
 	transition: $transition__button--standard;
+
+	@media screen and (min-width: 1024px) {
+		transform: scale(0);
+	}
 
 	&:after {
 		color: white;
@@ -979,6 +999,8 @@ section {
 
 .characters-counter {
 	margin-top: 1rem;
+	margin-bottom: 0 !important;
+	margin-left: auto;
 }
 
 .bg-decoration {
@@ -1089,6 +1111,10 @@ section {
 	&--fit-content {
 		width: fit-content;
 	}
+
+	&--full {
+		width: 100%;
+	}
 }
 
 .corner {
@@ -1142,7 +1168,6 @@ section {
 
 .image-holder {
 	display: flex;
-	width: fit-content;
 }
 
 .image-border-shadow {
@@ -1195,67 +1220,67 @@ section {
 
 .pd {
 	&--1 {
-		padding: 1em;
+		padding: 1rem;
 	}
 
 	&--2 {
-		padding: 2em;
+		padding: 2rem;
 	}
 
 	&--3 {
-		padding: 3em;
+		padding: 3rem;
 	}
 
 	&--4 {
-		padding: 4em;
+		padding: 4rem;
 	}
 
 	&--standard {
-		padding: 1em 1.5em;
+		padding: 1em 1.5rem;
 	}
 }
 
 .pb {
 	&--1 {
-		padding-bottom: 1em;
+		padding-bottom: 1rem;
 	}
 
 	&--2 {
-		padding-bottom: 2em;
+		padding-bottom: 2rem;
 	}
 
 	&--3 {
-		padding-bottom: 3em;
+		padding-bottom: 3rem;
 	}
 
 	&--4 {
-		padding-bottom: 4em;
+		padding-bottom: 4rem;
 	}
 
 	&--standard {
-		padding-bottom: 1em;
+		padding-bottom: 1rem;
 	}
 }
 
 .pr {
 	&--1 {
-		padding-right: 1em;
+		padding-right: 1rem;
 	}
 
 	&--2 {
-		padding-right: 2em;
+		padding-right: 2rem;
 	}
 
 	&--3 {
-		padding-right: 3em;
+		padding-right: 3rem;
 	}
 
 	&--4 {
-		padding-right: 4em;
+		padding-right: 4rem;
 	}
 
 	&--standard {
-		padding-right: 1em;
+		padding-right: 1rem;
 	}
 }
 
@@ -1406,5 +1431,17 @@ section {
 		@media screen and (min-width: 1024px) {
 			width: 45%;
 		}
+	}
+}
+
+#breadcrumbs {
+	font-weight: 500;
+
+	span {
+		color: $color__main-theme--turquoise;
+	}
+
+	.breadcrumb_last {
+		color: $color__text-black;
 	}
 }

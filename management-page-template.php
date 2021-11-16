@@ -156,7 +156,7 @@ $cards = get_field('cards');
 														<div class="image-wrapper w--fit-content relative mb--4">
 															<a href="mailto:'.$translator_email.'" class="svg-icon-bg svg-icon-bg--email"></a>
 															<div class="corner__decoration corner__decoration--left"></div>
-															<img src="'.$image_url.'" alt="'.$translator->post_title.'">
+															<img src="'.$image_url.'" alt="'.$translator->post_title.'" loading="lazy">
 															<div class="corner__decoration corner__decoration--right"></div>
 														</div>
 														';

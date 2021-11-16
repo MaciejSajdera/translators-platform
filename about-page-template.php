@@ -50,12 +50,12 @@ $circles_group_big = file_get_contents(get_template_directory() . "/dist/dist/sv
 
 				</div>
 
-				<div class="welcome-view__right image-holder image-to-the-right">
+				<div class="welcome-view__right image-holder w--fit-content image-to-the-right">
 
 					<?php
 						if ($section_1_image) {
 							?>
-								<img src="<?php echo $section_1_image['url'] ?>" alt="<?php echo $section_1_image['alt'] ?>">
+								<img src="<?php echo $section_1_image['url'] ?>" alt="<?php echo $section_1_image['alt'] ?>" loading="lazy">
 							<?php
 						}
 						?>
@@ -102,11 +102,11 @@ $circles_group_big = file_get_contents(get_template_directory() . "/dist/dist/sv
 												<div class="pd--standard pb--3 relative pseudo-decoration '.$decoration_direction_class.'"><p class="fw--500">'.$textarea.'</p></div>
 											</div>
 											
-											<div class="image-holder">';
+											<div class="image-holder w--fit-content">';
 
 											if ($image) {
 
-												 echo '<img class="image-border-shadow" src="'.$image['url'].'" alt="'.$image['alt'].'" />';
+												 echo '<img class="image-border-shadow" src="'.$image['url'].'" alt="'.$image['alt'].'" loading="lazy" />';
 
 											}
 
@@ -160,7 +160,7 @@ $circles_group_big = file_get_contents(get_template_directory() . "/dist/dist/sv
 								<div class="advantage__wrapper flex flex-col content-center items-center">
 									<div class="advantage__img-wrapper w--fit-content relative">
 										<div class="corner__decoration corner__decoration--left"></div>
-										<img src="'.$icon["url"].'" alt="'.$icon["alt"].'">
+										<img src="'.$icon["url"].'" alt="'.$icon["alt"].'" loading="lazy">
 										<div class="corner__decoration corner__decoration--right"></div>
 									</div>
 

@@ -68,12 +68,12 @@ $section_7_slogan_4 = $section_7['slogan_4'];
 
 				</div>
 
-				<div class="welcome-view__right image-holder">
+				<div class="welcome-view__right image-holder w--fit-content">
 
 						<?php
 						if ($section_1_image) {
 							?>
-							<img class="image-border-shadow" src="<?php echo $section_1_image['url'] ?>" alt="<?php echo $section_1_image['alt'] ?>">
+							<img class="image-border-shadow" src="<?php echo $section_1_image['url'] ?>" alt="<?php echo $section_1_image['alt'] ?>" loading="lazy">
 							<?php
 						}
 						?>
@@ -113,12 +113,12 @@ $section_7_slogan_4 = $section_7['slogan_4'];
 
 				</div>
 
-				<div class="image-holder image-to-the-right">
+				<div class="image-holder w--fit-content image-to-the-right">
 
 					<?php
 						if ($section_2_image) {
 							?>
-							<img class="image-border-shadow" src="<?php echo $section_2_image['url'] ?>" alt="<?php echo $section_2_image['alt'] ?>">
+							<img class="image-border-shadow" src="<?php echo $section_2_image['url'] ?>" alt="<?php echo $section_2_image['alt'] ?>" loading="lazy">
 							<?php
 						}
 					?>
@@ -145,12 +145,12 @@ $section_7_slogan_4 = $section_7['slogan_4'];
 				</div>
 
 
-				<div class="image-holder image-to-the-left">
+				<div class="image-holder w--fit-content image-to-the-left">
 
 					<?php
 						if ($section_3_image) {
 							?>
-							<img src="<?php echo $section_3_image['url'] ?>" alt="<?php echo $section_3_image['alt'] ?>" />
+							<img src="<?php echo $section_3_image['url'] ?>" alt="<?php echo $section_3_image['alt'] ?>" loading="lazy" />
 							<?php
 						}
 					?>
@@ -193,12 +193,12 @@ $section_7_slogan_4 = $section_7['slogan_4'];
 					</div>
 				</div>
 
-				<div class="image-holder image-to-the-right">
+				<div class="image-holder w--fit-content image-to-the-right">
 
 					<?php
 						if ($section_4_image) {
 							?>
-							<img class="image-border-shadow" src="<?php echo $section_4_image['url'] ?>" alt="<?php echo $section_4_image['alt'] ?>">
+							<img class="image-border-shadow" src="<?php echo $section_4_image['url'] ?>" alt="<?php echo $section_4_image['alt'] ?>" loading="lazy">
 							<?php
 						}
 					?>
@@ -227,8 +227,8 @@ $section_7_slogan_4 = $section_7['slogan_4'];
 				<?php
 				if ($section_5_image) {
 					?>
-					<div class="image-holder image-to-the-right">
-						<img class="image-border-shadow" src="<?php echo $section_5_image['url'] ?>" alt="<?php echo $section_5_image['alt'] ?>">
+					<div class="image-holder w--fit-content image-to-the-right">
+						<img class="image-border-shadow" src="<?php echo $section_5_image['url'] ?>" alt="<?php echo $section_5_image['alt'] ?>" loading="lazy">
 					</div>
 					<?php
 				}
@@ -250,8 +250,8 @@ $section_7_slogan_4 = $section_7['slogan_4'];
 				<?php
 				if ($section_6_image) {
 					?>
-					<div class="image-holder image-to-the-right">
-						<img class="image-border-shadow" src="<?php echo $section_6_image['url'] ?>" alt="<?php echo $section_6_image['alt'] ?>">
+					<div class="image-holder w--fit-content image-to-the-right">
+						<img class="image-border-shadow" src="<?php echo $section_6_image['url'] ?>" alt="<?php echo $section_6_image['alt'] ?>" loading="lazy">
 					</div>
 					<?php
 				}

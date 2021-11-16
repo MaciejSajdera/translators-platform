@@ -313,6 +313,7 @@ function block_wp_admin() {
 
 add_action( 'admin_init', 'block_wp_admin' );
 
+
 //Exclude pages from WordPress Search
 // if (!is_admin()) {
 // 	function wpb_search_filter($query) {
@@ -1055,68 +1056,77 @@ function basic_user_data_form() {
 
 			<fieldset>
 
-				<p>
-					<label class="info-box__subbox-header" for="user_first_name"><?php _e('Imię'); ?></label>
-					<input name="user_first_name" id="user_first_name" class="user_first_name" type="text" value="<?php echo $current_user->first_name ?>"/>
-				</p>
-
-				<p>
-					<label class="info-box__subbox-header" for="user_last_name"><?php _e('Nazwisko'); ?></label>
-					<input name="user_last_name" id="user_last_name" class="user_last_name" type="text" value="<?php echo $current_user->last_name ?>"/>
-				</p>
-
-				<p>
-					<label class="info-box__subbox-header" for="user_about_short"><?php _e('Jedno zdanie o mnie'); ?></label>
-					<textarea form="basic_user_data_form" name="user_about_short" id="user_about_short" class="user_about_short" type="text"><?php echo get_field("translator_about_short", $user_post_id) ?></textarea>
-				</p>
-
-				<p>
-
-					<?php
-					$translator_languages_taxonomy = get_taxonomy( 'translator_language' );
-					?>
-
-					<label class="info-box__subbox-header" for="user_languages"><?php echo $translator_languages_taxonomy->label ?></label>
-
-					<?php
-					
-						$translator_languages = get_terms( array(
-							'taxonomy' => 'translator_language',
-							'hide_empty' => false,
-						) );
+				<div class="info-box__subbox mb--3">
+					<p>
+						<label class="info-box__subbox-header" for="user_first_name"><?php _e('Imię'); ?></label>
+						<input name="user_first_name" id="user_first_name" class="user_first_name" type="text" value="<?php echo $current_user->first_name ?>"/>
+					</p>
+				</div>
 
 
-						if ( $translator_languages ) {
+				<div class="info-box__subbox mb--3">
+					<p>
+						<label class="info-box__subbox-header" for="user_last_name"><?php _e('Nazwisko'); ?></label>
+						<input name="user_last_name" id="user_last_name" class="user_last_name" type="text" value="<?php echo $current_user->last_name ?>"/>
+					</p>
+				</div>
 
-							foreach( $translator_languages as $term ) :
+				<div class="info-box__subbox mb--3">
+					<p>
+						<label class="info-box__subbox-header" for="user_about_short"><?php _e('Jedno zdanie o mnie'); ?></label>
+						<textarea form="basic_user_data_form" name="user_about_short" id="user_about_short" class="user_about_short" type="text"><?php echo get_field("translator_about_short", $user_post_id) ?></textarea>
+					</p>
+				</div>
 
-								echo '<div class="info-box__checkbox-wrapper">';
+				<div class="info-box__subbox mb--3">
+					<p>
 
-								echo '<label>';
+						<?php
+						$translator_languages_taxonomy = get_taxonomy( 'translator_language' );
+						?>
 
-									?>
-									<input name="user_languages[]" class="user_languages" type="checkbox" value="<?php echo $term->name ?>"
+						<label class="info-box__subbox-header" for="user_languages"><?php echo $translator_languages_taxonomy->label ?></label>
 
-									<?php
-									
-									if ($current_user_languages_array_terms && in_array($term->name, $current_user_languages_array_terms)) { echo "checked"; } ?>/>
-
-									<?php
-
-									echo $term->name;
-
-								echo '</label>';
-
-								echo '</div>';
-	
-							endforeach;
-
-						}
-
-					?>
-				</p>
+						<?php
+						
+							$translator_languages = get_terms( array(
+								'taxonomy' => 'translator_language',
+								'hide_empty' => false,
+							) );
 
 
+							if ( $translator_languages ) {
+
+								foreach( $translator_languages as $term ) :
+
+									echo '<div class="info-box__checkbox-wrapper">';
+
+									echo '<label>';
+
+										?>
+										<input name="user_languages[]" class="user_languages" type="checkbox" value="<?php echo $term->name ?>"
+
+										<?php
+										
+										if ($current_user_languages_array_terms && in_array($term->name, $current_user_languages_array_terms)) { echo "checked"; } ?>/>
+
+										<?php
+
+										echo $term->name;
+
+									echo '</label>';
+
+									echo '</div>';
+		
+								endforeach;
+
+							}
+
+						?>
+					</p>
+				</div>
+
+				<div class="info-box__subbox mb--3">
 				<p>
 
 					<?php
@@ -1158,14 +1168,17 @@ function basic_user_data_form() {
 						
 					?>
 				</p>
+				</div>
 
 				<!-- <p class="status"></p> -->
 
-				<p>
+				<div class="info-box__subbox">
+					<p>
 
-					<input type="submit" name="submit_basic_user_data" value="<?php _e('Zaktualizuj informacje o sobie'); ?>"/>
-					<?php wp_nonce_field( "add_basic_user_data", "add_basic_user_data_nonce" ); ?>
-				</p>
+						<input class="button button__filled--blue" type="submit" name="submit_basic_user_data" value="<?php _e('Zaktualizuj informacje o sobie'); ?>"/>
+						<?php wp_nonce_field( "add_basic_user_data", "add_basic_user_data_nonce" ); ?>
+					</p>
+				</div>
 
 			</fieldset>
 		</form>
@@ -1339,19 +1352,19 @@ function about_user_data_form() {
 		// show any error messages after form submission
 		about_user_data_form_messages(); ?>
 
-		<p>Napisz o sobie kilka zdań, które pozwolą potencjalnym klientom poznać Cię z najlepszej strony, zrozumieć, w czym masz doświadczenie i co Cię wyróżnia.</p>
+		<p class="mb--2">Napisz o sobie kilka zdań, które pozwolą potencjalnym klientom poznać Cię z najlepszej strony, zrozumieć, w czym masz doświadczenie i co Cię wyróżnia.</p>
 		
 		<form name="about_user_data_form" id="about_user_data_form" class="vicode_form" action="" method="POST">
 
 			<fieldset>
 
-				<p>
-					<textarea form="about_user_data_form" name="user_about" id="user_about" class="user_about" type="text" maxlength="300"><?php echo get_field("translator_about", $user_post_id) ?></textarea>
+				<p class="mb--2">
+					<textarea form="about_user_data_form" name="user_about" id="user_about" class="user_about mb--1" type="text" maxlength="300"><?php echo get_field("translator_about", $user_post_id) ?></textarea>
 					<label for="user_about">0/300</label>
 				</p>
 
 				<p>
-					<input type="submit" name="submit_about_user_data" value="<?php _e('Zaktualizuj informacje o sobie'); ?>"/>
+					<input class="button button__filled--blue" type="submit" name="submit_about_user_data" value="<?php _e('Zaktualizuj informacje o sobie'); ?>"/>
 					<?php wp_nonce_field( 'add_about_user_data', 'add_about_user_data_nonce' ); ?>
 				</p>
 
@@ -1438,139 +1451,156 @@ function contact_user_data_form() {
 
 			<fieldset>
 
-				<p>
-					<label class="info-box__subbox-header" for="user_contact_phone"><?php _e('Numer telefonu'); ?></label>
-					<input name="user_contact_phone" id="user_contact_phone" class="user_contact_phone" type="text" value="<?php if(strlen(get_field("translator_contact_phone") > 0)) { echo get_field("translator_contact_phone"); } else { echo "+48 123 456 789"; }  ?>"/>
-				</p>
+				<div class="info-box__subbox mb--3">
+					<p>
+						<label class="info-box__subbox-header" for="user_contact_phone"><?php _e('Numer telefonu'); ?></label>
+						<input name="user_contact_phone" id="user_contact_phone" class="user_contact_phone" type="text" value="<?php if(strlen(get_field("translator_contact_phone") > 0)) { echo get_field("translator_contact_phone"); } else { echo ""; }  ?>"/>
+					</p>
+				</div>
 
-				<p>
-					<label for="user_contact_email"><?php _e('Adres e-mail'); ?></label>
-					<input name="user_contact_email" id="user_contact_email" class="user_contact_email" type="text" value="<?php if(strlen(get_field("translator_contact_email") > 0)) { echo get_field("translator_contact_email"); } else { echo $current_user->user_email; }  ?>"/>
-				</p>
+
+				<div class="info-box__subbox mb--3">
+					<p>
+						<label class="info-box__subbox-header" for="user_contact_email"><?php _e('Adres e-mail'); ?></label>
+						<input name="user_contact_email" id="user_contact_email" class="user_contact_email" type="text" value="<?php if(strlen(get_field("translator_contact_email") > 0)) { echo get_field("translator_contact_email"); } else { echo $current_user->user_email; }  ?>"/>
+					</p>
+				</div>
 
 					<?php
 						$translator_specializations_taxonomy = get_taxonomy( 'translator_localization' );
 					?>
 
-					<label for="user_localizations"><?php echo $translator_specializations_taxonomy->label ?></label>
+					<label class="info-box__subbox-header" for="user_localizations"><?php echo $translator_specializations_taxonomy->label ?></label>
 
-					<div class="wrapper-flex-drow-mcol">
+					<div class="info-box__subbox mb--3">
 
-						<p class="wrapper-flex-drow-mcol__first-element">Miejsce zamieszkania</p>
+						<div class="wrapper-flex-drow-mcol">
 
-						<input name="user_city" id="user_city" class="user_city_input" placeholder="Nazwa miasta" type="text" value="<?php echo get_field("translator_city") ?>"/>
+							<p class="wrapper-flex-drow-mcol__first-element">Miejsce zamieszkania:</p>
 
-						<input hidden name="user_localizations[]" id="user_localization_city" class="user_localization_input" placeholder="Nazwa miasta" type="text" value=""/>
+							<input name="user_city" id="user_city" class="user_city_input" placeholder="Nazwa miasta" type="text" value="<?php echo get_field("translator_city") ?>"/>
+
+							<input hidden name="user_localizations[]" id="user_localization_city" class="user_localization_input" placeholder="Nazwa miasta" type="text" value=""/>
+
+						</div>
 
 					</div>
 
 
-					<div class="wrapper-flex-drow-mcol">
+					<div class="info-box__subbox mb--3">
 
-						<p class="wrapper-flex-drow-mcol__first-element">Inne lokalizacje</p>
+						<div class="wrapper-flex-drow-mcol">
 
-						<div>
+							<p class="wrapper-flex-drow-mcol__first-element">Inne lokalizacje:</p>
 
-						<?php
+							<div>
 
-							if (get_field("translator_city") && strlen(get_field("translator_city")) > 0) {
-								$excluded_term = get_term_by( 'name', get_field("translator_city"), 'translator_localization' );
-								$excluded_term_ID = $excluded_term->term_id;
-							} else {
-								$excluded_term_ID = false;
-							}
+							<?php
 
-							$translator_localizations = get_terms( array(
-								'taxonomy' => 'translator_localization',
-								'hide_empty' => false,
-								'orderby'    => 'ID',
-								'exclude' => ($excluded_term_ID),
-							) );
+								if (get_field("translator_city") && strlen(get_field("translator_city")) > 0) {
+									$excluded_term = get_term_by( 'name', get_field("translator_city"), 'translator_localization' );
+									$excluded_term_ID = $excluded_term->term_id;
+								} else {
+									$excluded_term_ID = false;
+								}
 
-							if ( $translator_localizations ) {
+								$translator_localizations = get_terms( array(
+									'taxonomy' => 'translator_localization',
+									'hide_empty' => false,
+									'orderby'    => 'ID',
+									'exclude' => ($excluded_term_ID),
+								) );
 
-								//only 3 first
+								if ( $translator_localizations ) {
 
-								foreach( array_slice($translator_localizations, 0, 3) as $term ) :
+									//only 3 first
 
-									echo '<div class="info-box__checkbox-wrapper">';
-
-									echo '<label>';
-									
-										?>
-										<input name="user_localizations[]" class="user_localization_input" type="checkbox" value="<?php echo $term->name ?>"
-										<?php
-										if ($current_user_localizations_array_terms && in_array($term->name, $current_user_localizations_array_terms)) { echo "checked"; } ?>/>
-										<?php
-
-									echo $term->name;
-
-									echo '</label>';
-
-									echo '</div>';
-		
-								endforeach;
-
-
-								//only custom ones added by this user
-								//dont include 3 first ones
-
-								foreach( array_slice($translator_localizations, 3) as $term ) :
-
-									if ($current_user_localizations_array_terms && in_array($term->name, $current_user_localizations_array_terms)) {
+									foreach( array_slice($translator_localizations, 0, 3) as $term ) :
 
 										echo '<div class="info-box__checkbox-wrapper">';
 
 										echo '<label>';
 										
 											?>
-											<input name="user_localizations[]" class="user_localizations" type="checkbox" value="<?php echo $term->name ?>" checked/>
+											<input name="user_localizations[]" class="user_localization_input" type="checkbox" value="<?php echo $term->name ?>"
 											<?php
-		
+											if ($current_user_localizations_array_terms && in_array($term->name, $current_user_localizations_array_terms)) { echo "checked"; } ?>/>
+											<?php
+
 										echo $term->name;
-		
+
 										echo '</label>';
-		
+
 										echo '</div>';
+			
+									endforeach;
 
-									}
 
-								endforeach;
+									//only custom ones added by this user
+									//dont include 3 first ones
 
-								?>
+									foreach( array_slice($translator_localizations, 3) as $term ) :
 
-										<div class="repeater__holder">
+										if ($current_user_localizations_array_terms && in_array($term->name, $current_user_localizations_array_terms)) {
 
-											<div class="repeater__field-wrapper">
+											echo '<div class="info-box__checkbox-wrapper">';
 
-												<div class="repeater__field" data-repeater-id="0">
+											echo '<label>';
+											
+												?>
+												<input name="user_localizations[]" class="user_localizations" type="checkbox" value="<?php echo $term->name ?>" checked/>
+												<?php
+			
+											echo $term->name;
+			
+											echo '</label>';
+			
+											echo '</div>';
 
-													<input name="user_localizations[]" id="user_localizations" class="user_localizations user_localizations__repeater" placeholder="Nazwa lokalizacji" type="text" value="" />
+										}
 
-													<!-- <button class="repeater__button repeater__button--delete">-</button> -->
+									endforeach;
+
+									?>
+
+											<div class="repeater__holder">
+
+												<div class="repeater__field-wrapper">
+
+													<div class="repeater__field info-box__checkbox-wrapper" data-repeater-id="0">
+
+														<input name="user_localizations[]" id="user_localizations" class="user_localizations user_localizations__repeater" placeholder="Nazwa lokalizacji" type="text" value="" />
+
+														<!-- <button class="repeater__button repeater__button--delete">-</button> -->
+
+													</div>
 
 												</div>
 
+												<button class="button repeater__button button__outline--blue repeater__button--add">Dodaj nową lokalizację</button>
+
 											</div>
 
-											<button class="button button__filled--blue repeater__button repeater__button--add">Dodaj nową lokalizację</button>
+									<?php
 
-										</div>
+								};
+								
+							?>
 
-								<?php
-
-							};
-							
-						?>
+							</div>
 
 						</div>
 
 					</div>
 
-				<p>
-					<input type="submit" name="submit_contact_user_data" value="<?php _e('Zaktualizuj informacje o sobie'); ?>"/>
-					<?php wp_nonce_field( 'add_contact_user_data', 'add_contact_user_data_nonce' ); ?>
-				</p>
+				<div class="info-box__subbox">
+
+					<p>
+						<input class="button w--full button__filled--blue" type="submit" name="submit_contact_user_data" value="<?php _e('Zaktualizuj informacje o sobie'); ?>"/>
+						<?php wp_nonce_field( 'add_contact_user_data', 'add_contact_user_data_nonce' ); ?>
+					</p>
+
+				</div>
 
 			</fieldset>
 		</form>
@@ -1721,12 +1751,12 @@ function linkedin_user_data_form() {
 
 			<fieldset>
 
-				<p>
+				<p class="mb--2">
 					<input name="user_linkedin" id="user_linkedin" class="user_linkedin" type="text" value="<?php echo get_field("translator_linkedin_link", $user_post_id) ?>" placeholder="Adres do profilu Linkedin"></textarea>
 				</p>
 
 				<p>
-					<input type="submit" name="submit_linkedin_user_data" value="<?php _e('Zaktualizuj informacje o sobie'); ?>"/>
+					<input class="button button__filled--blue" type="submit" name="submit_linkedin_user_data" value="<?php _e('Zaktualizuj informacje o sobie'); ?>"/>
 					<?php wp_nonce_field( 'add_linkedin_user_data', 'add_linkedin_user_data_nonce' ); ?>
 				</p>
 
@@ -1806,19 +1836,19 @@ function work_user_data_form() {
 		// show any error messages after form submission
 		work_user_data_form_messages(); ?>
 
-		<p>Napisz kilka zdań o tym gdzie najczęściej pracujesz</p>
+		<p class="mb--2">Napisz kilka zdań o tym gdzie najczęściej pracujesz</p>
 		
 		<form name="work_user_data_form" id="work_user_data_form" class="vicode_form" action="" method="POST">
 
 			<fieldset>
 
-				<p>
+				<p class="mb--2">
 					<textarea form="work_user_data_form" name="user_work" id="user_work" class="user_work" type="text" maxlength="250"><?php echo get_field("translator_work", $user_post_id) ?></textarea>
 					<label class="characters-counter">0/250</label>
 				</p>
 
 				<p>
-					<input type="submit" name="submit_work_user_data" value="<?php _e('Zaktualizuj informacje o sobie'); ?>"/>
+					<input class="button button__filled--blue" type="submit" name="submit_work_user_data" value="<?php _e('Zaktualizuj informacje o sobie'); ?>"/>
 					<?php wp_nonce_field( 'add_work_user_data', 'add_work_user_data_nonce' ); ?>
 				</p>
 
@@ -1901,20 +1931,25 @@ function profile_picture_uploader($user_post_id) {
 
 	<form id="upload_profile_picture_form" method="post" enctype="multipart/form-data">
 
-				<a class="remove-item remove" data-id="clear-profile-picture" href="#"></a>
+				<!-- <a class="remove-item remove" data-id="clear-profile-picture" href="#"></a> -->
 
-				<label class="file-input__label">
+					<label class="file-input__label relative">
 
-					<div class="input-preview__wrapper">
-						<img class="input-preview" style="">
-					</div>
+							<div class="input-preview__wrapper">
+								<img class="input-preview" style="">
+							</div>
 
-					<input type="file" id="profile-picture__input" name="profile-picture__input" class="custom-file-input input-preview__src" accept=".png,.jpg,.jpeg" required />
+							<input type="file" id="profile-picture__input" name="profile-picture__input" class="custom-file-input input-preview__src" accept=".png,.jpg,.jpeg" required />
 
-				</label>
+							<div class="my-ajax-loader">
+								<div class="my-ajax-loader__spinner"></div>
+							</div>
+					</label>
+
+
 
 				<input type="hidden" name="post_id" value="<?php echo $user_post_id ?>"><br>
-				<input type="submit" class="submit_profile_picture" name="submit_profile_picture" value="Zaktualizuj zdjęcie" />
+				<input class="button button__filled--blue" type="submit" class="submit_profile_picture" name="submit_profile_picture" value="Zaktualizuj zdjęcie" />
 				<?php wp_nonce_field( "handle_profile_picture_upload", "profile_picture_nonce" ); ?>
 	</form>
 
@@ -2039,15 +2074,15 @@ function gallery_sound_uploader($user_post_id) {
 
 					<div class="repeater__field-wrapper">
 
-						<div class="repeater__field" data-repeater-id="0">
+						<div class="repeater__field mb--2 pb--2" data-repeater-id="0">
 
-							<p class="info-box__subbox-header">Wpisz tekst i dodaj nagranie</p>
+							<p class="info-box__subbox-header mb--2">Wpisz tekst i dodaj nagranie</p>
 
 							<div class="row-wrapper wrapper-flex-drow-mcol">
 
-								<div class="wrapper-flex-col-start col-d50">
+								<div class="wrapper-flex-col-start col-m100-d50">
 
-									<p>
+									<p class="mb--1">
 										<input name="sound-label__input[]" id="sound-label__input" class="input-text input-preview__src" type="text" value="" placeholder="Tytuł nagrania"/>
 									</p>
 
@@ -2058,9 +2093,12 @@ function gallery_sound_uploader($user_post_id) {
 
 								</div>
 
-								<div class="col-d50">
+								<div class="col-m100-d50">
 
-									<input type="file" name="sound-to-gallery__input[]" id="sound-to-gallery__input" class="custom-file-input input-preview__src" accept=".mp3,.wav,.m4a"/>
+									<label class="file-input__label button button--upload-file">
+										Wybierz plik
+										<input type="file" name="sound-to-gallery__input[]" id="sound-to-gallery__input" class="custom-file-input input-preview__src" accept=".mp3,.wav,.m4a"/>
+									</label>
 
 									<div class="new-attachment__wrapper my-sounds__gallery-row-wrapper ">
 
@@ -2084,7 +2122,11 @@ function gallery_sound_uploader($user_post_id) {
 
 				<input type="hidden" name="sounds_to_delete" id="sounds_to_delete" value=""/>
 
-				<input type="submit" class="button button__filled--blue" name="submit_sound_to_gallery" value="Zaktualizuj galerię" />
+				<div class="info-box__subbox">
+					<p>
+						<input type="submit" class="button button__filled--blue" name="submit_sound_to_gallery" value="Zaktualizuj galerię" />
+					</p>
+				</div>
 
 				<?php wp_nonce_field( "handle_sound_to_gallery_upload", "sound_to_gallery_nonce" ); ?>
 
@@ -2370,10 +2412,9 @@ function gallery_image_uploader($user_post_id) {
 
 						<div class="row-wrapper my-pictures__gallery-row-wrapper">
 
-							<label class="file-input__label">
-
+							<label class="file-input__label button button--upload-file">
+								Wybierz plik
 								<input type="file" name="image-to-gallery__input[]" id="image-to-gallery__input" class="custom-file-input input-preview__src" accept=".png,.jpg,.jpeg" />
-
 							</label>
 
 							<div class="new-attachment__wrapper" >
@@ -2393,13 +2434,13 @@ function gallery_image_uploader($user_post_id) {
 
 				</div>
 
-				<button class="button button__filled--blue repeater__button repeater__button--add">Dodaj zdjęcie</button>
+				<button class="button button__outline--blue repeater__button repeater__button--add">Dodaj zdjęcie</button>
 
 			</div>
 
 			<input type="hidden" name="post_id" value="<?php echo $user_post_id ?>"><br>
 			<input type="hidden" name="pictures_to_delete" id="pictures_to_delete" value=""/>
-			<input type="submit" class="button button__outline--blue" name="submit_image_to_gallery" value="Zaktualizuj galerię" />
+			<input type="submit" class="button button__filled--blue" name="submit_image_to_gallery" value="Zaktualizuj galerię" />
 			<?php wp_nonce_field( "handle_image_to_gallery_upload", "image_to_gallery_nonce" ); ?>
 
 			<div class="progress">
@@ -2623,8 +2664,8 @@ function gallery_video_uploader($user_post_id) {
 
 	<form id="upload_video_to_gallery_form" method="POST" enctype="multipart/form-data">
 
-				<label class="file-input__label">
-
+				<label class="file-input__label button button--upload-file">
+					Wybierz plik
 					<input type="file" name="video-to-gallery__input" id="video-to-gallery__input" class="custom-file-input input-preview__src" accept=".mp4,.mov,.wmv,.mpg" />
 
 				</label>
@@ -2634,7 +2675,7 @@ function gallery_video_uploader($user_post_id) {
 
 				<input type="hidden" name="videos_to_delete" id="videos_to_delete" value=""/>
 
-				<input type="submit" class="button button__outline--blue" name="submit_video_to_gallery" value="Zaktualizuj galerię" />
+				<input type="submit" class="button button__filled--blue" name="submit_video_to_gallery" value="Zaktualizuj galerię" />
 				
 				<?php wp_nonce_field( "handle_video_to_gallery_upload", "video_to_gallery_nonce" ); ?>
 
@@ -2857,13 +2898,13 @@ function settings_user_login_email_form() {
 		
 		<form name="settings_user_login_email_form" id="settings_user_login_email_form" class="vicode_form" action="" method="POST">
 
-			<p class="animated-label-holder">
+			<p class="animated-label-holder mb--2">
 				<label>Nowy adres e-mail</label>
 				<input name="user_new_login_email" id="user_new_login_email" class="user_new_login_email" type="text" value="<?php echo $current_user_login_email; ?>"/>
 			</p>
 
 			<p>
-				<input type="submit" name="submit_user_new_login_email" value="<?php _e('Zaktualizuj adres email'); ?>"/>
+				<input type="submit" name="submit_user_new_login_email" class="button button__filled--blue" value="<?php _e('Zaktualizuj adres email'); ?>"/>
 				<?php wp_nonce_field( 'user_new_login_email', 'user_new_login_email_nonce' ); ?>
 			</p>
 		</form>
@@ -2953,23 +2994,23 @@ function settings_user_password_form() {
 
 		<form name="settings_user_password_form" id="settings_user_password_form" class="vicode_form" action="" method="POST">
 
-				<p class="animated-label-holder">
+				<p class="animated-label-holder mb--2">
 					<label for="current_password">Wprowadź aktualne hasło:</label>
 					<input id="current_password" type="password" name="current_password" title="current_password" placeholder="">
 				</p>
 
-				<p class="animated-label-holder">
+				<p class="animated-label-holder mb--2">
 					<label for="new_password">Nowe hasło:</label>
 					<input id="new_password" type="password" name="new_password" title="new_password" placeholder="">
 				</p>
 
-				<p class="animated-label-holder">
+				<p class="animated-label-holder mb--3">
 					<label for="confirm_new_password">Potwierdź nowe hasło:</label>
 					<input id="confirm_new_password" type="password" name="confirm_new_password" title="confirm_new_password" placeholder="">
 				</p>
 				
 				<p>
-					<input type="submit" name="submit_user_new_password" value="<?php _e('Zmień hasło'); ?>"/>
+					<input type="submit" name="submit_user_new_password" class="button button__filled--blue" value="<?php _e('Zmień hasło'); ?>"/>
 					<?php wp_nonce_field( 'user_new_password', 'user_new_password_nonce' ); ?>
 				</p>
 
@@ -3072,7 +3113,7 @@ function settings_user_data_visibility_form() {
 		
 					<form name="settings_user_data_visibility_form" id="settings_user_data_visibility_form" class="vicode_form" action="" method="POST">
 
-                        <ul class="options">
+                        <ul class="options mb--2">
 
 							<?php
 
@@ -3176,7 +3217,7 @@ function settings_user_data_visibility_form() {
                         </ul>
 
 						<p>
-							<input type="submit" name="submit_settings_user_data_visibility_form" class="info-box__subbox--max-width" value="<?php _e('Zaktualizuj widoczność profilu'); ?>"/>
+							<input type="submit" name="submit_settings_user_data_visibility_form" class="info-box__subbox--max-width mb--3 button button__filled--blue" value="<?php _e('Zaktualizuj widoczność profilu'); ?>"/>
 							<?php wp_nonce_field( 'settings_user_data_visibility_form', 'settings_user_data_visibility_form_nonce' ); ?>
 						</p>
 
@@ -3228,13 +3269,13 @@ function change_settings_user_data_visibility_with_ajax() {
 			update_field( "translator_contact_phone_public", 0, $user_post_id );
 		}
 
-		if ($user_settings_visibility_contact_phone === "on") {
+		if ($user_settings_visibility_contact_email === "on") {
 			update_field( "translator_contact_email_public", 1, $user_post_id );
 		} else {
 			update_field( "translator_contact_email_public", 0, $user_post_id );
 		}
 
-		if ($user_settings_visibility_contact_phone === "on") {
+		if ($user_settings_visibility_city === "on") {
 			update_field( "translator_city_public", 1, $user_post_id );
 		} else {
 			update_field( "translator_city_public", 0, $user_post_id );

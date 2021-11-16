@@ -53,12 +53,12 @@ $circles_group_big = file_get_contents(get_template_directory() . "/dist/dist/sv
 						<span class="text--blue"><?php echo $h1_part_2 ?></span>
 					</h1>
 
-					<div class="image-holder image-holder-decorated image-holder-decorated--turquoise">
+					<div class="image-holder w--fit-content image-holder-decorated image-holder-decorated--turquoise">
 
 						<?php
 						if ($image) {
 							?>
-							<img src="<?php echo $image['url'] ?>" alt="<?php echo $image['alt'] ?>">
+							<img src="<?php echo $image['url'] ?>" alt="<?php echo $image['alt'] ?>" loading="lazy">
 							<?php
 						}
 						?>
@@ -117,7 +117,7 @@ $circles_group_big = file_get_contents(get_template_directory() . "/dist/dist/sv
 					<?php
 						if ($section_2_image) {
 							?>
-							<img src="<?php echo $section_2_image['url'] ?>" alt="<?php echo $section_2_image['alt'] ?>">
+							<img src="<?php echo $section_2_image['url'] ?>" alt="<?php echo $section_2_image['alt'] ?>" loading="lazy">
 							<?php
 						}
 					?>
@@ -237,7 +237,7 @@ $circles_group_big = file_get_contents(get_template_directory() . "/dist/dist/sv
 
 						echo '<a class="wrapper-flex-col-center" href="'.get_permalink($translator_of_the_month->ID).'">';
 						
-							echo '<img src="'.get_the_post_thumbnail_url($translator_of_the_month->ID).'">';
+							echo '<img src="'.get_the_post_thumbnail_url($translator_of_the_month->ID).'" loading="lazy">';
 
 							$translator_of_the_month_first_name =  get_field('translator_first_name', $translator_of_the_month->ID);
 							$translator_of_the_month_last_name =  get_field('translator_last_name', $translator_of_the_month->ID);
@@ -299,7 +299,7 @@ $circles_group_big = file_get_contents(get_template_directory() . "/dist/dist/sv
 						echo '<a class="wrapper-flex-col-center" href="'.get_permalink(1139).'">';
 
 							if ($management_member_of_the_month_image) {
-								echo '<img src="'.$management_member_of_the_month_image['url'].'" alt="'.$management_member_of_the_month_image['alt'].'">';
+								echo '<img src="'.$management_member_of_the_month_image['url'].'" alt="'.$management_member_of_the_month_image['alt'].'" loading="lazy">';
 							}
 
 							echo '<p>'.$management_member_of_the_month_title.'</p>';

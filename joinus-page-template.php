@@ -57,12 +57,13 @@ $circles_pair_bg = file_get_contents(get_template_directory() . "/dist/dist/svg/
 
 				</div>
 
-				<div class="welcome-view__right image-holder">
+				<div class="welcome-view__right image-holder w--fit-content">
 
 						<?php
 						if ($section_1_image) {
 							?>
-								<img src="<?php echo $section_1_image['url'] ?>" alt="<?php echo $section_1_image['alt'] ?>">
+								<img src="<?php echo $section_1_image['url'] ?>" alt="<?php echo $section_1_image['alt'] ?>" loading="lazy">
+
 							<?php
 						}
 						?>
@@ -102,11 +103,11 @@ $circles_pair_bg = file_get_contents(get_template_directory() . "/dist/dist/svg/
 
 				</div>
 
-				<div class="image-holder image-to-the-right">
+				<div class="image-holder w--fit-content image-to-the-right">
 						<?php
 						if ($section_2_image) {
 							?>
-							<img class="image-border-shadow" src="<?php echo $section_2_image['url'] ?>" alt="<?php echo $section_2_image['alt'] ?>">
+							<img class="image-border-shadow" src="<?php echo $section_2_image['url'] ?>" alt="<?php echo $section_2_image['alt'] ?>" loading="lazy">
 							<?php
 						}
 						?>
@@ -144,12 +145,12 @@ $circles_pair_bg = file_get_contents(get_template_directory() . "/dist/dist/svg/
 
 				</div>
 
-				<div class="image-holder image-to-the-right">
+				<div class="image-holder w--fit-content image-to-the-right">
 
 						<?php
 						if ($section_3_image) {
 							?>
-							<img class="image-border-shadow" src="<?php echo $section_3_image['url'] ?>" alt="<?php echo $section_3_image['alt'] ?>">
+							<img class="image-border-shadow" src="<?php echo $section_3_image['url'] ?>" alt="<?php echo $section_3_image['alt'] ?>" loading="lazy">
 							<?php
 						}
 						?>
@@ -188,12 +189,12 @@ $circles_pair_bg = file_get_contents(get_template_directory() . "/dist/dist/svg/
 
 				</div>
 
-				<div class="image-holder image-to-the-right">
+				<div class="image-holder w--fit-content image-to-the-right">
 
 						<?php
 						if ($section_4_image) {
 							?>
-							<img class="image-border-shadow" src="<?php echo $section_4_image['url'] ?>" alt="<?php echo $section_4_image['alt'] ?>">
+							<img class="image-border-shadow" src="<?php echo $section_4_image['url'] ?>" alt="<?php echo $section_4_image['alt'] ?>" loading="lazy">
 							<?php
 						}
 						?>
@@ -234,7 +235,7 @@ $circles_pair_bg = file_get_contents(get_template_directory() . "/dist/dist/svg/
 								<div class="advantage__wrapper flex flex-col content-center items-center">
 									<div class="advantage__img-wrapper w--fit-content relative">
 										<div class="corner__decoration corner__decoration--left"></div>
-										<img src="'.$icon["url"].'" alt="'.$icon["alt"].'">
+										<img src="'.$icon["url"].'" alt="'.$icon["alt"].'" loading="lazy">
 										<div class="corner__decoration corner__decoration--right"></div>
 									</div>
 

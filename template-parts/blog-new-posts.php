@@ -17,7 +17,7 @@
 
                         <div class="wrapper-flex-col-center common-box__text">
                             <p class="mb--2">'.get_the_title().'</p>
-                            <div class="flex flex-row w-full items-center wrap content-between xl:red fs--200">
+                            <div class="flex flex-row w--full items-center wrap content-between xl:red fs--200">
                                 <button class="button button__filled--blue fs--200">Czytaj więcej</button>
                                 <span class="text--blue">'.get_the_date().'</span>
                             </div>

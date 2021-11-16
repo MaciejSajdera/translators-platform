@@ -1,6 +1,6 @@
 /* VARIABLES */
 
-$input-padding: 5px;
+$input-padding: 5px 5px 5px 0;
 
 /* FIELDS */
 
@@ -21,7 +21,7 @@ input[type="search"],
 select,
 textarea {
 	border: none;
-	border-bottom: 1px solid $color__border-element;
+	border-bottom: 1px solid $color__main-theme--blue-transparent;
 
 	// &:focus {
 	// 	color: $color__text-input-focus;
@@ -99,6 +99,28 @@ $login-and-registration-height: 80vh;
 			padding: calc(#{$input-padding} + 1px); // +1px for border width
 		}
 
+		.login-password,
+		.login-username {
+			label {
+				cursor: initial;
+			}
+		}
+
+		// .login-username {
+		// 	position: relative;
+
+		// 	&:before {
+		// 		content: "@";
+		// 		position: absolute;
+		// 		top: calc(1rem + 5px);
+		// 	}
+
+		// 	label,
+		// 	input {
+		// 		padding-left: 2rem;
+		// 	}
+		// }
+
 		.login-panel,
 		.registration-panel {
 			transition: all 0.5s cubic-bezier(0.17, 0.04, 0.32, 1);
@@ -163,7 +185,7 @@ $login-and-registration-height: 80vh;
 .animated-label-holder,
 .login-form p {
 	label {
-		pointer-events: none;
+		// pointer-events: none;
 		position: absolute;
 		padding: calc(#{$input-padding} + 1px); // +1px for border width
 		background-clip: content-box;
@@ -224,12 +246,23 @@ $login-and-registration-height: 80vh;
 	}
 
 	&__field {
-		// display: flex;
-		margin-top: 1rem;
 		position: relative;
+		margin: 2rem 0;
+		padding: 2rem 0;
+		border-bottom: 1px solid $color__border-element;
 
 		&:first-of-type {
 			display: none;
+		}
+
+		.remove-item {
+			transform: scale(1);
+		}
+
+		.new-attachment__preview {
+			.remove-item {
+				transform: scale(0.75);
+			}
 		}
 	}
 
@@ -258,13 +291,19 @@ $login-and-registration-height: 80vh;
 		}
 
 		&--delete {
+			content: "";
+			background-image: url("../dist/svg/close_icon_red.svg");
+			background-color: transparent;
+			border: 0;
 			// right: calc(#{-$checkbox_width} - #{$checkbox_margin-right});
 			right: 0;
-			margin-left: $checkbox_margin-right;
+			// margin-left: $checkbox_margin-right;
 			position: absolute;
-			height: 2rem;
-			width: 2rem;
+			height: 14px;
+			width: 14px;
 			padding: 0;
+			line-height: 0;
+			transform: translateX(calc(100% + #{$checkbox_margin-right}));
 		}
 	}
 }
@@ -286,14 +325,18 @@ $login-and-registration-height: 80vh;
 #upload_sound_to_gallery_form {
 	$repeater_input_height: 188px;
 
-	.repeater {
-		input {
-			height: $repeater_input_height;
-		}
+	// .repeater {
+	// 	input {
+	// 		height: $repeater_input_height;
+	// 	}
 
-		&__button {
-			bottom: calc((#{$repeater_input_height} - #{$checkbox_height}) / 2);
-		}
+	// 	&__button {
+	// 		bottom: calc((#{$repeater_input_height} - #{$checkbox_height}) / 2);
+	// 	}
+	// }
+
+	.button--upload-file {
+		margin: auto;
 	}
 
 	.row-wrapper {
@@ -318,12 +361,16 @@ $login-and-registration-height: 80vh;
 label {
 	display: flex;
 	align-items: center;
-	cursor: pointer;
-	color: $color__text--light-grey;
+	// cursor: pointer;
+	// color: $color__text--light-grey;
 	line-height: 1;
 }
 
 .new-attachment {
+	&__placeholder {
+		width: 100%;
+	}
+
 	&__icon {
 		min-width: 35px;
 		width: 35px;

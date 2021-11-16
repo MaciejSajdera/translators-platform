@@ -13,7 +13,6 @@ $color__text-input-focus: #111;
 $color__link: $color__text-main; //royalblue
 $color__link-visited: $color__text-main; //purple
 $color__link-hover: inherit; //midnightblue
-$color__text-white: #fff;
 
 $color__border-button: #ccc #ccc #bbb;
 $color__border-button-hover: #ccc #bbb #aaa;
@@ -27,12 +26,14 @@ $color__inactive-element: #cacaca;
 
 $color__error-red: #ff0000;
 $color__success-green: #24b82be6;
-// $color__success-green: lightgreen;
 $color__verified-blue: #5698e7;
 $color__text--light-grey: #999;
+$color__text-white: #fff;
+$color__text-black: #000;
 $color__pending: #ffb618;
 
 $color__main-theme--blue: #16538c;
+$color__main-theme--blue-transparent: #16538c40;
 $color__main-theme--turquoise: #18a0aa;
 $color__main-theme--turquoise-transparent: #18a0aa20;
 
@@ -76,9 +77,11 @@ $transition__button--standard: all 0.2s ease-in-out;
 
 /* ELEMENTS */
 
-$padding__content-box: 2rem;
+$padding__content-box: 1rem;
 
-$padding-site-content: 1.5rem;
+$padding__content-box-1024: 2rem;
+
+$padding-site-content: 1rem;
 
 $padding-site-content-1024: 5%;
 
@@ -86,4 +89,4 @@ $padding-site-content-1280: 7.5%;
 
 $padding-site-content-1536: 12.5%;
 
-$corner-decoration-spacing: -2rem;
+$corner-decoration-spacing: -1.75rem;

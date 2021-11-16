@@ -3,7 +3,7 @@
 
     <div class="login-branding">
         <div class="login-logo">
-            <img height="auto" width="50" src="<?php echo get_site_icon_url() ?>" />
+            <img height="auto" width="50" src="<?php echo get_site_icon_url() ?>" loading="lazy"/>
         </div>
     </div>
 
@@ -60,6 +60,7 @@
                 'redirect' => $login_page, 
                 'id_username' => 'user',
                 'id_password' => 'pass',
+                'remember' => 'true',
             );
 
             wp_login_form( $args );
