@@ -79,6 +79,14 @@ $circles_group_big = file_get_contents(get_template_directory() . "/dist/dist/sv
 
 			</div>
 
+			<div class="welcome-section-scroll-down">
+				<div class="chevron-wrapper">
+					<div class="chevron"></div>
+					<div class="chevron"></div>
+					<div class="chevron"></div>
+				</div>
+			</div>
+
 		</section>
 
 		<section class="home__section-2">
@@ -200,7 +208,7 @@ $circles_group_big = file_get_contents(get_template_directory() . "/dist/dist/sv
 			</div>
 
 			<div class="section-4__paragraph-wrapper">
-				<p><?php echo $section_4_paragraph ?></p>
+				<p class="text--blue fs--600 fw--500"><?php echo $section_4_paragraph ?></p>
 			</div>
 
 			<div class="section-4__cta-wrapper text--center">

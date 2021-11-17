@@ -1,6 +1,5 @@
 /* VARIABLES */
-
-$input-padding: 5px 5px 5px 0;
+$input-padding: 5px;
 
 /* FIELDS */
 
@@ -10,7 +9,7 @@ input[type="url"],
 input[type="password"],
 input[type="search"],
 textarea {
-	padding: $input-padding;
+	padding: $input-padding $input-padding $input-padding 0;
 }
 
 input[type="text"],
@@ -77,7 +76,7 @@ $login-and-registration-height: 80vh;
 			min-height: $login-and-registration-height;
 		}
 
-		& > * {
+		> * {
 			padding: 1.5em;
 		}
 
@@ -96,7 +95,8 @@ $login-and-registration-height: 80vh;
 
 		.login-msg {
 			margin-bottom: 2rem;
-			padding: calc(#{$input-padding} + 1px); // +1px for border width
+			padding: calc(#{$input-padding} + 1px) calc(#{$input-padding} + 1px)
+				calc(#{$input-padding} + 1px) 0; // +1px for border width
 		}
 
 		.login-password,
@@ -109,7 +109,7 @@ $login-and-registration-height: 80vh;
 		// .login-username {
 		// 	position: relative;
 
-		// 	&:before {
+		// 	&::before {
 		// 		content: "@";
 		// 		position: absolute;
 		// 		top: calc(1rem + 5px);
@@ -187,7 +187,8 @@ $login-and-registration-height: 80vh;
 	label {
 		// pointer-events: none;
 		position: absolute;
-		padding: calc(#{$input-padding} + 1px); // +1px for border width
+		padding: calc(#{$input-padding} + 1px) calc(#{$input-padding} + 1px)
+			calc(#{$input-padding} + 1px) 0; // +1px for border width
 		background-clip: content-box;
 		background-color: $color__background-body;
 		transition: all 150ms ease-out;
@@ -241,14 +242,12 @@ $login-and-registration-height: 80vh;
 		}
 	}
 
-	&__field-wrapper {
-		margin-bottom: 2rem;
-	}
+	// &__field-wrapper {
+	// 	margin-bottom: 2rem;
+	// }
 
 	&__field {
 		position: relative;
-		margin: 2rem 0;
-		padding: 2rem 0;
 		border-bottom: 1px solid $color__border-element;
 
 		&:first-of-type {
@@ -284,27 +283,27 @@ $login-and-registration-height: 80vh;
 			left: calc(#{-$checkbox_width} - #{$checkbox_margin-right});
 			margin-right: $checkbox_margin-right;
 
-			&:before {
+			&::before {
 				content: "+";
 				margin-right: 1rem;
 			}
 		}
 
-		&--delete {
-			content: "";
-			background-image: url("../dist/svg/close_icon_red.svg");
-			background-color: transparent;
-			border: 0;
-			// right: calc(#{-$checkbox_width} - #{$checkbox_margin-right});
-			right: 0;
-			// margin-left: $checkbox_margin-right;
-			position: absolute;
-			height: 14px;
-			width: 14px;
-			padding: 0;
-			line-height: 0;
-			transform: translateX(calc(100% + #{$checkbox_margin-right}));
-		}
+		// &--delete {
+		// 	content: "";
+		// 	background-image: url(../dist/svg/close_icon_red.svg);
+		// 	background-color: transparent;
+		// 	border: 0;
+		// 	// right: calc(#{-$checkbox_width} - #{$checkbox_margin-right});
+		// 	right: 0;
+		// 	// margin-left: $checkbox_margin-right;
+		// 	position: absolute;
+		// 	height: 14px;
+		// 	width: 14px;
+		// 	padding: 0;
+		// 	line-height: 0;
+		// 	transform: translateX(calc(100% + #{$checkbox_margin-right}));
+		// }
 	}
 }
 
@@ -317,7 +316,8 @@ $login-and-registration-height: 80vh;
 		}
 
 		&__button {
-			bottom: calc((#{$repeater_input_height} - #{$checkbox_height}) / 2);
+			// bottom: calc((#{$repeater_input_height} - #{$checkbox_height}) / 2);
+			margin-top: 2rem;
 		}
 	}
 }
@@ -356,6 +356,11 @@ $login-and-registration-height: 80vh;
 			bottom: calc((#{$repeater_input_height} - #{$checkbox_height}) / 2);
 		}
 	}
+}
+
+#upload_image_to_gallery_form,
+#upload_video_to_gallery_form {
+	padding-top: 2rem;
 }
 
 label {

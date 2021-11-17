@@ -20,14 +20,18 @@ body {
 	margin: 0;
 }
 
-body.page-template-home-page-template {
+body {
 	background: linear-gradient(
-		209deg,
+		190deg,
 		rgba(22, 83, 140, 0.212) 0.53%,
 		rgba(22, 83, 140, 0.06) 19.61%,
 		rgba(24, 160, 170, 0.032) 63.06%,
 		rgba(24, 160, 170, 0) 101.75%
 	);
+}
+
+body.page-template-user-account-page-template {
+	background: $color__background-body;
 }
 
 // .page.gradient {
@@ -133,7 +137,7 @@ table {
 	position: fixed;
 	width: 100vw;
 	background: white;
-	z-index: 99999;
+	z-index: $z-index-preloader;
 	display: flex;
 	flex-flow: column;
 	justify-content: center;
@@ -193,7 +197,7 @@ table {
 }
 
 .cookie-law-notification {
-	z-index: 10000000;
+	z-index: $z-index-modal;
 	opacity: 0;
 	transition: all 0.3s ease-in 0s;
 	position: fixed;
@@ -208,7 +212,7 @@ table {
 	background: $color__background-body;
 	border: 1px solid rgba(0, 0, 0, 0.15);
 	font-size: 15px;
-	box-shadow: rgba(23, 43, 99, 0.4) 0px 7px 28px;
+	box-shadow: $box-shadow_standard--black;
 	display: none;
 	justify-content: space-between;
 	align-items: center;
@@ -397,12 +401,12 @@ table {
 		border: 2px solid $color__main-theme--blue;
 		color: $color__text-white;
 		padding: 0.5em 1em;
-		font-size: 14px;
+		font-size: 12px;
 		margin-left: auto;
 		border-radius: 8px;
 		box-shadow: $box-shadow_standard--theme-color;
 
-		&:before {
+		&::before {
 			content: "";
 			background-image: url(../dist/svg/edit-white.svg);
 			background-size: contain;
@@ -422,7 +426,7 @@ table {
 		background-color: transparent;
 		color: $color__main-theme--blue;
 
-		&:before {
+		&::before {
 			background-image: url(../dist/svg/back-blue.svg);
 		}
 
@@ -430,7 +434,7 @@ table {
 			color: $color__text-white;
 			background-color: $color__main-theme--blue;
 
-			&:before {
+			&::before {
 				background-image: url(../dist/svg/back-white.svg);
 			}
 		}
@@ -445,15 +449,17 @@ table {
 
 	&__outline--blue,
 	&__outline--blue:visited {
+		white-space: break-spaces;
 		color: $color__main-theme--blue;
 		border: 2px solid $color__main-theme--blue;
 		border-radius: 100rem;
 		background: transparent;
-		box-shadow: 0px 0px 7px #16538c3a;
+		box-shadow: $box-shadow_button--theme-color;
 
 		&:hover {
 			color: $color__text-white;
-			background: $color__main-theme--blue;
+			background-color: darken($color__main-theme--blue, 7);
+			border-color: darken($color__main-theme--blue, 7);
 		}
 	}
 
@@ -461,6 +467,7 @@ table {
 	&-primary,
 	.lostpassword-button,
 	&:visited {
+		white-space: break-spaces;
 		color: $color__text-white;
 		border: 2px solid $color__main-theme--blue;
 		border-radius: 100rem;
@@ -471,11 +478,13 @@ table {
 			// color: #16538c;
 			// background: transparent;
 			background-color: darken($color__main-theme--blue, 7);
+			border-color: darken($color__main-theme--blue, 7);
 		}
 	}
 
 	&__filled--turquoise,
 	&:visited {
+		white-space: break-spaces;
 		color: $color__text-white;
 		border: 2px solid $color__main-theme--turquoise;
 		border-radius: 100rem;
@@ -492,12 +501,13 @@ table {
 		background-color: $color__main-theme--turquoise;
 		color: $color__text-white;
 		width: fit-content;
+		border: 2px solid $color__main-theme--turquoise;
 		border-radius: 100rem;
 		box-shadow: $box-shadow_button--decoration-color;
 
-		&:before {
+		&::before {
 			content: "";
-			background-image: url("../dist/svg/upload.svg");
+			background-image: url(../dist/svg/upload.svg);
 			width: 1em;
 			height: 1em;
 			margin-right: 1rem;
@@ -505,6 +515,7 @@ table {
 
 		&:hover {
 			background-color: darken($color__main-theme--turquoise, 7);
+			border-color: darken($color__main-theme--turquoise, 7);
 		}
 
 		input[type="file"] {
@@ -515,7 +526,7 @@ table {
 
 #popUp {
 	position: absolute;
-	z-index: 9999;
+	z-index: $z-index-modal;
 	// width: 100%;
 	height: auto;
 	padding: 0 1em;
@@ -576,19 +587,27 @@ table {
 	font-weight: 500;
 	z-index: 1;
 
-	width: 75px;
-	min-width: 75px;
-	height: 75px;
-	min-height: 75px;
-	padding: 0.35rem;
+	width: 95px;
+	min-width: 95px;
+	height: 95px;
+	min-height: 95px;
+	padding: 0.5rem;
 
-	&:after,
-	&:before {
+	@media screen and (min-width: 1024px) {
+		width: 125px;
+		min-width: 125px;
+		height: 125px;
+		min-height: 125px;
+		padding: 0.85rem;
+	}
+
+	&::after,
+	&::before {
 		content: "";
 		position: absolute;
 	}
 
-	&:after {
+	&::after {
 		height: 100%;
 		background: linear-gradient(225deg, #18a0aa, transparent);
 		width: 100%;
@@ -599,7 +618,7 @@ table {
 		z-index: -2;
 	}
 
-	&:before {
+	&::before {
 		height: 100%;
 		background: $color__background-body;
 		width: 100%;
@@ -608,14 +627,6 @@ table {
 		left: 50%;
 		transform: translateX(-50%);
 		z-index: -1;
-	}
-
-	@media screen and (min-width: 1024px) {
-		width: 125px;
-		min-width: 125px;
-		height: 125px;
-		min-height: 125px;
-		padding: 0.85rem;
 	}
 
 	svg {
@@ -628,15 +639,4 @@ table {
 			font-size: 1.25rem;
 		}
 	}
-
-	// &:after {
-	// 	position: absolute;
-	// 	content: "";
-	// 	width: 150px;
-	// 	height: 150px;
-	// 	top: 15px;
-	// 	left: -85px;
-	// 	background: white;
-	// 	filter: blur(30px);
-	// }
 }

@@ -381,6 +381,9 @@ document.addEventListener("DOMContentLoaded", () => {
 
 	document.addEventListener("click", e => {
 		console.log(e);
+
+		/* Search Submit Button */
+
 		if (e.target.name === "_sf_submit") {
 			const searchButtonHolder = document.querySelector(".sf-field-submit");
 			searchButtonHolder.classList.add("search-button--clicked");
@@ -422,6 +425,19 @@ document.addEventListener("DOMContentLoaded", () => {
 					console.log("Loop finished.");
 				});
 			}, 1000);
+		}
+
+		/* Scroll Down Button */
+
+		const scrollDownButton = ".welcome-section-scroll-down";
+
+		if (e.target.closest(".welcome-section-scroll-down")) {
+			console.log("match");
+			window.scroll({
+				top: window.innerHeight,
+				left: 0,
+				behavior: "smooth"
+			});
 		}
 	});
 });

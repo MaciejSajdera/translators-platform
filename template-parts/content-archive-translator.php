@@ -70,7 +70,7 @@ if ( $args['data'] ) {
 
 				echo '
 				<a href="'.get_permalink().'" rel="bookmark">
-					<h2 class="entry-title fs--800 text--blue mb--05">'.$translator_first_name.' '. $translator_last_name.'</h2>
+					<h2 class="entry-title fs--1000 text--blue mb--05">'.$translator_first_name.' '. $translator_last_name.'</h2>
 				</a>
 				';
 
@@ -118,8 +118,8 @@ if ( $args['data'] ) {
 			if (strlen($translator_about) > 0) {
 			?>
 
-			<div class="translator__about mb--2">
-				<p class="text--turquoise fw--700 fs--600 mb--05">
+			<div class="translator__about mb--3">
+				<p class="text--turquoise fw--700 fs--800 mb--05">
 					O mnie
 				</p>
 
@@ -155,7 +155,7 @@ if ( $args['data'] ) {
 			if ( $translator_specializations ) {
 
 				echo '<ul>
-						<p class="text--turquoise fw--700 fs--600">'.$tax_label_specializations.'</p>
+						<p class="text--turquoise fw--700 fs--800">'.$tax_label_specializations.'</p>
 						';
 
 				foreach( $translator_specializations as $term ) :
@@ -176,7 +176,7 @@ if ( $args['data'] ) {
 			if ( $translator_languages ) {
 
 				echo '<ul>
-						<p class="text--turquoise fw--700 fs--600">'.$tax_label_languages.'</p>
+						<p class="text--turquoise fw--700 fs--800">'.$tax_label_languages.'</p>
 					  ';
 
 				foreach( $translator_languages as $term ) :

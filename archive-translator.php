@@ -18,13 +18,13 @@
 get_header();
 ?>
 
-	<div id="primary" class="content-area post-type-archive-translator">
+	<div id="primary" class="content-area archive-translators">
 
-		<?php
+		<!-- <?php
 		if ( function_exists('yoast_breadcrumb') ) {
 			yoast_breadcrumb( '<p id="breadcrumbs">','</p>' );
 		}
-		?>
+		?> -->
 
 		<?php
 			// get_template_part( 'template-parts/back-to-home-page' );
@@ -34,7 +34,7 @@ get_header();
 
 		<div class="search__container">
 
-			<h1>Wyszukiwarka PSTK</h1>
+			<h1 class="mb--1">Wyszukiwarka PSTK</h1>
 
 			<h2>Znajdź tłumacza na wydarzenie</h2>
 

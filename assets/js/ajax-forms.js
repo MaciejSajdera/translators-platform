@@ -14,7 +14,7 @@ jQuery(document).ready(function($) {
 		modal.classList.add("unlock-modal");
 		modal.classList.add("show-modal");
 
-		setTimeout(() => modal.classList.add("show-modal"), 300);
+		// setTimeout(() => modal.classList.add("show-modal"), 300);
 
 		if (modalContent) {
 			console.log(modalContent);
@@ -49,6 +49,10 @@ jQuery(document).ready(function($) {
 		modal.classList.remove("show-modal");
 		modal.classList.remove("unlock-modal");
 		modalMessageHolder.innerHTML = "";
+
+		setTimeout(() => {
+			modalMessageHolder.innerHTML = "";
+		}, 300);
 	}
 
 	function windowOnClick(event) {
@@ -74,7 +78,7 @@ jQuery(document).ready(function($) {
 		//static for already existing inputs
 		allOriginalInputs.forEach(thisInput => {
 			thisInput.addEventListener("change", function(e) {
-				console.log(e);
+				// console.log(e);
 
 				let closestRowWrapper = thisInput.closest(".row-wrapper");
 
@@ -83,14 +87,16 @@ jQuery(document).ready(function($) {
 				);
 
 				if (newAttachmentPlaceholder.tagName == "IMG") {
-					console.log(newAttachmentPlaceholder);
 					newAttachmentPlaceholder.setAttribute(
 						"src",
 						URL.createObjectURL(e.target.files[0])
 					);
 				}
 
-				if (!closestRowWrapper.querySelector("input[type='file']").files[0]) {
+				if (
+					!closestRowWrapper.querySelector("input[type='file']").files[0] &&
+					newAttachmentPlaceholder.id === "newSoundInGalleryPlaceholder"
+				) {
 					let soundLabel = thisInput
 						.closest(".repeater__field")
 						.querySelector(".input-text").value;
@@ -223,14 +229,20 @@ jQuery(document).ready(function($) {
 								);
 							}
 
-							// console.log(
-							// 	e.target
-							// 		.closest(".row-wrapper")
-							// 		.querySelector("input[type='file']").files[0]
-							// );
+							if (
+								newAttachmentPlaceholder.tagName == "IMG" &&
+								newAttachmentPlaceholder.id === "newImageInGalleryPlaceholder"
+							) {
+								const uploadFileButton = thisInput.closest(
+									".button--upload-file"
+								);
+								uploadFileButton.classList.add("dnone");
+							}
 
 							if (
-								!closestRowWrapper.querySelector("input[type='file']").files[0]
+								!closestRowWrapper.querySelector("input[type='file']")
+									.files[0] &&
+								newAttachmentPlaceholder.id === "newSoundInGalleryPlaceholder"
 							) {
 								const soundLabel = thisInput
 									.closest(".repeater__field")
@@ -269,8 +281,6 @@ jQuery(document).ready(function($) {
 								e.target.files &&
 								newAttachmentPlaceholder.id === "newSoundInGalleryPlaceholder"
 							) {
-								console.log("file attached");
-
 								const uploadFileButton = thisInput.closest(
 									".button--upload-file"
 								);
@@ -361,28 +371,13 @@ jQuery(document).ready(function($) {
 			});
 	};
 
-	// Confetti config
-	// https://daniel-lundin.github.io/react-dom-confetti/
-
-	const confettiConfig = {
-		angle: "143",
-		spread: 360,
-		startVelocity: 40,
-		elementCount: 50,
-		dragFriction: 0.12,
-		duration: 2000,
-		stagger: 3,
-		width: "10px",
-		height: "10px",
-		perspective: "1000px",
-		colors: ["#16538c", "#18a0aa"]
-	};
-
 	// Animate progress bar
 
 	/* 	You need use strokeWidth < 7. If it more then 7 it won't work in the IE. You can detect browser. For IE use less 7. For other use what you want. */
 
 	const progressRingHolder = document.querySelector("#progressRing");
+
+	let progressRingFull;
 
 	if (progressRingHolder) {
 		var progressRing = new ProgressBar.Circle(progressRingHolder, {
@@ -392,7 +387,7 @@ jQuery(document).ready(function($) {
 			strokeWidth: 0,
 			trailWidth: 0,
 			easing: "easeInOut",
-			duration: 1800,
+			duration: 1000,
 			text: {
 				autoStyleContainer: false
 			},
@@ -412,18 +407,36 @@ jQuery(document).ready(function($) {
 					circle.setText(`${value}%`);
 				}
 
-				if (value === 100) {
-					// modalMessageHolder.appendChild(congratulationsMessage);
-					// showModal();
-					// confetti(congratulationsMessage, confettiConfig);
-					confetti(progressRingHolder, confettiConfig);
+				if (
+					state.offset > 0 &&
+					progressRingHolder.classList.contains("progress-ring--complete")
+				) {
+					progressRingHolder.classList.remove("progress-ring--complete");
+				}
+
+				if (
+					state.offset === 0 &&
+					!progressRingHolder.classList.contains("progress-ring--complete")
+				) {
+					progressRingHolder.classList.add("progress-ring--complete");
 				}
 			}
 		});
 
-		progressRing.animate(
-			ajax_forms_params.initial_percent_value_of_account_fill_completness / 100
-		);
+		if (
+			ajax_forms_params.initial_percent_value_of_account_fill_completness < 100
+		) {
+			progressRing.animate(
+				ajax_forms_params.initial_percent_value_of_account_fill_completness /
+					100
+			);
+		}
+
+		if (
+			ajax_forms_params.initial_percent_value_of_account_fill_completness == 100
+		) {
+			progressRing.set(1);
+		}
 	}
 
 	const updateProfileCompletness = dataJSON => {
@@ -447,7 +460,66 @@ jQuery(document).ready(function($) {
 
 		percentValueOfAccountFillCompletnessHolder.textContent = percentValueOfAccountFillCompletness;
 
-		progressRing.animate(percentValueOfAccountFillCompletness / 100);
+		// if (progressHistory.length > 0) {
+		// 	progressHistory.length = 0;
+		// }
+
+		const animateRingAsync = async function() {
+			progressRing.animate(percentValueOfAccountFillCompletness / 100);
+		};
+
+		// console.log(progressRing._opts.duration);
+
+		animateRingAsync().then(() => {
+			setTimeout(() => {
+				console.log("!!!");
+
+				if (progressRingHolder.classList.contains("progress-ring--complete")) {
+					const congratulationsMessage = `
+					<div class="text--center relative">
+						<span class="confetti-target"></span>
+						<p class="fs--1200 fw--900 ff--secondary text--turquoise">GRATULACJE!</p>
+						<p class="fs--800 fw--500">Twój profil jest kompletny w 100%!</p>
+					</div>
+					`;
+
+					let congratulationsMessageNode = document
+						.createRange()
+						.createContextualFragment(congratulationsMessage);
+
+					modalMessageHolder.appendChild(congratulationsMessageNode);
+					showModal();
+
+					// Confetti config
+					// https://daniel-lundin.github.io/react-dom-confetti/
+
+					const confettiConfig = {
+						angle: 90,
+						spread: 360,
+						startVelocity: 40,
+						elementCount: 70,
+						dragFriction: 0.12,
+						duration: 3000,
+						stagger: 3,
+						width: "10px",
+						height: "10px",
+						perspective: "500px",
+						colors: ["#16538c", "#18a0aa"]
+					};
+
+					setTimeout(() => {
+						confetti(
+							document.querySelector(".confetti-target"),
+							confettiConfig
+						);
+					}, 250);
+				}
+			}, progressRing._opts.duration);
+		});
+
+		// progressCurrentValue = progressHistory;
+		// console.log(`progressCurrentValue:${progressCurrentValue}`);
+		// console.log(`progressCloseToCompleteValue:${progressCloseToCompleteValue}`);
 
 		// if (dataJSON.percent_value_of_account_fill_completness < 49) {
 		// 	accountFillCompletness.className = "";
@@ -548,8 +620,8 @@ jQuery(document).ready(function($) {
 
 			success: function(data) {
 				console.log("SUCCESS!");
-				console.log(data);
-				console.log(JSON.parse(data));
+				// console.log(data);
+				// console.log(JSON.parse(data));
 				const dataJSON = JSON.parse(data);
 
 				const postData = dataJSON.post_data;
@@ -644,7 +716,7 @@ jQuery(document).ready(function($) {
 
 			success: function(data) {
 				console.log("SUCCESS!");
-				console.log(data);
+				// console.log(data);
 
 				const dataJSON = JSON.parse(data);
 				const postData = dataJSON.post_data;
@@ -702,7 +774,7 @@ jQuery(document).ready(function($) {
 
 			success: function(data) {
 				console.log("SUCCESS!");
-				console.log(data);
+				// console.log(data);
 
 				const dataJSON = JSON.parse(data);
 
@@ -827,7 +899,7 @@ jQuery(document).ready(function($) {
 					let thisSoundWrapper;
 					let thisUploadFileButton;
 
-					console.log(e.target);
+					// console.log(e.target);
 
 					if (
 						e.target.closest(".repeater__field") &&
@@ -978,7 +1050,7 @@ jQuery(document).ready(function($) {
 
 			success: function(data) {
 				console.log("SUCCESS!");
-				console.log(data);
+				// console.log(data);
 
 				const dataJSON = JSON.parse(data);
 
@@ -1146,10 +1218,9 @@ jQuery(document).ready(function($) {
 
 			success: function(data) {
 				console.log("SUCCESS!");
-				console.log(data);
+				// console.log(data);
 
 				const dataJSON = JSON.parse(data);
-				console.log(dataJSON);
 
 				const userlinkedinText = document.querySelector("#user_linkedin_text");
 
@@ -1199,18 +1270,10 @@ jQuery(document).ready(function($) {
 
 			success: function(data) {
 				console.log("SUCCESS!");
-				console.log(data);
-
 				const dataJSON = JSON.parse(data);
-				console.log(dataJSON);
-
 				const userworkText = document.querySelector("#user_work_text");
-
 				userworkText.innerText = `${dataJSON.user_work}`;
-
 				updateProfileCompletness(dataJSON);
-
-				return data;
 			},
 			error: function(err) {
 				console.log("FAILURE");
@@ -1264,14 +1327,8 @@ jQuery(document).ready(function($) {
 
 			success: function(data) {
 				console.log("SUCCESS!");
-				console.log(data);
-
 				const dataJSON = JSON.parse(data);
-				console.log(dataJSON);
-
 				updateProfileCompletness(dataJSON);
-
-				return data;
 			},
 			error: function(jqXHR, textStatus, errorThrown) {
 				console.log(jqXHR);
@@ -1305,7 +1362,6 @@ jQuery(document).ready(function($) {
 
 	$(uploadImageToGalleryForm).submit(function(event) {
 		event.preventDefault();
-
 		const submitButton = this.querySelector("input[type='submit']");
 		submitButton.classList.remove("reveal-button");
 		const uploadPicturePreview = this.querySelector(".input-preview__wrapper");
@@ -1361,10 +1417,7 @@ jQuery(document).ready(function($) {
 
 			success: function(data) {
 				console.log("SUCCESS!");
-				console.log(data);
-
 				const dataJSON = JSON.parse(data);
-				console.log(dataJSON);
 
 				let addedFilesIds = dataJSON.added_files_ids;
 				let addedRows = dataJSON.added_rows;
@@ -1375,7 +1428,7 @@ jQuery(document).ready(function($) {
 				);
 
 				allRepeaterFieldsInThisForm.each(function(index) {
-					console.log(this.querySelector("INPUT").value);
+					// console.log(this.querySelector("INPUT").value);
 
 					let allNewAttachmentWrappersInThisForm = this.querySelector(
 						".new-attachment__wrapper"
@@ -1389,6 +1442,8 @@ jQuery(document).ready(function($) {
 							.css("transform", "scale(0)")
 							.css("transition", "all 0.3s ease-in")
 							.addClass("my-pictures__gallery-attachment")
+							.addClass("pb--2")
+							.addClass("mb--2")
 							.addClass("newlyAddedImage")
 							.appendTo(".my-pictures__gallery")
 							.children("A")
@@ -1555,11 +1610,7 @@ jQuery(document).ready(function($) {
 
 			success: function(data) {
 				console.log("SUCCESS!");
-				console.log(data);
-
 				const dataJSON = JSON.parse(data);
-
-				console.log(dataJSON);
 
 				let addedFilesIds = dataJSON.added_files_ids;
 				let addedRows = dataJSON.added_rows;
@@ -1684,8 +1735,6 @@ jQuery(document).ready(function($) {
 
 			success: function(data) {
 				console.log("SUCCESS!");
-				console.log(data);
-
 				const dataJSON = JSON.parse(data);
 
 				const userCurrentLoginEmailText = document.querySelector(
@@ -1844,7 +1893,6 @@ jQuery(document).ready(function($) {
 
 			success: function(data) {
 				console.log("SUCCESS!");
-				console.log(data);
 				const dataJSON = JSON.parse(data);
 
 				const isProfilePublic = dataJSON.profile_is_public;

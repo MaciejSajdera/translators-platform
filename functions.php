@@ -1058,7 +1058,7 @@ function basic_user_data_form() {
 
 				<div class="info-box__subbox mb--3">
 					<p>
-						<label class="info-box__subbox-header" for="user_first_name"><?php _e('Imię'); ?></label>
+						<label class="info-box__subbox-header mb--05" for="user_first_name"><?php _e('Imię'); ?></label>
 						<input name="user_first_name" id="user_first_name" class="user_first_name" type="text" value="<?php echo $current_user->first_name ?>"/>
 					</p>
 				</div>
@@ -1066,14 +1066,14 @@ function basic_user_data_form() {
 
 				<div class="info-box__subbox mb--3">
 					<p>
-						<label class="info-box__subbox-header" for="user_last_name"><?php _e('Nazwisko'); ?></label>
+						<label class="info-box__subbox-header mb--05" for="user_last_name"><?php _e('Nazwisko'); ?></label>
 						<input name="user_last_name" id="user_last_name" class="user_last_name" type="text" value="<?php echo $current_user->last_name ?>"/>
 					</p>
 				</div>
 
 				<div class="info-box__subbox mb--3">
 					<p>
-						<label class="info-box__subbox-header" for="user_about_short"><?php _e('Jedno zdanie o mnie'); ?></label>
+						<label class="info-box__subbox-header mb--05" for="user_about_short"><?php _e('Jedno zdanie o mnie'); ?></label>
 						<textarea form="basic_user_data_form" name="user_about_short" id="user_about_short" class="user_about_short" type="text"><?php echo get_field("translator_about_short", $user_post_id) ?></textarea>
 					</p>
 				</div>
@@ -1085,7 +1085,7 @@ function basic_user_data_form() {
 						$translator_languages_taxonomy = get_taxonomy( 'translator_language' );
 						?>
 
-						<label class="info-box__subbox-header" for="user_languages"><?php echo $translator_languages_taxonomy->label ?></label>
+						<label class="info-box__subbox-header mb--05" for="user_languages"><?php echo $translator_languages_taxonomy->label ?></label>
 
 						<?php
 						
@@ -1101,7 +1101,7 @@ function basic_user_data_form() {
 
 									echo '<div class="info-box__checkbox-wrapper">';
 
-									echo '<label>';
+									echo '<label class="mb--05">';
 
 										?>
 										<input name="user_languages[]" class="user_languages" type="checkbox" value="<?php echo $term->name ?>"
@@ -1133,7 +1133,7 @@ function basic_user_data_form() {
 						$translator_specializations_taxonomy = get_taxonomy( 'translator_specialization' );
 					?>
 
-					<label class="info-box__subbox-header" for="user_specializations"><?php echo $translator_specializations_taxonomy->label ?></label>
+					<label class="info-box__subbox-header mb--05" for="user_specializations"><?php echo $translator_specializations_taxonomy->label ?></label>
 
 					<?php
 					
@@ -1148,7 +1148,7 @@ function basic_user_data_form() {
 
 								echo '<div class="info-box__checkbox-wrapper">';
 
-								echo '<label>';
+								echo '<label class="mb--05">';
 								
 									?>
 									<input name="user_specializations[]" class="user_specializations" type="checkbox" value="<?php echo $term->name ?>"
@@ -1453,7 +1453,7 @@ function contact_user_data_form() {
 
 				<div class="info-box__subbox mb--3">
 					<p>
-						<label class="info-box__subbox-header" for="user_contact_phone"><?php _e('Numer telefonu'); ?></label>
+						<label class="info-box__subbox-header mb--05" for="user_contact_phone"><?php _e('Numer telefonu'); ?></label>
 						<input name="user_contact_phone" id="user_contact_phone" class="user_contact_phone" type="text" value="<?php if(strlen(get_field("translator_contact_phone") > 0)) { echo get_field("translator_contact_phone"); } else { echo ""; }  ?>"/>
 					</p>
 				</div>
@@ -1461,7 +1461,7 @@ function contact_user_data_form() {
 
 				<div class="info-box__subbox mb--3">
 					<p>
-						<label class="info-box__subbox-header" for="user_contact_email"><?php _e('Adres e-mail'); ?></label>
+						<label class="info-box__subbox-header mb--05" for="user_contact_email"><?php _e('Adres e-mail'); ?></label>
 						<input name="user_contact_email" id="user_contact_email" class="user_contact_email" type="text" value="<?php if(strlen(get_field("translator_contact_email") > 0)) { echo get_field("translator_contact_email"); } else { echo $current_user->user_email; }  ?>"/>
 					</p>
 				</div>
@@ -1470,7 +1470,7 @@ function contact_user_data_form() {
 						$translator_specializations_taxonomy = get_taxonomy( 'translator_localization' );
 					?>
 
-					<label class="info-box__subbox-header" for="user_localizations"><?php echo $translator_specializations_taxonomy->label ?></label>
+					<label class="info-box__subbox-header mb--05" for="user_localizations"><?php echo $translator_specializations_taxonomy->label ?></label>
 
 					<div class="info-box__subbox mb--3">
 
@@ -1519,7 +1519,7 @@ function contact_user_data_form() {
 
 										echo '<div class="info-box__checkbox-wrapper">';
 
-										echo '<label>';
+										echo '<label class="mb--05">';
 										
 											?>
 											<input name="user_localizations[]" class="user_localization_input" type="checkbox" value="<?php echo $term->name ?>"
@@ -1545,7 +1545,7 @@ function contact_user_data_form() {
 
 											echo '<div class="info-box__checkbox-wrapper">';
 
-											echo '<label>';
+											echo '<label class="mb--05">';
 											
 												?>
 												<input name="user_localizations[]" class="user_localizations" type="checkbox" value="<?php echo $term->name ?>" checked/>
@@ -1577,7 +1577,7 @@ function contact_user_data_form() {
 
 												</div>
 
-												<button class="button repeater__button button__outline--blue repeater__button--add">Dodaj nową lokalizację</button>
+												<button class="button repeater__button button__outline--blue repeater__button--add w--full">Dodaj nową lokalizację</button>
 
 											</div>
 
@@ -2076,17 +2076,17 @@ function gallery_sound_uploader($user_post_id) {
 
 						<div class="repeater__field mb--2 pb--2" data-repeater-id="0">
 
-							<p class="info-box__subbox-header mb--2">Wpisz tekst i dodaj nagranie</p>
+							<p class="info-box__subbox-header mb--2 pr--2">Wpisz tekst i dodaj nagranie</p>
 
 							<div class="row-wrapper wrapper-flex-drow-mcol">
 
 								<div class="wrapper-flex-col-start col-m100-d50">
 
-									<p class="mb--1">
+									<p class="mb--2">
 										<input name="sound-label__input[]" id="sound-label__input" class="input-text input-preview__src" type="text" value="" placeholder="Tytuł nagrania"/>
 									</p>
 
-									<p>
+									<p class="mb--2">
 										<textarea form="upload_sound_to_gallery_form" name="sound-textarea__input[]" id="sound-textarea__input" class="input-textarea input-preview__src" type="text" maxlength="100" placeholder="Tekst"></textarea>
 										<label class="characters-counter">0/100</label>
 									</p>
@@ -2095,7 +2095,7 @@ function gallery_sound_uploader($user_post_id) {
 
 								<div class="col-m100-d50">
 
-									<label class="file-input__label button button--upload-file">
+									<label class="file-input__label button button--upload-file content-center">
 										Wybierz plik
 										<input type="file" name="sound-to-gallery__input[]" id="sound-to-gallery__input" class="custom-file-input input-preview__src" accept=".mp3,.wav,.m4a"/>
 									</label>
@@ -2114,7 +2114,7 @@ function gallery_sound_uploader($user_post_id) {
 
 					</div>
 
-					<button class="button repeater__button button__outline--blue repeater__button--add">Dodaj próbkę głosu</button>
+					<button class="button repeater__button button__outline--blue repeater__button--add w--full">Dodaj próbkę głosu</button>
 
 				</div>
 
@@ -2408,18 +2408,18 @@ function gallery_image_uploader($user_post_id) {
 
 				<div class="repeater__field-wrapper">
 
-					<div class="repeater__field" data-repeater-id="0">
+					<div class="repeater__field pb--2 mb--2" data-repeater-id="0">
 
 						<div class="row-wrapper my-pictures__gallery-row-wrapper">
 
-							<label class="file-input__label button button--upload-file">
+							<label class="file-input__label button button--upload-file content-center">
 								Wybierz plik
 								<input type="file" name="image-to-gallery__input[]" id="image-to-gallery__input" class="custom-file-input input-preview__src" accept=".png,.jpg,.jpeg" />
 							</label>
 
 							<div class="new-attachment__wrapper" >
 
-								<img class="new-attachment__placeholder" style="display:none;" src="" width=""/>
+								<img id="newImageInGalleryPlaceholder" class="new-attachment__placeholder" style="display:none;" src="" width=""/>
 
 								<a class="remove-item remove" data-id="clear-input" href="#"></a>
 
@@ -2434,13 +2434,13 @@ function gallery_image_uploader($user_post_id) {
 
 				</div>
 
-				<button class="button button__outline--blue repeater__button repeater__button--add">Dodaj zdjęcie</button>
+				<button class="button button__outline--blue repeater__button repeater__button--add w--full">Dodaj zdjęcie</button>
 
 			</div>
 
 			<input type="hidden" name="post_id" value="<?php echo $user_post_id ?>"><br>
 			<input type="hidden" name="pictures_to_delete" id="pictures_to_delete" value=""/>
-			<input type="submit" class="button button__filled--blue" name="submit_image_to_gallery" value="Zaktualizuj galerię" />
+			<input type="submit" class="button button__filled--blue w--full" name="submit_image_to_gallery" value="Zaktualizuj galerię" />
 			<?php wp_nonce_field( "handle_image_to_gallery_upload", "image_to_gallery_nonce" ); ?>
 
 			<div class="progress">
@@ -2664,7 +2664,7 @@ function gallery_video_uploader($user_post_id) {
 
 	<form id="upload_video_to_gallery_form" method="POST" enctype="multipart/form-data">
 
-				<label class="file-input__label button button--upload-file">
+				<label class="file-input__label button button--upload-file content-center">
 					Wybierz plik
 					<input type="file" name="video-to-gallery__input" id="video-to-gallery__input" class="custom-file-input input-preview__src" accept=".mp4,.mov,.wmv,.mpg" />
 
@@ -2675,7 +2675,7 @@ function gallery_video_uploader($user_post_id) {
 
 				<input type="hidden" name="videos_to_delete" id="videos_to_delete" value=""/>
 
-				<input type="submit" class="button button__filled--blue" name="submit_video_to_gallery" value="Zaktualizuj galerię" />
+				<input type="submit" class="button button__filled--blue w--full" name="submit_video_to_gallery" value="Zaktualizuj galerię" />
 				
 				<?php wp_nonce_field( "handle_video_to_gallery_upload", "video_to_gallery_nonce" ); ?>
 

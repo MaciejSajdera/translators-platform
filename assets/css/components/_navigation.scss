@@ -4,13 +4,12 @@
 	justify-content: space-between;
 	padding-top: 1rem;
 	padding-bottom: 1rem;
-	z-index: 1;
 	width: 100%;
 	position: fixed;
 	top: 0;
 	background: transparent;
 	transition: $transition_regular;
-	z-index: 9999;
+	z-index: $z-index-header;
 
 	@media screen and (min-width: 1024px) {
 		padding-top: 2rem;
@@ -51,15 +50,11 @@
 		justify-content: center;
 		cursor: pointer;
 		font-size: 16px;
-		z-index: 1001;
+		z-index: $z-index-menu-toggle;
 		transition: $transition_regular;
 
 		@media screen and (min-width: 1024px) {
 			display: none;
-		}
-
-		span {
-			background: #000;
 		}
 
 		.span-wrapper {
@@ -79,9 +74,10 @@
 			height: 2px;
 			position: absolute;
 			transition: all 0.3s ease-in;
+			background: #000;
 
 			&:nth-of-type(1) {
-				top: 0px;
+				top: 0;
 			}
 
 			&:nth-of-type(2) {
@@ -96,7 +92,7 @@
 				width: 24px;
 
 				&:nth-of-type(1) {
-					top: 0px;
+					top: 0;
 				}
 
 				&:nth-of-type(2) {
@@ -129,7 +125,7 @@
 
 		@keyframes burgerPiece_1_open {
 			0% {
-				transform: translateY(0px);
+				transform: translateY(0);
 			}
 			50% {
 				transform: translateY(7px);
@@ -141,21 +137,21 @@
 
 		@keyframes burgerPiece_2_open {
 			0% {
-				transform: translateY(0px);
+				transform: translateY(0);
 			}
 			50% {
-				transform: translateY(0px);
+				transform: translateY(0);
 				opacity: 0;
 			}
 			100% {
-				transform: translateY(0px) rotate(0deg);
+				transform: translateY(0) rotate(0deg);
 				opacity: 0;
 			}
 		}
 
 		@keyframes burgerPiece_3_open {
 			0% {
-				transform: translateY(0px);
+				transform: translateY(0);
 			}
 			50% {
 				transform: translateY(-7px);
@@ -189,21 +185,21 @@
 				transform: translateY(7px);
 			}
 			100% {
-				transform: translateY(0px);
+				transform: translateY(0);
 			}
 		}
 
 		@keyframes burgerPiece_2_close {
 			0% {
-				transform: translateY(0px) rotate(0deg);
+				transform: translateY(0) rotate(0deg);
 				opacity: 0;
 			}
 			50% {
-				transform: translateY(0px);
+				transform: translateY(0);
 				opacity: 0;
 			}
 			100% {
-				transform: translateY(0px);
+				transform: translateY(0);
 			}
 		}
 
@@ -215,7 +211,7 @@
 				transform: translateY(-7px);
 			}
 			100% {
-				transform: translateY(0px);
+				transform: translateY(0);
 			}
 		}
 	}
@@ -425,18 +421,21 @@ $mobile-menu-padding-top: 10rem;
 			height: 100%;
 			width: 100%;
 			position: relative;
-
 			z-index: 999;
+			padding-bottom: 10px;
 
 			li {
 				padding: 0 0 0.5em 0;
+
+				&:last-of-type {
+					padding-bottom: 0;
+				}
 			}
 
 			a {
 				@include fluid-type($min_width, $max_width, 14px, 16px);
 				text-align: center;
 				padding: 0.5em 1em;
-				width: calc(100% - 3em);
 				position: relative;
 				display: flex;
 				align-items: center;
@@ -448,11 +447,11 @@ $mobile-menu-padding-top: 10rem;
 				color: $color__main-theme--blue;
 			}
 
-			&:last-of-type {
-				a {
-					padding-right: 0;
-				}
-			}
+			// &:last-of-type {
+			// 	a {
+			// 		padding-right: 0;
+			// 	}
+			// }
 		}
 
 		.expand-menu-toggle {
@@ -493,7 +492,7 @@ $mobile-menu-padding-top: 10rem;
 
 		padding: 20px;
 
-		border-radius: 2px;
+		border-radius: $border-radius--submenu;
 		// transition: all 0.5s;
 
 		will-change: opacity;
@@ -511,7 +510,7 @@ $mobile-menu-padding-top: 10rem;
 				display: block;
 				width: max-content;
 
-				&:before {
+				&::before {
 					display: none;
 				}
 			}
@@ -533,7 +532,7 @@ $mobile-menu-padding-top: 10rem;
 					text-transform: inherit;
 					// padding-left: 30px;
 
-					// &:before {
+					// &::before {
 					// 	content: "";
 					// 	display: block;
 					// 	background: $color__text--light-grey;
@@ -579,7 +578,7 @@ $mobile-menu-padding-top: 10rem;
 		height: 100px;
 		position: absolute;
 		background: #fff;
-		border-radius: 4px;
+		border-radius: $border-radius--submenu;
 		box-shadow: 0 50px 100px rgba(50, 50, 93, 0.1),
 			0 15px 35px rgba(50, 50, 93, 0.15), 0 5px 15px rgba(0, 0, 0, 0.1);
 		transition: all 0.3s, opacity 0.1s, transform 0.2s;

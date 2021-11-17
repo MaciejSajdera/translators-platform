@@ -94,7 +94,7 @@
 
 	&__main {
 		border: 1px solid $color__border-element;
-		padding: 3em 0em;
+		padding: 3em 0;
 
 		@media screen and (min-width: 1024px) {
 			padding: 3em 4em;
@@ -148,9 +148,9 @@
 		// 	padding: 3em 4em;
 		// }
 
-		.my-ajax-loader {
-			border-radius: 20px;
-		}
+		// .my-ajax-loader {
+		// 	border-radius: 20px;
+		// }
 	}
 
 	.edit-box {
@@ -197,18 +197,9 @@
 			padding-left: 0;
 		}
 
-		// .button__edit-account-content {
-		// 	right: 0rem;
-		// 	top: 1rem;
-		// }
-
 		input[type="text"] {
 			width: 100%;
 		}
-
-		// input {
-		// 	width: calc(100% - 2rem);
-		// }
 	}
 }
 
@@ -345,7 +336,6 @@
 
 .info-box label {
 	line-height: 1.5;
-	margin-bottom: 0.5rem;
 }
 
 .info-box__header {
@@ -454,7 +444,7 @@ $profile_picture_width: 175px;
 					border-radius: 100%;
 					overflow: hidden;
 
-					&:before {
+					&::before {
 						content: "";
 						position: absolute;
 						height: 100%;
@@ -465,7 +455,7 @@ $profile_picture_width: 175px;
 						border-radius: 100%;
 					}
 
-					&:after {
+					&::after {
 						content: "";
 						background-image: url(../dist/svg/edit-white.svg);
 						background-size: contain;
@@ -484,18 +474,18 @@ $profile_picture_width: 175px;
 					}
 
 					&:hover {
-						&:before {
+						&::before {
 							background-color: rgba(50, 50, 50, 0.25);
 						}
 
-						&:after {
+						&::after {
 							opacity: 1;
 						}
 					}
 				}
 
 				.preview-mode {
-					&:before {
+					&::before {
 						background-color: rgba(50, 50, 50, 0.25);
 					}
 				}
@@ -505,7 +495,7 @@ $profile_picture_width: 175px;
 						visibility: unset;
 					}
 
-					&:before {
+					&::before {
 						// background-color: rgba(50, 50, 50, 0.25);
 					}
 				}
@@ -607,6 +597,7 @@ $profile_picture_width: 175px;
 .my-pictures {
 	&__gallery-attachment {
 		justify-content: center;
+		border-bottom: 1px solid $color__border-element;
 	}
 }
 
@@ -639,7 +630,7 @@ $profile_picture_width: 175px;
 			display: flex;
 			align-items: center;
 			position: relative;
-			margin: 1rem 0;
+			// margin: 1rem 0;
 		}
 
 		&-text-wrapper {
@@ -730,7 +721,7 @@ $profile_picture_width: 175px;
 			height: auto;
 			background: none;
 
-			&:after {
+			&::after {
 				display: none;
 			}
 		}

@@ -414,6 +414,27 @@ document.addEventListener("DOMContentLoaded", () => {
 						".my-pictures__gallery-attachment"
 					);
 
+					let thisUploadFileButton;
+
+					if (
+						e.target.closest(".repeater__field") &&
+						e.target
+							.closest(".repeater__field")
+							.querySelector(".button--upload-file")
+					) {
+						thisUploadFileButton = e.target
+							.closest(".repeater__field")
+							.querySelector(".button--upload-file");
+					}
+
+					if (
+						thisUploadFileButton &&
+						thisUploadFileButton.classList.contains("dnone")
+					) {
+						thisUploadFileButton.classList.remove("dnone");
+					}
+
+				
 					let pictureId = e.target.dataset.id;
 
 					if (

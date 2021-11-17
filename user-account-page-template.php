@@ -212,12 +212,18 @@ get_header();
 												echo '<h3>';
 													echo 'Witaj na swoim koncie PSTK.<br />';
 													echo 'Twój profil jest kompletny w <span id="accountFillCompletness" class="'.$completness_value_class.'"><span id="percentValueOfAccountFillCompletness">'.get_percent_value_of_account_fill_completness().'</span><span>%</span></span>.
-													<br />
-													<span class="text--blue text--underline-turquoise" id="fillTheseFields">Uzupełnij go.</span>';		
-
+													<br />';
+													if (get_percent_value_of_account_fill_completness() != 100)  {
+														echo '<span class="text--blue text--underline-turquoise" id="fillTheseFields">Uzupełnij go.</span>';	
+													}
+	
 												echo '</h3>';
 
-												echo '<div id="progressRing"></div>';
+												if (get_percent_value_of_account_fill_completness() < 100) {
+													echo '<div id="progressRing"></div>';
+												} else {
+													echo '<div id="progressRing" class="progress-ring--complete"></div>';
+												}
 
 											echo '</div>';
 											
@@ -225,7 +231,7 @@ get_header();
 
 											$empty_field_labels = get_labels_of_empty_translator_fields();
 
-											echo '<p>Nieuzupełnione pola:</p>';
+											echo '<p class="fw--500">Nieuzupełnione pola:</p>';
 											foreach($empty_field_labels as $label) :
 												echo '<p class="empty-field-label">'.$label.'</p>';
 											endforeach;
@@ -617,7 +623,7 @@ get_header();
 																
 																	echo '<a class="remove-item" href="#" data-id="'.$i.'"></a>';
 
-																	echo '<div class="my-sounds__gallery-text-wrapper col-m100-d50">';
+																	echo '<div class="my-sounds__gallery-text-wrapper col-m100-d50 pr--2">';
 
 																		echo '<div class="my-sounds__gallery-attachment--label mb--1">';
 
@@ -858,7 +864,7 @@ get_header();
 
 														echo '<div class="is-gallery-empty__messages" style="display: none">';
 														echo '<p class="is-gallery-empty__yes">Aktualnie nie masz dodanych żadnych zdjęć.</p>';
-														echo '<p class="is-gallery-empty__no">Zdjęcia</p>';
+														echo '<p class="is-gallery-empty__no">Zdjęcia:</p>';
 														echo '</div>';
 
 													if ($images_to_gallery_array) {
@@ -869,7 +875,7 @@ get_header();
 
 																if(wp_get_attachment_image_url(attachment_url_to_postid($image))) {
 
-																	echo '<div class="my-pictures__gallery-attachment">';
+																	echo '<div class="my-pictures__gallery-attachment pb--2 mb--2">';
 
 																		echo '<a class="remove-item" href="#" data-id="'.attachment_url_to_postid($image).'"></a>';
 
@@ -911,7 +917,7 @@ get_header();
 
 														echo '<div class="is-gallery-empty__messages" style="display: none">';
 														echo '<p class="is-gallery-empty__yes">Aktualnie nie masz dodanych żadnych filmów.</p>';
-														echo '<p class="is-gallery-empty__no">Filmy</p>';
+														echo '<p class="is-gallery-empty__no">Filmy:</p>';
 														echo '</div>';
 
 													// var_dump($videos_to_gallery_array);
@@ -963,8 +969,6 @@ get_header();
 
 													echo '</div>';
 
-													echo gallery_video_uploader($user_post_id);
-
 													echo '<div id="newVideoInGalleryPlaceholder" class="my-videos__gallery-attachment" style="display:none;" >';
 
 														echo '<a class="remove-item remove" data-id="clear-input" href="#"></a>';
@@ -972,14 +976,16 @@ get_header();
 														echo '<svg version="1.1" id="Capa_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
 														viewBox="0 0 298 298" style="enable-background:new 0 0 298 298;" xml:space="preserve">
 														<path d="M298,33c0-13.255-10.745-24-24-24H24C10.745,9,0,19.745,0,33v232c0,13.255,10.745,24,24,24h250c13.255,0,24-10.745,24-24V33
-													z M91,39h43v34H91V39z M61,259H30v-34h31V259z M61,73H30V39h31V73z M134,259H91v-34h43V259z M123,176.708v-55.417
-													c0-8.25,5.868-11.302,12.77-6.783l40.237,26.272c6.902,4.519,6.958,11.914,0.056,16.434l-40.321,26.277
-													C128.84,188.011,123,184.958,123,176.708z M207,259h-43v-34h43V259z M207,73h-43V39h43V73z M268,259h-31v-34h31V259z M268,73h-31V39
-													h31V73z"/><g></g><g></g><g></g><g></g><g></g><g></g><g></g><g></g><g></g><g></g><g></g><g></g><g></g><g></g><g></g></svg>';
+															z M91,39h43v34H91V39z M61,259H30v-34h31V259z M61,73H30V39h31V73z M134,259H91v-34h43V259z M123,176.708v-55.417
+															c0-8.25,5.868-11.302,12.77-6.783l40.237,26.272c6.902,4.519,6.958,11.914,0.056,16.434l-40.321,26.277
+															C128.84,188.011,123,184.958,123,176.708z M207,259h-43v-34h43V259z M207,73h-43V39h43V73z M268,259h-31v-34h31V259z M268,73h-31V39
+															h31V73z"/><g></g><g></g><g></g><g></g><g></g><g></g><g></g><g></g><g></g><g></g><g></g><g></g><g></g><g></g><g></g></svg>';
 
 														echo '<p></p>';
 
 													echo '</div>';
+
+													echo gallery_video_uploader($user_post_id);
 
 												echo '</div>';
 

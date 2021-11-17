@@ -266,7 +266,7 @@
 							
 						}
 
-						get_template_part( 'template-parts/content', 'translator', array( 
+						get_template_part( 'template-parts/content', 'archive-translator', array( 
 							'data'  => array(
 							  'distance_from_target_city_to_the_closest_city' => $distance_from_target_city_to_the_closest_city,
 							)) 
