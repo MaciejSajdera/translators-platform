@@ -31,12 +31,12 @@ get_header();
 
 					<div class="login-panel sign-in-wrapper form-active form-activated">
 						<?php get_template_part( 'template-parts/custom-login-form' ); ?>
-						<p id="switch-sign-up">Nie masz konta? Dołącz do PSTK</p>
+						<p id="switch-sign-up" class="text--turquoise fw--500">Nie masz konta? Dołącz do PSTK</p>
 					</div>
 
 					<div class="registration-panel sign-up-wrapper form-deactivated">
 						<?php echo do_shortcode("[register_form]"); ?>
-						<p id="switch-sign-in">Masz już konto? Zaloguj się</p>
+						<p id="switch-sign-in" class="text--turquoise fw--500">Masz już konto? Zaloguj się</p>
 					</div>
 
 				</div>
@@ -207,17 +207,12 @@ get_header();
 
 										if (get_percent_value_of_account_fill_completness()) {
 
-											echo '<div class="account__fill-completeness-wrapper '.$account_fill_completeness_display.'">';
+											echo '<div class="account__fill-completeness-wrapper mb--2'.$account_fill_completeness_display.'">';
 
-												echo '<h3>';
+												echo '<h3 class="fs--600 fw--500">';
 													echo 'Witaj na swoim koncie PSTK.<br />';
 													echo 'Twój profil jest kompletny w <span id="accountFillCompletness" class="'.$completness_value_class.'"><span id="percentValueOfAccountFillCompletness">'.get_percent_value_of_account_fill_completness().'</span><span>%</span></span>.
-													<br />';
-													if (get_percent_value_of_account_fill_completness() != 100)  {
-														echo '<span class="text--blue text--underline-turquoise" id="fillTheseFields">Uzupełnij go.</span>';	
-													}
-	
-												echo '</h3>';
+													</h3>';
 
 												if (get_percent_value_of_account_fill_completness() < 100) {
 													echo '<div id="progressRing"></div>';
@@ -226,15 +221,25 @@ get_header();
 												}
 
 											echo '</div>';
+
+											$empty_fields_status = 'no-empty-fields';
+
+											if (get_percent_value_of_account_fill_completness() < 100) {
+												$empty_fields_status = 'empty-fields';
+											}
 											
-											echo '<div id="emptyProfileFieldsLabels" class="info-box">';
+											echo '<div id="emptyProfileFieldsLabels" class="empty-profile-fields-wrapper info-box '.$empty_fields_status.'">';
 
-											$empty_field_labels = get_labels_of_empty_translator_fields();
+												echo '<span class="fs--600 fw--500 text--blue text--underline-turquoise mb--1" id="fillTheseFields">Uzupełnij go.</span>';
 
-											echo '<p class="fw--500">Nieuzupełnione pola:</p>';
-											foreach($empty_field_labels as $label) :
-												echo '<p class="empty-field-label">'.$label.'</p>';
-											endforeach;
+												$empty_field_labels = get_labels_of_empty_translator_fields();
+
+												echo '<div class="empty-fields-labels">
+													<p class="fw--500">Nieuzupełnione pola:</p>';
+													foreach($empty_field_labels as $label) :
+														echo '<p class="empty-field-label">'.$label.'</p>';
+													endforeach;
+												echo '</div>';
 
 											echo '</div>';
 										}

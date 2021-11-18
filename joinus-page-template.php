@@ -39,6 +39,7 @@ $circles_pair_bg = file_get_contents(get_template_directory() . "/dist/dist/svg/
 ?>
 
 	<div id="primary" class="content-area">
+
 		<main id="main" class="site-main joinus">
 
 		<div class="welcome-view welcome-view-subpage">
@@ -71,6 +72,8 @@ $circles_pair_bg = file_get_contents(get_template_directory() . "/dist/dist/svg/
 				</div>
 
 			</div>
+
+			<?php get_template_part( 'template-parts/partials/scroll-down' ); ?>
 
 		</div>
 

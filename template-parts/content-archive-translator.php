@@ -119,7 +119,7 @@ if ( $args['data'] ) {
 			?>
 
 			<div class="translator__about mb--3">
-				<p class="text--turquoise fw--700 fs--800 mb--05">
+				<p class="info-tile text--turquoise fw--700 fs--800 mb--05">
 					O mnie
 				</p>
 
@@ -155,7 +155,7 @@ if ( $args['data'] ) {
 			if ( $translator_specializations ) {
 
 				echo '<ul>
-						<p class="text--turquoise fw--700 fs--800">'.$tax_label_specializations.'</p>
+						<p class="info-tile text--turquoise fw--700 fs--800">'.$tax_label_specializations.'</p>
 						';
 
 				foreach( $translator_specializations as $term ) :
@@ -176,7 +176,7 @@ if ( $args['data'] ) {
 			if ( $translator_languages ) {
 
 				echo '<ul>
-						<p class="text--turquoise fw--700 fs--800">'.$tax_label_languages.'</p>
+						<p class="info-tile text--turquoise fw--700 fs--800">'.$tax_label_languages.'</p>
 					  ';
 
 				foreach( $translator_languages as $term ) :

@@ -140,7 +140,7 @@ $localization_icon = file_get_contents(get_template_directory() . "/dist/dist/sv
 							?>
 
 							<div>
-								<h2 class="text--turquoise fw--700 fs--600 mb--05">
+								<h2 class="info-tile text--turquoise fw--700 fs--600 mb--05">
 									Jedno zdanie o mnie
 								</h2>
 
@@ -165,7 +165,7 @@ $localization_icon = file_get_contents(get_template_directory() . "/dist/dist/sv
 						if ( $translator_languages ) {
 
 							echo '<ul>
-									<h2 class="text--turquoise fw--700 fs--600">'.$tax_label_languages.'</h2>
+									<h2 class="info-tile text--turquoise fw--700 fs--600">'.$tax_label_languages.'</h2>
 								';
 
 							foreach( $translator_languages as $term ) :
@@ -197,7 +197,7 @@ $localization_icon = file_get_contents(get_template_directory() . "/dist/dist/sv
 						if ( $translator_specializations ) {
 
 							echo '<ul>
-									<h2 class="text--turquoise fw--700 fs--600">'.$tax_label_specializations.'</h2>
+									<h2 class="info-tile text--turquoise fw--700 fs--600">'.$tax_label_specializations.'</h2>
 									';
 
 							foreach( $translator_specializations as $term ) :
@@ -211,7 +211,7 @@ $localization_icon = file_get_contents(get_template_directory() . "/dist/dist/sv
 
 					<div class="translator__about">
 						
-						<h2 class="text--turquoise fw--700 fs--600 mb--1">O mnie</h2>
+						<h2 class="info-tile text--turquoise fw--700 fs--600 mb--1">O mnie</h2>
 
 						<p>
 							<?php

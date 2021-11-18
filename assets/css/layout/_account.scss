@@ -39,7 +39,8 @@
 	}
 
 	&__welcome-message {
-		margin-bottom: 2rem;
+		margin-bottom: 2rem !important;
+		position: relative;
 
 		h3:first-of-type {
 			margin-bottom: 0;
@@ -49,6 +50,7 @@
 			display: block;
 			margin-top: 1rem;
 			cursor: pointer;
+			line-height: 1;
 		}
 	}
 
@@ -217,6 +219,14 @@
 			font-weight: 700;
 			color: $color__main-theme--blue;
 			@include fluid-type($min_width, $max_width, 20px, 28px);
+			transform: translateY(-50%);
+			margin-top: -1rem;
+			background: white;
+			padding: 0 0.35em;
+
+			@media screen and (min-width: 1024px) {
+				margin-top: -2rem;
+			}
 		}
 	}
 
@@ -751,14 +761,24 @@ $profile_picture_width: 175px;
 	}
 }
 
-#emptyProfileFieldsLabels {
+.empty-profile-fields-wrapper {
 	display: none;
-	margin: 2rem 0;
+	margin-bottom: 0;
 	p {
 		margin-bottom: 0.5rem;
 	}
 }
 
+.empty-fields {
+	display: block;
+}
+
+.empty-fields-labels {
+	display: none;
+}
+
 .show-empty-fields {
-	display: block !important;
+	.empty-fields-labels {
+		display: block;
+	}
 }

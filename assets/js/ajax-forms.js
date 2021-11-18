@@ -445,12 +445,20 @@ jQuery(document).ready(function($) {
 		const accountFillCompletenessWrapper = document.querySelector(
 			".account__fill-completeness-wrapper"
 		);
+
 		const accountFillCompletness = document.querySelector(
 			"#accountFillCompletness"
 		);
 
 		const percentValueOfAccountFillCompletnessHolder = document.querySelector(
 			"#percentValueOfAccountFillCompletness"
+		);
+		const emptyProfileFieldsLabelsContainer = document.querySelector(
+			"#emptyProfileFieldsLabels"
+		);
+
+		const oldlabelsOfEmptyTranslatorFields = document.querySelectorAll(
+			"#emptyProfileFieldsLabels .empty-field-label"
 		);
 
 		// Refresh percent Value Of Account Fill Completness
@@ -459,6 +467,22 @@ jQuery(document).ready(function($) {
 			dataJSON.percent_value_of_account_fill_completness;
 
 		percentValueOfAccountFillCompletnessHolder.textContent = percentValueOfAccountFillCompletness;
+
+		if (
+			percentValueOfAccountFillCompletness < 100 &&
+			emptyProfileFieldsLabelsContainer.classList.contains("no-empty-fields")
+		) {
+			emptyProfileFieldsLabelsContainer.classList.remove("no-empty-fields");
+			emptyProfileFieldsLabelsContainer.classList.add("empty-fields");
+		}
+
+		if (
+			percentValueOfAccountFillCompletness === 100 &&
+			emptyProfileFieldsLabelsContainer.classList.contains("empty-fields")
+		) {
+			emptyProfileFieldsLabelsContainer.classList.remove("empty-fields");
+			emptyProfileFieldsLabelsContainer.classList.add("no-empty-fields");
+		}
 
 		// if (progressHistory.length > 0) {
 		// 	progressHistory.length = 0;
@@ -472,8 +496,6 @@ jQuery(document).ready(function($) {
 
 		animateRingAsync().then(() => {
 			setTimeout(() => {
-				console.log("!!!");
-
 				if (progressRingHolder.classList.contains("progress-ring--complete")) {
 					const congratulationsMessage = `
 					<div class="text--center relative">
@@ -553,14 +575,6 @@ jQuery(document).ready(function($) {
 		// }
 
 		// Refresh list of empty fields
-
-		const emptyProfileFieldsLabelsContainer = document.querySelector(
-			"#emptyProfileFieldsLabels"
-		);
-
-		const oldlabelsOfEmptyTranslatorFields = document.querySelectorAll(
-			"#emptyProfileFieldsLabels .empty-field-label"
-		);
 
 		const labelsOfEmptyTranslatorFieldsAjax =
 			dataJSON.labels_of_empty_translator_fields;

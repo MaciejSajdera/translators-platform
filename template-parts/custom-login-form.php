@@ -65,7 +65,7 @@
 
             wp_login_form( $args );
 
-            echo '<a href="'.wp_lostpassword_url().'" class="forgot-password-link">Nie pamiętasz hasła?</a>';
+            echo '<a href="'.wp_lostpassword_url().'" class="forgot-password-link mb--2">Nie pamiętasz hasła?</a>';
         
         ?>
     </div>

@@ -98,7 +98,7 @@
 		justify-content: space-between;
 		padding: 6rem 0;
 
-		border-top: 1px solid #f8f3f3;
+		border-top: 1px solid $color__main-theme--blue-transparent;
 
 		@media screen and (min-width: 1024px) {
 			flex-flow: row;
@@ -157,12 +157,6 @@
 				width: 30%;
 			}
 
-			p,
-			li {
-				padding: 0.75rem 0;
-				border-bottom: 1px solid $color__main-theme--turquoise;
-			}
-
 			p {
 				margin-right: 1.5rem;
 
@@ -190,9 +184,9 @@
 			p {
 				padding: 0.75rem 0;
 
-				&:first-of-type {
-					border-bottom: 1px solid $color__main-theme--turquoise;
-				}
+				// &:first-of-type {
+				// 	border-bottom: 1px solid $color__main-theme--turquoise;
+				// }
 			}
 		}
 

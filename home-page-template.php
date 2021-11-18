@@ -79,13 +79,7 @@ $circles_group_big = file_get_contents(get_template_directory() . "/dist/dist/sv
 
 			</div>
 
-			<div class="welcome-section-scroll-down">
-				<div class="chevron-wrapper">
-					<div class="chevron"></div>
-					<div class="chevron"></div>
-					<div class="chevron"></div>
-				</div>
-			</div>
+			<?php get_template_part( 'template-parts/partials/scroll-down' ); ?>
 
 		</section>
 

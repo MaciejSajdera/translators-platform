@@ -1,0 +1,39 @@
+.contact {
+	.contact-type-section {
+		margin-bottom: 7.5rem;
+
+		.wrapper-flex-drow-mcol {
+			@media screen and (min-width: 1024px) {
+				flex-flow: row-reverse;
+			}
+		}
+
+		.image-holder {
+			margin-bottom: 3rem;
+
+			@media screen and (min-width: 1024px) {
+				margin-bottom: 0;
+				width: 50%;
+			}
+
+			img {
+				max-width: 200px;
+
+				@media screen and (min-width: 1024px) {
+					max-width: 300px;
+				}
+			}
+		}
+	}
+
+	&__section-5 {
+		padding-top: 7.5rem;
+	}
+
+	.contact-info-holder {
+		@media screen and (min-width: 1024px) {
+			width: 50%;
+			padding-right: 12rem;
+		}
+	}
+}
