@@ -11,6 +11,10 @@ $acf_fields_active = false;
 
 get_header();
 
+$fields_for_login_page = get_field("fields_for_login_page", 1705);
+$fields_for_login_page_image = $fields_for_login_page['image'];
+$fields_for_login_page_paragraph = $fields_for_login_page['paragraph'];
+
 // var_dump($_POST);
 // echo '<br>';
 // var_dump($_FILES);
@@ -23,6 +27,9 @@ get_header();
 		<?php
 
 		if ( !is_user_logged_in() ) {
+
+			vicode_error_messages();
+
 			?>
 
 			<div class="wrapper-flex-drow-mcol login-and-registration login-and-registration__welcome-view">
@@ -42,7 +49,16 @@ get_header();
 				</div>
 
 				<div class="login-and-registration__our-mission">
-						<h1>Nasza misja</h1>
+						<?php
+						if ($fields_for_login_page_image) {
+							?>
+							<div class="image-holder">
+								<img src="<?php echo $fields_for_login_page_image['url'] ?>" alt="<?php echo $fields_for_login_page_image['alt'] ?>" loading="lazy">
+							</div>
+							<?php
+						}
+						?>
+						<h1 class="text--blue fs--1000 fw--900 text--center"><?php echo $fields_for_login_page_paragraph ?></h1>
 				</div>
 
 			</div>
@@ -573,6 +589,14 @@ get_header();
 
 										echo '<div class="info-box__header"><p>Próbka głosu</p></div>';
 
+										/* AJAX LOADER */
+
+										echo '<div class="my-ajax-loader">';
+
+											echo '<div class="my-ajax-loader__spinner"></div>';
+
+										echo '</div>';
+
 										/* CONTENT BOX */
 
 										echo '<div class="content-box">';
@@ -583,13 +607,6 @@ get_header();
 
 												echo '<div class="my-sounds__wrapper ajax-content-wrapper">';
 
-													/* AJAX LOADER */
-
-													echo '<div class="my-ajax-loader">';
-
-														echo '<div class="my-ajax-loader__spinner"></div>';
-
-													echo '</div>';
 
 													echo '<div class="my-sounds__gallery">';
 
@@ -835,15 +852,23 @@ get_header();
 
 								/* END OF work INFO CONTAINER */
 
-
-
 								/* PICTURES AND VIDEOS CONTAINER */
 
 								echo '<div class="info-box pictures-and-videos-container">';
 
 									echo '<div class="account__box-container">';
 
-									echo '<div class="info-box__header"><p>Zdjęcia i filmy</p></div>';
+										echo '<div class="info-box__header"><p>Zdjęcia i filmy</p></div>';
+										
+										/* AJAX LOADER */
+
+										echo '<div class="my-ajax-loader">
+												<div class="my-ajax-loader__spinner"></div>
+												<div class="progress">
+													<div class="progress-bar"></div>
+													<div class="progress-percents"></div>
+												</div>
+											</div>';
 
 										/* CONTENT BOX */
 
@@ -854,14 +879,6 @@ get_header();
 											/* IMAGES GALLERY PANEL */
 
 												echo '<div class="my-pictures__wrapper ajax-content-wrapper col-m100-d50">';
-
-													/* AJAX LOADER */
-
-													echo '<div class="my-ajax-loader">';
-
-														echo '<div class="my-ajax-loader__spinner"></div>';
-			
-													echo '</div>';
 													
 													echo '<div class="my-pictures__gallery">';
 
@@ -907,14 +924,6 @@ get_header();
 												/* VIDEO GALLERY PANEL */
 
 												echo '<div class="my-videos__wrapper ajax-content-wrapper col-m100-d50">';
-
-													/* AJAX LOADER */
-
-													echo '<div class="my-ajax-loader">';
-
-														echo '<div class="my-ajax-loader__spinner"></div>';
-			
-													echo '</div>';
 
 													echo '<div class="my-videos__gallery">';
 

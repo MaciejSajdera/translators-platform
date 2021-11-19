@@ -99,6 +99,7 @@ mix
 	.js(`${devPath}/js/domConfetti.js`, "js")
 	.js(`${devPath}/js/main.js`, "js")
 	.js(`${devPath}/js/ajax-forms.js`, "js")
+	.js(`${devPath}/js/contact-page.js`, "js")
 	.js(`${devPath}/js/admin/customizer.js`, "js");
 
 /*

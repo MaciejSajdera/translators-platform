@@ -1,4 +1,56 @@
 .contact {
+	.form-holder {
+		max-width: 500px;
+		form {
+			background-color: rgba(255, 255, 255, 0.35);
+			padding: 3rem;
+			border-radius: 10px;
+
+			input[type="text"],
+			input[type="email"],
+			textarea {
+				width: 100%;
+				background-color: transparent;
+				color: $color__main-theme--blue;
+
+				&::placeholder {
+					color: $color__main-theme--blue;
+				}
+			}
+
+			input[type="checkbox"] {
+				align-self: flex-start;
+			}
+
+			.form-field {
+				margin-bottom: 1.5rem;
+			}
+
+			.textarea {
+				margin-bottom: 3rem;
+			}
+
+			.acceptance {
+				label {
+					line-height: 1.25;
+				}
+			}
+
+			.frm_error {
+				margin: 0.5rem 0;
+				color: $color__error-red;
+				font-weight: 400;
+			}
+
+			button {
+				width: 100%;
+			}
+			// .form-field {
+			// 	display: flex;
+			// }
+		}
+	}
+
 	.contact-type-section {
 		margin-bottom: 7.5rem;
 

@@ -106,7 +106,6 @@ h4 {
 .page-template-user-account-page-template {
 	h1 {
 		text-transform: unset;
-		color: black;
 		font-weight: 700;
 		letter-spacing: 0;
 	}
@@ -293,10 +292,11 @@ big {
 	}
 
 	&--big-header {
-		@include fluid-type($min_width, $max_width, 44px, 100px);
-		text-align: center;
-		margin: 0 0 1.5em;
+		@include fluid-type($min_width, $max_width, 40px, 88px);
+		// text-align: center;
+		margin: 0 0 6rem;
 		font-weight: 900;
+		line-height: 1;
 	}
 
 	&--error {

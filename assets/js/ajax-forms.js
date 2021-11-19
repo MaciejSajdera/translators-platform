@@ -1,68 +1,9 @@
 import { confetti } from "./domConfetti.js";
+import { handleModal } from "./helperFunctions.js";
 const ProgressBar = require("progressbar.js");
 
 jQuery(document).ready(function($) {
 	/*****ADDITIONAL FUNCTIONALITIES RELATED TO FORMS ********/
-
-	/* 	Modal for displaying errors */
-	const modal = document.querySelector(".modal");
-	const modalContent = modal.querySelector(".modal-content");
-	const modalMessageHolder = modal.querySelector(".modal-message-holder");
-	const closeButton = document.querySelector(".close-button");
-
-	function showModal(modalContent) {
-		modal.classList.add("unlock-modal");
-		modal.classList.add("show-modal");
-
-		// setTimeout(() => modal.classList.add("show-modal"), 300);
-
-		if (modalContent) {
-			console.log(modalContent);
-			console.log(typeof modalContent);
-
-			typeof modalContent === "object" ? showObjectInModal(modalContent) : "";
-		}
-
-		// modal.classList.contains("show-modal")
-		// 	? modal.classList.remove("show-modal")
-		// 	: modal.classList.add("show-modal");
-	}
-
-	function showObjectInModal(modalContent) {
-		const objectValues = Object.values(modalContent);
-		objectValues.forEach(value => {
-			let newParagraph = document.createElement("P");
-
-			newParagraph.classList.add("modal-message");
-			modalMessageHolder.appendChild(newParagraph);
-			newParagraph.innerText = value.innerText;
-
-			if (value.classList.contains("php-error__text")) {
-				newParagraph.classList.add("php-error__text");
-			}
-
-			console.log(value);
-		});
-	}
-
-	function closeModal() {
-		modal.classList.remove("show-modal");
-		modal.classList.remove("unlock-modal");
-		modalMessageHolder.innerHTML = "";
-
-		setTimeout(() => {
-			modalMessageHolder.innerHTML = "";
-		}, 300);
-	}
-
-	function windowOnClick(event) {
-		if (event.target === modal && event.target !== closeButton) {
-			closeModal();
-		}
-	}
-
-	closeButton.addEventListener("click", closeModal);
-	window.addEventListener("click", windowOnClick);
 
 	/* 	For handling previews of files added by repeaters */
 
@@ -377,8 +318,6 @@ jQuery(document).ready(function($) {
 
 	const progressRingHolder = document.querySelector("#progressRing");
 
-	let progressRingFull;
-
 	if (progressRingHolder) {
 		var progressRing = new ProgressBar.Circle(progressRingHolder, {
 			color: "#16538c",
@@ -505,12 +444,13 @@ jQuery(document).ready(function($) {
 					</div>
 					`;
 
-					let congratulationsMessageNode = document
+					const congratulationsMessageNode = document
 						.createRange()
 						.createContextualFragment(congratulationsMessage);
 
-					modalMessageHolder.appendChild(congratulationsMessageNode);
-					showModal();
+					// modalMessageHolder.appendChild(congratulationsMessageNode);
+					// showModal();
+					handleModal(congratulationsMessageNode);
 
 					// Confetti config
 					// https://daniel-lundin.github.io/react-dom-confetti/
@@ -1000,7 +940,7 @@ jQuery(document).ready(function($) {
 		submitButton.classList.remove("reveal-button");
 		const uploadSoundPreview = this.querySelector(".input-preview__wrapper");
 
-		const thisAjaxLoader = this.closest(".ajax-content-wrapper").querySelector(
+		const thisAjaxLoader = this.closest(".info-box").querySelector(
 			".my-ajax-loader"
 		);
 
@@ -1010,7 +950,7 @@ jQuery(document).ready(function($) {
 
 		var soundGalleryFormData = new FormData(this);
 
-		const progress = this.querySelector(".progress");
+		const progress = this.closest(".info-box").querySelector(".progress");
 		const progressBar = progress.querySelector(".progress-bar");
 		const progressPercents = progress.querySelector(".progress-percents");
 
@@ -1190,9 +1130,13 @@ jQuery(document).ready(function($) {
 
 				console.log(errorMessageNode);
 
-				modalMessageHolder.appendChild(errorMessageNode[0]);
+				// modalMessageHolder.appendChild(errorMessageNode[0]);
 
-				showModal();
+				// showModal();
+
+				let modalMessage = errorMessageNode[0];
+
+				handleModal(modalMessage);
 			}
 		});
 	});
@@ -1357,9 +1301,13 @@ jQuery(document).ready(function($) {
 
 				console.log(errorMessageNode);
 
-				modalMessageHolder.appendChild(errorMessageNode[0]);
+				// modalMessageHolder.appendChild(errorMessageNode[0]);
 
-				showModal();
+				// showModal();
+
+				let modalMessage = errorMessageNode[0];
+
+				handleModal(modalMessage);
 
 				originalImage.style.opacity = "1";
 				uploadPicturePreview.classList.remove("has-image");
@@ -1380,13 +1328,13 @@ jQuery(document).ready(function($) {
 		submitButton.classList.remove("reveal-button");
 		const uploadPicturePreview = this.querySelector(".input-preview__wrapper");
 
-		const thisAjaxLoader = this.closest(".ajax-content-wrapper").querySelector(
+		const thisAjaxLoader = this.closest(".info-box").querySelector(
 			".my-ajax-loader"
 		);
 
 		var galleryFormData = new FormData(this);
 
-		const progress = this.querySelector(".progress");
+		const progress = this.closest(".info-box").querySelector(".progress");
 		const progressBar = progress.querySelector(".progress-bar");
 		const progressPercents = progress.querySelector(".progress-percents");
 
@@ -1538,9 +1486,13 @@ jQuery(document).ready(function($) {
 
 				console.log(errorMessageNode);
 
-				modalMessageHolder.appendChild(errorMessageNode[0]);
+				// modalMessageHolder.appendChild(errorMessageNode[0]);
 
-				showModal();
+				// showModal();
+
+				let modalMessage = errorMessageNode[0];
+
+				handleModal(modalMessage);
 
 				// jsonValue = jQuery.parseJSON( jqXHR.responseText );
 				// console.log(jsonValue.Message);
@@ -1561,7 +1513,7 @@ jQuery(document).ready(function($) {
 		submitButton.classList.remove("reveal-button");
 		const uploadPicturePreview = this.querySelector(".input-preview__wrapper");
 
-		const thisAjaxLoader = this.closest(".ajax-content-wrapper").querySelector(
+		const thisAjaxLoader = this.closest(".info-box").querySelector(
 			".my-ajax-loader"
 		);
 
@@ -1571,7 +1523,7 @@ jQuery(document).ready(function($) {
 
 		var videoGalleryFormData = new FormData(this);
 
-		const progress = this.querySelector(".progress");
+		const progress = this.closest(".info-box").querySelector(".progress");
 		const progressBar = progress.querySelector(".progress-bar");
 		const progressPercents = progress.querySelector(".progress-percents");
 
@@ -1689,9 +1641,13 @@ jQuery(document).ready(function($) {
 
 				console.log(errorMessageNode);
 
-				modalMessageHolder.appendChild(errorMessageNode[0]);
+				// modalMessageHolder.appendChild(errorMessageNode[0]);
 
-				showModal();
+				let modalMessage = errorMessageNode[0];
+
+				handleModal(modalMessage);
+
+				// showModal();
 
 				// jsonValue = jQuery.parseJSON( jqXHR.responseText );
 				// console.log(jsonValue.Message);
@@ -1772,104 +1728,19 @@ jQuery(document).ready(function($) {
 
 				console.log(errorMessageNode);
 
-				modalMessageHolder.appendChild(errorMessageNode[0]);
+				// modalMessageHolder.appendChild(errorMessageNode[0]);
 
-				showModal();
+				// showModal();
+
+				let modalMessage = errorMessageNode[0];
+
+				handleModal(modalMessage);
 
 				// jsonValue = jQuery.parseJSON( jqXHR.responseText );
 				// console.log(jsonValue.Message);
 			}
 		});
 	});
-
-	/* 	User Settings Update Password */
-
-	// Modal for errors displayed on page reload
-
-	const allphpErrorContentainers = document.querySelectorAll(
-		".php-error__content"
-	);
-
-	allphpErrorContentainers &&
-		allphpErrorContentainers.forEach(container => {
-			let singleErrors = container.querySelectorAll(".php-error__text");
-			showModal(singleErrors);
-		});
-
-	// var changeSettingsUserPassword =
-	// 	ajax_forms_params.settings_user_password_form;
-
-	// $(changeSettingsUserPassword).submit(function(event) {
-	// 	event.preventDefault();
-
-	// 	const thisAjaxLoader = this.closest(".ajax-content-wrapper").querySelector(
-	// 		".my-ajax-loader"
-	// 	);
-
-	// 	var changeSettingsUserPasswordFormData = new FormData(this);
-
-	// 	$.ajax({
-	// 		url: ajaxurl + "?action=change_settings_user_password_with_ajax",
-	// 		type: "POST",
-	// 		data: changeSettingsUserPasswordFormData,
-	// 		async: true,
-	// 		cache: false,
-	// 		contentType: false,
-	// 		processData: false,
-
-	// 		beforeSend: function() {
-	// 			// Before we send the request, remove the .hidden class from the spinner and default to inline-block.
-	// 			thisAjaxLoader.classList.add("my-ajax-loader--active");
-	// 		},
-
-	// 		complete: function() {
-	// 			thisAjaxLoader.classList.remove("my-ajax-loader--active");
-	// 		},
-
-	// 		success: function(data) {
-	// 			console.log("SUCCESS!");
-	// 			console.log(data);
-
-	// 			// const dataJSON = JSON.parse(data);
-
-	// 			// console.log(dataJSON);
-
-	// 			// const userCurrentLoginEmailText = document.querySelector(
-	// 			// 	"#user_current_login_email"
-	// 			// );
-
-	// 			// userCurrentLoginEmailText.innerText = `${dataJSON}`;
-
-	// 			let successMessageNode = $.parseHTML(data);
-
-	// 			modalMessageHolder.appendChild(successMessageNode[0]);
-
-	// 			showModal();
-
-	// 			return data;
-	// 		},
-	// 		error: function(jqXHR, textStatus, errorThrown) {
-	// 			console.log(jqXHR);
-	// 			console.log(textStatus);
-	// 			console.log(errorThrown);
-
-	// 			let errorMessage = jqXHR.responseText;
-
-	// 			console.log(errorMessage);
-
-	// 			let errorMessageNode = $.parseHTML(errorMessage);
-
-	// 			console.log(errorMessageNode);
-
-	// 			modalMessageHolder.appendChild(errorMessageNode[0]);
-
-	// 			showModal();
-
-	// 			// jsonValue = jQuery.parseJSON( jqXHR.responseText );
-	// 			// console.log(jsonValue.Message);
-	// 		}
-	// 	});
-	// });
 
 	/* UPDATE VISIBILITY SETTINGS FORM */
 

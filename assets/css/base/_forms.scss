@@ -61,11 +61,15 @@ $login-and-registration-height: 80vh;
 	&__welcome-view {
 		display: flex;
 		min-height: $login-and-registration-height;
+
+		> * {
+			padding: 1.5em;
+		}
 	}
 
 	&__forms {
 		height: 100%;
-		border: 1px solid $color__border-element;
+		// border: 1px solid $color__border-element;
 		position: relative;
 		display: flex;
 		justify-content: center;
@@ -74,10 +78,6 @@ $login-and-registration-height: 80vh;
 		@media screen and (min-width: 1024px) {
 			width: 35%;
 			min-height: $login-and-registration-height;
-		}
-
-		> * {
-			padding: 1.5em;
 		}
 
 		form {
@@ -169,10 +169,15 @@ $login-and-registration-height: 80vh;
 
 	&__our-mission {
 		display: flex;
+		flex-flow: column;
 		justify-content: center;
 		align-items: center;
+		// border: 1px solid $color__border-element;
 
-		border: 1px solid $color__border-element;
+		img {
+			max-height: 550px;
+			padding: 2rem;
+		}
 
 		@media screen and (min-width: 1024px) {
 			width: 65%;

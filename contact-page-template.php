@@ -53,14 +53,18 @@ $circles_3_bg = file_get_contents(get_template_directory() . "/dist/dist/svg/cir
 
 					<h2 class="mb--2">
 						<span class="fs--1400 fw--700 lh--125 text--blue"><?php echo $section_1_h2_part_1 ?></span>
+						<br />
 						<span class="fs--1400 fw--700 lh--125 text--turquoise"><?php echo $section_1_h2_part_2 ?></span>
 					</h2>
 
 				</div>
 
-				<div class="welcome-view__right image-holder w--fit-content image-to-the-right">
+				<div class="welcome-view__right image-holder w--fit-content image-to-the-left">
 
-					//formularz
+					<div class="form-holder">
+						<?php echo do_shortcode('[formidable id=2]') ?>
+					</div>
+
 
 				</div>
 

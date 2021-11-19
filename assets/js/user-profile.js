@@ -1,4 +1,27 @@
+import { handleModal } from "./helperFunctions.js";
+
 document.addEventListener("DOMContentLoaded", () => {
+	// Modal for errors displayed on page reload
+	const allphpErrorContentainers = document.querySelectorAll(
+		".php-error__text"
+	);
+
+	if (allphpErrorContentainers.length > 0) {
+		const errorsWrapperForModal = document.createElement("DIV");
+		errorsWrapperForModal.classList.add("errors-wrapper-for-modal");
+		document.querySelector("BODY").appendChild(errorsWrapperForModal);
+		// console.log(errorsWrapperForModal);
+
+		allphpErrorContentainers.forEach(container => {
+			// const singleErrors = container.querySelectorAll(".php-error__text");
+			// showModal(singleErrors);
+			errorsWrapperForModal.appendChild(container);
+		});
+
+		// console.log(errorsWrapperForModal);
+		handleModal(errorsWrapperForModal);
+	}
+
 	const switchSignIn = document.querySelector("#switch-sign-in");
 	const switchSignUp = document.querySelector("#switch-sign-up");
 	const signInWrapper = document.querySelector(".sign-in-wrapper");
@@ -247,7 +270,7 @@ document.addEventListener("DOMContentLoaded", () => {
 					deleteFieldButton.classList.add(
 						// "button",
 						// "button__filled--blue",
-						"repeater__button",
+						// "repeater__button",
 						"repeater__button--delete",
 						"remove",
 						"remove-item"
@@ -434,7 +457,6 @@ document.addEventListener("DOMContentLoaded", () => {
 						thisUploadFileButton.classList.remove("dnone");
 					}
 
-				
 					let pictureId = e.target.dataset.id;
 
 					if (

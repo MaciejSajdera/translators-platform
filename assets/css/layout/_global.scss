@@ -424,6 +424,12 @@ section {
 	display: none;
 }
 
+.modal {
+	.show__only-in-modal {
+		display: block;
+	}
+}
+
 .php-error {
 	&__wrapper {
 		display: flex;
@@ -494,6 +500,10 @@ section {
 				// }
 			}
 
+			select[name="_sf_sort_order[]"] {
+				background: $color__text-white;
+			}
+
 			.select2-container {
 				width: 100% !important;
 				// min-width: 220px;
@@ -532,7 +542,7 @@ section {
 
 				// exceptions
 
-				[name="_sf_sort_order[]"] {
+				select[name="_sf_sort_order[]"] {
 					opacity: 1 !important;
 				}
 			}
@@ -625,7 +635,8 @@ section {
 	.select2-selection--multiple,
 	.select2-selection--single,
 	.sf-field-sort_order select,
-	.sf-field-submit input {
+	.sf-field-submit input,
+	.sf-input-select {
 		padding: 0.5em 1em !important;
 		font-size: 0.9rem;
 		min-height: 24px;
@@ -670,7 +681,8 @@ section {
 			right: 5px;
 			background: white;
 			border-radius: 100rem;
-			width: 25%;
+			width: fit-content;
+			padding-right: 0.75em;
 			display: flex;
 			justify-content: center;
 
@@ -1079,11 +1091,23 @@ section {
 }
 
 .common-box {
-	margin: 4em 0;
+	margin-bottom: 6rem;
+	padding-bottom: 9rem;
+	border-bottom: 1px solid $color__main-theme--blue-transparent;
+
+	&__blog {
+		h2,
+		.title-paragraph {
+			@media screen and (min-width: 1024px) {
+				max-width: 50%;
+			}
+		}
+	}
 
 	&__new-posts {
 		flex-wrap: wrap;
 		justify-content: space-between;
+		row-gap: 6rem;
 
 		h2 {
 			text-align: center;
@@ -1096,7 +1120,6 @@ section {
 			padding: 0;
 			box-shadow: $box-shadow_standard--black;
 			border-radius: 5px;
-			margin-bottom: 6rem;
 
 			a {
 				display: block;
@@ -1430,7 +1453,6 @@ section {
 	.advantage {
 		@media screen and (min-width: 1024px) {
 			max-width: 45%;
-			margin-left: 5%;
 		}
 
 		&__wrapper {

@@ -153,12 +153,13 @@ function pstk_scripts() {
 	// wp_add_inline_style( 'pstk-style', $custom_css );
 
 	wp_enqueue_script( 'pstk-app', get_template_directory_uri() . '/dist/js/main.js', array(), '1.14', true );
-	// wp_enqueue_script( 'multiselect', get_template_directory_uri() . '/dist/js/multiselect.js', array(), '', true );
 
 	if (is_page(18)) {
-
-		wp_enqueue_script('jquery');
 		wp_enqueue_script( 'pstk-user-profile', get_template_directory_uri() . '/dist/js/user-profile.js', array(), '', true );
+	}
+
+	if (is_page(18) && is_user_logged_in()) {
+		wp_enqueue_script('jquery');
 		wp_register_script('ajax_forms', get_template_directory_uri() . '/dist/js/ajax-forms.js', array('jquery') ); 
 
 		wp_localize_script('ajax_forms', 'ajax_forms_params', 
@@ -177,6 +178,10 @@ function pstk_scripts() {
 
 	if (is_page(1139)) {
 		wp_enqueue_script( 'tabs', get_template_directory_uri() . '/dist/js/tabs.js', array(), '', true );
+	}
+
+	if (is_page(1141)) {
+		wp_enqueue_script( 'tabs', get_template_directory_uri() . '/dist/js/contact-page.js', array(), '', true );
 	}
 
 	if ( is_singular() && comments_open() && get_option( 'thread_comments' ) ) {
@@ -607,7 +612,7 @@ function vicode_registration_fields() {
 		
 		<?php 
 		// show any error messages after form submission
-		vicode_error_messages();
+		// vicode_error_messages();
 		?>
 		
 		<form id="vicode_registration_form" class="vicode_form" action="" method="POST">
@@ -2443,11 +2448,6 @@ function gallery_image_uploader($user_post_id) {
 			<input type="submit" class="button button__filled--blue w--full" name="submit_image_to_gallery" value="Zaktualizuj galerię" />
 			<?php wp_nonce_field( "handle_image_to_gallery_upload", "image_to_gallery_nonce" ); ?>
 
-			<div class="progress">
-				<div class="progress-bar"></div>
-				<div class="progress-percents"></div>
-			</div>
-
 		</div>
 
 	</form>
@@ -2679,10 +2679,6 @@ function gallery_video_uploader($user_post_id) {
 				
 				<?php wp_nonce_field( "handle_video_to_gallery_upload", "video_to_gallery_nonce" ); ?>
 
-				<div class="progress">
-					<div class="progress-bar"></div>
-					<div class="progress-percents"></div>
-				</div>
 	</form>
 
 	<?php

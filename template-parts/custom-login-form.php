@@ -16,7 +16,6 @@
 
             // https://code.tutsplus.com/tutorials/build-a-custom-wordpress-user-flow-part-3-password-reset--cms-23811
 
-            vicode_error_messages();
 
             if ($login === "failed" ) {
                 echo '<p class="login-msg php-error__text">Niepoprawny login lub hasło.</p>';
@@ -24,7 +23,7 @@
             }
 
             if ( $login === "empty" ) {
-                echo '<p class="login-msg php-error__text">Username and/or Password is empty.</p>';
+                echo '<p class="login-msg php-error__text">Pole z nazwą lub hasłem jest puste.</p>';
             }
 
             if ($login === "logged-out" ) {

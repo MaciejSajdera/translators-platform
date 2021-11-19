@@ -32,11 +32,15 @@ $section_4_paragraph = $section_4['paragraph'];
 $section_4_link = $section_4['link'];
 
 $section_6 = get_field("section_6");
+$section_6_h2 = $section_6['h2'];
+$section_6_title_1 = $section_6['title_1'];
 $translator_of_the_month = $section_6['translator_of_the_month'];
+$section_6_title_2 = $section_6['title_2'];
 $management_member_of_the_month = $section_6["management_member_of_the_month"];
 
 $circles_group = file_get_contents(get_template_directory() . "/dist/dist/svg/circles-group.svg");
 $circles_group_big = file_get_contents(get_template_directory() . "/dist/dist/svg/circles-group-big.svg");
+$linkedin_icon = file_get_contents(get_template_directory() . "/dist/dist/svg/linkedin.svg");
 
 ?>
 
@@ -136,12 +140,10 @@ $circles_group_big = file_get_contents(get_template_directory() . "/dist/dist/sv
 
 		</section>
 
-
-
 		<section class="home__section-3">
 
 			<div class="section-3__title">
-				<h2 class="text--big-header"><span class="text--blue"><?php echo $section_3_title_part_1 ?></span> <span class="text--outline-blue"><?php echo $section_3_title_part_2 ?></span></h2>
+				<h2 class="text--big-header text--blue"><span class=""><?php echo $section_3_title_part_1 ?></span> <span class=""><?php echo $section_3_title_part_2 ?></span></h2>
 			</div>
 
 			<div class="advantages">
@@ -220,100 +222,139 @@ $circles_group_big = file_get_contents(get_template_directory() . "/dist/dist/sv
 
 		<section class="home__section-6">
 
+			<h2 class="text--blue fw--900 fs--1800 mb--8 text--big-header">
+				<?php echo $section_6_h2 ?>
+			</h2>
+
 				<div class="get-to-know-us">
 					<div class="wrapper-flex-drow-mcol get-to-know-us__container">
 
 					<?php
 
 					if ($translator_of_the_month) {
-
+												
 						?>
 
 						<div class="get-to-know-us__element-wrapper wrapper-flex-col-center">
 
-						Tłumacz miesiąca
+							<p class="text--blue fs--1200 fw--700 mb--5">
+							<?php echo $section_6_title_1 ?>
+							</p>
 
-						<?php
+							<div class="translator__top">
 
-						// Relationship field approach
+								<a class="wrapper-flex-col-center mb--2" href="<?php echo get_permalink($translator_of_the_month->ID) ?>">
 
-						echo '<a class="wrapper-flex-col-center" href="'.get_permalink($translator_of_the_month->ID).'">';
-						
-							echo '<img src="'.get_the_post_thumbnail_url($translator_of_the_month->ID).'" loading="lazy">';
+									<div class="profile-picture__wrapper text--center mb--4">
 
-							$translator_of_the_month_first_name =  get_field('translator_first_name', $translator_of_the_month->ID);
-							$translator_of_the_month_last_name =  get_field('translator_last_name', $translator_of_the_month->ID);
+											<div class="corner__decoration corner__decoration--left"></div>
 
+											<img src="<?php echo get_the_post_thumbnail_url($translator_of_the_month->ID) ?>" loading="lazy">
 
-							echo '<p>'.$translator_of_the_month_first_name.' '.$translator_of_the_month_last_name.'</p>';
-						
-						echo '</a>';
+											<div class="corner__decoration corner__decoration--right"></div>
 
-						// Custom Taxonomy approach
+									</div>
 
-						// $args = array(
-						// 	'post_type' => 'translator', 
-						// 	'posts_per_page'        => 1, 
-						// 	'post_status'           => 'publish',
-						// 	'tax_query' => array(
-						// 		array(
-						// 			'taxonomy' => 'merits', 
-						// 			'field'    => 'slug',
-						// 			'terms'    => 'translator-of-the-month',
-						// 		),
-						// 	),
-						// );
-						// $posts = new WP_Query( $args );
+									<?php
 
-						// if( $posts->have_posts() ) :
-						// 	while( $posts->have_posts() ) : $posts->the_post();
+									$translator_of_the_month_first_name = get_field('translator_first_name', $translator_of_the_month->ID);
+									$translator_of_the_month_last_name = get_field('translator_last_name', $translator_of_the_month->ID);
 
-			
-						// 		echo '<a href="'.get_permalink().'">'. get_the_title();
-								
-						// 		echo '<img src="'.get_the_post_thumbnail_url().'">';
-								
-						// 		echo '</a>';
-			
-						// 	endwhile;
-						// endif;
-						// wp_reset_postdata(); //important
-						?>
+									echo '<p class="fs--800 fw--700 text--blue text--center">'.$translator_of_the_month_first_name.' '.$translator_of_the_month_last_name.'</p>';
+
+									?>
+
+								</a>
+
+								<div class="translator__icons-wrapper text--right mb--3">
+
+								<?php
+
+									$translator_of_the_month_linkedin_link = get_field('translator_linkedin_link', $translator_of_the_month->ID);
+
+									if ($translator_of_the_month_linkedin_link)  {
+
+										echo '<a href="'.esc_url($translator_of_the_month_linkedin_link).'" class="contact-icon contact-icon__linkedin" target="_blank">
+										'.$linkedin_icon.'
+										</a>';
+									}
+
+								?>
+								</div>
+
+								<div class="cta-holder text--center">
+									<a class="button button__filled--turquoise" href="<?php echo get_permalink($translator_of_the_month->ID) ?>">Profil</a>
+								</div>
+
+							</div>
 
 						</div>
 
-						<?php
-
+					<?php
 					}
 
 					if ($management_member_of_the_month) {
+						
 						?>
+
 						<div class="get-to-know-us__element-wrapper wrapper-flex-col-center">
 
-						<p>Członek władz</p>
+							<p class="text--turquoise fs--1200 fw--700 mb--5">
+								<?php echo $section_6_title_2 ?>
+							</p>
 
-						<?php
+							<div class="translator__top">
 
-						$management_member_of_the_month_image = $management_member_of_the_month['image'];
-						$management_member_of_the_month_title = $management_member_of_the_month['title'];
-						$management_member_of_the_month_paragraph = $management_member_of_the_month['paragraph'];
+								<a class="wrapper-flex-col-center mb--2" href="<?php echo get_permalink($management_member_of_the_month->ID) ?>">
 
-						echo '<a class="wrapper-flex-col-center" href="'.get_permalink(1139).'">';
+									<div class="profile-picture__wrapper text--center mb--4">
 
-							if ($management_member_of_the_month_image) {
-								echo '<img src="'.$management_member_of_the_month_image['url'].'" alt="'.$management_member_of_the_month_image['alt'].'" loading="lazy">';
-							}
+											<div class="corner__decoration corner__decoration--left"></div>
 
-							echo '<p>'.$management_member_of_the_month_title.'</p>';
-							echo '<p>'.$management_member_of_the_month_paragraph.'</p>';
-					
-						echo '</a>';
+											<img src="<?php echo get_the_post_thumbnail_url($management_member_of_the_month->ID) ?>" loading="lazy">
 
-						?>
-					</div>
+											<div class="corner__decoration corner__decoration--right"></div>
+
+									</div>
+
+									<?php
+
+									$management_member_of_the_month_first_name = get_field('translator_first_name', $management_member_of_the_month->ID);
+									$management_member_of_the_month_last_name = get_field('translator_last_name', $management_member_of_the_month->ID);
+
+									echo '<p class="fs--800 fw--700 text--blue text--center">'.$management_member_of_the_month_first_name.' '.$management_member_of_the_month_last_name.'</p>';
+
+									?>
+
+								</a>
+
+								<div class="translator__icons-wrapper text--right mb--3">
+
+								<?php
+
+									$management_member_of_the_month_linkedin_link = get_field('translator_linkedin_link', $management_member_of_the_month->ID);
+
+									if ($management_member_of_the_month_linkedin_link)  {
+
+										echo '<a href="'.esc_url($management_member_of_the_month_linkedin_link).'" class="contact-icon contact-icon__linkedin" target="_blank">
+										'.$linkedin_icon.'
+										</a>';
+									}
+
+								?>
+								</div>
+
+								<div class="cta-holder text--center">
+									<a class="button button__filled--turquoise" href="<?php echo get_permalink($management_member_of_the_month->ID) ?>">Profil</a>
+								</div>
+
+							</div>
+
+						</div>
 
 					<?php
 					}
+
 					?>
 
 					</div>

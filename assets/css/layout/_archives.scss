@@ -1,3 +1,20 @@
+//Common
+
+.translator__top {
+	padding-left: calc(#{$corner-decoration-spacing * -1});
+	width: 12rem;
+
+	img {
+		height: 10rem;
+		width: 10rem;
+		// object-fit: contain;
+		border-radius: 100%;
+		object-position: top;
+	}
+}
+
+//Blog
+
 .blog {
 	.page-title {
 		padding: 0.75rem 0;
@@ -130,12 +147,6 @@
 				margin: unset;
 				max-width: 350px;
 				width: 20%;
-			}
-
-			img {
-				height: 10rem;
-				width: 10rem;
-				object-fit: contain;
 			}
 		}
 

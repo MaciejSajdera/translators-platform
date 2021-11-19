@@ -25,13 +25,6 @@
 <?php
  get_template_part( 'template-parts/preloader', 'page' );
 ?>
-
-<div class="modal">
-    <div class="modal-content">
-        <span class="close-button">&times;</span>
-		<div class="modal-message-holder"></div>
-    </div>
-</div>
  
 <?php wp_body_open(); ?>
 <div id="page" class="site" style="visibility: hidden">

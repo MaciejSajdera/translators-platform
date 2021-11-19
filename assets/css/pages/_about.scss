@@ -30,17 +30,24 @@
 	&__section-3 {
 		position: relative;
 
-		.advantage {
-			max-width: 300px;
+		.advantages {
+			padding-top: 4rem;
 
-			img {
-				width: 125px;
-				height: 110px;
-				object-fit: contain;
-			}
+			.advantage {
+				@media screen and (min-width: 1024px) {
+					flex: 50%;
+					padding: 0 10%;
+				}
 
-			&__title-wrapper {
-				margin: 3rem auto 1rem;
+				img {
+					width: 125px;
+					height: 110px;
+					object-fit: contain;
+				}
+
+				&__title-wrapper {
+					margin: 3rem auto 1rem;
+				}
 			}
 		}
 	}

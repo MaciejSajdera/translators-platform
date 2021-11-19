@@ -81,11 +81,11 @@ a {
 		color: $color__link-visited;
 	}
 
-	&:hover,
-	&:focus,
-	&:active {
-		color: $color__link-hover;
-	}
+	// &:hover,
+	// &:focus,
+	// &:active {
+	// 	color: $color__link-hover;
+	// }
 
 	&:focus {
 		outline: 0;
@@ -356,7 +356,15 @@ table {
 	justify-content: center;
 	align-items: center;
 	background: rgba(255, 255, 255, 0.85);
+	background-clip: content-box;
 	transition: $transition_regular;
+	padding: $padding__content-box $padding__content-box $padding__content-box
+		$padding__content-box;
+
+	@media screen and (min-width: 1024px) {
+		padding: $padding__content-box-1024 $padding__content-box-1024
+			$padding__content-box-1024 $padding__content-box-1024;
+	}
 
 	&--active {
 		z-index: 1;
@@ -467,9 +475,12 @@ table {
 	}
 
 	&__filled--blue,
+	&__filled--blue:visited,
 	&-primary,
+	&-primary:visited,
 	.lostpassword-button,
-	&:visited {
+	.lostpassword-button:visited,
+	.frm_button_submit {
 		white-space: break-spaces;
 		color: $color__text-white;
 		border: 2px solid $color__main-theme--blue;
@@ -487,16 +498,28 @@ table {
 
 	&__filled--turquoise,
 	&:visited {
-		white-space: break-spaces;
+		// white-space: break-spaces;
+		// color: $color__text-white;
+		// border: 2px solid $color__main-theme--turquoise;
+		// border-radius: 100rem;
+		// background: $color__main-theme--turquoise;
+		// box-shadow: $box-shadow_button--decoration-color;
+
+		// &:hover {
+		// 	color: $color__main-theme--turquoise;
+		// 	background: transparent;
+		// }
+
+		background-color: $color__main-theme--turquoise;
 		color: $color__text-white;
+		width: fit-content;
 		border: 2px solid $color__main-theme--turquoise;
 		border-radius: 100rem;
-		background: $color__main-theme--turquoise;
 		box-shadow: $box-shadow_button--decoration-color;
 
 		&:hover {
-			color: $color__main-theme--turquoise;
-			background: transparent;
+			background-color: darken($color__main-theme--turquoise, 7);
+			border-color: darken($color__main-theme--turquoise, 7);
 		}
 	}
 
@@ -524,6 +547,29 @@ table {
 		input[type="file"] {
 			display: none;
 		}
+	}
+}
+
+.frm_button_submit {
+	cursor: pointer;
+	transition: $transition__button--standard;
+	white-space: break-spaces;
+	color: $color__text-white;
+	border: 2px solid $color__main-theme--blue;
+	border-radius: 100rem;
+	background: $color__main-theme--blue;
+	box-shadow: $box-shadow_button--theme-color;
+	padding: 0.5em 1.5em;
+
+	@media screen and (min-width: 1024px) {
+		padding: 0.5em 2.5em;
+	}
+
+	&:hover {
+		// color: #16538c;
+		// background: transparent;
+		background-color: darken($color__main-theme--blue, 7);
+		border-color: darken($color__main-theme--blue, 7);
 	}
 }
 

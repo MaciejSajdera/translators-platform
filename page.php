@@ -40,12 +40,6 @@ get_header();
 
 		</main><!-- #main -->
 
-		<?php get_template_part( 'template-parts/blog-new-posts' ); ?>
-
-		<?php
-			get_template_part( 'template-parts/back-to-home-page' );
-		?>
-
 	</div><!-- #primary -->
 
 <?php

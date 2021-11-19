@@ -125,83 +125,106 @@ document.addEventListener("DOMContentLoaded", () => {
 			'[data-sf-field-input-type="multiselect"], .sf-field-taxonomy-translator_localization'
 		);
 
-		allComboboxes.forEach(box => {
-			console.log(box);
+		allComboboxes &&
+			allComboboxes.forEach(box => {
+				// console.log(box);
 
-			const selectionCounter = document.createElement("SPAN");
-			selectionCounter.classList.add("my-selection-counter");
-			let boxSelection = box.querySelector(".select2-selection"); //Desktop
-			boxSelection.appendChild(selectionCounter);
-			let boxSearchField = box.querySelector(".select2-search__field");
+				const selectionCounter = document.createElement("SPAN");
+				selectionCounter.classList.add("my-selection-counter");
+				let boxSelection = box.querySelector(".select2-selection"); //Desktop
+				boxSelection.appendChild(selectionCounter);
+				let boxSearchField = box.querySelector(".select2-search__field");
 
-			//Dynamic - DESKTOP
-			const observer = new MutationObserver(function(mutations) {
-				mutations.forEach(function(mutation) {
-					if (mutation.type === "attributes") {
-						// console.log(mutation);
-						// console.log("attribute aria-expanded changed");
+				//Dynamic - DESKTOP
+				const observer = new MutationObserver(function(mutations) {
+					mutations.forEach(function(mutation) {
+						if (mutation.type === "attributes") {
+							// console.log(mutation);
+							// console.log("attribute aria-expanded changed");
 
-						const select2Dropdown = document.querySelector(".select2-dropdown");
+							const select2Dropdown = document.querySelector(
+								".select2-dropdown"
+							);
 
-						if (
-							select2Dropdown &&
-							select2Dropdown.classList.contains("show-dropdown")
-						) {
-							select2Dropdown.classList.remove("show-dropdown");
+							if (
+								select2Dropdown &&
+								select2Dropdown.classList.contains("show-dropdown")
+							) {
+								select2Dropdown.classList.remove("show-dropdown");
+							}
+
+							select2Dropdown && select2Dropdown.classList.add("show-dropdown");
+
+							let allOptionsChosen = box.querySelectorAll(
+								".select2-selection__choice"
+							);
+
+							let boxTitle = box.querySelector("H4").innerHTML;
+
+							if (allOptionsChosen.length === 1) {
+								console.log(allOptionsChosen[0].title.trim().split("("));
+								boxSearchField.placeholder = `${
+									allOptionsChosen[0].title.trim().split("(")[0]
+								}`;
+							}
+
+							if (allOptionsChosen.length > 1) {
+								boxSearchField.placeholder = `${boxTitle} (${allOptionsChosen.length})`;
+							}
+
+							// setTimeout(() => {
+
+							const searchField = select2Dropdown?.querySelector(
+								".select2-search__field"
+							);
+
+							searchField?.focus();
+
+							if (searchField) {
+								searchField.placeholder = "Wpisz miasto...";
+							}
+							// }, 0);
 						}
 
-						select2Dropdown && select2Dropdown.classList.add("show-dropdown");
+						// if (
+						// 	mutation.type === "attributes" &&
+						// 	mutation.target.ariaExpanded === "false"
+						// ) {
+						// 	boxSearchField.blur();
+						// }
+					});
+				});
 
-						let allOptionsChosen = box.querySelectorAll(
-							".select2-selection__choice"
-						);
+				observer.observe(boxSelection, {
+					attributes: true //configure it to listen to attribute changes
+				});
 
-						let boxTitle = box.querySelector("H4").innerHTML;
+				// //Dynamic - 	MOBILE
 
-						if (allOptionsChosen.length === 1) {
-							console.log(allOptionsChosen[0].title.trim().split("("));
-							boxSearchField.placeholder = `${
-								allOptionsChosen[0].title.trim().split("(")[0]
-							}`;
-						}
+				let optionSelection = box.querySelector("SELECT");
+				console.log(optionSelection);
 
-						if (allOptionsChosen.length > 1) {
-							boxSearchField.placeholder = `${boxTitle} (${allOptionsChosen.length})`;
-						}
+				optionSelection.addEventListener("change", e => {
+					let allOptionsChosen = box.querySelectorAll(
+						".select2-selection__choice"
+					);
 
-						// setTimeout(() => {
+					let boxTitle = box.querySelector("H4").innerHTML;
 
-						const searchField = select2Dropdown?.querySelector(
-							".select2-search__field"
-						);
-
-						searchField?.focus();
-
-						if (searchField) {
-							searchField.placeholder = "Wpisz miasto...";
-						}
-						// }, 0);
+					if (allOptionsChosen.length === 1) {
+						console.log(allOptionsChosen[0].title.trim().split("("));
+						boxSearchField.placeholder = `${
+							allOptionsChosen[0].title.trim().split("(")[0]
+						}`;
 					}
 
-					// if (
-					// 	mutation.type === "attributes" &&
-					// 	mutation.target.ariaExpanded === "false"
-					// ) {
-					// 	boxSearchField.blur();
-					// }
+					if (allOptionsChosen.length > 1) {
+						boxSearchField.placeholder = `${boxTitle} (${allOptionsChosen.length})`;
+					}
 				});
-			});
 
-			observer.observe(boxSelection, {
-				attributes: true //configure it to listen to attribute changes
-			});
+				// Static - to display allOptionsChosen counter after form is submitted and page is loaded again
 
-			// //Dynamic - 	MOBILE
-
-			let optionSelection = box.querySelector("SELECT");
-			console.log(optionSelection);
-
-			optionSelection.addEventListener("change", e => {
 				let allOptionsChosen = box.querySelectorAll(
 					".select2-selection__choice"
 				);
@@ -219,24 +242,6 @@ document.addEventListener("DOMContentLoaded", () => {
 					boxSearchField.placeholder = `${boxTitle} (${allOptionsChosen.length})`;
 				}
 			});
-
-			// Static - to display allOptionsChosen counter after form is submitted and page is loaded again
-
-			let allOptionsChosen = box.querySelectorAll(".select2-selection__choice");
-
-			let boxTitle = box.querySelector("H4").innerHTML;
-
-			if (allOptionsChosen.length === 1) {
-				console.log(allOptionsChosen[0].title.trim().split("("));
-				boxSearchField.placeholder = `${
-					allOptionsChosen[0].title.trim().split("(")[0]
-				}`;
-			}
-
-			if (allOptionsChosen.length > 1) {
-				boxSearchField.placeholder = `${boxTitle} (${allOptionsChosen.length})`;
-			}
-		});
 	}, 10);
 
 	let isPopUpActive = false;
@@ -429,10 +434,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
 		/* Scroll Down Button */
 
-		const scrollDownButton = ".welcome-section-scroll-down";
-
 		if (e.target.closest(".welcome-section-scroll-down")) {
-			console.log("match");
 			window.scroll({
 				top: window.innerHeight,
 				left: 0,
