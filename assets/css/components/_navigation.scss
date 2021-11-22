@@ -482,13 +482,13 @@ $mobile-menu-padding-top: 10rem;
 		// position: absolute;
 		// opacity: 0;
 		// z-index: -1;
-		transition: $transition_regular;
+		transition: all 0.2s ease-in;
 
 		overflow: hidden;
 		// transition:height 0.3s ease-out;
 		opacity: 0;
 		left: 50%;
-		transform: translateX(-50%);
+		transform: translate(-50%);
 
 		padding: 20px;
 
@@ -603,5 +603,6 @@ $mobile-menu-padding-top: 10rem;
 		display: block;
 		background: white;
 		transform: translateY(-50%) rotate(45deg);
+		border-top-left-radius: 3px;
 	}
 }

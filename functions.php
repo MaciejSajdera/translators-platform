@@ -174,6 +174,7 @@ function pstk_scripts() {
 
 	if (is_singular( 'translator' )) {
 		wp_enqueue_script( 'swipers', get_template_directory_uri() . '/dist/js/swipers.js', array(), '', true );
+		wp_enqueue_script( 'players', get_template_directory_uri() . '/dist/js/players.js', array(), '', true );
 	}
 
 	if (is_page(1139)) {
@@ -1003,6 +1004,10 @@ function get_labels_of_empty_translator_fields() {
 					continue;
 				}
 
+				// echo json_encode($field['label'], get_current_user_post_id());
+				// echo json_encode(get_field($field['name'], get_current_user_post_id()));
+				// echo '<br />';
+
 				if (!get_field($field['name'], get_current_user_post_id())) {
 					array_push($empty_field_labels, $field['label']);
 				}
@@ -1365,7 +1370,7 @@ function about_user_data_form() {
 
 				<p class="mb--2">
 					<textarea form="about_user_data_form" name="user_about" id="user_about" class="user_about mb--1" type="text" maxlength="300"><?php echo get_field("translator_about", $user_post_id) ?></textarea>
-					<label for="user_about">0/300</label>
+					<label class="characters-counter" for="user_about">0/300</label>
 				</p>
 
 				<p>
@@ -2081,39 +2086,43 @@ function gallery_sound_uploader($user_post_id) {
 
 						<div class="repeater__field mb--2 pb--2" data-repeater-id="0">
 
-							<p class="info-box__subbox-header mb--2 pr--2">Wpisz tekst i dodaj nagranie</p>
+							<fieldset>
 
-							<div class="row-wrapper wrapper-flex-drow-mcol">
+								<p class="info-box__subbox-header mb--2 pr--2">Wpisz tekst i dodaj nagranie</p>
 
-								<div class="wrapper-flex-col-start col-m100-d50">
+								<div class="row-wrapper wrapper-flex-drow-mcol">
 
-									<p class="mb--2">
-										<input name="sound-label__input[]" id="sound-label__input" class="input-text input-preview__src" type="text" value="" placeholder="Tytuł nagrania"/>
-									</p>
+									<div class="wrapper-flex-col-start col-m100-d50">
 
-									<p class="mb--2">
-										<textarea form="upload_sound_to_gallery_form" name="sound-textarea__input[]" id="sound-textarea__input" class="input-textarea input-preview__src" type="text" maxlength="100" placeholder="Tekst"></textarea>
-										<label class="characters-counter">0/100</label>
-									</p>
+										<p class="mb--2">
+											<input name="sound-label__input[]" id="sound-label__input" class="input-text input-preview__src" type="text" value="" placeholder="Tytuł nagrania"/>
+										</p>
 
-								</div>
+										<p class="mb--2">
+											<textarea form="upload_sound_to_gallery_form" name="sound-textarea__input[]" id="sound-textarea__input" class="input-textarea input-preview__src" type="text" maxlength="100" placeholder="Tekst"></textarea>
+											<label class="characters-counter">0/100</label>
+										</p>
 
-								<div class="col-m100-d50">
+									</div>
 
-									<label class="file-input__label button button--upload-file content-center">
-										Wybierz plik
-										<input type="file" name="sound-to-gallery__input[]" id="sound-to-gallery__input" class="custom-file-input input-preview__src" accept=".mp3,.wav,.m4a"/>
-									</label>
+									<div class="col-m100-d50">
 
-									<div class="new-attachment__wrapper my-sounds__gallery-row-wrapper ">
+										<label class="file-input__label button button--upload-file content-center">
+											Wybierz plik
+											<input type="file" name="sound-to-gallery__input[]" id="sound-to-gallery__input" class="custom-file-input input-preview__src" accept=".mp3,.wav,.m4a"/>
+										</label>
 
-										<div id="newSoundInGalleryPlaceholder" class="new-attachment__placeholder" style="display:none;" width=""></div>
+										<div class="new-attachment__wrapper my-sounds__gallery-row-wrapper ">
+
+											<div id="newSoundInGalleryPlaceholder" class="new-attachment__placeholder" style="display:none;" width=""></div>
+
+										</div>
 
 									</div>
 
 								</div>
 
-							</div>
+							</fieldset>
 
 						</div>
 

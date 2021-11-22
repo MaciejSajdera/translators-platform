@@ -156,13 +156,17 @@
 	&__section-3 {
 		.advantage {
 			&__wrapper {
-				@media screen and (min-width: 1024px) {
-					margin-left: 5%;
-				}
+				// @media screen and (min-width: 1024px) {
+				// 	margin-left: 5%;
+				// }
 
 				> * {
-					padding: 1.5rem 2rem;
+					padding: 0.75rem 1.25rem;
 					position: relative;
+
+					@media screen and (min-width: 1024px) {
+						padding: 1.5rem 2rem;
+					}
 				}
 			}
 
@@ -170,14 +174,20 @@
 				text-align: center;
 
 				@media screen and (min-width: 1024px) {
-					width: 55%;
-					text-align: right;
+					width: 75%;
+					// text-align: right;
 				}
 
 				img {
-					width: 7.5rem;
-					height: 7.5rem;
+					width: 6.5rem;
+					height: 6.5rem;
 					object-fit: contain;
+
+					@media screen and (min-width: 1024px) {
+						width: 7.5rem;
+						height: 7.5rem;
+						transform: translateX(50%);
+					}
 				}
 			}
 

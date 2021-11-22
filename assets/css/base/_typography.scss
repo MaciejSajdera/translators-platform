@@ -14,8 +14,12 @@ h6 {
 	@include fluid-type($min_width, $max_width, 11px, 13px);
 }
 
+.fs--400 {
+	@include fluid-type($min_width, $max_width, 16px, 18px);
+}
+
 .fs--600 {
-	@include fluid-type($min_width, $max_width, 18px, 22px);
+	@include fluid-type($min_width, $max_width, 16px, 22px);
 }
 
 .fs--800 {

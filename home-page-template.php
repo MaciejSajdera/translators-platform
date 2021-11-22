@@ -162,7 +162,7 @@ $linkedin_icon = file_get_contents(get_template_directory() . "/dist/dist/svg/li
 								<div class="advantage__wrapper">
 									<div class="advantage__img-wrapper pseudo-decoration pseudo-decoration__rb"><img src="'.$icon["url"].'" alt="'.$icon["alt"].'"></div>
 									<div class="advantage__title-wrapper pseudo-decoration pseudo-decoration__lb"><p class="fw--700 fs--600">'.$title.'</p></div>
-									<div class="advantage__paragraph-wrapper pseudo-decoration pseudo-decoration__rb-half"><p class="fw--700">'.$paragraph.'</p></div>
+									<div class="advantage__paragraph-wrapper pseudo-decoration pseudo-decoration__rb-half"><p class="fw--700 fs--400">'.$paragraph.'</p></div>
 								</div>
 							</div>';
 

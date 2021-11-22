@@ -319,6 +319,7 @@ jQuery(document).ready(function($) {
 	const progressRingHolder = document.querySelector("#progressRing");
 
 	if (progressRingHolder) {
+
 		var progressRing = new ProgressBar.Circle(progressRingHolder, {
 			color: "#16538c",
 			// This has to be the same size as the maximum width to
@@ -326,7 +327,7 @@ jQuery(document).ready(function($) {
 			strokeWidth: 0,
 			trailWidth: 0,
 			easing: "easeInOut",
-			duration: 1000,
+			duration: 1500,
 			text: {
 				autoStyleContainer: false
 			},
@@ -377,6 +378,8 @@ jQuery(document).ready(function($) {
 			progressRing.set(1);
 		}
 	}
+
+	let userHasAlreadyReceivedCongratsMessage = false;
 
 	const updateProfileCompletness = dataJSON => {
 		console.log(dataJSON);
@@ -435,7 +438,10 @@ jQuery(document).ready(function($) {
 
 		animateRingAsync().then(() => {
 			setTimeout(() => {
-				if (progressRingHolder.classList.contains("progress-ring--complete")) {
+				if (
+					progressRingHolder.classList.contains("progress-ring--complete") &&
+					!userHasAlreadyReceivedCongratsMessage
+				) {
 					const congratulationsMessage = `
 					<div class="text--center relative">
 						<span class="confetti-target"></span>
@@ -475,6 +481,8 @@ jQuery(document).ready(function($) {
 							confettiConfig
 						);
 					}, 250);
+
+					userHasAlreadyReceivedCongratsMessage = true;
 				}
 			}, progressRing._opts.duration);
 		});

@@ -25,7 +25,7 @@ document.addEventListener("DOMContentLoaded", () => {
 			spaceBetween: 50,
 			slidesPerView: 2,
 			initialSlide: 0,
-			speed: 1000,
+			speed: 500,
 			autoplay: {
 				delay: 3000
 			},
@@ -55,7 +55,7 @@ document.addEventListener("DOMContentLoaded", () => {
 			spaceBetween: 50,
 			slidesPerView: 1,
 			initialSlide: 0,
-			speed: 1000,
+			speed: 500,
 			autoplay: {
 				delay: 2000
 			},
@@ -71,8 +71,8 @@ document.addEventListener("DOMContentLoaded", () => {
 			// },
 
 			navigation: {
-				nextEl: ".swiper-button-next",
-				prevEl: ".swiper-button-prev"
+				nextEl: ".swiper-button-next--sound",
+				prevEl: ".swiper-button-prev--sound"
 			}
 		}
 	);
@@ -91,10 +91,10 @@ document.addEventListener("DOMContentLoaded", () => {
 			direction: "horizontal",
 			loop: false,
 			// centeredSlides: true,
-			spaceBetween: 50,
+			spaceBetween: 100,
 			slidesPerView: 1,
 			initialSlide: 0,
-			speed: 1000,
+			speed: 500,
 			autoplay: {
 				delay: 2000
 			},
@@ -110,8 +110,8 @@ document.addEventListener("DOMContentLoaded", () => {
 			// },
 
 			navigation: {
-				nextEl: ".swiper-button-next",
-				prevEl: ".swiper-button-prev"
+				nextEl: ".swiper-button-next--multimedia",
+				prevEl: ".swiper-button-prev--multimedia"
 			}
 		}
 	);

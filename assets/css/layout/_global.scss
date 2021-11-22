@@ -175,8 +175,16 @@ section {
 		width: 100%;
 	}
 
+	&--40 {
+		width: 40%;
+	}
+
 	&--50 {
 		width: 50%;
+	}
+
+	&--75 {
+		width: 75%;
 	}
 }
 
@@ -1011,15 +1019,13 @@ section {
 	transition: $transition__button--standard;
 
 	right: 0;
-	top: -1rem;
+	top: 0;
 	width: 26px;
 	height: 26px;
 	// background-size: 10px;
 	font-size: 26px;
 
 	@media screen and (min-width: 1024px) {
-		right: 0;
-		top: 0;
 		// width: 32px;
 		// height: 32px;
 		// background-size: 12px;
@@ -1174,6 +1180,10 @@ section {
 
 	&__content {
 		position: absolute;
+	}
+
+	svg {
+		overflow: visible;
 	}
 }
 

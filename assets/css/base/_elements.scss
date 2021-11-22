@@ -358,13 +358,12 @@ table {
 	background: rgba(255, 255, 255, 0.85);
 	background-clip: content-box;
 	transition: $transition_regular;
-	padding: $padding__content-box $padding__content-box $padding__content-box
-		$padding__content-box;
+	padding: 1rem;
 
-	@media screen and (min-width: 1024px) {
-		padding: $padding__content-box-1024 $padding__content-box-1024
-			$padding__content-box-1024 $padding__content-box-1024;
-	}
+	// @media screen and (min-width: 1024px) {
+	// 	padding: $padding__content-box-1024 $padding__content-box-1024
+	// 		$padding__content-box-1024 $padding__content-box-1024;
+	// }
 
 	&--active {
 		z-index: 1;
@@ -439,6 +438,7 @@ table {
 
 		&::before {
 			background-image: url(../dist/svg/back-blue.svg);
+			transition: $transition__button--standard;
 		}
 
 		&:hover {

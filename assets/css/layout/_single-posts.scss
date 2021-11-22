@@ -9,15 +9,36 @@
 
 	.desktop-only {
 		.translator {
+			&__basic-data-wrapper {
+				justify-content: center;
+				column-gap: 6rem;
+			}
+
 			&__top {
-				width: 50%;
-				max-width: 310px;
+				padding-left: 0;
+
+				@media screen and (min-width: 1024px) {
+					width: 50%;
+					min-width: 300px;
+					max-width: 400px;
+					margin: unset;
+				}
 			}
 
 			&__bottom {
-				width: 50%;
-				padding-right: 10rem;
+				@media screen and (min-width: 1024px) {
+					width: 50%;
+					min-width: 300px;
+					max-width: 400px;
+				}
 			}
+		}
+	}
+
+	.text-content-holder {
+		@media screen and (min-width: 1024px) {
+			max-width: 700px;
+			margin: auto;
 		}
 	}
 
@@ -28,7 +49,7 @@
 	}
 
 	&__section {
-		margin-bottom: 8rem;
+		// margin-bottom: 8rem;
 
 		&--1 {
 			.icon,
@@ -95,9 +116,6 @@
 		}
 
 		&--3 {
-			p {
-				text-align: center;
-			}
 		}
 	}
 
@@ -111,29 +129,100 @@
 			width: 80%;
 			padding: 0 4rem;
 
+			.swiper-wrapper {
+				align-items: center;
+			}
+
 			.swiper-slide {
 				display: flex;
 				justify-content: center;
 				align-items: center;
 				overflow: hidden;
 				column-gap: 5rem;
+			}
+		}
 
+		&--single-translator-multimedia-gallery {
+			.swiper-slide {
 				img {
-					width: 40%;
+					object-fit: contain;
+					@media screen and (min-width: 1024px) {
+						max-width: 700px;
+						max-height: 500px;
+					}
 				}
 
-				.video-container {
-					width: 50%;
+				.image-next-to-video {
+					@media screen and (min-width: 1024px) {
+						width: 40%;
+					}
+				}
 
-					video {
-						width: 100%;
+				.image-solo {
+					@media screen and (min-width: 1024px) {
+						width: 75%;
 					}
 				}
 			}
+
+			.video-container {
+				width: 50%;
+
+				video {
+					width: 100%;
+				}
+			}
+		}
+	}
+
+	.controls-container {
+		position: absolute;
+		bottom: -3rem;
+		right: 0;
+		transform: translate(-50%, 50%);
+		background-image: url(../dist/svg/ellipse.svg);
+		background-size: contain;
+		background-repeat: no-repeat;
+
+		@media screen and (min-width: 1024px) {
+			height: 12rem;
+			width: 12rem;
+		}
+
+		.swiper-button-prev,
+		.swiper-button-next {
+			width: 3rem;
+			height: 3rem;
+
+			&::after {
+				content: "";
+			}
+		}
+
+		.swiper-button-prev {
+			left: calc(50% - 2rem);
+			transform: translateX(-50%);
+		}
+
+		.swiper-button-next {
+			left: calc(50% + 2rem);
+			transform: translateX(-50%);
 		}
 	}
 }
 
 .video-container {
 	text-align: center;
+}
+
+.audio-player {
+	width: 100%;
+
+	.image-holder {
+		border: 1px solid red;
+		svg {
+			width: 50%;
+			height: auto;
+		}
+	}
 }

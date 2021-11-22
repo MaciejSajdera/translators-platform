@@ -185,6 +185,17 @@ $login-and-registration-height: 80vh;
 	}
 }
 
+.new-attachment {
+	&__placeholder {
+		width: 100%;
+	}
+
+	&__icon {
+		min-width: 35px;
+		width: 35px;
+	}
+}
+
 /* 	Animations */
 
 .animated-label-holder,
@@ -368,23 +379,19 @@ $login-and-registration-height: 80vh;
 	padding-top: 2rem;
 }
 
+.my-pictures__wrapper {
+	img {
+		max-height: 350px;
+		object-fit: contain;
+	}
+}
+
 label {
 	display: flex;
 	align-items: center;
 	// cursor: pointer;
 	// color: $color__text--light-grey;
 	line-height: 1;
-}
-
-.new-attachment {
-	&__placeholder {
-		width: 100%;
-	}
-
-	&__icon {
-		min-width: 35px;
-		width: 35px;
-	}
 }
 
 #settings_user_password_form {
