@@ -30,7 +30,7 @@
 
 .home .site-content {
 	@media screen and (min-width: 1024px) {
-		padding-top: 12rem;
+		padding-top: 10rem;
 	}
 }
 
@@ -976,7 +976,7 @@ section {
 
 	.search-loading-message {
 		position: absolute;
-		bottom: -4rem;
+		bottom: -6rem;
 		opacity: 0;
 		transition: all 0.5s ease;
 		transform: translateX(50%);
@@ -1331,9 +1331,9 @@ section {
 
 .image-holder {
 	display: flex;
-	img {
-		object-fit: contain;
-	}
+	// img {
+	// 	object-fit: contain;
+	// }
 }
 
 .image-border-shadow {

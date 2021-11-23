@@ -319,7 +319,6 @@ jQuery(document).ready(function($) {
 	const progressRingHolder = document.querySelector("#progressRing");
 
 	if (progressRingHolder) {
-
 		var progressRing = new ProgressBar.Circle(progressRingHolder, {
 			color: "#16538c",
 			// This has to be the same size as the maximum width to
@@ -396,7 +395,7 @@ jQuery(document).ready(function($) {
 			"#percentValueOfAccountFillCompletness"
 		);
 		const emptyProfileFieldsLabelsContainer = document.querySelector(
-			"#emptyProfileFieldsLabels"
+			"#emptyProfileFieldsLabels .empty-fields-labels"
 		);
 
 		const oldlabelsOfEmptyTranslatorFields = document.querySelectorAll(
@@ -435,11 +434,12 @@ jQuery(document).ready(function($) {
 		};
 
 		// console.log(progressRing._opts.duration);
+		console.log(userHasAlreadyReceivedCongratsMessage);
 
 		animateRingAsync().then(() => {
 			setTimeout(() => {
 				if (
-					progressRingHolder.classList.contains("progress-ring--complete") &&
+					percentValueOfAccountFillCompletness === 100 &&
 					!userHasAlreadyReceivedCongratsMessage
 				) {
 					const congratulationsMessage = `

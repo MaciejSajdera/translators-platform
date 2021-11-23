@@ -480,7 +480,6 @@ $fields_for_login_page_paragraph = $fields_for_login_page['paragraph'];
 													if (strlen($translator_contact_phone) > 0) {
 														$placeholder_mode = '';
 													} else {
-														$translator_contact_phone = '';
 														$placeholder_mode = 'placeholder_mode';
 													}
 
@@ -511,7 +510,6 @@ $fields_for_login_page_paragraph = $fields_for_login_page['paragraph'];
 											//Exclude #user_city from being displayed in the list
 
 											$excluded_term_ID = false;
-
 
 											if ($translator_city && strlen($translator_city) > 0) {
 												$excluded_term = get_term_by( 'name', $translator_city, 'translator_localization' );
@@ -852,13 +850,13 @@ $fields_for_login_page_paragraph = $fields_for_login_page['paragraph'];
 
 								/* END OF work INFO CONTAINER */
 
-								/* PICTURES AND VIDEOS CONTAINER */
+								/* PICTURES CONTAINER */
 
-								echo '<div class="info-box pictures-and-videos-container">';
+								echo '<div class="info-box pictures-container">';
 
 									echo '<div class="account__box-container">';
 
-										echo '<div class="info-box__header"><p>Zdjęcia i filmy</p></div>';
+										echo '<div class="info-box__header"><p>Zdjęcia</p></div>';
 										
 										/* AJAX LOADER */
 
@@ -874,11 +872,11 @@ $fields_for_login_page_paragraph = $fields_for_login_page['paragraph'];
 
 										echo '<div class="content-box">';
 
-											echo '<div class="info-box__subbox wrapper-flex-drow-mcol">';
+											echo '<div class="info-box__subbox wrapper-flex-drow-mcol w--full">';
 
 											/* IMAGES GALLERY PANEL */
 
-												echo '<div class="my-pictures__wrapper ajax-content-wrapper col-m100-d50">';
+												echo '<div class="my-pictures__wrapper ajax-content-wrapper">';
 													
 													echo '<div class="my-pictures__gallery">';
 
@@ -886,12 +884,12 @@ $fields_for_login_page_paragraph = $fields_for_login_page['paragraph'];
 
 														echo '<div class="is-gallery-empty__messages" style="display: none">';
 														echo '<p class="is-gallery-empty__yes">Aktualnie nie masz dodanych żadnych zdjęć.</p>';
-														echo '<p class="is-gallery-empty__no">Zdjęcia:</p>';
+														echo '<p class="is-gallery-empty__no">Dodane:</p>';
 														echo '</div>';
 
 													if ($images_to_gallery_array) {
 
-														echo '<p class="info-box__subbox-header is-gallery-empty__status-text-holder">Zdjęcia</p>';
+														echo '<p class="info-box__subbox-header is-gallery-empty__status-text-holder">Dodane:</p>';
 
 														foreach ($images_to_gallery_array as $image) :
 
@@ -899,9 +897,11 @@ $fields_for_login_page_paragraph = $fields_for_login_page['paragraph'];
 
 																	echo '<div class="my-pictures__gallery-attachment pb--2 mb--2">';
 
-																		echo '<a class="remove-item" href="#" data-id="'.attachment_url_to_postid($image).'"></a>';
-
-																		echo '<img src="'.wp_get_attachment_image_url(attachment_url_to_postid($image), 'full').'" width="" loading="lazy">';
+																		echo '<div class="image-holder content-center relative">
+																				<a class="remove-item" href="#" data-id="'.attachment_url_to_postid($image).'"></a>
+																				<img src="'.wp_get_attachment_image_url(attachment_url_to_postid($image), 'full').'" width="" loading="lazy">
+																			</div>
+																				';
 
 																	echo '</div>';
 																} 
@@ -921,87 +921,119 @@ $fields_for_login_page_paragraph = $fields_for_login_page['paragraph'];
 
 												echo '</div>';
 
-												/* VIDEO GALLERY PANEL */
+											echo '</div>';
 
-												echo '<div class="my-videos__wrapper ajax-content-wrapper col-m100-d50">';
+										echo '</div>';
 
-													echo '<div class="my-videos__gallery">';
+									echo '</div>';
 
-														/* DYNAMIC MESSAGES CONTENT HOLDER */
+								echo '</div>';
 
-														echo '<div class="is-gallery-empty__messages" style="display: none">';
-														echo '<p class="is-gallery-empty__yes">Aktualnie nie masz dodanych żadnych filmów.</p>';
-														echo '<p class="is-gallery-empty__no">Filmy:</p>';
-														echo '</div>';
+								/* END OF PICTURES CONTAINER */
 
-													// var_dump($videos_to_gallery_array);
+								/* VIDEOS CONTAINER */
 
-													if ($videos_to_gallery_array) {
+								echo '<div class="info-box pictures-container">';
 
-														echo '<p class="info-box__subbox-header is-gallery-empty__status-text-holder">Filmy</p>';
+									echo '<div class="account__box-container">';
 
-														//start at 1 because acf repeater rows indexes start with 1
+										echo '<div class="info-box__header"><p>Filmy</p></div>';
+									
+									/* AJAX LOADER */
 
-														$i = 1;
+									echo '<div class="my-ajax-loader">
+											<div class="my-ajax-loader__spinner"></div>
+											<div class="progress">
+												<div class="progress-bar"></div>
+												<div class="progress-percents"></div>
+											</div>
+										</div>';
 
-														foreach ($videos_to_gallery_array as $video) :
+									/* CONTENT BOX */
 
-																$video_link = $video['translator_single_video'];
+									echo '<div class="content-box">';
 
-																if($video_link) {
+										echo '<div class="info-box__subbox wrapper-flex-drow-mcol w--full">';
 
-																	$video_id = attachment_url_to_postid($video_link);
+											/* VIDEO GALLERY PANEL */
 
-																	echo '<div class="my-videos__gallery-attachment">';
+											echo '<div class="my-videos__wrapper ajax-content-wrapper w--full">';
 
-																		echo '<a class="remove-item" href="#" data-id="'.$i.'"></a>';
+												echo '<div class="my-videos__gallery">';
 
-																		echo '<svg version="1.1" id="Capa_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
-																		viewBox="0 0 298 298" style="enable-background:new 0 0 298 298;" xml:space="preserve">
-																		<path d="M298,33c0-13.255-10.745-24-24-24H24C10.745,9,0,19.745,0,33v232c0,13.255,10.745,24,24,24h250c13.255,0,24-10.745,24-24V33
-																	z M91,39h43v34H91V39z M61,259H30v-34h31V259z M61,73H30V39h31V73z M134,259H91v-34h43V259z M123,176.708v-55.417
-																	c0-8.25,5.868-11.302,12.77-6.783l40.237,26.272c6.902,4.519,6.958,11.914,0.056,16.434l-40.321,26.277
-																	C128.84,188.011,123,184.958,123,176.708z M207,259h-43v-34h43V259z M207,73h-43V39h43V73z M268,259h-31v-34h31V259z M268,73h-31V39
-																	h31V73z"/><g></g><g></g><g></g><g></g><g></g><g></g><g></g><g></g><g></g><g></g><g></g><g></g><g></g><g></g><g></g></svg>';
+													/* DYNAMIC MESSAGES CONTENT HOLDER */
 
-																		$video_name = basename(get_attached_file( $video_id ));
-
-																		echo '<p>'.$video_name.'</p>';
-
-																	echo '</div>';
-																} 
-
-																$i++;
-
-														endforeach;
-
-													} else {
-
-														echo '<p class="info-box__subbox-header is-gallery-empty__status-text-holder">Aktualnie nie masz dodanych żadnych filmów.</p>';
-														
-													};
-
+													echo '<div class="is-gallery-empty__messages" style="display: none">';
+													echo '<p class="is-gallery-empty__yes">Aktualnie nie masz dodanych żadnych filmów.</p>';
+													echo '<p class="is-gallery-empty__no">Dodane:</p>';
 													echo '</div>';
 
-													echo '<div id="newVideoInGalleryPlaceholder" class="my-videos__gallery-attachment" style="display:none;" >';
+												// var_dump($videos_to_gallery_array);
 
-														echo '<a class="remove-item remove" data-id="clear-input" href="#"></a>';
+												if ($videos_to_gallery_array) {
 
-														echo '<svg version="1.1" id="Capa_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
-														viewBox="0 0 298 298" style="enable-background:new 0 0 298 298;" xml:space="preserve">
-														<path d="M298,33c0-13.255-10.745-24-24-24H24C10.745,9,0,19.745,0,33v232c0,13.255,10.745,24,24,24h250c13.255,0,24-10.745,24-24V33
-															z M91,39h43v34H91V39z M61,259H30v-34h31V259z M61,73H30V39h31V73z M134,259H91v-34h43V259z M123,176.708v-55.417
-															c0-8.25,5.868-11.302,12.77-6.783l40.237,26.272c6.902,4.519,6.958,11.914,0.056,16.434l-40.321,26.277
-															C128.84,188.011,123,184.958,123,176.708z M207,259h-43v-34h43V259z M207,73h-43V39h43V73z M268,259h-31v-34h31V259z M268,73h-31V39
-															h31V73z"/><g></g><g></g><g></g><g></g><g></g><g></g><g></g><g></g><g></g><g></g><g></g><g></g><g></g><g></g><g></g></svg>';
+													echo '<p class="info-box__subbox-header is-gallery-empty__status-text-holder">Dodane:</p>';
 
-														echo '<p></p>';
+													//start at 1 because acf repeater rows indexes start with 1
 
-													echo '</div>';
+													$i = 1;
 
-													echo gallery_video_uploader($user_post_id);
+													foreach ($videos_to_gallery_array as $video) :
+
+															$video_link = $video['translator_single_video'];
+
+															if($video_link) {
+
+																$video_id = attachment_url_to_postid($video_link);
+
+																echo '<div class="my-videos__gallery-attachment">';
+
+																	echo '<a class="remove-item" href="#" data-id="'.$i.'"></a>';
+
+																	echo '<svg version="1.1" id="Capa_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
+																	viewBox="0 0 298 298" style="enable-background:new 0 0 298 298;" xml:space="preserve">
+																	<path d="M298,33c0-13.255-10.745-24-24-24H24C10.745,9,0,19.745,0,33v232c0,13.255,10.745,24,24,24h250c13.255,0,24-10.745,24-24V33
+																z M91,39h43v34H91V39z M61,259H30v-34h31V259z M61,73H30V39h31V73z M134,259H91v-34h43V259z M123,176.708v-55.417
+																c0-8.25,5.868-11.302,12.77-6.783l40.237,26.272c6.902,4.519,6.958,11.914,0.056,16.434l-40.321,26.277
+																C128.84,188.011,123,184.958,123,176.708z M207,259h-43v-34h43V259z M207,73h-43V39h43V73z M268,259h-31v-34h31V259z M268,73h-31V39
+																h31V73z"/><g></g><g></g><g></g><g></g><g></g><g></g><g></g><g></g><g></g><g></g><g></g><g></g><g></g><g></g><g></g></svg>';
+
+																	$video_name = basename(get_attached_file( $video_id ));
+
+																	echo '<p>'.$video_name.'</p>';
+
+																echo '</div>';
+															} 
+
+															$i++;
+
+													endforeach;
+
+												} else {
+
+													echo '<p class="info-box__subbox-header is-gallery-empty__status-text-holder">Aktualnie nie masz dodanych żadnych filmów.</p>';
+													
+												};
 
 												echo '</div>';
+
+												echo '<div id="newVideoInGalleryPlaceholder" class="my-videos__gallery-attachment" style="display:none;" >';
+
+													echo '<a class="remove-item remove" data-id="clear-input" href="#"></a>';
+
+													echo '<svg version="1.1" id="Capa_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
+													viewBox="0 0 298 298" style="enable-background:new 0 0 298 298;" xml:space="preserve">
+													<path d="M298,33c0-13.255-10.745-24-24-24H24C10.745,9,0,19.745,0,33v232c0,13.255,10.745,24,24,24h250c13.255,0,24-10.745,24-24V33
+														z M91,39h43v34H91V39z M61,259H30v-34h31V259z M61,73H30V39h31V73z M134,259H91v-34h43V259z M123,176.708v-55.417
+														c0-8.25,5.868-11.302,12.77-6.783l40.237,26.272c6.902,4.519,6.958,11.914,0.056,16.434l-40.321,26.277
+														C128.84,188.011,123,184.958,123,176.708z M207,259h-43v-34h43V259z M207,73h-43V39h43V73z M268,259h-31v-34h31V259z M268,73h-31V39
+														h31V73z"/><g></g><g></g><g></g><g></g><g></g><g></g><g></g><g></g><g></g><g></g><g></g><g></g><g></g><g></g><g></g></svg>';
+
+													echo '<p></p>';
+
+												echo '</div>';
+
+												echo gallery_video_uploader($user_post_id);
 
 											echo '</div>';
 
@@ -1011,7 +1043,9 @@ $fields_for_login_page_paragraph = $fields_for_login_page['paragraph'];
 
 								echo '</div>';
 
-								/* END OF PICTURES AND VIDEOS CONTAINER */
+							echo '</div>';
+
+								/* END OF VIDEOS CONTAINER */
 
 							echo '</div>';
 

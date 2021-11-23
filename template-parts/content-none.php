@@ -17,17 +17,6 @@
 	<div class="page-content">
 		<?php
 
-			// if no translator has chosen languages
-
-			if (isset($_GET['_sft_translator_language']) && !isset($_GET['_sft_translator_localization'])) {
-				echo '<p>Brak tłumaczy spełniających podane kryteria. Spróbuj zmienić parametry wyszukiwania.</p>';
-			}
-			
-			// if no translator with chosen langs and in chosen location
-
-			if (isset($_GET['_sft_translator_language']) && isset($_GET['_sft_translator_localization'])) {
-				echo '<p>Brak wyników w wybranym mieście. Sprawdź innych tłumaczy najbliżej wybranego miasta:</p>';
-			}
 
 			/* Get name of the city user was looking for */
 
@@ -61,13 +50,15 @@
 				// var_dump(json_encode($geo_target_city['results'][0]['geometry']['location']['lat']));
 				// var_dump(json_encode($geo_target_city['results'][0]['geometry']['location']['lng']));
 
+				if (!isset($geo_target_city['status']) || ($geo_target_city['status'] != 'OK')) {
+					echo '<p class="text--error mb--6">Wystąpił błąd podczas próby uzyskania danych geolokalizacyjnych szukanego miasta, prosimy spróbować ponownie za parę minut.</p>';
+					return;
+				}
+
 				if (isset($geo_target_city['status']) && ($geo_target_city['status'] == 'OK')) {
 					$target_city_latitude = $geo_target_city['results'][0]['geometry']['location']['lat']; // Latitude
 					$target_city_longitude = $geo_target_city['results'][0]['geometry']['location']['lng']; // Longitude
-				} else {
-					echo '<p class="text--error">Wystąpił błąd podczas próby uzyskania danych geolokalizacyjnych, prosimy spróbować ponownie za parę minut.</p>';
-					return;
-				}
+				} 
 
 				/* Get all not empty cities from the database and calculate distance from target city */
 
@@ -78,6 +69,7 @@
 				) );
 
 				$cities_objects_arr = array();
+				$errors_arr = array();
 
 				foreach( $translator_localizations as $localization ) :
 
@@ -101,10 +93,8 @@
 
 					$geo_translator_city = json_decode(json_encode($geo_translator_city), true); // Convert the JSON to an array
 
-
 					// var_dump(json_encode($geo_translator_city['results'][0]['geometry']['location']['lat']));
 					// var_dump(json_encode($geo_translator_city['results'][0]['geometry']['location']['lng']));
-
 
 					if (isset($geo_translator_city['status']) && ($geo_translator_city['status'] == 'OK')) {
 						$translator_city_latitude = $geo_translator_city['results'][0]['geometry']['location']['lat']; // Latitude
@@ -122,14 +112,27 @@
 						$city_object->distance_from_target = round($distance_from_target, 0);
 
 						array_push($cities_objects_arr, $city_object);
+					} 
+					elseif (isset($geo_translator_city['status']) && ($geo_translator_city['status'] != 'OK')) {
+						array_push($errors_arr, $geo_translator_city['status']);
 
-					} else {
-						echo '<p class="text--error">Wystąpił błąd podczas próby uzyskania danych geolokalizacyjnych, prosimy spróbować ponownie za parę minut.</p>';
-						return;
 					}
 
-
 				endforeach;
+
+				// var_dump($errors_arr);
+
+			// if no translator has chosen languages
+
+			if (isset($_GET['_sft_translator_language']) && !isset($_GET['_sft_translator_localization'])) {
+				echo '<p>Brak tłumaczy spełniających podane kryteria. Spróbuj zmienić parametry wyszukiwania.</p>';
+			}
+			
+			// if no translator with chosen langs and in chosen location
+
+			if (isset($_GET['_sft_translator_language']) && isset($_GET['_sft_translator_localization'])) {
+				echo '<p>Brak wyników w wybranym mieście. Sprawdź innych tłumaczy najbliżej wybranego miasta:</p>';
+			}
 
 				/* Sort cities objects starting from the closest one*/
 

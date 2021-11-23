@@ -429,16 +429,18 @@ $arrow_controls_right = file_get_contents(get_template_directory() . "/dist/dist
 		 $voice_recordings_title_array = [];
 		 $is_gallery_empty;
 
-		 foreach($translator_sounds_repeater as $repeater_field) :
-			if ($repeater_field["translator_single_voice_recording"]) {
-				array_push($voice_recordings_title_array, $repeater_field["translator_single_voice_recording"]);
-			}
-		 endforeach;
-
-		 if (count($voice_recordings_title_array) > 0) {
-			$is_gallery_empty = false;
-		 } else {
-			$is_gallery_empty = true;
+		 if ($translator_sounds_repeater) {
+			foreach($translator_sounds_repeater as $repeater_field) :
+				if ($repeater_field["translator_single_voice_recording"]) {
+					array_push($voice_recordings_title_array, $repeater_field["translator_single_voice_recording"]);
+				}
+			 endforeach;
+	
+			 if (count($voice_recordings_title_array) > 0) {
+				$is_gallery_empty = false;
+			 } else {
+				$is_gallery_empty = true;
+			 }
 		 }
 
 	if ($translator_sounds_repeater && !$is_gallery_empty) :
@@ -757,10 +759,28 @@ $arrow_controls_right = file_get_contents(get_template_directory() . "/dist/dist
 	<!-- end of section-3 -->
 
 	<?php
+
 		$single_translator_pictures_gallery = get_field("translator_gallery");
 		$single_translator_videos_repeater = get_field("translator_video_gallery");
 
-		if ($single_translator_pictures_gallery || $single_translator_videos_repeater) :
+		$video_gallery_title_array = [];
+		$is_video_gallery_empty;
+
+		if ($single_translator_videos_repeater) {
+		   foreach($single_translator_videos_repeater as $repeater_field) :
+			   if ($repeater_field["translator_single_video"]) {
+				   array_push($video_gallery_title_array, $repeater_field["translator_single_video"]);
+			   }
+			endforeach;
+   
+			if (count($video_gallery_title_array) > 0) {
+			   $is_video_gallery_empty = false;
+			} else {
+			   $is_video_gallery_empty = true;
+			}
+		}
+
+		if (($single_translator_pictures_gallery || $single_translator_videos_repeater) && !$is_video_gallery_empty) :
 	 ?>
 
 	<section class="single-translator__section single-translator__section--4">
@@ -1016,5 +1036,8 @@ $arrow_controls_right = file_get_contents(get_template_directory() . "/dist/dist
 	?>
 	<!-- end of section-6 -->
 
+	<p>Click the button to create a new PDF document with <code>pdf-lib</code></p>
+    <button id="createPDFTrigger">Create PDF</button>
+    <p class="small">(Your browser will download the resulting file)</p>
 
 </article><!-- #post-<?php the_ID(); ?> -->

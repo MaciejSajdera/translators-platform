@@ -175,6 +175,7 @@ function pstk_scripts() {
 	if (is_singular( 'translator' )) {
 		wp_enqueue_script( 'swipers', get_template_directory_uri() . '/dist/js/swipers.js', array(), '', true );
 		wp_enqueue_script( 'players', get_template_directory_uri() . '/dist/js/players.js', array(), '', true );
+		wp_enqueue_script( 'pdf-generator', get_template_directory_uri() . '/dist/js/pdf-generator.js', array(), '', true );
 	}
 
 	if (is_page(1139)) {
@@ -236,7 +237,7 @@ function inject_custom_metadata() {
 
 	global $post;
 	
-	if ( is_singular( 'membership_package' ) || is_singular( 'secret_posts' ) ) {
+	if ( is_singular( 'membership_package' ) || is_singular( 'secret_posts' ) || is_singular('marketing_support') ) {
 	
 	?>
 	
@@ -248,6 +249,21 @@ function inject_custom_metadata() {
 	
 }
 add_action( 'wp_head', 'inject_custom_metadata' );
+
+function posts_only_for_logged_in( $content ) {
+    global $post;
+
+    if ( $post && ($post->post_type == 'membership_package' || $post->post_type == 'secret_posts' || $post->post_type == 'marketing_support') ) {
+
+        if ( !is_user_logged_in() ) {
+            $content = 'Prosimy o zalogowanie się aby zobaczyć treść posta.';
+        }
+    }
+
+    return $content;
+}
+
+add_filter( 'the_content', 'posts_only_for_logged_in' );
 
 function redirect_login_page() {
 	$login_page  = get_permalink(18);

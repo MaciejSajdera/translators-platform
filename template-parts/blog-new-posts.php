@@ -6,7 +6,7 @@
         <p class="fs--800 fw--700 text--turquoise mt--1 lh--125"><?php echo get_field('h2', get_option( 'page_for_posts' )) ?></p>
     </h2>
 
-    <p class="title-paragraph fs--600 fw--500 mb--5">
+    <p class="title-paragraph mb--5">
         <?php echo get_field('paragraph', get_option( 'page_for_posts' )) ?>
     </p>
 

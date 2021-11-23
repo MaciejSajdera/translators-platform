@@ -31,7 +31,7 @@ h6 {
 }
 
 .fs--1200 {
-	@include fluid-type($min_width, $max_width, 32px, 40px);
+	@include fluid-type($min_width, $max_width, 24px, 40px);
 
 	@media screen and (min-width: 1024px) {
 		@include fluid-type($min_width, $max_width, 38px, 42px);
@@ -296,7 +296,7 @@ big {
 	}
 
 	&--big-header {
-		@include fluid-type($min_width, $max_width, 40px, 88px);
+		@include fluid-type($min_width, $max_width, 40px, 72px);
 		// text-align: center;
 		margin: 0 0 6rem;
 		font-weight: 900;

@@ -379,9 +379,18 @@ $login-and-registration-height: 80vh;
 	padding-top: 2rem;
 }
 
+#upload_image_to_gallery_form {
+	.button--upload-file {
+		margin: auto;
+	}
+}
+
 .my-pictures__wrapper {
+	.image-holder {
+		width: 75%;
+		max-width: 450px;
+	}
 	img {
-		max-height: 350px;
 		object-fit: contain;
 	}
 }

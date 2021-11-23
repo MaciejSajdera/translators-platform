@@ -205,6 +205,23 @@
 	}
 }
 
+#profile-section-1 {
+	.info-box {
+		&__header {
+			p {
+				transform: translateY(-50%);
+				margin-top: -1rem;
+				background: white;
+				padding: 0 0.35em;
+
+				@media screen and (min-width: 1024px) {
+					margin-top: -2rem;
+				}
+			}
+		}
+	}
+}
+
 .info-box {
 	margin-bottom: 4rem;
 
@@ -219,14 +236,6 @@
 			font-weight: 700;
 			color: $color__main-theme--blue;
 			@include fluid-type($min_width, $max_width, 20px, 28px);
-			transform: translateY(-50%);
-			margin-top: -1rem;
-			background: white;
-			padding: 0 0.35em;
-
-			@media screen and (min-width: 1024px) {
-				margin-top: -2rem;
-			}
 		}
 	}
 
@@ -640,6 +649,10 @@ $profile_picture_width: 175px;
 	&__wrapper {
 		.sound-title {
 			padding-right: 2rem;
+		}
+
+		textarea {
+			min-height: 200px;
 		}
 	}
 
