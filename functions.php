@@ -274,10 +274,11 @@ add_action( 'wp_head', 'inject_custom_metadata' );
 
 function posts_only_for_logged_in( $content ) {
     global $post;
+	$is_approved = get_post_meta($post->ID, 'is_approved', true);
 
     if ( $post && ($post->post_type == 'membership_package' || $post->post_type == 'secret_posts' || $post->post_type == 'marketing_support') ) {
 
-        if ( !is_user_logged_in() ) {
+        if ( !is_user_logged_in() || !$is_approved) {
             $content = 'Prosimy o zalogowanie się aby zobaczyć treść posta.';
         }
     }
@@ -816,7 +817,7 @@ function create_post_for_user( $user_id ) {
 		$to = $user_info->user_email;
 		$subject = 'Potwierdzenie założenia konta';
 		$body = 'Witamy w gronie tłumaczy PSTK';
-		$headers = array('Content-Type: text/html; charset=UTF-8');
+		$headers = array('Content-Type: text/html; charset=UTF-8','From: PSTK <pstk@pstktest.pl>');
 		
 		wp_mail( $to, $subject, $body, $headers );
     }

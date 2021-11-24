@@ -807,7 +807,7 @@ $arrow_controls_right = file_get_contents(get_template_directory() . "/dist/dist
 		$single_translator_videos_repeater = get_field("translator_video_gallery");
 
 		$video_gallery_title_array = [];
-		$is_video_gallery_empty;
+		$is_video_gallery_empty = true;
 
 		if ($single_translator_videos_repeater) {
 		   foreach($single_translator_videos_repeater as $repeater_field) :
@@ -818,8 +818,6 @@ $arrow_controls_right = file_get_contents(get_template_directory() . "/dist/dist
    
 			if (count($video_gallery_title_array) > 0) {
 			   $is_video_gallery_empty = false;
-			} else {
-			   $is_video_gallery_empty = true;
 			}
 		}
 
@@ -1031,7 +1029,7 @@ $arrow_controls_right = file_get_contents(get_template_directory() . "/dist/dist
 
 		<div class="wrapper-flex">
 				<div class="text-content-holder">
-					<h2 class="fs--1000 text--blue text--center mb--2">
+					<h2 class="fs--1000 text--blue text--center mb--4">
 						Moje publikacje
 					</h2>
 				</div>

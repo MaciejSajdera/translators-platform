@@ -215,6 +215,10 @@
 				height: 3rem;
 			}
 
+			svg {
+				pointer-events: none;
+			}
+
 			&::after {
 				content: "";
 			}

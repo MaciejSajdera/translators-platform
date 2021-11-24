@@ -13,7 +13,7 @@
     <div class="blog-posts-grid">
 
         <?php
-        $args = array( 'numberposts' => 4, 'order'=> 'ASC', 'orderby' => 'date' );
+        $args = array( 'numberposts' => 4, 'order'=> 'DESC', 'orderby' => 'date' );
         $postslist = get_posts( $args );
         foreach ($postslist as $post) :  setup_postdata($post); 
 

@@ -131,6 +131,42 @@ document.addEventListener("DOMContentLoaded", () => {
 			}
 		});
 
+		// const swiperButtonPrev = document.querySelector(
+		// 	".swiper-button-prev--sound"
+		// );
+
+		// swiperButtonPrev.addEventListener("click", () => {
+		// 	if (playState === "play") {
+		// 		audio.play();
+		// 		playAnimation.playSegments([14, 27], true);
+		// 		requestAnimationFrame(whilePlaying);
+		// 		playState = "pause";
+		// 	} else {
+		// 		audio.pause();
+		// 		playAnimation.playSegments([0, 14], true);
+		// 		cancelAnimationFrame(raf);
+		// 		playState = "play";
+		// 	}
+		// });
+
+		// const swiperButtonNext = document.querySelector(
+		// 	".swiper-button-next--sound"
+		// );
+
+		// swiperButtonNext.addEventListener("click", () => {
+		// 	if (playState === "play") {
+		// 		audio.play();
+		// 		playAnimation.playSegments([14, 27], true);
+		// 		requestAnimationFrame(whilePlaying);
+		// 		playState = "pause";
+		// 	} else {
+		// 		audio.pause();
+		// 		playAnimation.playSegments([0, 14], true);
+		// 		cancelAnimationFrame(raf);
+		// 		playState = "play";
+		// 	}
+		// });
+
 		muteIconContainer.addEventListener("click", () => {
 			if (muteState === "unmute") {
 				muteAnimation.playSegments([0, 15], true);
