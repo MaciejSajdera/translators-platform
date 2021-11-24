@@ -115,6 +115,16 @@
 @import "pages/_home";
 
 /*---------------------------
+## Single Translator
+---------------------------*/
+@import "pages/_single-translator";
+
+/*---------------------------
+## Single Post
+---------------------------*/
+@import "pages/_single-post";
+
+/*---------------------------
 ## About
 ---------------------------*/
 @import "pages/_about";
@@ -168,11 +178,6 @@
 ## Sidebar
 ---------------------------*/
 @import "layout/_sidebar";
-
-/*---------------------------
-## Single Posts
----------------------------*/
-@import "layout/_single-posts";
 
 /*---------------------------
 ## Footer

@@ -120,6 +120,7 @@ h4 {
 p {
 	margin: 0;
 	font-weight: 300;
+	text-align: left;
 }
 
 dfn,
@@ -258,6 +259,10 @@ big {
 		text-align: right;
 	}
 
+	&--left {
+		text-align: left;
+	}
+
 	&--white {
 		color: $color__text-white;
 	}
@@ -272,12 +277,18 @@ big {
 
 	&--outline-turquoise {
 		color: transparent;
-		-webkit-text-stroke: 2px $color__main-theme--turquoise;
+		-webkit-text-stroke: 1px $color__main-theme--turquoise;
+		@media screen and (min-width: 1024px) {
+			-webkit-text-stroke: 2px $color__main-theme--turquoise;
+		}
 	}
 
 	&--outline-blue {
 		color: transparent;
-		-webkit-text-stroke: 2px $color__main-theme--blue;
+		-webkit-text-stroke: 1px $color__main-theme--blue;
+		@media screen and (min-width: 1024px) {
+			-webkit-text-stroke: 2px $color__main-theme--blue;
+		}
 	}
 
 	&--underline-turquoise {

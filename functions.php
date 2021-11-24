@@ -46,6 +46,7 @@ if ( ! function_exists( 'pstk_setup' ) ) :
 		register_nav_menus(
 			array(
 				'primary' => esc_html__( 'Primary', 'pstk' ),
+				'footer-menu' => esc_html__( 'Footer Menu', 'pstk' ),
 			)
 		);
 		
@@ -146,6 +147,7 @@ function my_admin_bar_css()
  * Enqueue scripts and styles.
  */
 function pstk_scripts() {
+
 	wp_enqueue_style( 'pstk-style', get_template_directory_uri() . '/dist/css/style.css', array(), '1.14');
 
 	// Include our dynamic styles.
@@ -217,6 +219,23 @@ function yoasttobottom() {
 }
 add_filter( 'wpseo_metabox_prio', 'yoasttobottom');
 
+add_filter( 'scriptlesssocialsharing_locations', 'prefix_change_sss_locations' );
+function prefix_change_sss_locations( $locations ) {
+	$locations['before'] = array(
+		'hook'     => 'generate_after_entry_header',
+		'filter'   => false,
+		'priority' => 8,
+	);
+	if ( wp_is_mobile() ) {
+		$locations['before'] = array(
+			'hook'     => 'generate_after_content',
+			'filter'   => false,
+			'priority' => 8,
+		);
+	}
+
+	return $locations;
+}
 
 add_action( 'set_logged_in_cookie', 'my_update_cookie' );
 function my_update_cookie( $logged_in_cookie ){
@@ -230,6 +249,9 @@ function remove_admin_bar() {
 	show_admin_bar(false);
 	}
 }
+
+// remove prefix at archive pages
+add_filter('get_the_archive_title_prefix','__return_false');
 
 //For hiding Custom Post Types from google search results
 
@@ -1465,6 +1487,12 @@ function contact_user_data_form() {
 
 	$current_user_localizations_array_terms = wp_get_post_terms($user_post_id, 'translator_localization', array('fields' => 'names'));
 
+	$translator_contact_phone = get_field("translator_contact_phone", $user_post_id);
+
+	$translator_contact_email = get_field("translator_contact_email", $user_post_id);
+
+	$translator_city = get_field("translator_city", $user_post_id);
+
 	// var_dump($current_user_localizations_array_terms);
 
 	ob_start(); ?>	
@@ -1480,15 +1508,14 @@ function contact_user_data_form() {
 				<div class="info-box__subbox mb--3">
 					<p>
 						<label class="info-box__subbox-header mb--05" for="user_contact_phone"><?php _e('Numer telefonu'); ?></label>
-						<input name="user_contact_phone" id="user_contact_phone" class="user_contact_phone" type="text" value="<?php if(strlen(get_field("translator_contact_phone") > 0)) { echo get_field("translator_contact_phone"); } else { echo ""; }  ?>"/>
+						<input name="user_contact_phone" id="user_contact_phone" class="user_contact_phone" type="text" value="<?php echo $translator_contact_phone ?>"/>
 					</p>
 				</div>
-
 
 				<div class="info-box__subbox mb--3">
 					<p>
 						<label class="info-box__subbox-header mb--05" for="user_contact_email"><?php _e('Adres e-mail'); ?></label>
-						<input name="user_contact_email" id="user_contact_email" class="user_contact_email" type="text" value="<?php if(strlen(get_field("translator_contact_email") > 0)) { echo get_field("translator_contact_email"); } else { echo $current_user->user_email; }  ?>"/>
+						<input name="user_contact_email" id="user_contact_email" class="user_contact_email" type="text" value="<?php echo $translator_contact_email ?>"/>
 					</p>
 				</div>
 
@@ -1504,14 +1531,13 @@ function contact_user_data_form() {
 
 							<p class="wrapper-flex-drow-mcol__first-element">Miejsce zamieszkania:</p>
 
-							<input name="user_city" id="user_city" class="user_city_input" placeholder="Nazwa miasta" type="text" value="<?php echo get_field("translator_city") ?>"/>
+							<input name="user_city" id="user_city" class="user_city_input" placeholder="Nazwa miasta" type="text" value="<?php echo $translator_city ?>"/>
 
 							<input hidden name="user_localizations[]" id="user_localization_city" class="user_localization_input" placeholder="Nazwa miasta" type="text" value=""/>
 
 						</div>
 
 					</div>
-
 
 					<div class="info-box__subbox mb--3">
 
@@ -2061,7 +2087,6 @@ function handle_profile_picture_upload() {
 		wp_die( $attachment_id->get_error_message() );
 	}
 
-	
 	$profile_picture_data_for_ajax  = (object) [
 		'percent_value_of_account_fill_completness' => get_percent_value_of_account_fill_completness(),
 		'labels_of_empty_translator_fields' => get_labels_of_empty_translator_fields(),
@@ -3238,7 +3263,7 @@ function settings_user_data_visibility_form() {
                         </ul>
 
 						<p>
-							<input type="submit" name="submit_settings_user_data_visibility_form" class="info-box__subbox--max-width mb--3 button button__filled--blue" value="<?php _e('Zaktualizuj widoczność profilu'); ?>"/>
+							<input type="submit" name="submit_settings_user_data_visibility_form" class="mb--3 button button__filled--blue" value="<?php _e('Zaktualizuj widoczność profilu'); ?>"/>
 							<?php wp_nonce_field( 'settings_user_data_visibility_form', 'settings_user_data_visibility_form_nonce' ); ?>
 						</p>
 

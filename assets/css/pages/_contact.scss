@@ -51,6 +51,12 @@
 		}
 	}
 
+	.image-holder {
+		img {
+			object-fit: contain;
+		}
+	}
+
 	.contact-type-section {
 		margin-bottom: 7.5rem;
 

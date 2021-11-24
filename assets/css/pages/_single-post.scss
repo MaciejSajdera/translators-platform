@@ -1,0 +1,142 @@
+.single-post {
+	article.type-post {
+		@media screen and (min-width: 1024px) {
+			max-width: 75%;
+		}
+
+		.post-thumbnail {
+			width: 100%;
+			display: flex;
+			img {
+				width: 100%;
+				object-fit: contain;
+			}
+		}
+	}
+
+	.blockquote {
+	}
+
+	.div.heateor_sss_follow_ul a,
+	div.heateor_sss_horizontal_sharing div.heateor_sss_sharing_ul a {
+		margin-right: 0.5rem;
+
+		&:last-of-type {
+			margin-right: 0;
+		}
+	}
+}
+
+.post-navigation {
+	width: 80%;
+	margin: 5em auto 0;
+	display: flex;
+	flex-flow: row;
+	align-items: flex-start;
+	justify-content: space-between;
+	transition: all 0.3s ease-in;
+
+	@media screen and (max-width: 992px) {
+		width: 70%;
+	}
+
+	div {
+		display: flex;
+		flex-flow: column;
+		justify-content: center;
+
+		width: 14em;
+
+		p {
+			@include fluid-type($min_width, $max_width, 16px, 18x);
+			padding: 0 1rem;
+		}
+
+		&:nth-of-type(2) {
+			p {
+				text-align: right;
+			}
+		}
+	}
+
+	span {
+		display: flex;
+		flex-flow: row;
+		align-items: center;
+		margin-bottom: 1rem;
+	}
+
+	&__prev,
+	&__next {
+		color: $color__text--light-grey;
+		font-weight: 300;
+
+		@include fluid-type($min_width, $max_width, 16px, 18x);
+
+		&:before,
+		:after {
+			@include fluid-type($min_width, $max_width, 16px, 18px);
+		}
+	}
+
+	&__prev {
+		// @media screen and (max-width: 992px) {
+		// 	transform: translateX(-1em);
+		// }
+
+		&:before {
+			content: url(../dist/svg/arrow_left.svg);
+			display: block;
+			line-height: 0;
+			margin-right: 0.25em;
+		}
+	}
+
+	&__next {
+		justify-content: flex-end;
+		text-align: right;
+
+		&:after {
+			content: url(../dist/svg/arrow_right.svg);
+			display: block;
+			line-height: 0;
+			margin-left: 0.25em;
+		}
+	}
+}
+
+.post-navigation--wide {
+	animation: navWide 1s forwards;
+
+	@media screen and (max-width: 992px) {
+		@keyframes navWide {
+			0% {
+				width: 80%;
+			}
+
+			75% {
+				width: 100%;
+			}
+
+			100% {
+				width: 100%;
+			}
+		}
+	}
+
+	@media screen and (min-width: 992px) {
+		@keyframes navWide {
+			0% {
+				width: 70%;
+			}
+
+			75% {
+				width: 100%;
+			}
+
+			100% {
+				width: 100%;
+			}
+		}
+	}
+}

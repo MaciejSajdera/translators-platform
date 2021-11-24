@@ -102,14 +102,13 @@ $fields_for_login_page_paragraph = $fields_for_login_page['paragraph'];
 					$translator_work = get_field('translator_work', $user_post_id);
 					$images_to_gallery_array = get_field('translator_gallery', $user_post_id);
 					$videos_to_gallery_array = get_field('translator_video_gallery', $user_post_id);
-					$membership_package_file = get_field('membership_package_file', $user_post_id);
 
 					// print_r($_POST);
 					// print_r($_REQUEST);
 
 					echo '<div class="account__container">';
 
-						echo '<div class="account__side-menu content-box">';
+						echo '<div class="account__side-menu content-box relative">';
 
 							$is_approved = get_post_meta( $user_post_id, 'is_approved', true );
 							$account_privacy_status = get_post_status($user_post_id);
@@ -117,25 +116,25 @@ $fields_for_login_page_paragraph = $fields_for_login_page['paragraph'];
 							
 							if ( !$is_approved ) {
 								$account_privacy_status_icon = '<div class="account__privacy-status-holder">
-																	<div class="icon account__privacy-status account__private">'.$account_privacy_icon.'</div>
+																	<div class="icon account__privacy-status account__private w--fit-content">'.$account_privacy_icon.'</div>
 																</div>';
 							}
 
 							if( $is_approved && $account_privacy_status !== "publish" ) {
 								$account_privacy_status_icon = '<div class="account__privacy-status-holder">
-																	<div class="icon account__privacy-status account__private">'.$account_privacy_icon.'</div>
+																	<div class="icon account__privacy-status account__private w--fit-content">'.$account_privacy_icon.'</div>
 																</div>';
 							}
 
 							if ( $is_approved && $account_privacy_status == "publish" ) {
 								$account_privacy_status_icon = '<div class="account__privacy-status-holder">
-																	<div class="icon account__privacy-status account__public">'.$account_privacy_icon.'</div>
+																	<div class="icon account__privacy-status account__public w--fit-content">'.$account_privacy_icon.'</div>
 																</div>';
 							}
 
-							echo $account_privacy_status_icon;
-
 							echo '<div class="profile-picture__wrapper ajax-content-wrapper mb--3">';
+
+								echo $account_privacy_status_icon;
 
 								echo '<div class="post-thumbnail">';
 
@@ -227,7 +226,7 @@ $fields_for_login_page_paragraph = $fields_for_login_page['paragraph'];
 
 												echo '<h3 class="fs--600 fw--500">';
 													echo 'Witaj na swoim koncie PSTK.<br />';
-													echo 'Twój profil jest kompletny w <span id="accountFillCompletness" class="'.$completness_value_class.'"><span id="percentValueOfAccountFillCompletness">'.get_percent_value_of_account_fill_completness().'</span><span>%</span></span>.
+													echo 'Twój profil jest kompletny w <span id="accountFillCompletness" class="'.$completness_value_class.'"><span class="text--turquoise" id="percentValueOfAccountFillCompletness">'.get_percent_value_of_account_fill_completness().'</span><span class="text--turquoise">%</span></span>.
 													</h3>';
 
 												if (get_percent_value_of_account_fill_completness() < 100) {
@@ -422,14 +421,11 @@ $fields_for_login_page_paragraph = $fields_for_login_page['paragraph'];
 
 											echo '<div class="info-box__subbox">';
 
-												if (strlen($translator_about) > 0) {
-													$placeholder_mode = '';
-												} else {
+												if (!strlen($translator_about) > 0) {
 													$translator_about = 'Napisz o sobie kilka zdań, które pozwolą potencjalnym klientom poznać Cię z najlepszej strony, zrozumieć, w czym masz doświadczenie i co Cię wyróżnia.';
-													$placeholder_mode = 'placeholder_mode';
 												}
 
-												echo '<p id="user_about_text" class="info-box__content '.$placeholder_mode.'">'.$translator_about.'</p>';
+												echo '<p id="user_about_text" class="info-box__content">'.$translator_about.'</p>';
 
 											echo '</div>';
 
@@ -477,29 +473,19 @@ $fields_for_login_page_paragraph = $fields_for_login_page['paragraph'];
 
 											echo '<div class="info-box__subbox mb--3">';
 
-													if (strlen($translator_contact_phone) > 0) {
-														$placeholder_mode = '';
-													} else {
-														$placeholder_mode = 'placeholder_mode';
-													}
-
 												echo '<p class="info-box__subbox-header mb--05">Numer telefonu</p>';
-												echo '<p id="user_contact_phone_text" class="info-box__content '.$placeholder_mode.'">'.$translator_contact_phone.'</p>';
+												echo '<p id="user_contact_phone_text" class="info-box__content">'.$translator_contact_phone.'</p>';
 
 											echo '</div>';
 
 											echo '<div class="info-box__subbox mb--3">';
 
-
-													if (strlen($translator_contact_email) > 0) {
-														$placeholder_mode = '';
-													} else {
+													if (!strlen($translator_contact_email) > 0) {
 														$translator_contact_email = $current_user_login_email;
-														$placeholder_mode = 'placeholder_mode';
 													}
 
 												echo '<p class="info-box__subbox-header mb--05">Adres e-mail</p>';
-												echo '<p id="user_contact_email_text" class="info-box__content '.$placeholder_mode.'">'.$translator_contact_email.'</p>';
+												echo '<p id="user_contact_email_text" class="info-box__content">'.$translator_contact_email.'</p>';
 
 											echo '</div>';
 
@@ -1055,9 +1041,11 @@ $fields_for_login_page_paragraph = $fields_for_login_page['paragraph'];
 
 							echo '<div id="profile-section-2" class="profile-section profile-section--not-active account__settings">';
 
-								echo '<div class="content-box">';
+								echo '<div class="info-box">';
 								
-									echo '<p class="fw--700 fs--1200">Edycja ustawień</p>';
+									echo '<p class="fw--700 fs--1200 mb--2">Ustawienia</p>';
+
+									echo '<p>Znajdziesz tu ustawienia związane ze swoim kontem</p>';
 
 								echo '</div>';
 
@@ -1068,13 +1056,13 @@ $fields_for_login_page_paragraph = $fields_for_login_page['paragraph'];
 
 								<div class="info-box">
 
-									<div class="info-box__header mb--1">
+									<div class="info-box__header mb--2">
 										<p>Adres e-mail</p>
 									</div>
 
-									<p class="info-box__tip content-box-side-padding mb--2">Adres ten służy do logowania do konta PSTK </p>
+									<p class="info-box__tip mb--2">Adres ten służy do logowania do konta PSTK </p>
 				
-									<div class="info-box__subbox content-box-side-padding info-box__subbox--max-width account__box-container ajax-content-wrapper mb--3">
+									<div class="info-box__subbox info-box__subbox--max-width account__box-container ajax-content-wrapper mb--3">
 
 										<div class="my-ajax-loader">
 
@@ -1108,14 +1096,14 @@ $fields_for_login_page_paragraph = $fields_for_login_page['paragraph'];
 
 								<div class="info-box">
 
-									<div class="info-box__header mb--1">
+									<div class="info-box__header mb--2">
 										<p>Hasło</p>
 									</div>
 
-									<p class="info-box__tip content-box-side-padding mb--2">Hasło służy do logowania do konta PSTK. Musi zawierać minimum 8 znaków, w tym jedną wielką literę i jeden znak specjalny.</p>
+									<p class="info-box__tip mb--2">Hasło służy do logowania do konta PSTK. Musi zawierać minimum 8 znaków, w tym jedną wielką literę i jeden znak specjalny.</p>
 
 
-									<div class="info-box__subbox mb--3 content-box-side-padding info-box__subbox--max-width mb--3 account__box-container ajax-content-wrapper">
+									<div class="info-box__subbox mb--3 info-box__subbox--max-width mb--3 account__box-container ajax-content-wrapper">
 
 										<div class="my-ajax-loader">
 
@@ -1177,7 +1165,7 @@ $fields_for_login_page_paragraph = $fields_for_login_page['paragraph'];
 
 								<div class="info-box">
 
-									<div class="info-box__header"><p>Widoczność profilu</p></div>
+									<div class="info-box__header mb--2"><p>Widoczność profilu</p></div>
 
 									<div class="info-box__subbox mb--3 content-box account__box-container info-box__subbox--max-width mb--3 ajax-content-wrapper">
 
@@ -1207,13 +1195,13 @@ $fields_for_login_page_paragraph = $fields_for_login_page['paragraph'];
 
 							/* PROFILE SECTION 3 - DOWNLOADS */
 
-							echo '<div id="profile-section-3" class="profile-section profile-section--not-active account__settings">';
+							echo '<div id="profile-section-3" class="profile-section profile-section--not-active account__downloads">';
 
 								echo '<div class="info-box">';
 
 									echo '<div>';
 									
-										echo '<p>Materiały członkowskie</p>';
+										echo '<p class="fw--700 fs--1200 mb--2">Materiały członkowskie</p>';
 
 									echo '</div>';
 
@@ -1232,7 +1220,9 @@ $fields_for_login_page_paragraph = $fields_for_login_page['paragraph'];
 
 								<div class="info-box membership_package">
 
-									<p class="info-box__header">Pakiet członkowski</p>
+									<div class="info-box__header mb--2">
+										<p class="fw--700 fs--800">Pakiet członkowski</p>
+									</div>
 									<!-- <p class="info-box__tip"></p> -->
 				
 									<div class="info-box__subbox mb--3">
@@ -1256,13 +1246,15 @@ $fields_for_login_page_paragraph = $fields_for_login_page['paragraph'];
 											while ($membership_package_query->have_posts()) {
 												$membership_package_query->the_post();
 
+												$membership_package_file = get_field('membership_package_file', $post->ID);
+
 												if ($membership_package_file) {
 
-													echo '<li>';
+													echo '<li class="mb--2">';
 
 														echo '<div class="membership_package__label">'.get_the_title().'</div>';
 
-														echo '<a href="'.$membership_package_file['url'].'" class="button button__download" download>Pobierz</a>';
+														echo '<a href="'.$membership_package_file['url'].'" class="button button__filled--blue button--download fs--200" download>Pobierz</a>';
 
 													echo '</li>';
 
@@ -1281,7 +1273,10 @@ $fields_for_login_page_paragraph = $fields_for_login_page['paragraph'];
 
 								<div class="info-box">
 
-									<p class="info-box__header">Poufne materiały - tylko dla członków</p>
+									<div class="info-box__header mb--2">
+										<p class="fw--700 fs--800">Poufne materiały - tylko dla członków</p>
+									</div>
+
 									<!-- <p class="info-box__tip"></p> -->
 
 									<div class="info-box__subbox mb--3 wrapper-flex-wrap">
@@ -1300,28 +1295,17 @@ $fields_for_login_page_paragraph = $fields_for_login_page['paragraph'];
 											$secret_posts_query = new WP_Query($secret_posts_args);
 
 											if ($secret_posts_query->have_posts()) {
-												while ($secret_posts_query->have_posts()) {
-													$secret_posts_query->the_post();
 
-													echo '<div class="wrapper-flex-col-center blog-post-tile">';
+												echo '<div class="blog-posts-grid">';
 
-														echo '<a href="'.get_permalink().'">'; 
+													while ($secret_posts_query->have_posts()) {
+														$secret_posts_query->the_post();
 
-															echo '<div>';
+														get_template_part( 'template-parts/content', 'post-in-archive' );
 
-																echo '<h3>'.get_the_title().'</h3>';
+													}
 
-																the_excerpt();
-
-															echo '</div>';
-
-															echo '<div class="button button__read-more">Czytaj więcej</div>';
-
-														echo '</a>';
-
-													echo '</div>';
-
-												}
+												echo '</div>';
 											}
 
 											?>
@@ -1331,7 +1315,10 @@ $fields_for_login_page_paragraph = $fields_for_login_page['paragraph'];
 
 								<div class="info-box">
 
-									<p class="info-box__header">Wsparcie marketingowe</p>
+									<div class="info-box__header mb--2">
+										<p class="fw--700 fs--800">Wsparcie marketingowe</p>
+									</div>
+
 									<!-- <p class="info-box__tip"></p> -->
 
 									<div class="info-box__subbox mb--3 wrapper-flex-wrap">
@@ -1350,28 +1337,17 @@ $fields_for_login_page_paragraph = $fields_for_login_page['paragraph'];
 									$marketing_support_query = new WP_Query($marketing_support_args);
 
 									if ($marketing_support_query->have_posts()) {
+
+										echo '<div class="blog-posts-grid">';
+
 										while ($marketing_support_query->have_posts()) {
 											$marketing_support_query->the_post();
 
-											echo '<div class="wrapper-flex-col-center blog-post-tile">';
-
-												echo '<a href="'.get_permalink().'">'; 
-
-													echo '<div>';
-
-														echo '<h3>'.get_the_title().'</h3>';
-
-														the_excerpt();
-
-													echo '</div>';
-
-													echo '<div class="button button__read-more">Czytaj więcej</div>';
-
-												echo '</a>';
-
-											echo '</div>';
+											get_template_part( 'template-parts/content', 'post-in-archive' );
 
 										}
+
+										echo '</div>';
 									}
 
 									?>

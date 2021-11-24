@@ -39,7 +39,7 @@ $circles_3_bg = file_get_contents(get_template_directory() . "/dist/dist/svg/cir
 	<div id="primary" class="content-area">
 		<main id="main" class="site-main contact">
 
-		<div class="welcome-view welcome-view-subpage">
+		<div class="welcome-view welcome-view-subpage relative">
 
 			<div class="welcome-view__container image-content-row">
 
@@ -59,7 +59,7 @@ $circles_3_bg = file_get_contents(get_template_directory() . "/dist/dist/svg/cir
 
 				</div>
 
-				<div class="welcome-view__right image-holder w--fit-content image-to-the-left">
+				<div class="welcome-view__right image-holder image-to-the-right">
 
 					<div class="form-holder">
 						<?php echo do_shortcode('[formidable id=2]') ?>

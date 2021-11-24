@@ -326,7 +326,7 @@ jQuery(document).ready(function($) {
 			strokeWidth: 0,
 			trailWidth: 0,
 			easing: "easeInOut",
-			duration: 1500,
+			duration: 1700,
 			text: {
 				autoStyleContainer: false
 			},
@@ -445,7 +445,7 @@ jQuery(document).ready(function($) {
 					const congratulationsMessage = `
 					<div class="text--center relative">
 						<span class="confetti-target"></span>
-						<p class="fs--1200 fw--900 ff--secondary text--turquoise">GRATULACJE!</p>
+						<p class="fs--1200 fw--900 ff--secondary text--center text--turquoise">GRATULACJE!</p>
 						<p class="fs--800 fw--500">Twój profil jest kompletny w 100%!</p>
 					</div>
 					`;

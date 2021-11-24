@@ -30,7 +30,7 @@ $circles_group_big = file_get_contents(get_template_directory() . "/dist/dist/sv
 	<div id="primary" class="content-area">
 		<main id="main" class="site-main about">
 
-		<div class="welcome-view welcome-view-subpage">
+		<div class="welcome-view welcome-view-subpage relative">
 
 			<div class="welcome-view__container image-content-row">
 
@@ -50,7 +50,7 @@ $circles_group_big = file_get_contents(get_template_directory() . "/dist/dist/sv
 
 				</div>
 
-				<div class="welcome-view__right image-holder w--fit-content image-to-the-right">
+				<div class="welcome-view__right image-holder">
 
 					<?php
 						if ($section_1_image) {
@@ -60,8 +60,10 @@ $circles_group_big = file_get_contents(get_template_directory() . "/dist/dist/sv
 						}
 						?>
 				</div>
-
+				
 			</div>
+
+			<?php get_template_part( 'template-parts/partials/scroll-down' ); ?>
 
 		</div>
 

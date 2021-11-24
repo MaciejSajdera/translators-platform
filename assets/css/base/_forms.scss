@@ -353,6 +353,10 @@ $login-and-registration-height: 80vh;
 
 	.button--upload-file {
 		margin: auto;
+
+		@media screen and (min-width: 1024px) {
+			transform: translateY(-100%);
+		}
 	}
 
 	.row-wrapper {

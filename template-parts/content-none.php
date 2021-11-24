@@ -6,13 +6,10 @@
  *
  * @package pstk
  */
-
+$no_results_icon = file_get_contents(get_template_directory() . "/dist/dist/svg/no_results.svg");
 ?>
 
 <section class="no-results not-found">
-	<header class="page-header">
-		<h1 class="page-title"><?php esc_html_e( 'Wyniki wyszukiwania', 'pstk' ); ?></h1>
-	</header><!-- .page-header -->
 
 	<div class="page-content">
 		<?php
@@ -131,7 +128,17 @@
 			// if no translator with chosen langs and in chosen location
 
 			if (isset($_GET['_sft_translator_language']) && isset($_GET['_sft_translator_localization'])) {
-				echo '<p>Brak wyników w wybranym mieście. Sprawdź innych tłumaczy najbliżej wybranego miasta:</p>';
+				echo '
+					  <div class="no-results-message flex flex-col">
+					  	<div class="svg-icon-wrapper text--center mb--4">'.$no_results_icon.'</div>
+						<p class="fs--800 fw--700">
+						Nie znalazłeś tłumacza w wybrany mieście? Bez obaw. <br />
+						Większość tłumaczy lubi podróżować i przyjmuje zlecenia w całym kraju i za granicą. 
+					 	</p>
+						 <p class="text--turquoise fs--800 fw--700">
+						 Skontaktuj się z tłumaczem z innego miasta: 
+						</p>
+					  </div>';
 			}
 
 				/* Sort cities objects starting from the closest one*/
@@ -146,18 +153,18 @@
 
 				/* Get names of the 3 closest cities */
 
-				echo '<div style="margin-bottom: 2rem">';
+				// echo '<div style="margin-bottom: 2rem">';
 
-					echo '<p>For dev purposes:</p>';
+				// 	echo '<p>For dev purposes:</p>';
 
-					print_r('Szukane miasto: '.$target_city_name);
-					echo '<br />';
-					print_r('Latitude: '.$target_city_latitude);
-					echo '<br />';
-					print_r('Longitude: '.$target_city_longitude);
+				// 	print_r('Szukane miasto: '.$target_city_name);
+				// 	echo '<br />';
+				// 	print_r('Latitude: '.$target_city_latitude);
+				// 	echo '<br />';
+				// 	print_r('Longitude: '.$target_city_longitude);
 
-					echo '<br />';
-					echo 'Najbliższe miasta: ';
+				// 	echo '<br />';
+				// 	echo 'Najbliższe miasta: ';
 
 
 				$closest_cities_names = array();
@@ -166,11 +173,11 @@
 					
 					array_push($closest_cities_names, $city_obj->city_name);
 
-					echo $city_obj->city_name.', ';
+					// echo $city_obj->city_name.', ';
 
 				endforeach;
 
-				echo '</div>';
+				// echo '</div>';
 
 
 				/* Get IDs of translators in order with closest cities */

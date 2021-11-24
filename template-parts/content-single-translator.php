@@ -22,7 +22,7 @@ $phone_icon = file_get_contents(get_template_directory() . "/dist/dist/svg/phone
 
 $translator_contact_email = get_field("translator_contact_email");
 $translator_contact_email_public = get_field("translator_contact_email_public");
-$at_symbol_icon = file_get_contents(get_template_directory() . "/dist/dist/svg/at-symbol.svg");
+$at_symbol_icon = file_get_contents(get_template_directory() . "/dist/dist/svg/email.svg");
 
 $translator_city = get_field("translator_city");
 $translator_city_public = get_field("translator_city_public");
@@ -67,8 +67,17 @@ $arrow_controls_right = file_get_contents(get_template_directory() . "/dist/dist
 					?>
 					</div>
 
+
+
 					<div class="translator__contact">
-						<h2 class="text--turquoise fw--700 fs--600 mb--05">Kontakt</h2>
+
+						<?php
+
+							if ($translator_contact_phone_public || $translator_contact_email_public || $translator_city_public) {
+								echo '<h2 class="text--turquoise fw--700 fs--600 mb--05 border--standard">Kontakt</h2>';
+							}	
+
+						?>
 
 						<?php
 							if ($translator_contact_phone_public && strlen($translator_contact_phone) > 0) {
@@ -90,21 +99,36 @@ $arrow_controls_right = file_get_contents(get_template_directory() . "/dist/dist
 
 								echo '<div class="flex items-center info-tile">
 										<div class="icon">'.$localization_icon.'</div>
-										<span>'.$translator_city;
+										<span>';
+										
+										// .$translator_city;
 
-										if (strlen(get_field("translator_city")) > 0) {
-											echo get_field("translator_city").', ';
-										}
+										// if (strlen(get_field("translator_city")) > 0) {
+										// 	echo get_field("translator_city").', ';
+										// }
 		
 										$translator_localizations = wp_get_object_terms( $post->ID, 'translator_localization' );
-									
+
+										$temporary_array = array();
+
 										if ( $translator_localizations ) {
+		
+											foreach( $translator_localizations as $localization ) :
+
+												array_push($temporary_array, $localization->name);
+
+											endforeach;
+										}
+
+										$temporary_array = array_reverse(array_unique($temporary_array));
+
+										if ( $temporary_array ) {
 		
 											$i = 0;
 		
-											foreach( $translator_localizations as $localization ) :
+											foreach( $temporary_array as $unique_localization ) :
 		
-												echo $localization->name;
+												echo $unique_localization;
 		
 												$i++;
 		
@@ -145,7 +169,7 @@ $arrow_controls_right = file_get_contents(get_template_directory() . "/dist/dist
 							?>
 
 							<div>
-								<h2 class="info-tile text--turquoise fw--700 fs--600 mb--05">
+								<h2 class="info-tile text--turquoise fw--700 fs--600 mb--05 border--standard">
 									Jedno zdanie o mnie
 								</h2>
 
@@ -170,7 +194,7 @@ $arrow_controls_right = file_get_contents(get_template_directory() . "/dist/dist
 						if ( $translator_languages ) {
 
 							echo '<ul>
-									<h2 class="info-tile text--turquoise fw--700 fs--600">'.$tax_label_languages.'</h2>
+									<h2 class="info-tile text--turquoise fw--700 fs--600 border--standard">'.$tax_label_languages.'</h2>
 								';
 
 							foreach( $translator_languages as $term ) :
@@ -202,7 +226,7 @@ $arrow_controls_right = file_get_contents(get_template_directory() . "/dist/dist
 						if ( $translator_specializations ) {
 
 							echo '<ul>
-									<h2 class="info-tile text--turquoise fw--700 fs--600">'.$tax_label_specializations.'</h2>
+									<h2 class="info-tile text--turquoise fw--700 fs--600 border--standard">'.$tax_label_specializations.'</h2>
 									';
 
 							foreach( $translator_specializations as $term ) :
@@ -216,7 +240,7 @@ $arrow_controls_right = file_get_contents(get_template_directory() . "/dist/dist
 
 					<div class="translator__about">
 						
-						<h2 class="info-tile text--turquoise fw--700 fs--600 mb--1">O mnie</h2>
+						<h2 class="info-tile text--turquoise fw--700 fs--600 mb--1 border--standard">O mnie</h2>
 
 						<p>
 							<?php
@@ -248,7 +272,7 @@ $arrow_controls_right = file_get_contents(get_template_directory() . "/dist/dist
 
 					<div class="translator__middle">
 
-						<header class="entry-header mb--2">
+						<header class="entry-header mb--4">
 							
 							<?php
 								echo '
@@ -264,7 +288,7 @@ $arrow_controls_right = file_get_contents(get_template_directory() . "/dist/dist
 							?>
 
 							<div class="translator__about mb--2">
-								<h2 class="text--turquoise fw--700 fs--600 mb--05">
+								<h2 class="text--turquoise fw--700 fs--600 mb--05 border--standard">
 									Jedno zdanie o mnie
 								</h2>
 
@@ -281,7 +305,7 @@ $arrow_controls_right = file_get_contents(get_template_directory() . "/dist/dist
 					</div>
 
 					<div class="translator__contact">
-						<h2 class="text--turquoise fw--700 fs--600 mb--05">Kontakt</h2>
+						<h2 class="text--turquoise fw--700 fs--600 mb--05 border--standard">Kontakt</h2>
 
 						<?php
 							if ($translator_contact_phone_public) {
@@ -303,21 +327,36 @@ $arrow_controls_right = file_get_contents(get_template_directory() . "/dist/dist
 
 								echo '<div class="flex items-center info-tile">
 										<div class="icon">'.$localization_icon.'</div>
-										<span>'.$translator_city;
+										<span>';
+										
+										// .$translator_city;
 
-										if (strlen(get_field("translator_city")) > 0) {
-											echo get_field("translator_city").', ';
-										}
+										// if (strlen(get_field("translator_city")) > 0) {
+										// 	echo get_field("translator_city").', ';
+										// }
 		
 										$translator_localizations = wp_get_object_terms( $post->ID, 'translator_localization' );
-									
+
+										$temporary_array = array();
+
 										if ( $translator_localizations ) {
+		
+											foreach( $translator_localizations as $localization ) :
+
+												array_push($temporary_array, $localization->name);
+
+											endforeach;
+										}
+
+										$temporary_array = array_reverse(array_unique($temporary_array));
+
+										if ( $temporary_array ) {
 		
 											$i = 0;
 		
-											foreach( $translator_localizations as $localization ) :
+											foreach( $temporary_array as $unique_localization ) :
 		
-												echo $localization->name;
+												echo $unique_localization;
 		
 												$i++;
 		
@@ -336,13 +375,17 @@ $arrow_controls_right = file_get_contents(get_template_directory() . "/dist/dist
 						?>
 					</div>
 
-					<div class="translator__icons-wrapper text--right mb--4">
+					<div class="translator__icons-wrapper text--right mt--4 mb--4">
 					<?php
 
 						if ($translator__linkedin_link)  {
-							echo  '<a href="'.esc_url($translator__linkedin_link).'" class="contact-icon contact-icon__linkedin" target="_blank">
-							'.$linkedin_icon.'
-							</a>';
+
+							echo  '<div class="translator__linkedin text--left">
+										<h2 class="text--turquoise fw--700 fs--600 mb--1 border--standard">Linkedin</h2>
+										<a href="'.esc_url($translator__linkedin_link).'" class="contact-icon contact-icon__linkedin" target="_blank">
+										'.$linkedin_icon.'
+										</a>
+								  </div>';
 						}
 
 					?>
@@ -352,7 +395,7 @@ $arrow_controls_right = file_get_contents(get_template_directory() . "/dist/dist
 
 				<div class="translator__bottom">
 
-					<div class="wrapper-flex translator__languages mb--3">
+					<div class="wrapper-flex translator__languages mt--4 mb--4">
 						<?php
 
 						$tax_label_languages = get_taxonomy('translator_language')->label;
@@ -361,7 +404,7 @@ $arrow_controls_right = file_get_contents(get_template_directory() . "/dist/dist
 						if ( $translator_languages ) {
 
 							echo '<ul>
-									<h2 class="text--turquoise fw--700 fs--600">'.$tax_label_languages.'</h2>
+									<h2 class="text--turquoise fw--700 fs--600 border--standard">'.$tax_label_languages.'</h2>
 								';
 
 							foreach( $translator_languages as $term ) :
@@ -383,7 +426,7 @@ $arrow_controls_right = file_get_contents(get_template_directory() . "/dist/dist
 						?>
 					</div>
 
-					<div class="wrapper-flex translator__specializations">
+					<div class="wrapper-flex translator__specializations mb--4">
 						<?php
 
 						$tax_label_specializations = get_taxonomy('translator_specialization')->label;
@@ -393,7 +436,7 @@ $arrow_controls_right = file_get_contents(get_template_directory() . "/dist/dist
 						if ( $translator_specializations ) {
 
 							echo '<ul>
-									<h2 class="text--turquoise fw--700 fs--600">'.$tax_label_specializations.'</h2>
+									<h2 class="text--turquoise fw--700 fs--600 border--standard">'.$tax_label_specializations.'</h2>
 									';
 
 							foreach( $translator_specializations as $term ) :
@@ -407,7 +450,7 @@ $arrow_controls_right = file_get_contents(get_template_directory() . "/dist/dist
 
 					<div class="translator__about">
 
-						<h2 class="text--turquoise fw--700 fs--600 mb--1">O mnie</h2>
+						<h2 class="text--turquoise fw--700 fs--600 mb--1 border--standard">O mnie</h2>
 
 						<p>
 							<?php
@@ -450,7 +493,7 @@ $arrow_controls_right = file_get_contents(get_template_directory() . "/dist/dist
 
 			<div class="wrapper-flex">
 				<div class="text-content-holder">	
-					<h2 class="fs--1000 text--blue text--center mb--4">
+					<h2 class="fs--1000 text--blue text--center mb--4 border--standard">
 						Posłuchaj próbki głosu
 					</h2>
 				</div>
@@ -737,7 +780,7 @@ $arrow_controls_right = file_get_contents(get_template_directory() . "/dist/dist
 
 		<div class="wrapper-flex">
 			<div class="text-content-holder">
-				<h2 class="fs--1000 text--blue text--center mb--4">
+				<h2 class="fs--1000 text--blue text--center mb--4 border--standard">
 				Gdzie najczęściej pracuję?
 				</h2>
 				
@@ -959,7 +1002,7 @@ $arrow_controls_right = file_get_contents(get_template_directory() . "/dist/dist
 		<div class="wrapper-flex">
 
 				<div class="text-content-holder">
-					<h2 class="fs--1000 text--blue text--center mb--2">
+					<h2 class="fs--1000 text--blue text--center mb--2 border--standard">
 						Czy ten tłumacz sprawdzi się na moim wydarzeniu?
 					</h2>
 				</div>
@@ -993,31 +1036,38 @@ $arrow_controls_right = file_get_contents(get_template_directory() . "/dist/dist
 					</h2>
 				</div>
 
-				<div class="wrapper-flex">
+				<div class="blog-posts-grid">
+					<?php
+						while (have_posts()) : the_post();
+							get_template_part( 'template-parts/content', 'post-in-archive' );
+						endwhile;
+
+					?>
+
 
 						<!-- Slider main container -->
-						<div class="swiper-container swiper-container--translator-publications">
+						<!-- <div class="swiper-container swiper-container--translator-publications"> -->
 							<!-- Additional required wrapper -->
-							<div class="swiper-wrapper">
+							<!-- <div class="swiper-wrapper"> -->
 								<!-- Slides -->
 								<?php
 
-										while (have_posts()) : the_post();
-											echo '<div class="swiper-slide">';
-											echo '<a href="'.get_the_permalink().'">'.get_the_title().'</a>';
-											echo '</div>';
-										endwhile;
+										// while (have_posts()) : the_post();
+										// 	echo '<div class="swiper-slide">';
+
+										// 	echo '</div>';
+										// endwhile;
 
 								?>
-							</div>
+							<!-- </div> -->
 							<!-- If we need pagination -->
-							<div class="swiper-pagination"></div>
+							<!-- <div class="swiper-pagination"></div> -->
 
 							<!-- If we need navigation buttons -->
-							<div class="swiper-button-prev"></div>
-							<div class="swiper-button-next"></div>
+							<!-- <div class="swiper-button-prev"></div>
+							<div class="swiper-button-next"></div> -->
 
-						</div>
+						<!-- </div> -->
 
 						<?php
 
@@ -1036,8 +1086,12 @@ $arrow_controls_right = file_get_contents(get_template_directory() . "/dist/dist
 	?>
 	<!-- end of section-6 -->
 
-	<p>Click the button to create a new PDF document with <code>pdf-lib</code></p>
-    <button id="createPDFTrigger">Create PDF</button>
-    <p class="small">(Your browser will download the resulting file)</p>
+	<div class="dnone">
+		<p>Click the button to create a new PDF document with <code>pdf-lib</code></p>
+		<button id="createPDFTrigger">Create PDF</button>
+		<p class="small">(Your browser will download the resulting file)</p>
+
+	</div>
+
 
 </article><!-- #post-<?php the_ID(); ?> -->

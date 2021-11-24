@@ -34,9 +34,9 @@ $circles_group = file_get_contents(get_template_directory() . "/dist/dist/svg/ci
 
 		<main id="main" class="site-main whyus">
 
-		<div class="welcome-view welcome-view-subpage">
+		<section class="welcome-view welcome-view-subpage relative">
 
-			<div class="welcome-view__container image-content-row">
+			<div class="whyus__section-1 welcome-view__container image-content-row">
 
 				<div class="content-holder welcome-view__left">
 
@@ -50,7 +50,7 @@ $circles_group = file_get_contents(get_template_directory() . "/dist/dist/svg/ci
 
 				</div>
 
-				<div class="welcome-view__right image-holder w--fit-content image-holder-decorated image-holder-decorated--turquoise">
+				<div class="welcome-view__right image-holder">
 
 						<?php
 						if ($section_1_image) {
@@ -64,17 +64,21 @@ $circles_group = file_get_contents(get_template_directory() . "/dist/dist/svg/ci
 
 			</div>
 
-		</div>
+			<?php get_template_part( 'template-parts/partials/scroll-down' ); ?>
 
-		<section class="whyus__section-2">
+		</section>
+
+		<section class="whyus__section-2 relative">
 
 			<h2 class="fw--700 fs--1200 lh--125 text--turquoise pb--2"><?php echo $section_2_h2 ?></h2>
 
 			<div class="content relative pseudo-decoration pseudo-decoration__rt fw--500">
 				<?php echo $section_2_paragraph ?>
 
-				<?php echo $circles_group ?>
+
 			</div>
+
+			<?php echo $circles_group ?>
 
 		</section>
 
@@ -107,7 +111,7 @@ $circles_group = file_get_contents(get_template_directory() . "/dist/dist/svg/ci
 										<img src="'.$icon["url"].'" alt="'.$icon["alt"].'" loading="lazy">
 									</div>
 
-									<div class="advantage__title-wrapper mb--1"><p class="fw--700 fs--800 text--blue">'.$title.'</p></div>
+									<div class="advantage__title-wrapper mb--1"><p class="fw--700 fs--800 text--blue mb--1">'.$title.'</p></div>
 									<div class="advantage__paragraph-wrapper relative"><p class="fw--700">'.$paragraph.'</p></div>
 								</div>
 							</div>';

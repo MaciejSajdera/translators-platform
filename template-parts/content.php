@@ -6,30 +6,46 @@
  *
  * @package pstk
  */
-
+$subheader = get_field('subheader');
 ?>
 
 <article id="post-<?php the_ID(); ?>" <?php post_class(); ?>>
-	<header class="entry-header">
+	<header class="entry-header mb--3">
 		<?php
 		if ( is_singular() ) :
-			the_title( '<h1 class="entry-title">', '</h1>' );
+			the_title( '<h1 class="entry-title fs--1200 fw--700 mb--2">', '</h1>' );
 		else :
 			the_title( '<h2 class="entry-title"><a href="' . esc_url( get_permalink() ) . '" rel="bookmark">', '</a></h2>' );
 		endif;
 
+		if ($subheader) {
+			echo '<h2 class="fs--600 fw--700 mb--2">'.$subheader.'</h2>';
+		}
+
 		if ( 'post' === get_post_type() ) :
 			?>
-			<div class="entry-meta">
+			<div class="entry-meta flex items-center content-between">
+
+				<div class="flex items-center fw--300">
+					<?php
+					the_date();
+					?>
+					<?php
+					the_time()
+					?>
+				</div>
+
 				<?php
-				pstk_posted_on();
-				pstk_posted_by();
+				echo do_shortcode('[Sassy_Social_Share]');
 				?>
+
 			</div><!-- .entry-meta -->
 		<?php endif; ?>
 	</header><!-- .entry-header -->
 
-	<?php pstk_post_thumbnail(); ?>
+	<div class="image-holder w--full mb--4">
+		<?php pstk_post_thumbnail(); ?>
+	</div>
 
 	<div class="entry-content">
 		<?php
