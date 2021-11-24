@@ -332,7 +332,7 @@ $fields_for_login_page_paragraph = $fields_for_login_page['paragraph'];
 
 												echo '<p class="info-box__subbox-header mb--05">'.$translator_languages_taxonomy->label.'</p>';
 
-												echo '<p id="user_languages_text" class="info-box__content">';
+												echo '<p id="user_languages_text" class="info-box__content lowercase">';
 												
 												if ( $translator_languages ) {
 													foreach( $translator_languages as $term ) :
@@ -1187,8 +1187,6 @@ $fields_for_login_page_paragraph = $fields_for_login_page['paragraph'];
 
 								<?php
 
-
-
 							echo '</div>';
 
 							/* END OF PROFILE SECTION 2 */
@@ -1213,6 +1211,13 @@ $fields_for_login_page_paragraph = $fields_for_login_page['paragraph'];
 
 								echo '</div>';
 
+								if ( !$is_approved ) :
+
+									echo '<p class="text--blue fw--500">Materiały pojawią się gdy Twoje konto zostanie zweryfikowane.</p>';
+
+								endif;
+
+								if ( $is_approved ) :
 
 								/* UPDATE LOGIN EMAIL ADDRESS FORM */
 
@@ -1356,6 +1361,8 @@ $fields_for_login_page_paragraph = $fields_for_login_page['paragraph'];
 								</div>
 
 								<?php
+
+								endif;
 								
 							echo '</div>';
 

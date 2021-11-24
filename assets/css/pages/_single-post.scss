@@ -1,7 +1,7 @@
 .single-post {
 	article.type-post {
 		@media screen and (min-width: 1024px) {
-			max-width: 75%;
+			max-width: 80%;
 		}
 
 		.post-thumbnail {
@@ -14,7 +14,52 @@
 		}
 	}
 
-	.blockquote {
+	.metadata-wrapper {
+		@include fluid-type($min_width, $max_width, 12px, 14px);
+
+		@media screen and (min-width: 1024px) {
+			align-items: center;
+		}
+	}
+
+	.entry-content {
+		ol,
+		ul {
+			padding-left: 2em;
+			margin: 1.5rem 0;
+			li {
+				margin-bottom: 2rem;
+			}
+		}
+
+		ul {
+			li {
+				position: relative;
+				&:before {
+					content: "\2022"; /* Add content: \2022 is the CSS Code/unicode for a bullet */
+					@include fluid-type($min_width, $max_width, 20px, 20px);
+					color: $color__main-theme--turquoise; /* Change the color */
+					font-weight: bold; /* If you want it to be bold */
+					display: inline-block; /* Needed to add space between the bullet and the text */
+					width: 1em; /* Also needed for space (tweak if needed) */
+					margin-left: -1em; /* Also needed for space (tweak if needed) */
+				}
+			}
+		}
+
+		img {
+			display: flex;
+			clear: both;
+			width: 100%;
+			margin: 3rem 0;
+			object-fit: cover;
+			max-height: 550px;
+		}
+
+		a {
+			color: $color__main-theme--blue;
+			border-bottom: 1px solid $color__main-theme--blue;
+		}
 	}
 
 	.div.heateor_sss_follow_ul a,
@@ -24,6 +69,10 @@
 		&:last-of-type {
 			margin-right: 0;
 		}
+	}
+
+	.entry-footer {
+		display: none;
 	}
 }
 

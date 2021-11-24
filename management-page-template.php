@@ -122,8 +122,6 @@ $cards = get_field('cards');
 									';
 								
 									if ($card['repeater_fields']) {
-
-										var_dump($card['repeater_fields']);
 	
 										$translators_counter = 1;
 
@@ -135,15 +133,19 @@ $cards = get_field('cards');
 
 											//TODO
 	
-											// if (!$translator) {
+											if (!$translator) {
+												$image_url = get_stylesheet_directory_uri(). '/dist/dist/img/avatarplaceholder.jpg';
+												$title = 'Członek zarządu';
+												$translator_link = '#';
+												$translator_email = 'annachweduczak@gmail.com';
+											}
 
-											// }
-	
-											$image_url = get_the_post_thumbnail_url($translator->ID);
-											$title = $row['title'];
-											$translator_link = get_the_permalink($translator->ID);
-											$translator_email = get_field("translator_contact_email", $translator->ID);
-	
+											if ($translator) {
+												$image_url = get_the_post_thumbnail_url($translator->ID);
+												$title = $row['title'];
+												$translator_link = get_the_permalink($translator->ID);
+												$translator_email = get_field("translator_contact_email", $translator->ID);
+											}
 	
 											$order_status = '';
 	

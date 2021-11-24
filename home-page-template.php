@@ -221,6 +221,10 @@ $email_icon_blue = file_get_contents(get_template_directory() . "/dist/dist/svg/
 
 		</section>
 
+		<?php
+			if ($translator_of_the_month || $management_member_of_the_month) :
+		?>
+
 		<section class="home__section-6">
 
 			<h2 class="text--blue fw--900 fs--1800 mb--8 text--big-header">
@@ -386,6 +390,10 @@ $email_icon_blue = file_get_contents(get_template_directory() . "/dist/dist/svg/
 				</div>
 
 		</section>
+
+		<?php
+			endif;
+		?>
 
 		</main><!-- #main -->
 	</div><!-- #primary -->

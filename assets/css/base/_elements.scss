@@ -466,7 +466,6 @@ table {
 
 	&__link-cta,
 	&__link-cta:visited {
-		@include fluid-type($min_width, $max_width, 14px, 16px);
 		color: $color__main-theme--blue;
 		cursor: pointer;
 		border-bottom: 2px solid $color__main-theme--turquoise;
@@ -474,7 +473,6 @@ table {
 
 	&__outline--blue,
 	&__outline--blue:visited {
-		@include fluid-type($min_width, $max_width, 14px, 16px);
 		white-space: break-spaces;
 		color: $color__main-theme--blue;
 		border: 2px solid $color__main-theme--blue;
@@ -497,7 +495,6 @@ table {
 	.lostpassword-button:visited,
 	.frm_button_submit,
 	.frm_button_submit:visited {
-		@include fluid-type($min_width, $max_width, 14px, 16px);
 		white-space: break-spaces;
 		color: $color__text-white;
 		border: 2px solid $color__main-theme--blue;
@@ -526,7 +523,7 @@ table {
 		// 	color: $color__main-theme--turquoise;
 		// 	background: transparent;
 		// }
-		@include fluid-type($min_width, $max_width, 14px, 16px);
+
 		background-color: $color__main-theme--turquoise;
 		color: $color__text-white;
 		width: fit-content;
@@ -542,7 +539,6 @@ table {
 
 	&--upload-file,
 	&--upload-file:visited {
-		@include fluid-type($min_width, $max_width, 14px, 16px);
 		background-color: $color__main-theme--turquoise;
 		color: $color__text-white;
 		width: fit-content;
@@ -570,7 +566,6 @@ table {
 
 	&--download,
 	&--download:visited {
-		@include fluid-type($min_width, $max_width, 14px, 16px);
 		display: flex;
 		justify-content: center;
 		align-items: center;
@@ -587,7 +582,6 @@ table {
 
 	&--readmore,
 	&--readmore:visited {
-		@include fluid-type($min_width, $max_width, 14px, 16px);
 		display: flex;
 		justify-content: center;
 		align-items: center;

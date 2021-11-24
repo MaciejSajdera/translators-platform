@@ -39,7 +39,6 @@ get_header();
 		endwhile; // End of the loop.
 		?>
 
-		
 			<div class="post-navigation">
 
 			<div>

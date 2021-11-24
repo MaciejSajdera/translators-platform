@@ -60,7 +60,7 @@ get_header();
 			</div><!-- blog-posts-grid -->
 
 			<?php
-			the_posts_navigation();
+			// the_posts_navigation();
 
 		else :
 

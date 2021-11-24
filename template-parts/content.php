@@ -10,7 +10,7 @@ $subheader = get_field('subheader');
 ?>
 
 <article id="post-<?php the_ID(); ?>" <?php post_class(); ?>>
-	<header class="entry-header mb--3">
+	<header class="entry-header mb--2">
 		<?php
 		if ( is_singular() ) :
 			the_title( '<h1 class="entry-title fs--1200 fw--700 mb--2">', '</h1>' );
@@ -19,20 +19,47 @@ $subheader = get_field('subheader');
 		endif;
 
 		if ($subheader) {
-			echo '<h2 class="fs--600 fw--700 mb--2">'.$subheader.'</h2>';
+			echo '<h2 class="fs--600 fw--500 mb--2 text--blue">'.$subheader.'</h2>';
 		}
 
 		if ( 'post' === get_post_type() ) :
 			?>
 			<div class="entry-meta flex items-center content-between">
 
-				<div class="flex items-center fw--300">
-					<?php
-					the_date();
-					?>
-					<?php
-					the_time()
-					?>
+				<div class="metadata-wrapper wrapper-flex-drow-mcol fw--300 fs--200">
+
+					<p class="author">
+						Autor:
+						<span class="text--blue fw--500">
+						<?php
+						$tags = get_the_tags($post->ID);
+						$i = 0;
+						if ($tags) {
+							foreach($tags as $my_tag) {
+
+								echo $my_tag->name;
+								if (count($tags) > $i && count($tags) > 1 ) {
+									echo ", ";
+								}
+								$i++;
+							}
+						}
+						?>
+						</span>
+					</p>
+
+					<p class="date">
+						<?php
+						the_date();
+						?>
+					</p>
+
+					<p class="time">
+						<?php
+						the_time()
+						?>
+					</p>
+
 				</div>
 
 				<?php

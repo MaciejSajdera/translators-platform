@@ -1149,7 +1149,7 @@ function basic_user_data_form() {
 
 									echo '<div class="info-box__checkbox-wrapper">';
 
-									echo '<label class="mb--05">';
+									echo '<label class="mb--05 lowercase">';
 
 										?>
 										<input name="user_languages[]" class="user_languages" type="checkbox" value="<?php echo $term->name ?>"

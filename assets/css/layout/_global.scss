@@ -34,6 +34,12 @@
 	}
 }
 
+.single-post .site-content {
+	@media screen and (min-width: 1024px) {
+		padding-top: 10rem;
+	}
+}
+
 // .page-template-user-account-page-template .site-content,
 // .single-translator .site-content,
 // .blog .site-content,
@@ -1350,6 +1356,17 @@ section {
 		}
 	}
 
+	.content-holder {
+		@media screen and (max-width: 1023px) {
+			margin-bottom: 2rem;
+
+			.cta-wrapper {
+				text-align: center;
+				margin-bottom: 4rem;
+			}
+		}
+	}
+
 	@media screen and (min-width: 1024px) {
 		// .image-holder {
 		// 	width: 45%;
@@ -1761,4 +1778,8 @@ section {
 .showBtn {
 	opacity: 1;
 	transform: translateY(0);
+}
+
+.lowercase {
+	text-transform: lowercase;
 }
