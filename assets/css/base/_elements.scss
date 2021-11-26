@@ -22,7 +22,7 @@ body {
 
 body {
 	background: linear-gradient(
-		190deg,
+		230deg,
 		rgba(22, 83, 140, 0.212) 0.53%,
 		rgba(22, 83, 140, 0.06) 19.61%,
 		rgba(24, 160, 170, 0.032) 63.06%,
@@ -76,6 +76,7 @@ a {
 	color: $color__link;
 	text-decoration: none;
 	transition: $transition_regular;
+	cursor: pointer;
 
 	&:visited {
 		color: $color__link-visited;
@@ -358,13 +359,12 @@ table {
 	background: rgba(255, 255, 255, 0.85);
 	background-clip: content-box;
 	transition: $transition_regular;
-	padding: $padding__content-box $padding__content-box $padding__content-box
-		$padding__content-box;
+	padding: 1rem;
 
-	@media screen and (min-width: 1024px) {
-		padding: $padding__content-box-1024 $padding__content-box-1024
-			$padding__content-box-1024 $padding__content-box-1024;
-	}
+	// @media screen and (min-width: 1024px) {
+	// 	padding: $padding__content-box-1024 $padding__content-box-1024
+	// 		$padding__content-box-1024 $padding__content-box-1024;
+	// }
 
 	&--active {
 		z-index: 1;
@@ -393,7 +393,7 @@ table {
 	padding: 0.5em 1.5em;
 
 	@media screen and (min-width: 1024px) {
-		padding: 0.5em 2.5em;
+		padding: 0.5em 2em;
 	}
 
 	&__edit-account-content,
@@ -411,11 +411,19 @@ table {
 		background-color: $color__main-theme--blue;
 		border: 2px solid $color__main-theme--blue;
 		color: $color__text-white;
-		padding: 0.5em 1em;
+		padding: 0.5rem;
 		font-size: 12px;
 		margin-left: auto;
 		border-radius: 8px;
 		box-shadow: $box-shadow_standard--theme-color;
+
+		@media screen and (max-width: 1023px) {
+			font-size: 0 !important;
+		}
+
+		@media screen and (min-width: 1024px) {
+			padding: 0.5rem 1rem;
+		}
 
 		&::before {
 			content: "";
@@ -423,9 +431,12 @@ table {
 			background-size: contain;
 			background-repeat: no-repeat;
 			background-position: center;
-			margin-right: 0.5rem;
 			width: 1rem;
 			height: 1rem;
+
+			@media screen and (min-width: 1024px) {
+				margin-right: 0.5rem;
+			}
 		}
 
 		&:hover {
@@ -433,12 +444,14 @@ table {
 		}
 	}
 
-	&__edit-account-content--back {
+	&__edit-account-content--back,
+	&__edit-account-content--back:visited {
 		background-color: transparent;
 		color: $color__main-theme--blue;
 
 		&::before {
 			background-image: url(../dist/svg/back-blue.svg);
+			transition: $transition__button--standard;
 		}
 
 		&:hover {
@@ -480,7 +493,8 @@ table {
 	&-primary:visited,
 	.lostpassword-button,
 	.lostpassword-button:visited,
-	.frm_button_submit {
+	.frm_button_submit,
+	.frm_button_submit:visited {
 		white-space: break-spaces;
 		color: $color__text-white;
 		border: 2px solid $color__main-theme--blue;
@@ -497,7 +511,7 @@ table {
 	}
 
 	&__filled--turquoise,
-	&:visited {
+	&__filled--turquoise:visited {
 		// white-space: break-spaces;
 		// color: $color__text-white;
 		// border: 2px solid $color__main-theme--turquoise;
@@ -523,7 +537,8 @@ table {
 		}
 	}
 
-	&--upload-file {
+	&--upload-file,
+	&--upload-file:visited {
 		background-color: $color__main-theme--turquoise;
 		color: $color__text-white;
 		width: fit-content;
@@ -548,9 +563,42 @@ table {
 			display: none;
 		}
 	}
+
+	&--download,
+	&--download:visited {
+		display: flex;
+		justify-content: center;
+		align-items: center;
+		&::after {
+			content: "";
+			background-image: url(../dist/svg/download.svg);
+			background-size: contain;
+			background-repeat: no-repeat;
+			width: 1em;
+			height: 1em;
+			margin-left: 1rem;
+		}
+	}
+
+	&--readmore,
+	&--readmore:visited {
+		display: flex;
+		justify-content: center;
+		align-items: center;
+		&::after {
+			content: "";
+			background-image: url(../dist/svg/arrow_readmore_right.svg);
+			background-size: contain;
+			background-repeat: no-repeat;
+			width: 1em;
+			height: 1em;
+			margin-left: 1rem;
+		}
+	}
 }
 
-.frm_button_submit {
+.frm_button_submit,
+.frm_button_submit:visited {
 	cursor: pointer;
 	transition: $transition__button--standard;
 	white-space: break-spaces;
@@ -579,18 +627,21 @@ table {
 	// width: 100%;
 	height: auto;
 	padding: 0 1em;
-	left: 50%;
 	opacity: 0;
 	transition: opacity 0.3s ease-in-out;
-	transform: translate(-50%, 100%);
+	left: 100%;
+	transform: translate(-100%, 100%);
 	bottom: -1em;
 	background: white;
-	box-shadow: 0 50px 100px rgb(50 50 93 / 10%), 0 15px 35px rgb(50 50 93 / 15%),
-		0 5px 15px rgb(0 0 0 / 10%);
+	border-radius: 10px;
+	box-shadow: $box-shadow_standard--black;
+
+	min-width: 250px;
+	min-height: 50px;
 
 	@media screen and (min-width: 1024px) {
-		min-width: 250px;
-		min-height: 50px;
+		left: 50%;
+		transform: translate(-50%, 100%);
 	}
 
 	.pop-up__arrow {
@@ -599,8 +650,14 @@ table {
 		height: 20px;
 		display: block;
 		background: white;
-		left: 50%;
-		transform: translate(-50%, -50%) rotate(45deg);
+		left: 100%;
+		transform: translate(-150%, -50%) rotate(45deg);
+		// box-shadow: $box-shadow_standard--black;
+
+		@media screen and (min-width: 1024px) {
+			left: 50%;
+			transform: translate(-50%, -50%) rotate(45deg);
+		}
 	}
 
 	p {
@@ -628,8 +685,11 @@ table {
 	position: relative;
 }
 
-#progressRing {
+.absolute {
 	position: absolute;
+}
+
+#progressRing {
 	top: 0;
 	right: 0;
 	overflow: visible;
@@ -638,18 +698,23 @@ table {
 	font-weight: 500;
 	z-index: 1;
 
-	width: 95px;
-	min-width: 95px;
-	height: 95px;
-	min-height: 95px;
-	padding: 0.5rem;
+	// width: 95px;
+	// min-width: 95px;
+	// height: 95px;
+	// min-height: 95px;
+	// padding: 0.5rem;
+
+	width: 100px;
+	min-width: 100px;
+	height: 100px;
+	min-height: 100px;
+	padding: 0.85rem;
+
+	transform: scale(0.85);
 
 	@media screen and (min-width: 1024px) {
-		width: 100px;
-		min-width: 100px;
-		height: 100px;
-		min-height: 100px;
-		padding: 0.85rem;
+		position: absolute;
+		transform: scale(1);
 	}
 
 	&::after,
@@ -693,7 +758,9 @@ table {
 }
 
 .progress-ring--complete {
-	position: absolute !important;
-	top: 0;
-	right: 0;
+	@media screen and (min-width: 1024px) {
+		position: absolute !important;
+		top: 0;
+		right: 0;
+	}
 }

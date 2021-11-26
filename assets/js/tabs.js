@@ -35,8 +35,6 @@ export default function handleTabs(tabsContainer) {
 	}
 }
 
-console.log("test");
-
 const managementTabs = document.querySelector(".management__tabs");
 
 handleTabs(managementTabs);

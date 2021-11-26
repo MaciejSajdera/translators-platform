@@ -42,9 +42,9 @@ $circles_pair_bg = file_get_contents(get_template_directory() . "/dist/dist/svg/
 
 		<main id="main" class="site-main joinus">
 
-		<div class="welcome-view welcome-view-subpage">
+		<div class="welcome-view welcome-view-subpage relative">
 
-			<div class="welcome-view__container image-content-row">
+			<div class="welcome-view__container">
 
 				<div class="content-holder welcome-view__left">
 
@@ -58,7 +58,7 @@ $circles_pair_bg = file_get_contents(get_template_directory() . "/dist/dist/svg/
 
 				</div>
 
-				<div class="welcome-view__right image-holder w--fit-content">
+				<div class="welcome-view__right image-holder">
 
 						<?php
 						if ($section_1_image) {
@@ -80,8 +80,8 @@ $circles_pair_bg = file_get_contents(get_template_directory() . "/dist/dist/svg/
 		<section class="joinus__section-2">
 
 			<div class="wrapper-flex-drow-mcol content-between image-content-row">
-				<div class="content-holder bulletpoints-box">
 
+				<div class="content-holder bulletpoints-box">
 					<div class="bulletpoints-box__title">
 						<h2 class="text--turquoise fw--700 fs--1200"><?php echo $section_2_title ?></h2>
 					</div>
@@ -103,10 +103,9 @@ $circles_pair_bg = file_get_contents(get_template_directory() . "/dist/dist/svg/
 
 						?>
 					</div>
-
 				</div>
 
-				<div class="image-holder w--fit-content image-to-the-right">
+				<div class="image-holder w--fit-content">
 						<?php
 						if ($section_2_image) {
 							?>
@@ -115,6 +114,7 @@ $circles_pair_bg = file_get_contents(get_template_directory() . "/dist/dist/svg/
 						}
 						?>
 				</div>
+				
 			</div>
 
 		</section>
@@ -148,7 +148,7 @@ $circles_pair_bg = file_get_contents(get_template_directory() . "/dist/dist/svg/
 
 				</div>
 
-				<div class="image-holder w--fit-content image-to-the-right">
+				<div class="image-holder w--fit-content">
 
 						<?php
 						if ($section_3_image) {
@@ -192,7 +192,7 @@ $circles_pair_bg = file_get_contents(get_template_directory() . "/dist/dist/svg/
 
 				</div>
 
-				<div class="image-holder w--fit-content image-to-the-right">
+				<div class="image-holder w--fit-content">
 
 						<?php
 						if ($section_4_image) {
@@ -253,6 +253,14 @@ $circles_pair_bg = file_get_contents(get_template_directory() . "/dist/dist/svg/
 
 				?>
 			</div>
+
+		</section>
+
+		<section class="joinus__section-5">
+
+			<?php
+				get_template_part( 'template-parts/partials/follow-us' );
+			?>
 
 		</section>
 

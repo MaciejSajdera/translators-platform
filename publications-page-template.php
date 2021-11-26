@@ -5,9 +5,9 @@
  * description: >-
   Page template without sidebar
  */
-// $section_1 = get_field("section_1");
-// $section_1_paragraph = $section_1['paragraph'];
-// $section_1_image = $section_1['image'];
+$section_1 = get_field("section_1");
+$section_1_paragraph = $section_1['paragraph'];
+$section_1_image = $section_1['image'];
 
 get_header();
 
@@ -23,19 +23,19 @@ get_header();
 
 		<main id="main" class="site-main blog-posts">
 
-			<!-- <div class="welcome-view welcome-view-subpage">
+			<div class="welcome-view welcome-view-subpage relative">
 
 				<div class="welcome-view__container image-content-row">
 
 					<div class="welcome-view__left">
 
-						<div class="entry-header"> -->
+						<div class="entry-header">
 							<?php
-								// the_title( '<h1 class="entry-title fs--1800 mb--2">', '</h1>' );
+								the_title( '<h1 class="entry-title fs--1800 mb--2">', '</h1>' );
 							?> 
 						</div><!-- .entry-header -->
 
-						<!-- <p class="fs--800 fw--500 ff--secondary text--turquoise"><?php echo $section_1_paragraph ?></p>
+						<p class="fs--800 fw--500 ff--secondary text--turquoise"><?php echo $section_1_paragraph ?></p>
 
 					</div>
 
@@ -50,11 +50,11 @@ get_header();
 							?>
 					</div>
 
-				</div> -->
+				</div>
 
-				<!-- <?php get_template_part( 'template-parts/partials/scroll-down' ); ?> -->
+				<?php get_template_part( 'template-parts/partials/scroll-down' ); ?>
 
-			<!-- </div> -->
+			</div>
 
 			<?php
 
@@ -64,6 +64,7 @@ get_header();
 							'hide_empty'    => true,
 							'orderby'       => 'ID',
 							'order'         => 'DESC',
+							'exclude'		=> '1, 101'
 					)
 				);
 
@@ -74,11 +75,11 @@ get_header();
 					echo '<div class="blog-posts__category-wrapper">';
 
 						//var_dump( $term );
-						echo '<h2 class="fs--1000 w--60 border--standard mb--4">'. $term->name .'</h3>';
+						echo '<h2 class="fs--1000 w--60 border--standard mb--4">'. $term->name .'</h2>';
 
 						$args = array(
 								'post_type'             => 'post',
-								'posts_per_page'        => -1,
+								'posts_per_page'        => -1, //specify yours
 								'post_status'           => 'publish',
 								'order' => 'ASC',
 								'tax_query'             => array(

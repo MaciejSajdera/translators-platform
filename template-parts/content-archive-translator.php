@@ -33,15 +33,19 @@ if ( $args['data'] ) {
 
 	<div class="translator__top">
 
-		<div class="profile-picture__wrapper text--center">
+  		<a href="<?php echo get_permalink(); ?>">
 
-				<div class="corner__decoration corner__decoration--left"></div>
+			<div class="profile-picture__wrapper text--center">
 
-				<img src="<?php echo get_the_post_thumbnail_url() ?>" loading="lazy" />
+					<div class="corner__decoration corner__decoration--left"></div>
 
-				<div class="corner__decoration corner__decoration--right"></div>
+					<img src="<?php echo get_the_post_thumbnail_url() ?>" loading="lazy" />
 
-		</div>
+					<div class="corner__decoration corner__decoration--right"></div>
+
+			</div>
+
+		</a>
 
 		<div class="translator__icons-wrapper text--right">
 		<?php
@@ -78,20 +82,34 @@ if ( $args['data'] ) {
 
 			<p class="fw--700">
 				<?php
+					// .$translator_city;
 
-					if (strlen(get_field("translator_city")) > 0) {
-						echo get_field("translator_city").', ';
-					}
+					// if (strlen(get_field("translator_city")) > 0) {
+					// 	echo get_field("translator_city").', ';
+					// }
 
 					$translator_localizations = wp_get_object_terms( $post->ID, 'translator_localization' );
-				
-					if ( $translator_localizations ) {
 
-						$i = 0;
+					$temporary_array = array();
+
+					if ( $translator_localizations ) {
 
 						foreach( $translator_localizations as $localization ) :
 
-							echo $localization->name;
+							array_push($temporary_array, $localization->name);
+
+						endforeach;
+					}
+
+					$temporary_array = array_reverse(array_unique($temporary_array));
+
+					if ( $temporary_array ) {
+
+						$i = 0;
+
+						foreach( $temporary_array as $unique_localization ) :
+
+							echo $unique_localization;
 
 							$i++;
 
@@ -101,6 +119,7 @@ if ( $args['data'] ) {
 
 						endforeach;
 					}
+
 				?>
 			</p>
 

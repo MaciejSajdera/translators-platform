@@ -36,7 +36,7 @@ get_header();
 
 			<h1 class="mb--1">Wyszukiwarka PSTK</h1>
 
-			<h2>Znajdź tłumacza na wydarzenie</h2>
+			<h2 class="text--turquoise">Znajdź tłumacza na wydarzenie</h2>
 
 			<!-- <?php
 			the_archive_title( '<h1 class="page-title">', '</h1>' );
@@ -49,11 +49,7 @@ get_header();
 
 		</div>
 
-		<?php if ( have_posts() ) : ?>
-
-			<div id="search__results-container" class="archive-translator__article-list-wrapper">
-
-				<h3 class="page-title fs--1200">
+		<h3 class="page-title fs--1200">
 					<?php 
 						$count = $GLOBALS['wp_query']->post_count;
 
@@ -61,7 +57,11 @@ get_header();
 
 						echo ' <span class="post-count">'.$count.'</span>';
 					?>
-				</h3>
+		</h3>
+
+		<?php if ( have_posts() ) : ?>
+
+			<div id="search__results-container" class="archive-translator__article-list-wrapper">
 
 				<?php
 
@@ -92,13 +92,17 @@ get_header();
 			get_template_part( 'template-parts/content', 'none' );
 
 		endif;
-
-			get_template_part( 'template-parts/blog-new-posts' );
-
+		
 		?>
 
+		<section>
+
+		<?php get_template_part( 'template-parts/blog-new-posts' ); ?>
+
+		</section>
+
 		<?php
-			get_template_part( 'template-parts/back-to-home-page' );
+			// get_template_part( 'template-parts/back-to-home-page' );
 		?>
 
 		</main><!-- #main -->

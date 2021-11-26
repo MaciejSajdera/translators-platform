@@ -102,14 +102,13 @@ $fields_for_login_page_paragraph = $fields_for_login_page['paragraph'];
 					$translator_work = get_field('translator_work', $user_post_id);
 					$images_to_gallery_array = get_field('translator_gallery', $user_post_id);
 					$videos_to_gallery_array = get_field('translator_video_gallery', $user_post_id);
-					$membership_package_file = get_field('membership_package_file', $user_post_id);
 
 					// print_r($_POST);
 					// print_r($_REQUEST);
 
 					echo '<div class="account__container">';
 
-						echo '<div class="account__side-menu content-box">';
+						echo '<div class="account__side-menu content-box relative">';
 
 							$is_approved = get_post_meta( $user_post_id, 'is_approved', true );
 							$account_privacy_status = get_post_status($user_post_id);
@@ -117,25 +116,25 @@ $fields_for_login_page_paragraph = $fields_for_login_page['paragraph'];
 							
 							if ( !$is_approved ) {
 								$account_privacy_status_icon = '<div class="account__privacy-status-holder">
-																	<div class="icon account__privacy-status account__private">'.$account_privacy_icon.'</div>
+																	<div class="icon account__privacy-status account__private w--fit-content">'.$account_privacy_icon.'</div>
 																</div>';
 							}
 
 							if( $is_approved && $account_privacy_status !== "publish" ) {
 								$account_privacy_status_icon = '<div class="account__privacy-status-holder">
-																	<div class="icon account__privacy-status account__private">'.$account_privacy_icon.'</div>
+																	<div class="icon account__privacy-status account__private w--fit-content">'.$account_privacy_icon.'</div>
 																</div>';
 							}
 
 							if ( $is_approved && $account_privacy_status == "publish" ) {
 								$account_privacy_status_icon = '<div class="account__privacy-status-holder">
-																	<div class="icon account__privacy-status account__public">'.$account_privacy_icon.'</div>
+																	<div class="icon account__privacy-status account__public w--fit-content">'.$account_privacy_icon.'</div>
 																</div>';
 							}
 
-							echo $account_privacy_status_icon;
-
 							echo '<div class="profile-picture__wrapper ajax-content-wrapper mb--3">';
+
+								echo $account_privacy_status_icon;
 
 								echo '<div class="post-thumbnail">';
 
@@ -227,7 +226,7 @@ $fields_for_login_page_paragraph = $fields_for_login_page['paragraph'];
 
 												echo '<h3 class="fs--600 fw--500">';
 													echo 'Witaj na swoim koncie PSTK.<br />';
-													echo 'Twój profil jest kompletny w <span id="accountFillCompletness" class="'.$completness_value_class.'"><span id="percentValueOfAccountFillCompletness">'.get_percent_value_of_account_fill_completness().'</span><span>%</span></span>.
+													echo 'Twój profil jest kompletny w <span id="accountFillCompletness" class="'.$completness_value_class.'"><span class="text--turquoise" id="percentValueOfAccountFillCompletness">'.get_percent_value_of_account_fill_completness().'</span><span class="text--turquoise">%</span></span>.
 													</h3>';
 
 												if (get_percent_value_of_account_fill_completness() < 100) {
@@ -333,7 +332,7 @@ $fields_for_login_page_paragraph = $fields_for_login_page['paragraph'];
 
 												echo '<p class="info-box__subbox-header mb--05">'.$translator_languages_taxonomy->label.'</p>';
 
-												echo '<p id="user_languages_text" class="info-box__content">';
+												echo '<p id="user_languages_text" class="info-box__content lowercase">';
 												
 												if ( $translator_languages ) {
 													foreach( $translator_languages as $term ) :
@@ -422,14 +421,11 @@ $fields_for_login_page_paragraph = $fields_for_login_page['paragraph'];
 
 											echo '<div class="info-box__subbox">';
 
-												if (strlen($translator_about) > 0) {
-													$placeholder_mode = '';
-												} else {
+												if (!strlen($translator_about) > 0) {
 													$translator_about = 'Napisz o sobie kilka zdań, które pozwolą potencjalnym klientom poznać Cię z najlepszej strony, zrozumieć, w czym masz doświadczenie i co Cię wyróżnia.';
-													$placeholder_mode = 'placeholder_mode';
 												}
 
-												echo '<p id="user_about_text" class="info-box__content '.$placeholder_mode.'">'.$translator_about.'</p>';
+												echo '<p id="user_about_text" class="info-box__content">'.$translator_about.'</p>';
 
 											echo '</div>';
 
@@ -477,30 +473,19 @@ $fields_for_login_page_paragraph = $fields_for_login_page['paragraph'];
 
 											echo '<div class="info-box__subbox mb--3">';
 
-													if (strlen($translator_contact_phone) > 0) {
-														$placeholder_mode = '';
-													} else {
-														$translator_contact_phone = '';
-														$placeholder_mode = 'placeholder_mode';
-													}
-
 												echo '<p class="info-box__subbox-header mb--05">Numer telefonu</p>';
-												echo '<p id="user_contact_phone_text" class="info-box__content '.$placeholder_mode.'">'.$translator_contact_phone.'</p>';
+												echo '<p id="user_contact_phone_text" class="info-box__content">'.$translator_contact_phone.'</p>';
 
 											echo '</div>';
 
 											echo '<div class="info-box__subbox mb--3">';
 
-
-													if (strlen($translator_contact_email) > 0) {
-														$placeholder_mode = '';
-													} else {
+													if (!strlen($translator_contact_email) > 0) {
 														$translator_contact_email = $current_user_login_email;
-														$placeholder_mode = 'placeholder_mode';
 													}
 
 												echo '<p class="info-box__subbox-header mb--05">Adres e-mail</p>';
-												echo '<p id="user_contact_email_text" class="info-box__content '.$placeholder_mode.'">'.$translator_contact_email.'</p>';
+												echo '<p id="user_contact_email_text" class="info-box__content">'.$translator_contact_email.'</p>';
 
 											echo '</div>';
 
@@ -511,7 +496,6 @@ $fields_for_login_page_paragraph = $fields_for_login_page['paragraph'];
 											//Exclude #user_city from being displayed in the list
 
 											$excluded_term_ID = false;
-
 
 											if ($translator_city && strlen($translator_city) > 0) {
 												$excluded_term = get_term_by( 'name', $translator_city, 'translator_localization' );
@@ -852,13 +836,13 @@ $fields_for_login_page_paragraph = $fields_for_login_page['paragraph'];
 
 								/* END OF work INFO CONTAINER */
 
-								/* PICTURES AND VIDEOS CONTAINER */
+								/* PICTURES CONTAINER */
 
-								echo '<div class="info-box pictures-and-videos-container">';
+								echo '<div class="info-box pictures-container">';
 
 									echo '<div class="account__box-container">';
 
-										echo '<div class="info-box__header"><p>Zdjęcia i filmy</p></div>';
+										echo '<div class="info-box__header"><p>Zdjęcia</p></div>';
 										
 										/* AJAX LOADER */
 
@@ -874,11 +858,11 @@ $fields_for_login_page_paragraph = $fields_for_login_page['paragraph'];
 
 										echo '<div class="content-box">';
 
-											echo '<div class="info-box__subbox wrapper-flex-drow-mcol">';
+											echo '<div class="info-box__subbox wrapper-flex-drow-mcol w--full">';
 
 											/* IMAGES GALLERY PANEL */
 
-												echo '<div class="my-pictures__wrapper ajax-content-wrapper col-m100-d50">';
+												echo '<div class="my-pictures__wrapper ajax-content-wrapper">';
 													
 													echo '<div class="my-pictures__gallery">';
 
@@ -886,12 +870,12 @@ $fields_for_login_page_paragraph = $fields_for_login_page['paragraph'];
 
 														echo '<div class="is-gallery-empty__messages" style="display: none">';
 														echo '<p class="is-gallery-empty__yes">Aktualnie nie masz dodanych żadnych zdjęć.</p>';
-														echo '<p class="is-gallery-empty__no">Zdjęcia:</p>';
+														echo '<p class="is-gallery-empty__no">Dodane:</p>';
 														echo '</div>';
 
 													if ($images_to_gallery_array) {
 
-														echo '<p class="info-box__subbox-header is-gallery-empty__status-text-holder">Zdjęcia</p>';
+														echo '<p class="info-box__subbox-header is-gallery-empty__status-text-holder">Dodane:</p>';
 
 														foreach ($images_to_gallery_array as $image) :
 
@@ -899,9 +883,11 @@ $fields_for_login_page_paragraph = $fields_for_login_page['paragraph'];
 
 																	echo '<div class="my-pictures__gallery-attachment pb--2 mb--2">';
 
-																		echo '<a class="remove-item" href="#" data-id="'.attachment_url_to_postid($image).'"></a>';
-
-																		echo '<img src="'.wp_get_attachment_image_url(attachment_url_to_postid($image), 'full').'" width="" loading="lazy">';
+																		echo '<div class="image-holder content-center relative">
+																				<a class="remove-item" href="#" data-id="'.attachment_url_to_postid($image).'"></a>
+																				<img src="'.wp_get_attachment_image_url(attachment_url_to_postid($image), 'full').'" width="" loading="lazy">
+																			</div>
+																				';
 
 																	echo '</div>';
 																} 
@@ -921,87 +907,119 @@ $fields_for_login_page_paragraph = $fields_for_login_page['paragraph'];
 
 												echo '</div>';
 
-												/* VIDEO GALLERY PANEL */
+											echo '</div>';
 
-												echo '<div class="my-videos__wrapper ajax-content-wrapper col-m100-d50">';
+										echo '</div>';
 
-													echo '<div class="my-videos__gallery">';
+									echo '</div>';
 
-														/* DYNAMIC MESSAGES CONTENT HOLDER */
+								echo '</div>';
 
-														echo '<div class="is-gallery-empty__messages" style="display: none">';
-														echo '<p class="is-gallery-empty__yes">Aktualnie nie masz dodanych żadnych filmów.</p>';
-														echo '<p class="is-gallery-empty__no">Filmy:</p>';
-														echo '</div>';
+								/* END OF PICTURES CONTAINER */
 
-													// var_dump($videos_to_gallery_array);
+								/* VIDEOS CONTAINER */
 
-													if ($videos_to_gallery_array) {
+								echo '<div class="info-box pictures-container">';
 
-														echo '<p class="info-box__subbox-header is-gallery-empty__status-text-holder">Filmy</p>';
+									echo '<div class="account__box-container">';
 
-														//start at 1 because acf repeater rows indexes start with 1
+										echo '<div class="info-box__header"><p>Filmy</p></div>';
+									
+									/* AJAX LOADER */
 
-														$i = 1;
+									echo '<div class="my-ajax-loader">
+											<div class="my-ajax-loader__spinner"></div>
+											<div class="progress">
+												<div class="progress-bar"></div>
+												<div class="progress-percents"></div>
+											</div>
+										</div>';
 
-														foreach ($videos_to_gallery_array as $video) :
+									/* CONTENT BOX */
 
-																$video_link = $video['translator_single_video'];
+									echo '<div class="content-box">';
 
-																if($video_link) {
+										echo '<div class="info-box__subbox wrapper-flex-drow-mcol w--full">';
 
-																	$video_id = attachment_url_to_postid($video_link);
+											/* VIDEO GALLERY PANEL */
 
-																	echo '<div class="my-videos__gallery-attachment">';
+											echo '<div class="my-videos__wrapper ajax-content-wrapper w--full">';
 
-																		echo '<a class="remove-item" href="#" data-id="'.$i.'"></a>';
+												echo '<div class="my-videos__gallery">';
 
-																		echo '<svg version="1.1" id="Capa_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
-																		viewBox="0 0 298 298" style="enable-background:new 0 0 298 298;" xml:space="preserve">
-																		<path d="M298,33c0-13.255-10.745-24-24-24H24C10.745,9,0,19.745,0,33v232c0,13.255,10.745,24,24,24h250c13.255,0,24-10.745,24-24V33
-																	z M91,39h43v34H91V39z M61,259H30v-34h31V259z M61,73H30V39h31V73z M134,259H91v-34h43V259z M123,176.708v-55.417
-																	c0-8.25,5.868-11.302,12.77-6.783l40.237,26.272c6.902,4.519,6.958,11.914,0.056,16.434l-40.321,26.277
-																	C128.84,188.011,123,184.958,123,176.708z M207,259h-43v-34h43V259z M207,73h-43V39h43V73z M268,259h-31v-34h31V259z M268,73h-31V39
-																	h31V73z"/><g></g><g></g><g></g><g></g><g></g><g></g><g></g><g></g><g></g><g></g><g></g><g></g><g></g><g></g><g></g></svg>';
+													/* DYNAMIC MESSAGES CONTENT HOLDER */
 
-																		$video_name = basename(get_attached_file( $video_id ));
-
-																		echo '<p>'.$video_name.'</p>';
-
-																	echo '</div>';
-																} 
-
-																$i++;
-
-														endforeach;
-
-													} else {
-
-														echo '<p class="info-box__subbox-header is-gallery-empty__status-text-holder">Aktualnie nie masz dodanych żadnych filmów.</p>';
-														
-													};
-
+													echo '<div class="is-gallery-empty__messages" style="display: none">';
+													echo '<p class="is-gallery-empty__yes">Aktualnie nie masz dodanych żadnych filmów.</p>';
+													echo '<p class="is-gallery-empty__no">Dodane:</p>';
 													echo '</div>';
 
-													echo '<div id="newVideoInGalleryPlaceholder" class="my-videos__gallery-attachment" style="display:none;" >';
+												// var_dump($videos_to_gallery_array);
 
-														echo '<a class="remove-item remove" data-id="clear-input" href="#"></a>';
+												if ($videos_to_gallery_array) {
 
-														echo '<svg version="1.1" id="Capa_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
-														viewBox="0 0 298 298" style="enable-background:new 0 0 298 298;" xml:space="preserve">
-														<path d="M298,33c0-13.255-10.745-24-24-24H24C10.745,9,0,19.745,0,33v232c0,13.255,10.745,24,24,24h250c13.255,0,24-10.745,24-24V33
-															z M91,39h43v34H91V39z M61,259H30v-34h31V259z M61,73H30V39h31V73z M134,259H91v-34h43V259z M123,176.708v-55.417
-															c0-8.25,5.868-11.302,12.77-6.783l40.237,26.272c6.902,4.519,6.958,11.914,0.056,16.434l-40.321,26.277
-															C128.84,188.011,123,184.958,123,176.708z M207,259h-43v-34h43V259z M207,73h-43V39h43V73z M268,259h-31v-34h31V259z M268,73h-31V39
-															h31V73z"/><g></g><g></g><g></g><g></g><g></g><g></g><g></g><g></g><g></g><g></g><g></g><g></g><g></g><g></g><g></g></svg>';
+													echo '<p class="info-box__subbox-header is-gallery-empty__status-text-holder">Dodane:</p>';
 
-														echo '<p></p>';
+													//start at 1 because acf repeater rows indexes start with 1
 
-													echo '</div>';
+													$i = 1;
 
-													echo gallery_video_uploader($user_post_id);
+													foreach ($videos_to_gallery_array as $video) :
+
+															$video_link = $video['translator_single_video'];
+
+															if($video_link) {
+
+																$video_id = attachment_url_to_postid($video_link);
+
+																echo '<div class="my-videos__gallery-attachment">';
+
+																	echo '<a class="remove-item" href="#" data-id="'.$i.'"></a>';
+
+																	echo '<svg version="1.1" id="Capa_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
+																	viewBox="0 0 298 298" style="enable-background:new 0 0 298 298;" xml:space="preserve">
+																	<path d="M298,33c0-13.255-10.745-24-24-24H24C10.745,9,0,19.745,0,33v232c0,13.255,10.745,24,24,24h250c13.255,0,24-10.745,24-24V33
+																z M91,39h43v34H91V39z M61,259H30v-34h31V259z M61,73H30V39h31V73z M134,259H91v-34h43V259z M123,176.708v-55.417
+																c0-8.25,5.868-11.302,12.77-6.783l40.237,26.272c6.902,4.519,6.958,11.914,0.056,16.434l-40.321,26.277
+																C128.84,188.011,123,184.958,123,176.708z M207,259h-43v-34h43V259z M207,73h-43V39h43V73z M268,259h-31v-34h31V259z M268,73h-31V39
+																h31V73z"/><g></g><g></g><g></g><g></g><g></g><g></g><g></g><g></g><g></g><g></g><g></g><g></g><g></g><g></g><g></g></svg>';
+
+																	$video_name = basename(get_attached_file( $video_id ));
+
+																	echo '<p>'.$video_name.'</p>';
+
+																echo '</div>';
+															} 
+
+															$i++;
+
+													endforeach;
+
+												} else {
+
+													echo '<p class="info-box__subbox-header is-gallery-empty__status-text-holder">Aktualnie nie masz dodanych żadnych filmów.</p>';
+													
+												};
 
 												echo '</div>';
+
+												echo '<div id="newVideoInGalleryPlaceholder" class="my-videos__gallery-attachment" style="display:none;" >';
+
+													echo '<a class="remove-item remove" data-id="clear-input" href="#"></a>';
+
+													echo '<svg version="1.1" id="Capa_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
+													viewBox="0 0 298 298" style="enable-background:new 0 0 298 298;" xml:space="preserve">
+													<path d="M298,33c0-13.255-10.745-24-24-24H24C10.745,9,0,19.745,0,33v232c0,13.255,10.745,24,24,24h250c13.255,0,24-10.745,24-24V33
+														z M91,39h43v34H91V39z M61,259H30v-34h31V259z M61,73H30V39h31V73z M134,259H91v-34h43V259z M123,176.708v-55.417
+														c0-8.25,5.868-11.302,12.77-6.783l40.237,26.272c6.902,4.519,6.958,11.914,0.056,16.434l-40.321,26.277
+														C128.84,188.011,123,184.958,123,176.708z M207,259h-43v-34h43V259z M207,73h-43V39h43V73z M268,259h-31v-34h31V259z M268,73h-31V39
+														h31V73z"/><g></g><g></g><g></g><g></g><g></g><g></g><g></g><g></g><g></g><g></g><g></g><g></g><g></g><g></g><g></g></svg>';
+
+													echo '<p></p>';
+
+												echo '</div>';
+
+												echo gallery_video_uploader($user_post_id);
 
 											echo '</div>';
 
@@ -1011,7 +1029,9 @@ $fields_for_login_page_paragraph = $fields_for_login_page['paragraph'];
 
 								echo '</div>';
 
-								/* END OF PICTURES AND VIDEOS CONTAINER */
+							echo '</div>';
+
+								/* END OF VIDEOS CONTAINER */
 
 							echo '</div>';
 
@@ -1021,9 +1041,11 @@ $fields_for_login_page_paragraph = $fields_for_login_page['paragraph'];
 
 							echo '<div id="profile-section-2" class="profile-section profile-section--not-active account__settings">';
 
-								echo '<div class="content-box">';
+								echo '<div class="info-box">';
 								
-									echo '<p class="fw--700 fs--1200">Edycja ustawień</p>';
+									echo '<p class="fw--700 fs--1200 mb--2">Ustawienia</p>';
+
+									echo '<p>Znajdziesz tu ustawienia związane ze swoim kontem</p>';
 
 								echo '</div>';
 
@@ -1034,13 +1056,13 @@ $fields_for_login_page_paragraph = $fields_for_login_page['paragraph'];
 
 								<div class="info-box">
 
-									<div class="info-box__header mb--1">
+									<div class="info-box__header mb--2">
 										<p>Adres e-mail</p>
 									</div>
 
-									<p class="info-box__tip content-box-side-padding mb--2">Adres ten służy do logowania do konta PSTK </p>
+									<p class="info-box__tip mb--2">Adres ten służy do logowania do konta PSTK </p>
 				
-									<div class="info-box__subbox content-box-side-padding info-box__subbox--max-width account__box-container ajax-content-wrapper mb--3">
+									<div class="info-box__subbox info-box__subbox--max-width account__box-container ajax-content-wrapper mb--3">
 
 										<div class="my-ajax-loader">
 
@@ -1074,14 +1096,14 @@ $fields_for_login_page_paragraph = $fields_for_login_page['paragraph'];
 
 								<div class="info-box">
 
-									<div class="info-box__header mb--1">
+									<div class="info-box__header mb--2">
 										<p>Hasło</p>
 									</div>
 
-									<p class="info-box__tip content-box-side-padding mb--2">Hasło służy do logowania do konta PSTK. Musi zawierać minimum 8 znaków, w tym jedną wielką literę i jeden znak specjalny.</p>
+									<p class="info-box__tip mb--2">Hasło służy do logowania do konta PSTK. Musi zawierać minimum 8 znaków, w tym jedną wielką literę i jeden znak specjalny.</p>
 
 
-									<div class="info-box__subbox mb--3 content-box-side-padding info-box__subbox--max-width mb--3 account__box-container ajax-content-wrapper">
+									<div class="info-box__subbox mb--3 info-box__subbox--max-width mb--3 account__box-container ajax-content-wrapper">
 
 										<div class="my-ajax-loader">
 
@@ -1143,7 +1165,7 @@ $fields_for_login_page_paragraph = $fields_for_login_page['paragraph'];
 
 								<div class="info-box">
 
-									<div class="info-box__header"><p>Widoczność profilu</p></div>
+									<div class="info-box__header mb--2"><p>Widoczność profilu</p></div>
 
 									<div class="info-box__subbox mb--3 content-box account__box-container info-box__subbox--max-width mb--3 ajax-content-wrapper">
 
@@ -1165,21 +1187,19 @@ $fields_for_login_page_paragraph = $fields_for_login_page['paragraph'];
 
 								<?php
 
-
-
 							echo '</div>';
 
 							/* END OF PROFILE SECTION 2 */
 
 							/* PROFILE SECTION 3 - DOWNLOADS */
 
-							echo '<div id="profile-section-3" class="profile-section profile-section--not-active account__settings">';
+							echo '<div id="profile-section-3" class="profile-section profile-section--not-active account__downloads">';
 
 								echo '<div class="info-box">';
 
 									echo '<div>';
 									
-										echo '<p>Materiały członkowskie</p>';
+										echo '<p class="fw--700 fs--1200 mb--2">Materiały członkowskie</p>';
 
 									echo '</div>';
 
@@ -1191,6 +1211,13 @@ $fields_for_login_page_paragraph = $fields_for_login_page['paragraph'];
 
 								echo '</div>';
 
+								if ( !$is_approved ) :
+
+									echo '<p class="text--blue fw--500">Materiały pojawią się gdy Twoje konto zostanie zweryfikowane.</p>';
+
+								endif;
+
+								if ( $is_approved ) :
 
 								/* UPDATE LOGIN EMAIL ADDRESS FORM */
 
@@ -1198,7 +1225,9 @@ $fields_for_login_page_paragraph = $fields_for_login_page['paragraph'];
 
 								<div class="info-box membership_package">
 
-									<p class="info-box__header">Pakiet członkowski</p>
+									<div class="info-box__header mb--2">
+										<p class="fw--700 fs--800">Pakiet członkowski</p>
+									</div>
 									<!-- <p class="info-box__tip"></p> -->
 				
 									<div class="info-box__subbox mb--3">
@@ -1222,13 +1251,15 @@ $fields_for_login_page_paragraph = $fields_for_login_page['paragraph'];
 											while ($membership_package_query->have_posts()) {
 												$membership_package_query->the_post();
 
+												$membership_package_file = get_field('membership_package_file', $post->ID);
+
 												if ($membership_package_file) {
 
-													echo '<li>';
+													echo '<li class="mb--2">';
 
 														echo '<div class="membership_package__label">'.get_the_title().'</div>';
 
-														echo '<a href="'.$membership_package_file['url'].'" class="button button__download" download>Pobierz</a>';
+														echo '<a href="'.$membership_package_file['url'].'" class="button button__filled--blue button--download fs--200" download>Pobierz</a>';
 
 													echo '</li>';
 
@@ -1247,7 +1278,10 @@ $fields_for_login_page_paragraph = $fields_for_login_page['paragraph'];
 
 								<div class="info-box">
 
-									<p class="info-box__header">Poufne materiały - tylko dla członków</p>
+									<div class="info-box__header mb--2">
+										<p class="fw--700 fs--800">Poufne materiały - tylko dla członków</p>
+									</div>
+
 									<!-- <p class="info-box__tip"></p> -->
 
 									<div class="info-box__subbox mb--3 wrapper-flex-wrap">
@@ -1266,28 +1300,17 @@ $fields_for_login_page_paragraph = $fields_for_login_page['paragraph'];
 											$secret_posts_query = new WP_Query($secret_posts_args);
 
 											if ($secret_posts_query->have_posts()) {
-												while ($secret_posts_query->have_posts()) {
-													$secret_posts_query->the_post();
 
-													echo '<div class="wrapper-flex-col-center blog-post-tile">';
+												echo '<div class="blog-posts-grid">';
 
-														echo '<a href="'.get_permalink().'">'; 
+													while ($secret_posts_query->have_posts()) {
+														$secret_posts_query->the_post();
 
-															echo '<div>';
+														get_template_part( 'template-parts/content', 'post-in-archive' );
 
-																echo '<h3>'.get_the_title().'</h3>';
+													}
 
-																the_excerpt();
-
-															echo '</div>';
-
-															echo '<div class="button button__read-more">Czytaj więcej</div>';
-
-														echo '</a>';
-
-													echo '</div>';
-
-												}
+												echo '</div>';
 											}
 
 											?>
@@ -1297,7 +1320,10 @@ $fields_for_login_page_paragraph = $fields_for_login_page['paragraph'];
 
 								<div class="info-box">
 
-									<p class="info-box__header">Wsparcie marketingowe</p>
+									<div class="info-box__header mb--2">
+										<p class="fw--700 fs--800">Wsparcie marketingowe</p>
+									</div>
+
 									<!-- <p class="info-box__tip"></p> -->
 
 									<div class="info-box__subbox mb--3 wrapper-flex-wrap">
@@ -1316,28 +1342,17 @@ $fields_for_login_page_paragraph = $fields_for_login_page['paragraph'];
 									$marketing_support_query = new WP_Query($marketing_support_args);
 
 									if ($marketing_support_query->have_posts()) {
+
+										echo '<div class="blog-posts-grid">';
+
 										while ($marketing_support_query->have_posts()) {
 											$marketing_support_query->the_post();
 
-											echo '<div class="wrapper-flex-col-center blog-post-tile">';
-
-												echo '<a href="'.get_permalink().'">'; 
-
-													echo '<div>';
-
-														echo '<h3>'.get_the_title().'</h3>';
-
-														the_excerpt();
-
-													echo '</div>';
-
-													echo '<div class="button button__read-more">Czytaj więcej</div>';
-
-												echo '</a>';
-
-											echo '</div>';
+											get_template_part( 'template-parts/content', 'post-in-archive' );
 
 										}
+
+										echo '</div>';
 									}
 
 									?>
@@ -1346,6 +1361,8 @@ $fields_for_login_page_paragraph = $fields_for_login_page['paragraph'];
 								</div>
 
 								<?php
+
+								endif;
 								
 							echo '</div>';
 

@@ -41,6 +41,7 @@ $management_member_of_the_month = $section_6["management_member_of_the_month"];
 $circles_group = file_get_contents(get_template_directory() . "/dist/dist/svg/circles-group.svg");
 $circles_group_big = file_get_contents(get_template_directory() . "/dist/dist/svg/circles-group-big.svg");
 $linkedin_icon = file_get_contents(get_template_directory() . "/dist/dist/svg/linkedin.svg");
+$email_icon_blue = file_get_contents(get_template_directory() . "/dist/dist/svg/email_blue.svg");
 
 ?>
 
@@ -48,7 +49,7 @@ $linkedin_icon = file_get_contents(get_template_directory() . "/dist/dist/svg/li
 		<main id="main" class="site-main home">
 
 
-		<section class="home__section-1">
+		<section class="home__section-1 relative">
 
 			<div class="welcome-view__container">
 
@@ -162,7 +163,7 @@ $linkedin_icon = file_get_contents(get_template_directory() . "/dist/dist/svg/li
 								<div class="advantage__wrapper">
 									<div class="advantage__img-wrapper pseudo-decoration pseudo-decoration__rb"><img src="'.$icon["url"].'" alt="'.$icon["alt"].'"></div>
 									<div class="advantage__title-wrapper pseudo-decoration pseudo-decoration__lb"><p class="fw--700 fs--600">'.$title.'</p></div>
-									<div class="advantage__paragraph-wrapper pseudo-decoration pseudo-decoration__rb-half"><p class="fw--700">'.$paragraph.'</p></div>
+									<div class="advantage__paragraph-wrapper pseudo-decoration pseudo-decoration__rb-half"><p class="fw--700 fs--400">'.$paragraph.'</p></div>
 								</div>
 							</div>';
 
@@ -208,7 +209,7 @@ $linkedin_icon = file_get_contents(get_template_directory() . "/dist/dist/svg/li
 			</div>
 
 			<div class="section-4__cta-wrapper text--center">
-				<a href="<?php echo $section_4_link ?>" class="read-more button button__filled--turquoise">Czytaj więcej</a>
+				<a href="<?php echo $section_4_link ?>" class="read-more m--auto button button__filled--turquoise button--readmore">Czytaj więcej</a>
 			</div>
 
 
@@ -219,6 +220,10 @@ $linkedin_icon = file_get_contents(get_template_directory() . "/dist/dist/svg/li
 			<?php get_template_part( 'template-parts/blog-new-posts' ); ?>
 
 		</section>
+
+		<?php
+			if ($translator_of_the_month || $management_member_of_the_month) :
+		?>
 
 		<section class="home__section-6">
 
@@ -255,52 +260,64 @@ $linkedin_icon = file_get_contents(get_template_directory() . "/dist/dist/svg/li
 
 									</div>
 
-									<?php
-
-									$translator_of_the_month_first_name = get_field('translator_first_name', $translator_of_the_month->ID);
-									$translator_of_the_month_last_name = get_field('translator_last_name', $translator_of_the_month->ID);
-
-									echo '<p class="fs--800 fw--700 text--blue text--center">'.$translator_of_the_month_first_name.' '.$translator_of_the_month_last_name.'</p>';
-
-									?>
-
 								</a>
-
-								<div class="translator__icons-wrapper text--right mb--3">
-
-								<?php
-
-									$translator_of_the_month_linkedin_link = get_field('translator_linkedin_link', $translator_of_the_month->ID);
-
-									if ($translator_of_the_month_linkedin_link)  {
-
-										echo '<a href="'.esc_url($translator_of_the_month_linkedin_link).'" class="contact-icon contact-icon__linkedin" target="_blank">
-										'.$linkedin_icon.'
-										</a>';
-									}
-
-								?>
-								</div>
-
-								<div class="cta-holder text--center">
-									<a class="button button__filled--turquoise" href="<?php echo get_permalink($translator_of_the_month->ID) ?>">Profil</a>
-								</div>
 
 							</div>
 
+							<?php
+
+								$translator_of_the_month_first_name = get_field('translator_first_name', $translator_of_the_month->ID);
+								$translator_of_the_month_last_name = get_field('translator_last_name', $translator_of_the_month->ID);
+
+								echo '<p class="fs--800 fw--700 text--blue text--center mb--2">'.$translator_of_the_month_first_name.' '.$translator_of_the_month_last_name.'</p>';
+
+								?>
+
+								<div class="flex content-between items-center">
+									<div class="flex items-center text--right icons-wrapper">
+
+									<?php
+
+										$translator_of_the_month_contact_email = get_field('translator_contact_email', $translator_of_the_month->ID);
+
+										if ($translator_of_the_month_contact_email)  {
+
+											echo '<a href="mailto:'.esc_url($translator_of_the_month_contact_email).'" class="contact-icon contact-icon__email" target="_blank">
+											'.$email_icon_blue.'
+											</a>';
+										}
+
+										$translator_of_the_month_linkedin_link = get_field('translator_linkedin_link', $translator_of_the_month->ID);
+
+										if ($translator_of_the_month_linkedin_link)  {
+
+											echo '<a href="'.esc_url($translator_of_the_month_linkedin_link).'" class="contact-icon contact-icon__linkedin" target="_blank">
+											'.$linkedin_icon.'
+											</a>';
+										}
+
+									?>
+
+									</div>
+
+									<div class="cta-holder text--center">
+										<a class="button button__filled--turquoise button--readmore" href="<?php echo get_permalink($translator_of_the_month->ID) ?>">Profil</a>
+									</div>
+
+								</div>
 						</div>
 
 					<?php
 					}
 
 					if ($management_member_of_the_month) {
-						
+												
 						?>
 
 						<div class="get-to-know-us__element-wrapper wrapper-flex-col-center">
 
 							<p class="text--turquoise fs--1200 fw--700 mb--5">
-								<?php echo $section_6_title_2 ?>
+							<?php echo $section_6_title_2 ?>
 							</p>
 
 							<div class="translator__top">
@@ -317,39 +334,51 @@ $linkedin_icon = file_get_contents(get_template_directory() . "/dist/dist/svg/li
 
 									</div>
 
-									<?php
-
-									$management_member_of_the_month_first_name = get_field('translator_first_name', $management_member_of_the_month->ID);
-									$management_member_of_the_month_last_name = get_field('translator_last_name', $management_member_of_the_month->ID);
-
-									echo '<p class="fs--800 fw--700 text--blue text--center">'.$management_member_of_the_month_first_name.' '.$management_member_of_the_month_last_name.'</p>';
-
-									?>
-
 								</a>
-
-								<div class="translator__icons-wrapper text--right mb--3">
-
-								<?php
-
-									$management_member_of_the_month_linkedin_link = get_field('translator_linkedin_link', $management_member_of_the_month->ID);
-
-									if ($management_member_of_the_month_linkedin_link)  {
-
-										echo '<a href="'.esc_url($management_member_of_the_month_linkedin_link).'" class="contact-icon contact-icon__linkedin" target="_blank">
-										'.$linkedin_icon.'
-										</a>';
-									}
-
-								?>
-								</div>
-
-								<div class="cta-holder text--center">
-									<a class="button button__filled--turquoise" href="<?php echo get_permalink($management_member_of_the_month->ID) ?>">Profil</a>
-								</div>
 
 							</div>
 
+							<?php
+
+								$management_member_of_the_month_first_name = get_field('translator_first_name', $management_member_of_the_month->ID);
+								$management_member_of_the_month_last_name = get_field('translator_last_name', $management_member_of_the_month->ID);
+
+								echo '<p class="fs--800 fw--700 text--blue text--center mb--2">'.$management_member_of_the_month_first_name.' '.$management_member_of_the_month_last_name.'</p>';
+
+								?>
+
+								<div class="flex content-between items-center">
+									<div class="flex items-center text--right icons-wrapper">
+
+									<?php
+
+										$management_member_of_the_month_contact_email = get_field('translator_contact_email', $management_member_of_the_month->ID);
+
+										if ($management_member_of_the_month_contact_email)  {
+
+											echo '<a href="mailto:'.esc_url($management_member_of_the_month_contact_email).'" class="contact-icon contact-icon__email" target="_blank">
+											'.$email_icon_blue.'
+											</a>';
+										}
+
+										$management_member_of_the_month_linkedin_link = get_field('translator_linkedin_link', $management_member_of_the_month->ID);
+
+										if ($management_member_of_the_month_linkedin_link)  {
+
+											echo '<a href="'.esc_url($management_member_of_the_month_linkedin_link).'" class="contact-icon contact-icon__linkedin" target="_blank">
+											'.$linkedin_icon.'
+											</a>';
+										}
+
+									?>
+
+									</div>
+
+									<div class="cta-holder text--center">
+										<a class="button button__filled--turquoise button--readmore" href="<?php echo get_permalink($management_member_of_the_month->ID) ?>">Profil</a>
+									</div>
+
+								</div>
 						</div>
 
 					<?php
@@ -361,6 +390,10 @@ $linkedin_icon = file_get_contents(get_template_directory() . "/dist/dist/svg/li
 				</div>
 
 		</section>
+
+		<?php
+			endif;
+		?>
 
 		</main><!-- #main -->
 	</div><!-- #primary -->

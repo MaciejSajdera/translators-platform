@@ -373,33 +373,23 @@ document.addEventListener("DOMContentLoaded", () => {
 
 	//Character limit counter for all textareas with "maxlength" attribute
 
-	const allTextareas = document.querySelectorAll("TEXTAREA");
+	document.addEventListener("input", function(e) {
+		if (
+			e.target.nodeName === "TEXTAREA" &&
+			e.target.getAttribute("maxlength")
+		) {
+			const textarea = e.target;
+			const thisTextareaField = textarea.closest("FIELDSET");
+			const thisTextareaCharactersCounter = thisTextareaField.querySelector(
+				".characters-counter"
+			);
+			const thisTextareaMaxlength = textarea.getAttribute("maxlength");
 
-	const allTextareasWithMaxLength = [];
-
-	[...allTextareas].filter(textarea => {
-		textarea.getAttribute("maxlength")
-			? allTextareasWithMaxLength.push(textarea)
-			: "";
+			thisTextareaCharactersCounter
+				? (thisTextareaCharactersCounter.innerHTML = `${textarea.value.length}/${thisTextareaMaxlength}`)
+				: "";
+		}
 	});
-
-	if (allTextareasWithMaxLength) {
-		allTextareasWithMaxLength.forEach(textarea => {
-			let thisTextareaForm = textarea.closest("FORM");
-			let thisTextareaLabel = thisTextareaForm.querySelector("LABEL");
-			let thisTextareaMaxlength = textarea.getAttribute("maxlength");
-
-			thisTextareaLabel
-				? (thisTextareaLabel.innerHTML = `${textarea.value.length}/${thisTextareaMaxlength}`)
-				: "";
-
-			thisTextareaLabel
-				? textarea.addEventListener("input", function(e) {
-						thisTextareaLabel.innerHTML = `${this.value.length}/${thisTextareaMaxlength}`;
-				  })
-				: "";
-		});
-	}
 
 	//Picture Gallery
 

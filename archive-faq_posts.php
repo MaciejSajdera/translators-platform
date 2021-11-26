@@ -35,7 +35,7 @@ get_header();
 		<main id="main" class="site-main faq-archive">
 
 
-		<div class="faq-archive__section-1 welcome-view welcome-view-subpage">
+		<div class="faq-archive__section-1 welcome-view welcome-view-subpage relative">
 
 			<div class="welcome-view__container image-content-row">
 
@@ -55,7 +55,7 @@ get_header();
 
 				</div>
 
-				<div class="welcome-view__right image-holder w--fit-content">
+				<div class="welcome-view__right image-holder">
 
 					<?php
 						if ($section_1_image) {
@@ -65,6 +65,8 @@ get_header();
 						}
 						?>
 				</div>
+
+				<?php get_template_part( 'template-parts/partials/scroll-down' ); ?>
 
 			</div>
 
@@ -89,7 +91,7 @@ get_header();
 		foreach( $cat_terms as $term ) :
 			
 			echo '<div class="ol-list-item-wrapper mb--2">';
-				echo '<li class="mb--1"><h3>'. $term->name .'</h3></li>';
+				echo '<li class="text--blue fs--800 fw--700 mb--1"><h3>'. $term->name .'</h3></li>';
 
 				$args = array(
 						'post_type'             => 'faq_posts',
@@ -113,7 +115,7 @@ get_header();
 				if( $posts->have_posts() ) :
 					while( $posts->have_posts() ) : $posts->the_post();
 
-						echo '<li class="list-item--classic">';
+						echo '<li class="fs--500 list-item--classic">';
 
 						echo '<a href="'.get_permalink().'">'. get_the_title() .'</a>';
 

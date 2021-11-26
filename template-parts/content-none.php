@@ -6,28 +6,14 @@
  *
  * @package pstk
  */
-
+$no_results_icon = file_get_contents(get_template_directory() . "/dist/dist/svg/no_results.svg");
 ?>
 
 <section class="no-results not-found">
-	<header class="page-header">
-		<h1 class="page-title"><?php esc_html_e( 'Wyniki wyszukiwania', 'pstk' ); ?></h1>
-	</header><!-- .page-header -->
 
 	<div class="page-content">
 		<?php
 
-			// if no translator has chosen languages
-
-			if (isset($_GET['_sft_translator_language']) && !isset($_GET['_sft_translator_localization'])) {
-				echo '<p>Brak tłumaczy spełniających podane kryteria. Spróbuj zmienić parametry wyszukiwania.</p>';
-			}
-			
-			// if no translator with chosen langs and in chosen location
-
-			if (isset($_GET['_sft_translator_language']) && isset($_GET['_sft_translator_localization'])) {
-				echo '<p>Brak wyników w wybranym mieście. Sprawdź innych tłumaczy najbliżej wybranego miasta:</p>';
-			}
 
 			/* Get name of the city user was looking for */
 
@@ -61,13 +47,15 @@
 				// var_dump(json_encode($geo_target_city['results'][0]['geometry']['location']['lat']));
 				// var_dump(json_encode($geo_target_city['results'][0]['geometry']['location']['lng']));
 
+				if (!isset($geo_target_city['status']) || ($geo_target_city['status'] != 'OK')) {
+					echo '<p class="text--error mb--6">Wystąpił błąd podczas próby uzyskania danych geolokalizacyjnych szukanego miasta, prosimy spróbować ponownie za parę minut.</p>';
+					return;
+				}
+
 				if (isset($geo_target_city['status']) && ($geo_target_city['status'] == 'OK')) {
 					$target_city_latitude = $geo_target_city['results'][0]['geometry']['location']['lat']; // Latitude
 					$target_city_longitude = $geo_target_city['results'][0]['geometry']['location']['lng']; // Longitude
-				} else {
-					echo '<p class="text--error">Wystąpił błąd podczas próby uzyskania danych geolokalizacyjnych, prosimy spróbować ponownie za parę minut.</p>';
-					return;
-				}
+				} 
 
 				/* Get all not empty cities from the database and calculate distance from target city */
 
@@ -78,6 +66,7 @@
 				) );
 
 				$cities_objects_arr = array();
+				$errors_arr = array();
 
 				foreach( $translator_localizations as $localization ) :
 
@@ -101,10 +90,8 @@
 
 					$geo_translator_city = json_decode(json_encode($geo_translator_city), true); // Convert the JSON to an array
 
-
 					// var_dump(json_encode($geo_translator_city['results'][0]['geometry']['location']['lat']));
 					// var_dump(json_encode($geo_translator_city['results'][0]['geometry']['location']['lng']));
-
 
 					if (isset($geo_translator_city['status']) && ($geo_translator_city['status'] == 'OK')) {
 						$translator_city_latitude = $geo_translator_city['results'][0]['geometry']['location']['lat']; // Latitude
@@ -122,14 +109,37 @@
 						$city_object->distance_from_target = round($distance_from_target, 0);
 
 						array_push($cities_objects_arr, $city_object);
+					} 
+					elseif (isset($geo_translator_city['status']) && ($geo_translator_city['status'] != 'OK')) {
+						array_push($errors_arr, $geo_translator_city['status']);
 
-					} else {
-						echo '<p class="text--error">Wystąpił błąd podczas próby uzyskania danych geolokalizacyjnych, prosimy spróbować ponownie za parę minut.</p>';
-						return;
 					}
 
-
 				endforeach;
+
+				// var_dump($errors_arr);
+
+			// if no translator has chosen languages
+
+			if (isset($_GET['_sft_translator_language']) && !isset($_GET['_sft_translator_localization'])) {
+				echo '<p>Brak tłumaczy spełniających podane kryteria. Spróbuj zmienić parametry wyszukiwania.</p>';
+			}
+			
+			// if no translator with chosen langs and in chosen location
+
+			if (isset($_GET['_sft_translator_language']) && isset($_GET['_sft_translator_localization'])) {
+				echo '
+					  <div class="no-results-message flex flex-col">
+					  	<div class="svg-icon-wrapper text--center mb--4">'.$no_results_icon.'</div>
+						<p class="fs--800 fw--700">
+						Nie znalazłeś tłumacza w wybrany mieście? Bez obaw. <br />
+						Większość tłumaczy lubi podróżować i przyjmuje zlecenia w całym kraju i za granicą. 
+					 	</p>
+						 <p class="text--turquoise fs--800 fw--700">
+						 Skontaktuj się z tłumaczem z innego miasta: 
+						</p>
+					  </div>';
+			}
 
 				/* Sort cities objects starting from the closest one*/
 
@@ -143,18 +153,18 @@
 
 				/* Get names of the 3 closest cities */
 
-				echo '<div style="margin-bottom: 2rem">';
+				// echo '<div style="margin-bottom: 2rem">';
 
-					echo '<p>For dev purposes:</p>';
+				// 	echo '<p>For dev purposes:</p>';
 
-					print_r('Szukane miasto: '.$target_city_name);
-					echo '<br />';
-					print_r('Latitude: '.$target_city_latitude);
-					echo '<br />';
-					print_r('Longitude: '.$target_city_longitude);
+				// 	print_r('Szukane miasto: '.$target_city_name);
+				// 	echo '<br />';
+				// 	print_r('Latitude: '.$target_city_latitude);
+				// 	echo '<br />';
+				// 	print_r('Longitude: '.$target_city_longitude);
 
-					echo '<br />';
-					echo 'Najbliższe miasta: ';
+				// 	echo '<br />';
+				// 	echo 'Najbliższe miasta: ';
 
 
 				$closest_cities_names = array();
@@ -163,11 +173,11 @@
 					
 					array_push($closest_cities_names, $city_obj->city_name);
 
-					echo $city_obj->city_name.', ';
+					// echo $city_obj->city_name.', ';
 
 				endforeach;
 
-				echo '</div>';
+				// echo '</div>';
 
 
 				/* Get IDs of translators in order with closest cities */

@@ -2,6 +2,7 @@
  * Main JavaScript file.
  */
 import Navigation from "./navigation.js";
+import {isElementInViewport} from "./helperFunctions.js";
 
 document.addEventListener("DOMContentLoaded", () => {
 	// Loading Page scripts
@@ -242,7 +243,7 @@ document.addEventListener("DOMContentLoaded", () => {
 					boxSearchField.placeholder = `${boxTitle} (${allOptionsChosen.length})`;
 				}
 			});
-	}, 10);
+	}, 300);
 
 	let isPopUpActive = false;
 
@@ -300,6 +301,20 @@ document.addEventListener("DOMContentLoaded", () => {
 					infoPopUp.remove();
 					isPopUpActive = false;
 			  }, 300)
+			: "";
+	};
+
+
+	//single post page
+	setTimeout(() => {
+		postNavigation && isElementInViewport(postNavigation)
+			? postNavigation.classList.add("post-navigation--wide")
+			: "";
+	}, 800);
+
+	const singleAnimationsSinglePost = () => {
+		postNavigation && isElementInViewport(postNavigation)
+			? postNavigation.classList.add("post-navigation--wide")
 			: "";
 	};
 
@@ -440,6 +455,33 @@ document.addEventListener("DOMContentLoaded", () => {
 				left: 0,
 				behavior: "smooth"
 			});
+		}
+	});
+
+	/* Global scroll event listener */
+
+	const postNavigation = document.querySelector(".post-navigation");
+
+	const scrollToTopBtn = document.querySelector(".scrollToTopBtn");
+
+	document.addEventListener("scroll", () => {
+
+		if (scrollToTopBtn) {
+			if (pageYOffset > window.innerHeight) {
+				scrollToTopBtn.classList.add("showBtn");
+			} else {
+				scrollToTopBtn.classList.remove("showBtn");
+			}
+			scrollToTopBtn.addEventListener("click", () => {
+				window.scrollTo({
+					top: 0,
+					behavior: "smooth"
+				});
+			});
+		}
+
+		if (postNavigation) {
+			singleAnimationsSinglePost();
 		}
 	});
 });

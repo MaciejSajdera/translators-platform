@@ -1,5 +1,96 @@
-footer {
+footer#colophon {
 	text-align: center;
-	padding: 1rem;
 	margin-top: 2rem;
+	margin-bottom: 2rem;
+	padding-top: 0;
+}
+
+.footer-top {
+	border-top: 2px solid $color__main-theme--blue;
+	padding-top: 7rem;
+
+	&__element-wrapper {
+		@media screen and (min-width: 1024px) {
+			margin-right: 4rem;
+
+			&:last-of-type {
+				margin-right: 0;
+			}
+		}
+	}
+
+	.social-media-info {
+		@media screen and (max-width: 1023px) {
+			margin-top: 4rem;
+
+			.text {
+				text-align: center;
+			}
+
+			.svg-holder {
+				left: 50%;
+				transform: translateX(-50%);
+			}
+		}
+
+		@media screen and (min-width: 1024px) {
+			text-align: left;
+		}
+
+		svg {
+			transform: translate(-3rem, -3rem);
+		}
+	}
+
+	.contact-info {
+		a {
+			font-weight: 500;
+		}
+	}
+
+	// .menu-holder {
+	// 	svg {
+	// 		transform: translate(-10rem, -6rem);
+	// 	}
+	// }
+}
+
+#footer-menu {
+	display: flex;
+	> li {
+		display: flex;
+		flex-flow: column;
+		text-align: left;
+
+		@media screen and (max-width: 1023px) {
+			margin-bottom: 3rem;
+		}
+
+		@media screen and (min-width: 1024px) {
+			margin-right: 6rem;
+
+			&:last-of-type {
+				margin-right: 0;
+			}
+		}
+
+		> a {
+			display: none;
+		}
+	}
+
+	li,
+	a {
+		// width: fit-content;
+
+		@media screen and (min-width: 1024px) {
+			text-align: left;
+		}
+	}
+
+	.sub-menu {
+		li {
+			padding-bottom: 1rem;
+		}
+	}
 }

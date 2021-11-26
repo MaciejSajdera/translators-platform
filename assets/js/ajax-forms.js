@@ -326,7 +326,7 @@ jQuery(document).ready(function($) {
 			strokeWidth: 0,
 			trailWidth: 0,
 			easing: "easeInOut",
-			duration: 1000,
+			duration: 1700,
 			text: {
 				autoStyleContainer: false
 			},
@@ -378,6 +378,8 @@ jQuery(document).ready(function($) {
 		}
 	}
 
+	let userHasAlreadyReceivedCongratsMessage = false;
+
 	const updateProfileCompletness = dataJSON => {
 		console.log(dataJSON);
 
@@ -393,7 +395,7 @@ jQuery(document).ready(function($) {
 			"#percentValueOfAccountFillCompletness"
 		);
 		const emptyProfileFieldsLabelsContainer = document.querySelector(
-			"#emptyProfileFieldsLabels"
+			"#emptyProfileFieldsLabels .empty-fields-labels"
 		);
 
 		const oldlabelsOfEmptyTranslatorFields = document.querySelectorAll(
@@ -432,14 +434,18 @@ jQuery(document).ready(function($) {
 		};
 
 		// console.log(progressRing._opts.duration);
+		console.log(userHasAlreadyReceivedCongratsMessage);
 
 		animateRingAsync().then(() => {
 			setTimeout(() => {
-				if (progressRingHolder.classList.contains("progress-ring--complete")) {
+				if (
+					percentValueOfAccountFillCompletness === 100 &&
+					!userHasAlreadyReceivedCongratsMessage
+				) {
 					const congratulationsMessage = `
 					<div class="text--center relative">
 						<span class="confetti-target"></span>
-						<p class="fs--1200 fw--900 ff--secondary text--turquoise">GRATULACJE!</p>
+						<p class="fs--1200 fw--900 ff--secondary text--center text--turquoise">GRATULACJE!</p>
 						<p class="fs--800 fw--500">Twój profil jest kompletny w 100%!</p>
 					</div>
 					`;
@@ -475,6 +481,8 @@ jQuery(document).ready(function($) {
 							confettiConfig
 						);
 					}, 250);
+
+					userHasAlreadyReceivedCongratsMessage = true;
 				}
 			}, progressRing._opts.duration);
 		});

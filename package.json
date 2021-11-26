@@ -67,6 +67,9 @@
     "vue-template-compiler": "^2.5.22"
   },
   "dependencies": {
+    "downloadjs": "^1.4.7",
+    "lottie-web": "^5.8.1",
+    "pdf-lib": "^1.17.1",
     "progressbar.js": "^1.1.0",
     "swiper": "^6.8.1"
   }

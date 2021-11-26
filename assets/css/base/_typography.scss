@@ -14,8 +14,12 @@ h6 {
 	@include fluid-type($min_width, $max_width, 11px, 13px);
 }
 
+.fs--400 {
+	@include fluid-type($min_width, $max_width, 16px, 18px);
+}
+
 .fs--600 {
-	@include fluid-type($min_width, $max_width, 18px, 22px);
+	@include fluid-type($min_width, $max_width, 16px, 22px);
 }
 
 .fs--800 {
@@ -27,7 +31,7 @@ h6 {
 }
 
 .fs--1200 {
-	@include fluid-type($min_width, $max_width, 32px, 40px);
+	@include fluid-type($min_width, $max_width, 24px, 40px);
 
 	@media screen and (min-width: 1024px) {
 		@include fluid-type($min_width, $max_width, 38px, 42px);
@@ -116,6 +120,7 @@ h4 {
 p {
 	margin: 0;
 	font-weight: 300;
+	text-align: left;
 }
 
 dfn,
@@ -254,6 +259,10 @@ big {
 		text-align: right;
 	}
 
+	&--left {
+		text-align: left;
+	}
+
 	&--white {
 		color: $color__text-white;
 	}
@@ -268,12 +277,18 @@ big {
 
 	&--outline-turquoise {
 		color: transparent;
-		-webkit-text-stroke: 2px $color__main-theme--turquoise;
+		-webkit-text-stroke: 1px $color__main-theme--turquoise;
+		@media screen and (min-width: 1024px) {
+			-webkit-text-stroke: 2px $color__main-theme--turquoise;
+		}
 	}
 
 	&--outline-blue {
 		color: transparent;
-		-webkit-text-stroke: 2px $color__main-theme--blue;
+		-webkit-text-stroke: 1px $color__main-theme--blue;
+		@media screen and (min-width: 1024px) {
+			-webkit-text-stroke: 2px $color__main-theme--blue;
+		}
 	}
 
 	&--underline-turquoise {
@@ -292,7 +307,7 @@ big {
 	}
 
 	&--big-header {
-		@include fluid-type($min_width, $max_width, 40px, 88px);
+		@include fluid-type($min_width, $max_width, 40px, 72px);
 		// text-align: center;
 		margin: 0 0 6rem;
 		font-weight: 900;
