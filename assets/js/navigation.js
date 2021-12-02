@@ -28,9 +28,9 @@ export default class Navigation {
 		const siteHeader = document.querySelector(".site-header");
 
 		if (window.pageYOffset > siteHeader.offsetTop) {
-			siteHeader.classList.add("site-header__fixed", "box-shadow__standard");
+			siteHeader.classList.add("site-header__fixed", "box-shadow__header");
 		} else {
-			siteHeader.classList.remove("site-header__fixed", "box-shadow__standard");
+			siteHeader.classList.remove("site-header__fixed", "box-shadow__header");
 		}
 	}
 

@@ -1,7 +1,7 @@
 //Common
 
 .translator__top {
-	padding-left: calc(#{$corner-decoration-spacing * -1});
+	// padding-left: calc(#{$corner-decoration-spacing * -1});
 	width: 12rem;
 
 	img {
@@ -61,7 +61,7 @@
 .archive-translators {
 	.search {
 		&__container {
-			margin-bottom: 6rem;
+			margin-bottom: 10rem;
 
 			@media screen and (min-width: 1024px) {
 				margin-bottom: 8rem;
@@ -111,22 +111,12 @@
 	}
 
 	.translator {
-		display: flex;
-		flex-flow: column;
-		justify-content: space-between;
+		border-top: 1px solid $color__main-theme--blue-transparent;
 		padding: 6rem 0;
 
-		border-top: 1px solid $color__main-theme--blue-transparent;
-
 		@media screen and (min-width: 1024px) {
-			flex-flow: row;
-			column-gap: 4rem;
-			padding: 8rem 4rem;
+			padding: 2rem 2rem;
 		}
-
-		// @media screen and (min-width: 1400px) {
-		// 	column-gap: 10rem;
-		// }
 
 		&:first-of-type {
 			border-top: 0;
@@ -135,6 +125,17 @@
 		&:last-of-type {
 			border-bottom: 1px solid $color__main-theme--blue-transparent;
 			margin-bottom: 6rem;
+		}
+
+		&__upper {
+			display: flex;
+			flex-flow: column;
+			justify-content: space-between;
+
+			@media screen and (min-width: 1024px) {
+				flex-flow: row;
+				column-gap: 4rem;
+			}
 		}
 
 		.entry-header {
@@ -147,12 +148,12 @@
 		&__top {
 			margin: auto auto 2rem;
 			max-width: 250px;
-			width: 75%;
+			// width: 75%;
 
 			@media screen and (min-width: 1024px) {
 				margin: unset;
-				max-width: 350px;
-				width: 20%;
+				max-width: 280px;
+				// width: 20%;
 			}
 		}
 
@@ -210,6 +211,14 @@
 		&__languages {
 			li {
 				text-transform: lowercase;
+			}
+		}
+
+		&__languages,
+		&__specializations {
+			ul {
+				display: flex;
+				align-items: center;
 			}
 		}
 

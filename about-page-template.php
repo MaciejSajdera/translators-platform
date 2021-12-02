@@ -38,7 +38,7 @@ $circles_group_big = file_get_contents(get_template_directory() . "/dist/dist/sv
 
 					<div class="entry-header">
 						<?php
-							the_title( '<h1 class="entry-title fs--1800 mb--2">', '</h1>' );
+							the_title( '<h1 class="entry-title fs--1800 mb--1">', '</h1>' );
 						?> 
 					</div><!-- .entry-header -->
 
@@ -46,7 +46,7 @@ $circles_group_big = file_get_contents(get_template_directory() . "/dist/dist/sv
 						<span class="fs--1400 fw--700 lh--125 text--blue"><?php echo $section_1_h2 ?></span>
 					</h2>
 
-					<p class="fs--800 fw--500 ff--secondary text--turquoise"><?php echo $section_1_paragraph ?></p>
+					<p class="fs--800 fw--700 ff--secondary text--turquoise"><?php echo $section_1_paragraph ?></p>
 
 				</div>
 
@@ -100,8 +100,8 @@ $circles_group_big = file_get_contents(get_template_directory() . "/dist/dist/sv
 									<div class="flex flex-col advantage">
 										<div class="advantage__wrapper flex flex-col content-center items-center">
 											<div class="text-holder">
-												<div class="pd--standard"><p class="fw--700 fs--600"><span class="text--turquoise">'.$title_part_1.'</span> <span class="text--blue">'.$title_part_2.'</span></p></div>
-												<div class="pd--standard pb--3 relative pseudo-decoration '.$decoration_direction_class.'"><p class="fw--500">'.$textarea.'</p></div>
+												<div class="pd--standard"><p class="fw--700 fs--800"><span class="text--turquoise">'.$title_part_1.'</span> <span class="text--blue">'.$title_part_2.'</span></p></div>
+												<div class="pd--standard pb--3 relative pseudo-decoration '.$decoration_direction_class.'"><p class="fs--600 fw--500">'.$textarea.'</p></div>
 											</div>
 											
 											<div class="image-holder w--fit-content">';
@@ -166,8 +166,8 @@ $circles_group_big = file_get_contents(get_template_directory() . "/dist/dist/sv
 										<div class="corner__decoration corner__decoration--right"></div>
 									</div>
 
-									<div class="advantage__title-wrapper"><p class="fw--700 fs--600 text--turquoise">'.$title.'</p></div>
-									<div class="advantage__paragraph-wrapper pd--standard relative pseudo-decoration pseudo-decoration__lt"><p class="fw--700">'.$paragraph.'</p></div>
+									<div class="advantage__title-wrapper"><p class="fw--700 fs--800 text--turquoise">'.$title.'</p></div>
+									<div class="advantage__paragraph-wrapper pd--standard relative pseudo-decoration pseudo-decoration__lt"><p class="fs--600 fw--500">'.$paragraph.'</p></div>
 								</div>
 							</div>';
 

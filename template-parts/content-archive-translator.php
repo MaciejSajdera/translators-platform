@@ -8,7 +8,7 @@
  */
 $translator__linkedin_link = get_field("translator_linkedin_link"); 
 $linkedin_icon = file_get_contents(get_template_directory() . "/dist/dist/svg/linkedin.svg");
-$translator_about = get_field('translator_about');
+$translator_about_short = get_field('translator_about_short');
 // var_dump($translator__linkedin_link);
 
 // data is currenty passed from the following files:
@@ -31,41 +31,34 @@ if ( $args['data'] ) {
 
 <article id="post-<?php the_ID(); ?>" <?php post_class(); ?>>
 
-	<div class="translator__top">
 
-  		<a href="<?php echo get_permalink(); ?>">
+  	<div class="translator__upper">
+
+	  <div class="translator__top">
+
+			<a href="<?php echo get_permalink(); ?>">
 
 			<div class="profile-picture__wrapper text--center">
 
-					<div class="corner__decoration corner__decoration--left"></div>
+					<?php
 
-					<img src="<?php echo get_the_post_thumbnail_url() ?>" loading="lazy" />
+					if (get_the_post_thumbnail_url()) {
+						echo '<img src="'.get_the_post_thumbnail_url().'" loading="lazy">';
+										
+					} else {
+						echo '<img style="transform: scale(1.1);" src="'.get_stylesheet_directory_uri(). '/dist/dist/img/avatarplaceholder.jpg" loading="lazy">';
+					}
 
-					<div class="corner__decoration corner__decoration--right"></div>
-
+					?>
 			</div>
 
-		</a>
+			</a>
 
-		<div class="translator__icons-wrapper text--right">
-		<?php
-
-			if ($translator__linkedin_link)  {
-
-				echo '<a href="'.esc_url($translator__linkedin_link).'" class="contact-icon contact-icon__linkedin" target="_blank">
-				'.$linkedin_icon.'
-				</a>';
-			}
-
-		?>
 		</div>
 
+		<div class="translator__middle">
 
-	</div>
-
-	<div class="translator__middle">
-
-		<header class="entry-header mb--2">
+			<header class="entry-header mb--2">
 			
 			<?php
 
@@ -131,40 +124,57 @@ if ( $args['data'] ) {
 
 			?>
 
-		</header><!-- .entry-header -->
+			</header><!-- .entry-header -->
 
-		<?php
-			if (strlen($translator_about) > 0) {
+			<div class="translator__icons-wrapper text--right">
+				<?php
+
+				if ($translator__linkedin_link)  {
+
+					echo '<a href="'.esc_url($translator__linkedin_link).'" class="contact-icon contact-icon__linkedin" target="_blank">
+					'.$linkedin_icon.'
+					</a>';
+				}
+
+				?>
+			</div>
+
+		</div>
+
+		<div class="translator__bottom">
+
+			<?php
+			if (strlen($translator_about_short) > 0) {
 			?>
 
-			<div class="translator__about mb--3">
+			<div class="translator__about">
 				<p class="info-tile text--turquoise fw--700 fs--800 mb--05">
 					O mnie
 				</p>
 
 				<p class="fw--300">
-					<?php echo $translator_about ?>
+					<?php echo $translator_about_short ?>
 				</p>
 
 			</div>
 
 			<?php
 			}
-		?>
-
-		<div class="read-more desktop-only">
-			<?php
-				echo '<a href="'.get_permalink().'" class="button button__filled--turquoise" rel="bookmark">Więcej</a>';
 			?>
-		</div>
+
+		</div><!-- .entry-summary -->
 
 
-
+		<!-- <div class="read-more mobile-only">
+		<?php
+		echo '<a href="'.get_permalink().'" class="button button__filled--turquoise" rel="bookmark">Więcej</a>';
+		?>
+		</div> -->
 	</div>
 
-	<div class="translator__bottom">
+	<div class="translator__lower">
 
-		<div class="wrapper-flex translator__specializations">
+		<div class="translator__specializations">
 			<?php
 
 			$tax_label_specializations = get_taxonomy('translator_specialization')->label;
@@ -174,11 +184,11 @@ if ( $args['data'] ) {
 			if ( $translator_specializations ) {
 
 				echo '<ul>
-						<p class="info-tile text--turquoise fw--700 fs--800">'.$tax_label_specializations.'</p>
+						<p class="text--turquoise fw--700">'.$tax_label_specializations.': </p>
 						';
 
 				foreach( $translator_specializations as $term ) :
-							echo '<li class="info-tile">'.$term->name.'</li>';
+							echo '<li class="">'.$term->name.'</li>';
 				endforeach;
 
 				echo '</ul>';
@@ -195,8 +205,8 @@ if ( $args['data'] ) {
 			if ( $translator_languages ) {
 
 				echo '<ul>
-						<p class="info-tile text--turquoise fw--700 fs--800">'.$tax_label_languages.'</p>
-					  ';
+						<p class="text--turquoise fw--700">'.$tax_label_languages.': </p>
+						';
 
 				foreach( $translator_languages as $term ) :
 
@@ -208,7 +218,7 @@ if ( $args['data'] ) {
 					// 		$flag_image = get_field('flag_image', $taxonomy . '_' . $term_id);
 					// 		echo '<img src="'.$flag_image['url'].'" alt="'.$flag_image['alt'].'" />';
 
-							echo '<li class="info-tile">'.$term->name.'</li>';
+							echo '<li class="">'.$term->name.'</li>';
 				endforeach;
 
 				echo '</ul>';
@@ -217,13 +227,12 @@ if ( $args['data'] ) {
 			?>
 		</div>
 
-	</div><!-- .entry-summary -->
-
-
-	<div class="read-more mobile-only">
+		<!-- <div class="read-more desktop-only">
 		<?php
 			echo '<a href="'.get_permalink().'" class="button button__filled--turquoise" rel="bookmark">Więcej</a>';
 		?>
+		</div> -->
 	</div>
+
 
 </article><!-- #post-<?php the_ID(); ?> -->

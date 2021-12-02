@@ -23,6 +23,17 @@ get_header();
 
 		<main id="main" class="site-main blog-posts">
 
+			<div class="welcome-view__left">
+				<h1 class="entry-title text--blue fs--1800">
+					<?php echo get_the_title( get_option('page_for_posts', true) ); ?>
+				</h1>
+				<h2 class="fs--800 fw--700 lh--150 ff--secondary text--turquoise mb--2"><?php echo get_field('h2', get_option( 'page_for_posts' )) ?></h2>
+
+				<p class="title-paragraph fs--600 mb--5">
+					<?php echo get_field('paragraph', get_option( 'page_for_posts' )) ?>
+				</p>
+			</div>
+
 			<!-- <div class="welcome-view welcome-view-subpage">
 
 				<div class="welcome-view__container image-content-row">

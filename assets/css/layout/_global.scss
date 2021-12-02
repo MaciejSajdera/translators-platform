@@ -56,7 +56,7 @@
 }
 
 .welcome-view {
-	min-height: 100vh;
+	min-height: 65vh;
 
 	@media screen and (min-width: 1024px) {
 		min-height: 80vh;
@@ -98,9 +98,9 @@
 section {
 	margin-bottom: 10rem;
 
-	@media screen and (min-width: 1024px) {
-		margin-bottom: 15rem;
-	}
+	// @media screen and (min-width: 1024px) {
+	// 	margin-bottom: 15rem;
+	// }
 }
 
 ::selection {
@@ -334,6 +334,10 @@ section {
 	display: flex;
 }
 
+.block {
+	display: block;
+}
+
 .row {
 	flex-flow: row;
 }
@@ -414,7 +418,24 @@ section {
 	background-color: white;
 	padding: 1rem 1.5rem;
 	width: fit-content;
+	min-width: 450px;
 	border-radius: 0.5rem;
+
+	.php-success__text {
+		.svg-holder {
+			max-width: 100px;
+			margin: 2rem auto;
+		}
+	}
+
+	.php-error__text {
+		padding: 0.5rem 0;
+
+		.svg-holder {
+			max-width: 1.5rem;
+			margin: 0 1rem 0 0;
+		}
+	}
 }
 
 .modal-message-holder {
@@ -559,11 +580,11 @@ section {
 			@media screen and (max-width: 1024px) {
 				[data-sf-field-input-type="multiselect"] .sf-input-select,
 				[data-sf-field-input-type="select"] .sf-input-select {
-					height: 100% !important;
+					min-height: 48px !important;
 					width: 100% !important;
 					clip: unset !important;
 					clip-path: unset !important;
-					z-index: 1;
+					// z-index: 1;
 					opacity: 0;
 
 					label {
@@ -644,7 +665,8 @@ section {
 
 	.select2-selection--multiple,
 	.select2-selection--single,
-	.sf-field-sort_order select {
+	.sf-field-sort_order select,
+	.sf-field-submit input {
 		cursor: pointer;
 		height: auto;
 		line-height: 0 !important;
@@ -660,7 +682,7 @@ section {
 
 		&::after {
 			content: url(../dist/svg/arrow_down_blue.svg);
-			align-self: flex-end;
+			// align-self: flex-end;
 		}
 
 		.select2-selection__rendered {
@@ -676,13 +698,13 @@ section {
 	.sf-field-sort_order select,
 	.sf-field-submit input,
 	.sf-input-select {
-		padding: 0.5em 1em !important;
-		font-size: 0.9rem;
-		min-height: 24px;
+		padding: $padding_search_input_mobile_y $padding_search_input_mobile_x !important;
+		font-size: $font_size_search_input_mobile;
+		min-height: 48px;
 
 		@media screen and (min-width: 1024px) {
-			padding: 0.75em 1.25em !important;
-			font-size: 1rem;
+			padding: $padding_search_input_desktop_y $padding_search_input_desktop_x !important;
+			font-size: $font_size_search_input_desktop;
 			min-height: 52px;
 		}
 	}
@@ -716,7 +738,8 @@ section {
 			content: url(../dist/svg/arrow_down_blue.svg);
 			align-self: flex-end;
 			position: absolute;
-			top: 15%;
+			top: 50%;
+			transform: translateY(-50%);
 			right: 5px;
 			background: white;
 			border-radius: 100rem;
@@ -724,10 +747,11 @@ section {
 			padding-right: 0.75em;
 			display: flex;
 			justify-content: center;
+			line-height: 0;
 
-			@media screen and (min-width: 1024px) {
-				top: 28%;
-			}
+			// @media screen and (min-width: 1024px) {
+			// 	top: 28%;
+			// }
 		}
 	}
 
@@ -764,12 +788,24 @@ section {
 				.select2-search__field {
 					outline: none;
 					border: none;
-					transform: translateY(-190%);
+					transform: translateY(-220%);
 					line-height: 0 !important;
 					padding: 0;
-					margin-left: calc(1rem + 5px) !important; //border width
+					margin-left: calc(
+						#{$padding_search_input_mobile_x} + 2px
+					) !important; //border width
 					position: absolute;
 					max-width: 70%;
+					background-color: $color__background-body;
+					font-size: $font_size_search_input_mobile;
+
+					@media screen and (min-width: 1024px) {
+						margin-left: calc(
+							#{$padding_search_input_desktop_x} + 2px
+						) !important; //border width
+						transform: translateY(-210%);
+						font-size: $font_size_search_input_desktop;
+					}
 				}
 			}
 		}
@@ -1058,10 +1094,9 @@ section {
 
 	right: 0;
 	top: 0;
-	width: 26px;
-	height: 26px;
-	// background-size: 10px;
-	font-size: 26px;
+	width: 1.5rem;
+	height: 1.5rem;
+	font-size: 1.5rem;
 
 	@media screen and (min-width: 1024px) {
 		// width: 32px;
@@ -1076,7 +1111,12 @@ section {
 		color: white;
 		content: "\d7";
 		transition: $transition__button--standard;
-		line-height: 26px;
+		line-height: 1.5rem;
+		position: absolute;
+		top: 50%;
+		height: 100%;
+		left: 50%;
+		transform: translate(-50%, -46%);
 	}
 
 	&:hover {
@@ -1138,6 +1178,10 @@ section {
 	&__standard {
 		box-shadow: $box-shadow_standard--theme-color;
 	}
+
+	&__header {
+		box-shadow: 0 5px 15px rgb(0 0 0 / 15%);
+	}
 }
 
 .characters-counter {
@@ -1154,10 +1198,10 @@ section {
 
 	&__content {
 		position: absolute;
-	}
 
-	svg {
-		overflow: visible;
+		svg {
+			overflow: visible;
+		}
 	}
 }
 
@@ -1290,19 +1334,6 @@ section {
 	}
 }
 
-.desktop-only {
-	display: none;
-	@media screen and (min-width: 1024px) {
-		display: block;
-	}
-}
-
-.mobile-only {
-	@media screen and (min-width: 1024px) {
-		display: none;
-	}
-}
-
 .image-holder {
 	display: flex;
 	// img {
@@ -1404,7 +1435,7 @@ section {
 	}
 
 	&--standard {
-		padding: 1rem 1.25rem;
+		padding: 1.5em 1.75em;
 	}
 }
 
@@ -1427,6 +1458,28 @@ section {
 
 	&--standard {
 		padding-bottom: 1rem;
+	}
+}
+
+.pt {
+	&--1 {
+		padding-top: 1rem;
+	}
+
+	&--2 {
+		padding-top: 2rem;
+	}
+
+	&--3 {
+		padding-top: 3rem;
+	}
+
+	&--4 {
+		padding-top: 4rem;
+	}
+
+	&--standard {
+		padding-top: 1rem;
 	}
 }
 
@@ -1454,12 +1507,13 @@ section {
 
 .advantages {
 	display: flex;
-	justify-content: space-around;
+	justify-content: space-between;
 	flex-wrap: wrap;
-	row-gap: 8rem;
+	row-gap: 6rem;
+	column-gap: 10%;
 
 	@media screen and (min-width: 1024px) {
-		row-gap: 6rem;
+		row-gap: 4rem;
 	}
 
 	.advantage {
@@ -1476,7 +1530,7 @@ section {
 
 		&:nth-of-type(even) {
 			@media screen and (min-width: 1024px) {
-				margin-top: 10rem;
+				margin-top: 7.5rem;
 			}
 
 			.advantage__title-wrapper {
@@ -1484,6 +1538,10 @@ section {
 					color: $color__main-theme--blue;
 				}
 			}
+		}
+
+		&:nth-last-child(1):nth-child(odd) {
+			margin: 4rem auto;
 		}
 	}
 }
@@ -1782,4 +1840,32 @@ section {
 
 .lowercase {
 	text-transform: lowercase;
+}
+
+.error-404 {
+	display: flex;
+	min-height: 50vh;
+	padding: 4rem 2rem;
+
+	.page-header {
+		margin: auto;
+		text-align: center;
+
+		h1 {
+			margin-bottom: 2em;
+		}
+	}
+}
+
+.desktop-only {
+	display: none;
+	@media screen and (min-width: 1024px) {
+		display: block;
+	}
+}
+
+.mobile-only {
+	@media screen and (min-width: 1024px) {
+		display: none;
+	}
 }

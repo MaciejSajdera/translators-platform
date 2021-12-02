@@ -49,7 +49,13 @@ $arrow_controls_right = file_get_contents(get_template_directory() . "/dist/dist
 
 							<div class="corner__decoration corner__decoration--left"></div>
 
-							<img src="<?php echo get_the_post_thumbnail_url() ?>" loading="lazy" />
+							<?php
+								if(get_the_post_thumbnail_url()) {
+										echo '<img src="'.get_the_post_thumbnail_url().'" loading="lazy">';
+								} else {
+										echo '<img src="'.get_stylesheet_directory_uri(). '/dist/dist/img/avatarplaceholder.jpg" loading="lazy">';
+								}
+							?>
 
 							<div class="corner__decoration corner__decoration--right"></div>
 
@@ -264,7 +270,15 @@ $arrow_controls_right = file_get_contents(get_template_directory() . "/dist/dist
 
 							<div class="corner__decoration corner__decoration--left"></div>
 
-							<img src="<?php echo get_the_post_thumbnail_url() ?>" loading="lazy" />
+							<?php
+
+							if(get_the_post_thumbnail_url()) {
+									echo '<img src="'.get_the_post_thumbnail_url().'" loading="lazy">';
+							} else {
+									echo '<img src="'.get_stylesheet_directory_uri(). '/dist/dist/img/avatarplaceholder.jpg" loading="lazy">';
+							}
+
+							?>
 
 							<div class="corner__decoration corner__decoration--right"></div>
 

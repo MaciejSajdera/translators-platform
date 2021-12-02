@@ -35,7 +35,7 @@ get_header();
 							?> 
 						</div><!-- .entry-header -->
 
-						<p class="fs--800 fw--500 ff--secondary text--turquoise"><?php echo $section_1_paragraph ?></p>
+						<p class="fs--800 fw--700 ff--secondary text--turquoise"><?php echo $section_1_paragraph ?></p>
 
 					</div>
 

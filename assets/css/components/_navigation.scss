@@ -411,6 +411,7 @@ $mobile-menu-padding-top: 10rem;
 	ul {
 		display: flex;
 		flex-flow: row;
+		align-items: center;
 
 		li {
 			display: flex;
@@ -603,5 +604,18 @@ $mobile-menu-padding-top: 10rem;
 		background: white;
 		transform: translateY(-50%) rotate(45deg);
 		border-top-left-radius: 3px;
+	}
+
+	.menu-item__my-profile {
+		margin-left: 6rem;
+		a {
+			color: transparent;
+			padding: 0;
+			.menu-thumbnail-image {
+				max-height: 3rem;
+				max-width: 3rem;
+				object-fit: contain;
+			}
+		}
 	}
 }

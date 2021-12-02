@@ -27,6 +27,7 @@ $section_4 = get_field("section_4");
 $section_4_image = $section_4['image'];
 
 $circles_group = file_get_contents(get_template_directory() . "/dist/dist/svg/circles-group.svg");
+$circles_contact_page = file_get_contents(get_template_directory() . "/dist/dist/svg/circles_contact_page.svg");
 
 ?>
 
@@ -42,11 +43,11 @@ $circles_group = file_get_contents(get_template_directory() . "/dist/dist/svg/ci
 
 					<div class="entry-header">
 
-						<h1 class="entry-title uppercase fs--1800 mb--2"><?php echo $section_1_h1_part_1 . ' <span class="text--outline-blue">'.$section_1_h1_part_2.'</span>' . $section_1_h1_part_3 ?>
+						<h1 class="entry-title uppercase text--blue fs--1800 mb--2"><?php echo $section_1_h1_part_1 . ' <span class="text--outline-blue">'.$section_1_h1_part_2.'</span>' . $section_1_h1_part_3 ?>
 
 					</div><!-- .entry-header -->
 
-					<h2 class="fs--800 fw--500 lh--150 ff--secondary text--turquoise"><?php echo $section_1_h2 ?></h2>
+					<h2 class="fs--800 fw--700 lh--150 ff--secondary text--turquoise"><?php echo $section_1_h2 ?></h2>
 
 				</div>
 
@@ -64,36 +65,39 @@ $circles_group = file_get_contents(get_template_directory() . "/dist/dist/svg/ci
 
 			</div>
 
+			<div class="bg-decoration__holder desktop-only">
+				<div class="bg-decoration__content">
+					<?php
+					echo $circles_contact_page;
+					?>
+				</div>
+			</div>
+
 			<?php get_template_part( 'template-parts/partials/scroll-down' ); ?>
 
 		</section>
 
 		<section class="whyus__section-2 relative">
 
-			<h2 class="fw--700 fs--1200 lh--125 text--turquoise pb--2"><?php echo $section_2_h2 ?></h2>
+			<h2 class="text--big-header lh--125 text--turquoise text--center"><?php echo $section_2_h2 ?></h2>
 
-			<div class="content relative pseudo-decoration pseudo-decoration__rt fw--500">
+			<div class="content fs--600 fw--500">
 				<?php echo $section_2_paragraph ?>
-
-
 			</div>
 
-			<?php echo $circles_group ?>
-
 		</section>
-
 
 		<section class="whyus__section-3">
 
 			<div class="title relative mb--8">
 
 				<div class="holder">
-					<h2 class="fw--700 fs--1200 lh--125 text--turquoise text--center"><?php echo $section_3_h2 ?></h2>
+					<h2 class="text--big-header lh--125 text--turquoise text--center"><?php echo $section_3_h2 ?></h2>
 				</div>
 
 			</div>
 
-			<div class="advantages">
+			<div class="cards-wrapper flex wrap">
 
 				<?php
 
@@ -105,14 +109,14 @@ $circles_group = file_get_contents(get_template_directory() . "/dist/dist/svg/ci
 						$title = $row['title'];
 						$paragraph = $row['paragraph'];
 
-						echo '<div class="flex flex-col advantage">
-								<div class="advantage__wrapper flex flex-col content-center items-center">
-									<div class="advantage__img-wrapper w--fit-content relative mb--2">
+						echo '<div class="card flex flex-col">
+								<div class="flex flex-col content-center items-center">
+									<div class="w--fit-content mb--2">
 										<img src="'.$icon["url"].'" alt="'.$icon["alt"].'" loading="lazy">
 									</div>
 
-									<div class="advantage__title-wrapper mb--1"><p class="fw--700 fs--800 text--blue mb--1">'.$title.'</p></div>
-									<div class="advantage__paragraph-wrapper relative"><p class="fw--700">'.$paragraph.'</p></div>
+									<div class="mb--1 w--full"><p class="fs--800 fw--700 text--blue mb--1">'.$title.'</p></div>
+									<div><p class="fs--600 fw--500">'.$paragraph.'</p></div>
 								</div>
 							</div>';
 

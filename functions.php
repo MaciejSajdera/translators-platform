@@ -148,19 +148,14 @@ function my_admin_bar_css()
  */
 function pstk_scripts() {
 
-	wp_enqueue_style( 'pstk-style', get_template_directory_uri() . '/dist/css/style.css', array(), '1.14');
+	wp_enqueue_style( 'pstk-style', get_template_directory_uri() . '/dist/css/style.css', array(), '1.29');
+	wp_enqueue_script( 'pstk-app', get_template_directory_uri() . '/dist/js/main.js', array(), '1.29', true );
 
-	// Include our dynamic styles.
-	// $custom_css = pstk_dynamic_styles();
-	// wp_add_inline_style( 'pstk-style', $custom_css );
-
-	wp_enqueue_script( 'pstk-app', get_template_directory_uri() . '/dist/js/main.js', array(), '1.14', true );
-
-	if (is_page(18)) {
-		wp_enqueue_script( 'pstk-user-profile', get_template_directory_uri() . '/dist/js/user-profile.js', array(), '', true );
+	if (is_page_template('registration-page-template.php') || is_page_template('user-account-page-template.php')) {
+		wp_enqueue_script( 'pstk-user-profile', get_template_directory_uri() . '/dist/js/user-profile.js', array(), '1.29', true );
 	}
 
-	if (is_page(18) && is_user_logged_in()) {
+	if (is_page_template('user-account-page-template.php') && is_user_logged_in()) {
 		wp_enqueue_script('jquery');
 		wp_register_script('ajax_forms', get_template_directory_uri() . '/dist/js/ajax-forms.js', array('jquery') ); 
 
@@ -180,12 +175,12 @@ function pstk_scripts() {
 		wp_enqueue_script( 'pdf-generator', get_template_directory_uri() . '/dist/js/pdf-generator.js', array(), '', true );
 	}
 
-	if (is_page(1139)) {
+	if (is_page_template('management-page-template.php')) {
 		wp_enqueue_script( 'tabs', get_template_directory_uri() . '/dist/js/tabs.js', array(), '', true );
 	}
 
-	if (is_page(1141)) {
-		wp_enqueue_script( 'tabs', get_template_directory_uri() . '/dist/js/contact-page.js', array(), '', true );
+	if (is_page_template('contact-page-template.php')) {
+		wp_enqueue_script( 'contact-page', get_template_directory_uri() . '/dist/js/contact-page.js', array(), '', true );
 	}
 
 	if ( is_singular() && comments_open() && get_option( 'thread_comments' ) ) {
@@ -207,10 +202,10 @@ function add_type_attribute($tag, $handle, $src) {
     return $tag;
 }
 
-function wpb_add_google_fonts() {
-	wp_enqueue_style( 'wpb-google-fonts', 'https://fonts.googleapis.com/css2?family=Poppins:wght@200;400;700;900&display=swap', false );
-}
-add_action( 'wp_enqueue_scripts', 'wpb_add_google_fonts' );
+// function wpb_add_google_fonts() {
+// 	wp_enqueue_style( 'wpb-google-fonts', 'https://fonts.googleapis.com/css2?family=Poppins:wght@200;400;700;900&display=swap', false );
+// }
+// add_action( 'wp_enqueue_scripts', 'wpb_add_google_fonts' );
 
 
 // Move Yoast to bottom
@@ -268,12 +263,16 @@ function inject_custom_metadata() {
 	<?php
 	
 	}
-	
 }
 add_action( 'wp_head', 'inject_custom_metadata' );
 
 function posts_only_for_logged_in( $content ) {
     global $post;
+
+	if (!$post) {
+		return;
+	}
+
 	$is_approved = get_post_meta($post->ID, 'is_approved', true);
 
     if ( $post && ($post->post_type == 'membership_package' || $post->post_type == 'secret_posts' || $post->post_type == 'marketing_support') ) {
@@ -321,7 +320,7 @@ add_filter('login_redirect', 'redirect_users_after_login');
 
 function login_failed() {
 	$login_page  = get_permalink(18);
-	wp_redirect( $login_page . '?login=failed' );
+	wp_safe_redirect( $login_page . '?login=failed' );
 	exit;
 }
 
@@ -358,6 +357,29 @@ function block_wp_admin() {
 
 add_action( 'admin_init', 'block_wp_admin' );
 
+
+add_filter('wp_nav_menu_objects', 'my_wp_nav_menu_objects', 10, 2);
+
+function my_wp_nav_menu_objects( $items, $args ) {
+	
+	// loop
+	foreach( $items as &$item ) {
+		// $item->title .= '<span>'. $item->classes . '</span>';
+		// vars
+		$menu_thumbnail_image = get_field('menu_item_image', $item);
+		
+				// append bg image
+		if( $menu_thumbnail_image ) {
+					// $item->title .= '<span>'. $item->classes . '</span>';
+			$item->title .= '<img class="menu-thumbnail-image" src="'.$menu_thumbnail_image['url'].'" loading="lazy" />';
+
+			// var_dump($item->title);
+		
+		}
+	}
+	// return
+	return $items;
+}
 
 //Exclude pages from WordPress Search
 // if (!is_admin()) {
@@ -409,7 +431,7 @@ function distance($lat1, $lon1, $lat2, $lon2, $unit) {
 	}
 }
 
-// ADDITIONAL DASHBOARD FUNCTIONALITIES
+/* ADDITIONAL DASHBOARD FUNCTIONALITIES */
 
 // display ACF fiels on the post listing
 
@@ -452,7 +474,32 @@ function my_acf_fields_post_object_result( $text, $post, $field, $post_id ) {
 
     return $text;
 }
-// HELPER FUNCTIONS	
+
+
+/* HELPER FUNCTIONS */	
+
+function get_page_url($template_name)
+{
+	$pages = get_posts([
+        'post_type' => 'page',
+        'post_status' => 'publish',
+        'meta_query' => [
+            [
+                'key' => '_wp_page_template',
+                'value' => $template_name.'.php',
+                'compare' => '='
+            ]
+        ]
+    ]);
+    if(!empty($pages))
+    {
+      foreach($pages as $pages__value)
+      {
+          return get_permalink($pages__value->ID);
+      }
+    }
+    return get_bloginfo('url');
+}
 
 if (!function_exists('str_contains')) {
     function str_contains(string $haystack, string $needle): bool
@@ -523,7 +570,7 @@ function array_sort($array, $on, $order=SORT_ASC){
 
 
 function add_field_if_post_approved( $post_id, $post ) {
-	//do whatever
+
 	if (get_post_status($post_id) == "publish") {
 
 		$is_approved = get_post_meta($post_id, 'is_approved', true);
@@ -658,27 +705,27 @@ function vicode_registration_fields() {
 		<form id="vicode_registration_form" class="vicode_form" action="" method="POST">
 				<p class="animated-label-holder">
 					<label for="vicode_user_Login"><?php _e('Username'); ?></label>
-					<input name="vicode_user_login" id="vicode_user_login" class="vicode_user_login" type="text"/>
+					<input name="vicode_user_login" id="vicode_user_login" class="vicode_user_login" type="text" required/>
 				</p>
 				<p class="animated-label-holder">
 					<label for="vicode_user_email"><?php _e('Email'); ?></label>
-					<input name="vicode_user_email" id="vicode_user_email" class="vicode_user_email" type="email"/>
+					<input name="vicode_user_email" id="vicode_user_email" class="vicode_user_email" type="email" required/>
 				</p>
 				<p class="animated-label-holder">
 					<label for="vicode_user_first"><?php _e('Imię'); ?></label>
-					<input name="vicode_user_first" id="vicode_user_first" type="text" class="vicode_user_first" />
+					<input name="vicode_user_first" id="vicode_user_first" type="text" class="vicode_user_first" required />
 				</p>
 				<p class="animated-label-holder">
 					<label for="vicode_user_last"><?php _e('Nazwisko'); ?></label>
-					<input name="vicode_user_last" id="vicode_user_last" type="text" class="vicode_user_last"/>
+					<input name="vicode_user_last" id="vicode_user_last" type="text" class="vicode_user_last" required/>
 				</p>
 				<p class="animated-label-holder">
 					<label for="password"><?php _e('Hasło'); ?></label>
-					<input name="vicode_user_pass" id="password" class="password" type="password"/>
+					<input name="vicode_user_pass" id="password" class="password" type="password" required/>
 				</p>
 				<p class="animated-label-holder">
 					<label for="password_again"><?php _e('Powtórz hasło'); ?></label>
-					<input name="vicode_user_pass_confirm" id="password_again" class="password_again" type="password"/>
+					<input name="vicode_user_pass_confirm" id="password_again" class="password_again" type="password" required/>
 				</p>
 				<p>
 					<input type="hidden" name="vicode_csrf" value="<?php echo wp_create_nonce('vicode-csrf'); ?>"/>
@@ -691,53 +738,94 @@ function vicode_registration_fields() {
 
 // Registers a new user
 function vicode_add_new_user() {
-    if (isset( $_POST["vicode_user_login"] ) && wp_verify_nonce($_POST['vicode_csrf'], 'vicode-csrf')) {
-      $user_login		= $_POST["vicode_user_login"];	
-      $user_email		= $_POST["vicode_user_email"];
-      $user_first 	    = $_POST["vicode_user_first"];
-      $user_last	 	= $_POST["vicode_user_last"];
-      $user_pass		= $_POST["vicode_user_pass"];
-      $pass_confirm 	= $_POST["vicode_user_pass_confirm"];
-      
-      // this is required for username checks
-      require_once(ABSPATH . WPINC . '/registration.php');
-      
-      if(username_exists($user_login)) {
-          // Username already registered
-          vicode_errors()->add('username_unavailable', __('Ta nazwa użytkownika jest już zajęta, proszę wybrać inną nazwę.'));
-      }
-      if(!validate_username($user_login)) {
-          // invalid username
-          vicode_errors()->add('username_invalid', __('Nieprawidłowa nazwa użytkownika'));
-      }
-      if($user_login == '') {
-          // empty username
-          vicode_errors()->add('username_empty', __('Please enter a username'));
-      }
-      if(!is_email($user_email)) {
-          //invalid email
-          vicode_errors()->add('email_invalid', __('Invalid email'));
-      }
-      if(email_exists($user_email)) {
-          //Email address already registered
-          vicode_errors()->add('email_used', __('Istnieje już konto z podanym adresem e-mail.'));
-      }
-	  if($user_first == '') {
+	
+		if (isset( $_POST["vicode_user_login"] ) && wp_verify_nonce($_POST['vicode_csrf'], 'vicode-csrf')) {
+		$user_login		= $_POST["vicode_user_login"];	
+		$user_email		= $_POST["vicode_user_email"];
+		$user_first 	    = $_POST["vicode_user_first"];
+		$user_last	 	= $_POST["vicode_user_last"];
+		$user_pass		= $_POST["vicode_user_pass"];
+		$pass_confirm 	= $_POST["vicode_user_pass_confirm"];
+		
+		// this is required for username checks
+		require_once(ABSPATH . WPINC . '/registration.php');
+
+		$errors = array();
+		// Check for errors
+
+		if(username_exists($user_login)) {
+			// Username already registered
+			// $errors[] = 'Ta nazwa użytkownika jest już zajęta, proszę wybrać inną nazwę';
+			vicode_errors()->add('username_unavailable', __('Ta nazwa użytkownika jest już zajęta, proszę wybrać inną nazwę'));
+		}
+
+		if(!validate_username($user_login)) {
+			// invalid username
+			// $errors[] = 'Nieprawidłowa nazwa użytkownika';
+			vicode_errors()->add('username_invalid', __('Nieprawidłowa nazwa użytkownika'));
+		}
+
+		if($user_login == '') {
+			// empty username
+			// $errors[] = 'Prosimy o podanie nazwy użytkownika';
+			vicode_errors()->add('username_empty', __('Prosimy o podanie nazwy użytkownika'));
+		}
+
+		if(!is_email($user_email)) {
+			//invalid email
+			// $errors[] = 'Niepoprawny format adresu e-mail';
+			vicode_errors()->add('email_invalid', __('Niepoprawny format adresu e-mail'));
+		}
+
+		if(email_exists($user_email)) {
+			//Email address already registered
+			$errors[] = 'Istnieje już konto z podanym adresem e-mail.';
+			vicode_errors()->add('email_used', __('Istnieje już konto z podanym adresem e-mail.'));
+		}
+
+		if($user_first == '') {
 		// empty username
-		vicode_errors()->add('username_empty', __('Please enter your first name'));
-	  }
-	  if($user_last == '') {
+		// $errors[] = 'Pole z imieniem jest wymagane';
+		vicode_errors()->add('username_empty', __('Pole z imieniem jest wymagane'));
+		}
+
+		if($user_last == '') {
 		// empty username
-		vicode_errors()->add('username_empty', __('Please enter your last name'));
-	  }
-      if($user_pass == '') {
-          // passwords do not match
-          vicode_errors()->add('password_empty', __('Please enter a password'));
-      }
-      if($user_pass != $pass_confirm) {
-          // passwords do not match
-          vicode_errors()->add('password_mismatch', __('Passwords do not match'));
-      }
+		// $errors[] = 'Pole z nazwiskiem jest wymagane';
+		vicode_errors()->add('username_empty', __('Pole z nazwiskiem jest wymagane'));
+		}
+		
+		if($user_pass == '') {
+			// empty password
+			// $errors[] = 'Pole z hasłem jest wymagane';
+			vicode_errors()->add('password_empty', __('Pole z hasłem jest wymagane'));
+		}
+
+		if($user_pass != $pass_confirm) {
+			// passwords do not match
+			// $errors[] = 'Podane hasła różnią się od siebie';
+			vicode_errors()->add('password_mismatch', __('Podane hasła różnią się od siebie'));
+		}
+
+		// if (strlen($user_pass) < 8) {
+		// 	$errors[] = 'Hasło powinno zawierać conajmniej 8 znaków';
+		// 	vicode_errors()->add('username_empty', __('Hasło powinno zawierać conajmniej 8 znaków'));
+		// }
+
+		// if (!preg_match("/[A-Z]/", $user_pass)) {
+		// 	$errors[] = "Hasło powinno zawierać conajmniej jedną wielką literę";
+		// 	vicode_errors()->add('username_empty', __('Hasło powinno zawierać conajmniej jedną wielką literę'));
+		// }
+
+		// if (!preg_match("/\W/", $user_pass)) {
+		// 	$errors[] = "Hasło powinno zawierać conajmniej jeden znak specjalny";
+		// 	vicode_errors()->add('username_empty', __('Hasło powinno zawierać conajmniej jeden znak specjalny'));
+		// }
+
+		// if (preg_match("/\s/", $user_pass)) {
+		// 	$errors[] = "Hasło nie może zawierać spacji";
+		// 	vicode_errors()->add('username_empty', __('Hasło nie może zawierać spacji'));
+		// }
       
       $errors = vicode_errors()->get_error_messages();
 
@@ -832,13 +920,17 @@ function vicode_errors(){
 
 // displays error messages from form submissions
 function vicode_error_messages() {
+	$cross_error = file_get_contents(get_template_directory() . "/dist/dist/svg/cross_error.svg");
 	if($codes = vicode_errors()->get_error_codes()) {
 		echo '<div class="vicode_errors">';
 		    // Loop error codes and display errors
 		   foreach($codes as $code){
 		        $message = vicode_errors()->get_error_message($code);
 		        // echo '<span class="error"><strong>' . __('Error') . '</strong>: ' . $message . '</span><br/>';
-				echo '<p class="login-msg php-error__text">' . $message . '</p>';
+				echo '<p class="php-error__text flex show-in-modal fw--500">
+				<span class="svg-holder">'.$cross_error.'</span>
+				'.$message.'
+			  </p>';
 		    }
 		echo '</div>';
 	} else {
@@ -2141,8 +2233,8 @@ function gallery_sound_uploader($user_post_id) {
 										</p>
 
 										<p class="mb--2">
-											<textarea form="upload_sound_to_gallery_form" name="sound-textarea__input[]" id="sound-textarea__input" class="input-textarea input-preview__src" type="text" maxlength="100" placeholder="Tekst"></textarea>
-											<label class="characters-counter">0/100</label>
+											<textarea form="upload_sound_to_gallery_form" name="sound-textarea__input[]" id="sound-textarea__input" class="input-textarea input-preview__src" type="text" maxlength="200" placeholder="Tekst"></textarea>
+											<label class="characters-counter">0/200</label>
 										</p>
 
 									</div>
@@ -2614,7 +2706,7 @@ function handle_image_to_gallery_upload() {
 
 			//Check for file size limit
 			$file_size = $file_object->size;
-
+ 
 			if ( $file_size >= $allowed_file_size ) {
 				echo '<div class="modal-notification php-error__wrapper"><div class="php-error__content">'.sprintf( esc_html__( 'Zbyt duży rozmiar pliku, proszę wybrać plik o maksymalnym rozmiarze %d MB', 'theme-text-domain' ), round($allowed_file_size / 1000000) ).'</div></div>';
 				throw new Exception('Exception message');
@@ -3084,42 +3176,41 @@ function change_settings_user_password() {
 			$new_password = sanitize_text_field($_POST['new_password']);
 			$confirm_new_password = sanitize_text_field($_POST['confirm_new_password']);
 			$user_id = get_current_user_id();
-			$errors = array();
 			$current_user = get_user_by('id', $user_id);
 	
-	
+			$errors = array();
 			// Check for errors
 			if (empty($current_password) && empty($new_password) && empty($confirm_new_password) ) {
-					$errors[] = 'All fields are required';
+					$errors[] = 'Wymagane jest wypełnienie wszystkich pól';
 			}
 			if ($current_user && wp_check_password($current_password, $current_user->data->user_pass, $current_user->ID)){
 			//match
 			} else {
-				$errors[] = 'Password is incorrect';
-				vicode_errors()->add('username_empty', __('Password is incorrect'));
+				$errors[] = 'Podane hasło jest nieprawidłowe';
+				vicode_errors()->add('username_empty', __('Podane hasło jest nieprawidłowe'));
 			}
 			if ($new_password != $confirm_new_password){
-				$errors[] = 'Password does not match';
-				vicode_errors()->add('username_empty', __('Password does not match'));
+				$errors[] = 'Podane hasła różnią się od siebie';
+				vicode_errors()->add('username_empty', __('Podane hasła różnią się od siebie'));
 			}
 			if (strlen($new_password) < 8) {
-				$errors[] = 'Password is too short, minimum of 8 characters';
-				vicode_errors()->add('username_empty', __('Password is too short, minimum of 8 characters'));
+				$errors[] = 'Hasło powinno zawierać conajmniej 8 znaków';
+				vicode_errors()->add('username_empty', __('Hasło powinno zawierać conajmniej 8 znaków'));
 			}
 	
 			if (!preg_match("/[A-Z]/", $new_password)) {
-				$errors[] = "Password should contain at least one Capital Letter";
-				vicode_errors()->add('username_empty', __('Password should contain at least one Capital Letter'));
+				$errors[] = "Hasło powinno zawierać conajmniej jedną wielką literę";
+				vicode_errors()->add('username_empty', __('Hasło powinno zawierać conajmniej jedną wielką literę'));
 			}
 	
 			if (!preg_match("/\W/", $new_password)) {
-				$errors[] = "Password should contain at least one special character";
-				vicode_errors()->add('username_empty', __('Password should contain at least one special character'));
+				$errors[] = "Hasło powinno zawierać conajmniej jeden znak specjalny";
+				vicode_errors()->add('username_empty', __('Hasło powinno zawierać conajmniej jeden znak specjalny'));
 			}
 	
 			if (preg_match("/\s/", $new_password)) {
-				$errors[] = "Password should not contain any white space";
-				vicode_errors()->add('username_empty', __('Password should not contain any white space'));
+				$errors[] = "Hasło nie może zawierać spacji";
+				vicode_errors()->add('username_empty', __('Hasło nie może zawierać spacji'));
 			}
 	
 			if(empty($errors)){
@@ -3341,9 +3432,9 @@ add_action( 'wp_ajax_change_settings_user_data_visibility_with_ajax','change_set
 
 function footer_copyright() {
 	global $wpdb;
+	$first_date = '2021';
 	$copyright_dates = $wpdb->get_results("
 	SELECT
-	YEAR(min(post_date_gmt)) AS firstdate,
 	YEAR(max(post_date_gmt)) AS lastdate
 	FROM
 	$wpdb->posts
@@ -3352,8 +3443,8 @@ function footer_copyright() {
 	");
 	$output = '';
 	if($copyright_dates) {
-	$copyright = "&copy; " . $copyright_dates[0]->firstdate;
-	if($copyright_dates[0]->firstdate != $copyright_dates[0]->lastdate) {
+	$copyright = "&copy; " . $first_date;
+	if($first_date != $copyright_dates[0]->lastdate) {
 	$copyright .= '-' . $copyright_dates[0]->lastdate;
 	}
 	$output = $copyright;

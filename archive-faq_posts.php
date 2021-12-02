@@ -43,7 +43,7 @@ get_header();
 
 					<div class="entry-header">
 
-						<h1 class="entry-title fs--1800 mb--2"><?php echo $faq_page_title ?></h1>
+						<h1 class="entry-title fs--1800 mb--1"><?php echo $faq_page_title ?></h1>
 
 					</div><!-- .entry-header -->
 
@@ -51,7 +51,7 @@ get_header();
 						<span class="fs--1400 fw--700 lh--125 text--blue"><?php echo $section_1_h2 ?></span>
 					</h2>
 
-					<div class="fs--1000 fw--600 ff--secondary"><?php echo $section_1_paragraph ?></div>
+					<div class="fs--1000 fw--700 ff--secondary"><?php echo $section_1_paragraph ?></div>
 
 				</div>
 

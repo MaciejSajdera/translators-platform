@@ -2,7 +2,8 @@
  * Main JavaScript file.
  */
 import Navigation from "./navigation.js";
-import {isElementInViewport} from "./helperFunctions.js";
+import smoothscroll from "smoothscroll-polyfill";
+import { isElementInViewport } from "./helperFunctions.js";
 
 document.addEventListener("DOMContentLoaded", () => {
 	// Loading Page scripts
@@ -46,6 +47,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
 	const navigation = new Navigation();
 	navigation.setupNavigation();
+	smoothscroll.polyfill();
 
 	const mediaQueryDesktop = window.matchMedia("(min-width: 992px)");
 	const asideDesktopMenu = document.querySelector("#desktop-menu");
@@ -74,16 +76,24 @@ document.addEventListener("DOMContentLoaded", () => {
 		}
 	}
 
-	mediaQueryMobile.matches
-		? handleMobileChange(mediaQueryMobile)
-		: handleDesktopChange(mediaQueryDesktop);
+	if (mediaQueryMobile.matches) {
+		handleMobileChange(mediaQueryMobile);
+		handleSearchSelectBoxesMobile();
+	}
+
+	if (!mediaQueryMobile.matches) {
+		handleDesktopChange(mediaQueryDesktop);
+		handleSearchSelectBoxesDesktop();
+	}
 
 	mediaQueryMobile.addEventListener("change", () => {
 		handleMobileChange(mediaQueryMobile);
+		handleSearchSelectBoxesMobile();
 	});
 
 	mediaQueryDesktop.addEventListener("change", () => {
 		handleDesktopChange(mediaQueryDesktop);
+		handleSearchSelectBoxesDesktop();
 	});
 
 	/* 	HEADER */
@@ -91,18 +101,6 @@ document.addEventListener("DOMContentLoaded", () => {
 	window.onscroll = function() {
 		navigation.makeNavSticky();
 	};
-
-	// Animations for specific pages
-
-	const managementPage = document.querySelector(".management");
-
-	if (managementPage) {
-		const welcomeSVGsHolder = document.querySelector(
-			".welcome-view__left .svg-holder"
-		);
-		welcomeSVGsHolder &&
-			welcomeSVGsHolder.classList.add("svg-holder--animated");
-	}
 
 	/* SEARCH AND FILTER PRO PLUGIN FIX */
 
@@ -121,91 +119,89 @@ document.addEventListener("DOMContentLoaded", () => {
 			});
 		});
 
-	setTimeout(() => {
-		const allComboboxes = document.querySelectorAll(
-			'[data-sf-field-input-type="multiselect"], .sf-field-taxonomy-translator_localization'
-		);
+	function handleSearchSelectBoxesDesktop() {
+		setTimeout(() => {
+			const allComboboxes = document.querySelectorAll(
+				'[data-sf-field-input-type="multiselect"], .sf-field-taxonomy-translator_localization'
+			);
 
-		allComboboxes &&
-			allComboboxes.forEach(box => {
-				// console.log(box);
+			allComboboxes &&
+				allComboboxes.forEach(box => {
+					// console.log(box);
 
-				const selectionCounter = document.createElement("SPAN");
-				selectionCounter.classList.add("my-selection-counter");
-				let boxSelection = box.querySelector(".select2-selection"); //Desktop
-				boxSelection.appendChild(selectionCounter);
-				let boxSearchField = box.querySelector(".select2-search__field");
+					const selectionCounter = document.createElement("SPAN");
+					selectionCounter.classList.add("my-selection-counter");
+					let boxSelection = box.querySelector(".select2-selection"); //Desktop
+					boxSelection.appendChild(selectionCounter);
+					let boxSearchField = box.querySelector(".select2-search__field");
 
-				//Dynamic - DESKTOP
-				const observer = new MutationObserver(function(mutations) {
-					mutations.forEach(function(mutation) {
-						if (mutation.type === "attributes") {
-							// console.log(mutation);
-							// console.log("attribute aria-expanded changed");
+					//Dynamic - DESKTOP
+					const observer = new MutationObserver(function(mutations) {
+						mutations.forEach(function(mutation) {
+							if (mutation.type === "attributes") {
+								// console.log(mutation);
+								// console.log("attribute aria-expanded changed");
 
-							const select2Dropdown = document.querySelector(
-								".select2-dropdown"
-							);
+								const select2Dropdown = document.querySelector(
+									".select2-dropdown"
+								);
 
-							if (
+								if (
+									select2Dropdown &&
+									select2Dropdown.classList.contains("show-dropdown")
+								) {
+									select2Dropdown.classList.remove("show-dropdown");
+								}
+
 								select2Dropdown &&
-								select2Dropdown.classList.contains("show-dropdown")
-							) {
-								select2Dropdown.classList.remove("show-dropdown");
+									select2Dropdown.classList.add("show-dropdown");
+
+								let allOptionsChosen = box.querySelectorAll(
+									".select2-selection__choice"
+								);
+
+								let boxTitle = box.querySelector("H4").innerHTML;
+
+								if (allOptionsChosen.length === 1) {
+									console.log(allOptionsChosen[0].title.trim().split("("));
+									boxSearchField.placeholder = `${
+										allOptionsChosen[0].title.trim().split("(")[0]
+									}`;
+								}
+
+								if (allOptionsChosen.length > 1) {
+									boxSearchField.placeholder = `${boxTitle} (${allOptionsChosen.length})`;
+								}
+
+								// setTimeout(() => {
+
+								const searchField = select2Dropdown?.querySelector(
+									".select2-search__field"
+								);
+
+								searchField?.focus();
+
+								if (searchField) {
+									searchField.placeholder = "Wpisz miasto...";
+								}
+								// }, 0);
 							}
 
-							select2Dropdown && select2Dropdown.classList.add("show-dropdown");
-
-							let allOptionsChosen = box.querySelectorAll(
-								".select2-selection__choice"
-							);
-
-							let boxTitle = box.querySelector("H4").innerHTML;
-
-							if (allOptionsChosen.length === 1) {
-								console.log(allOptionsChosen[0].title.trim().split("("));
-								boxSearchField.placeholder = `${
-									allOptionsChosen[0].title.trim().split("(")[0]
-								}`;
-							}
-
-							if (allOptionsChosen.length > 1) {
-								boxSearchField.placeholder = `${boxTitle} (${allOptionsChosen.length})`;
-							}
-
-							// setTimeout(() => {
-
-							const searchField = select2Dropdown?.querySelector(
-								".select2-search__field"
-							);
-
-							searchField?.focus();
-
-							if (searchField) {
-								searchField.placeholder = "Wpisz miasto...";
-							}
-							// }, 0);
-						}
-
-						// if (
-						// 	mutation.type === "attributes" &&
-						// 	mutation.target.ariaExpanded === "false"
-						// ) {
-						// 	boxSearchField.blur();
-						// }
+							// if (
+							// 	mutation.type === "attributes" &&
+							// 	mutation.target.ariaExpanded === "false"
+							// ) {
+							// 	boxSearchField.blur();
+							// }
+						});
 					});
-				});
 
-				observer.observe(boxSelection, {
-					attributes: true //configure it to listen to attribute changes
-				});
+					observer.observe(boxSelection, {
+						attributes: true //configure it to listen to attribute changes
+					});
 
-				// //Dynamic - 	MOBILE
+					// Static - to display allOptionsChosen counter after form is submitted and page is loaded again
 
-				let optionSelection = box.querySelector("SELECT");
-				console.log(optionSelection);
-
-				optionSelection.addEventListener("change", e => {
 					let allOptionsChosen = box.querySelectorAll(
 						".select2-selection__choice"
 					);
@@ -223,27 +219,161 @@ document.addEventListener("DOMContentLoaded", () => {
 						boxSearchField.placeholder = `${boxTitle} (${allOptionsChosen.length})`;
 					}
 				});
+		}, 300);
+	}
 
-				// Static - to display allOptionsChosen counter after form is submitted and page is loaded again
+	function handleSearchSelectBoxesMobile() {
+		setTimeout(() => {
+			const allComboboxes = document.querySelectorAll(
+				'[data-sf-field-input-type="multiselect"], .sf-field-taxonomy-translator_localization'
+			);
 
-				let allOptionsChosen = box.querySelectorAll(
-					".select2-selection__choice"
-				);
+			allComboboxes &&
+				allComboboxes.forEach(box => {
+					// console.log(box);
 
-				let boxTitle = box.querySelector("H4").innerHTML;
+					const selectionCounter = document.createElement("SPAN");
+					selectionCounter.classList.add("my-selection-counter");
+					const boxSelection = box.querySelector(".select2-selection"); //Desktop
+					boxSelection.appendChild(selectionCounter);
+					const boxSearchField = box.querySelector(".select2-search__field");
 
-				if (allOptionsChosen.length === 1) {
-					console.log(allOptionsChosen[0].title.trim().split("("));
-					boxSearchField.placeholder = `${
-						allOptionsChosen[0].title.trim().split("(")[0]
-					}`;
-				}
+					const observer = new MutationObserver(function(mutations) {
+						mutations.forEach(function(mutation) {
+							if (mutation.type === "attributes") {
+								// console.log(mutation);
+								// console.log("attribute aria-expanded changed");
 
-				if (allOptionsChosen.length > 1) {
-					boxSearchField.placeholder = `${boxTitle} (${allOptionsChosen.length})`;
-				}
-			});
-	}, 300);
+								const select2Dropdown = document.querySelector(
+									".select2-dropdown"
+								);
+
+								if (
+									select2Dropdown &&
+									select2Dropdown.classList.contains("show-dropdown")
+								) {
+									select2Dropdown.classList.remove("show-dropdown");
+								}
+
+								select2Dropdown &&
+									select2Dropdown.classList.add("show-dropdown");
+
+								let allOptionsChosen = box.querySelectorAll(
+									".select2-selection__choice"
+								);
+
+								let boxTitle = box.querySelector("H4").innerHTML;
+
+								if (allOptionsChosen.length === 1) {
+									console.log(allOptionsChosen[0].title.trim().split("("));
+									boxSearchField.placeholder = `${
+										allOptionsChosen[0].title.trim().split("(")[0]
+									}`;
+								}
+
+								if (allOptionsChosen.length > 1) {
+									boxSearchField.placeholder = `${boxTitle} (${allOptionsChosen.length})`;
+								}
+
+								// setTimeout(() => {
+
+								const searchField = select2Dropdown?.querySelector(
+									".select2-search__field"
+								);
+
+								searchField?.focus();
+
+								if (searchField) {
+									searchField.placeholder = "Wpisz miasto...";
+								}
+								// }, 0);
+							}
+
+							// if (
+							// 	mutation.type === "attributes" &&
+							// 	mutation.target.ariaExpanded === "false"
+							// ) {
+							// 	boxSearchField.blur();
+							// }
+						});
+					});
+
+					observer.observe(boxSelection, {
+						attributes: true //configure it to listen to attribute changes
+					});
+
+					// //Dynamic - 	MOBILE
+
+					let optionSelection = box.querySelector("SELECT");
+					console.log(optionSelection);
+
+					optionSelection.addEventListener("change", e => {
+						let allOptionsChosen = box.querySelectorAll(
+							".select2-selection__choice"
+						);
+
+						let boxTitle = box.querySelector("H4").innerHTML;
+
+						if (allOptionsChosen.length === 1) {
+							console.log(allOptionsChosen[0].title.trim().split("("));
+							boxSearchField.placeholder = `${
+								allOptionsChosen[0].title.trim().split("(")[0]
+							}`;
+						}
+
+						if (allOptionsChosen.length > 1) {
+							boxSearchField.placeholder = `${boxTitle} (${allOptionsChosen.length})`;
+						}
+					});
+
+					// Static - to display allOptionsChosen counter after form is submitted and page is loaded again
+
+					let allOptionsChosen = box.querySelectorAll(
+						".select2-selection__choice"
+					);
+
+					let boxTitle = box.querySelector("H4").innerHTML;
+
+					if (allOptionsChosen.length === 1) {
+						console.log(allOptionsChosen[0].title.trim().split("("));
+						boxSearchField.placeholder = `${
+							allOptionsChosen[0].title.trim().split("(")[0]
+						}`;
+					}
+
+					if (allOptionsChosen.length > 1) {
+						boxSearchField.placeholder = `${boxTitle} (${allOptionsChosen.length})`;
+					}
+				});
+		}, 300);
+	}
+
+	// Animations for specific pages
+
+	const managementPage = document.querySelector(".management");
+
+	if (managementPage) {
+		const welcomeSVGsHolder = document.querySelector(
+			".welcome-view__left .svg-holder"
+		);
+		welcomeSVGsHolder &&
+			welcomeSVGsHolder.classList.add("svg-holder--animated");
+	}
+
+	//single post page
+	setTimeout(() => {
+		postNavigation && isElementInViewport(postNavigation)
+			? postNavigation.classList.add("post-navigation--wide")
+			: "";
+	}, 800);
+
+	const singleAnimationsSinglePost = () => {
+		postNavigation && isElementInViewport(postNavigation)
+			? postNavigation.classList.add("post-navigation--wide")
+			: "";
+	};
+
+	//info pop up
 
 	let isPopUpActive = false;
 
@@ -304,103 +434,89 @@ document.addEventListener("DOMContentLoaded", () => {
 			: "";
 	};
 
+	const handleInfoPopUp = e => {
+		let isOneOfTargets;
 
-	//single post page
-	setTimeout(() => {
-		postNavigation && isElementInViewport(postNavigation)
-			? postNavigation.classList.add("post-navigation--wide")
-			: "";
-	}, 800);
+		const optionsToBeApproved = document.querySelector(
+			".options__to-be-approved"
+		);
 
-	const singleAnimationsSinglePost = () => {
-		postNavigation && isElementInViewport(postNavigation)
-			? postNavigation.classList.add("post-navigation--wide")
-			: "";
+		if (
+			(e.target && e.target.classList.contains("options__to-be-approved")) ||
+			(e.target && e.target.closest(".options__to-be-approved"))
+		) {
+			isOneOfTargets = true;
+			showInfoPopUp(
+				optionsToBeApproved,
+				"Twój profil nie został jeszcze opublikowany. Zmiana widoczności profilu będzie możliwa po aktywacji konta."
+			);
+		}
+
+		const accountPrivacyStatus = document.querySelector(
+			".account__privacy-status"
+		);
+
+		if (
+			(e.target && e.target.classList.contains("account__public")) ||
+			(e.target && e.target.closest(".account__public"))
+		) {
+			isOneOfTargets = true;
+			showInfoPopUp(
+				accountPrivacyStatus,
+				"Twój profil jest publicznie dostępny."
+			);
+		}
+
+		if (
+			(e.target && e.target.classList.contains("account__private")) ||
+			(e.target && e.target.closest(".account__private"))
+		) {
+			isOneOfTargets = true;
+			showInfoPopUp(
+				accountPrivacyStatus,
+				"Twój profil nie jest publicznie dostępny."
+			);
+		}
+
+		const accountApprovalStatus = document.querySelector(
+			".account__approval-status"
+		);
+
+		if (
+			(e.target && e.target.classList.contains("account__approved")) ||
+			(e.target && e.target.closest(".account__approved"))
+		) {
+			isOneOfTargets = true;
+			showInfoPopUp(accountApprovalStatus, "Twój profil jest zweryfikowany.");
+		}
+
+		if (
+			(e.target && e.target.classList.contains("account__not-approved")) ||
+			(e.target && e.target.closest(".account__not-approved"))
+		) {
+			isOneOfTargets = true;
+			showInfoPopUp(
+				accountApprovalStatus,
+				"Twój profil nie jest jeszcze zweryfikowany."
+			);
+		}
+
+		if (!isOneOfTargets) {
+			hideInfoPopUp();
+		}
 	};
 
 	/* Global mouseover event listener */
 
 	document.addEventListener("mouseover", e => {
 		// console.log(e.target);
-
-		const handleInfoPopUp = e => {
-			let isOneOfTargets;
-
-			const optionsToBeApproved = document.querySelector(
-				".options__to-be-approved"
-			);
-
-			if (
-				(e.target && e.target.classList.contains("options__to-be-approved")) ||
-				(e.target && e.target.closest(".options__to-be-approved"))
-			) {
-				isOneOfTargets = true;
-				showInfoPopUp(
-					optionsToBeApproved,
-					"Twój profil nie został jeszcze opublikowany. Zmiana widoczności profilu będzie możliwa po aktywacji konta."
-				);
-			}
-
-			const accountPrivacyStatus = document.querySelector(
-				".account__privacy-status"
-			);
-
-			if (
-				(e.target && e.target.classList.contains("account__public")) ||
-				(e.target && e.target.closest(".account__public"))
-			) {
-				isOneOfTargets = true;
-				showInfoPopUp(
-					accountPrivacyStatus,
-					"Twój profil jest publicznie dostępny."
-				);
-			}
-
-			if (
-				(e.target && e.target.classList.contains("account__private")) ||
-				(e.target && e.target.closest(".account__private"))
-			) {
-				isOneOfTargets = true;
-				showInfoPopUp(
-					accountPrivacyStatus,
-					"Twój profil nie jest publicznie dostępny."
-				);
-			}
-
-			const accountApprovalStatus = document.querySelector(
-				".account__approval-status"
-			);
-
-			if (
-				(e.target && e.target.classList.contains("account__approved")) ||
-				(e.target && e.target.closest(".account__approved"))
-			) {
-				isOneOfTargets = true;
-				showInfoPopUp(accountApprovalStatus, "Twój profil jest zweryfikowany.");
-			}
-
-			if (
-				(e.target && e.target.classList.contains("account__not-approved")) ||
-				(e.target && e.target.closest(".account__not-approved"))
-			) {
-				isOneOfTargets = true;
-				showInfoPopUp(
-					accountApprovalStatus,
-					"Twój profil nie jest jeszcze zweryfikowany."
-				);
-			}
-
-			if (!isOneOfTargets) {
-				hideInfoPopUp();
-			}
-		};
 		handleInfoPopUp(e);
 	});
 
 	/* Global click event listener */
 
 	document.addEventListener("click", e => {
-		console.log(e);
+		// console.log(e);
 
 		/* Search Submit Button */
 
@@ -465,7 +581,6 @@ document.addEventListener("DOMContentLoaded", () => {
 	const scrollToTopBtn = document.querySelector(".scrollToTopBtn");
 
 	document.addEventListener("scroll", () => {
-
 		if (scrollToTopBtn) {
 			if (pageYOffset > window.innerHeight) {
 				scrollToTopBtn.classList.add("showBtn");
