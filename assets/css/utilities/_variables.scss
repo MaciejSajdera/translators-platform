@@ -29,6 +29,7 @@ $color__error-red: #ff0000;
 $color__success-green: #24b82be6;
 $color__verified-blue: #5698e7;
 $color__text--light-grey: #969595;
+$color__text--dark-grey: #727272;
 $color__text-white: #fff;
 $color__text-black: #000;
 $color__pending: #ffb618;
@@ -103,6 +104,8 @@ $padding_search_input_desktop_x: 1.25rem;
 $font_size_search_input_mobile: 0.9rem;
 $font_size_search_input_desktop: 1rem;
 
+$h4_searchandfilter_height: 36px;
+
 // Z-INDEX
 
 $z-index-preloader: 10000;
@@ -112,4 +115,5 @@ $z-index-menu-toggle: 9998;
 $z-index-behind: -1;
 
 /* BORDER RADIUS */
+$border-radius--standard: 5px;
 $border-radius--submenu: 10px;

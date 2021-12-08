@@ -16,11 +16,9 @@ body {
 	font-family: $font__main;
 	@include font-size(1);
 	line-height: $font__line-height-body;
-	background: $color__background-body;
 	margin: 0;
-}
-
-body {
+	position: relative;
+	background: $color__background-body;
 	background: linear-gradient(
 		230deg,
 		rgba(22, 83, 140, 0.212) 0.53%,
@@ -33,6 +31,13 @@ body {
 body.page-template-user-account-page-template,
 body.page-template-registration-page-template {
 	background: $color__background-body;
+}
+
+#control-height {
+	height: 100vh;
+	width: 0;
+	position: fixed;
+	pointer-events: none;
 }
 
 // .page.gradient {

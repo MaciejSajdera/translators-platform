@@ -11,6 +11,23 @@ document.addEventListener("DOMContentLoaded", () => {
 	const myPreloader = document.querySelector(".my-preloader");
 	const page = document.querySelector("#page");
 
+	// const controlHeightElement = document.querySelector("#control-height");
+
+	// const measureBrowsersBarHeight = fullHeightElement => {
+	// 	const actualHeight = window.innerHeight;
+	// 	const elementHeight = fullHeightElement.clientHeight;
+	// 	const barHeight = elementHeight - actualHeight;
+
+	// 	console.log(barHeight);
+	// 	return barHeight;
+	// };
+
+	// const adjustHorizontalPositionOfAnElement = element => {
+	// 	element.style.transform = `translateY(
+	// 		${measureBrowsersBarHeight(controlHeightElement)}px
+	// 	)`;
+	// };
+
 	setTimeout(() => {
 		myPreloader.classList.add("my-preloader-off");
 		page.classList.add("page-loaded");
@@ -258,6 +275,17 @@ document.addEventListener("DOMContentLoaded", () => {
 								select2Dropdown &&
 									select2Dropdown.classList.add("show-dropdown");
 
+								// const select2DropdownAbsoluteContainer = select2Dropdown?.closest(
+								// 	".select2-container"
+								// );
+
+								// console.log(select2DropdownAbsoluteContainer);
+
+								// select2DropdownAbsoluteContainer &&
+								// 	adjustHorizontalPositionOfAnElement(
+								// 		select2DropdownAbsoluteContainer
+								// 	);
+
 								let allOptionsChosen = box.querySelectorAll(
 									".select2-selection__choice"
 								);
@@ -383,9 +411,9 @@ document.addEventListener("DOMContentLoaded", () => {
 		}
 
 		if (!parentContainer) {
-			console.error(
-				"No parentContainer passed to the showInfoPopUp function call."
-			);
+			// console.error(
+			// 	"No parentContainer passed to the showInfoPopUp function call."
+			// );
 			return;
 		}
 
@@ -515,52 +543,58 @@ document.addEventListener("DOMContentLoaded", () => {
 
 	/* Global click event listener */
 
+	/* Search Submit Button */
+
+	// if (e.target.name === "_sf_submit") {
+	// 	const searchButtonHolder = document.querySelector(".sf-field-submit");
+	// 	searchButtonHolder.classList.add("search-button--clicked");
+
+	// 	const loadingMessages = {
+	// 		loadingMessage_1:
+	// 			"Zbieramy dane aby dostarczyć Ci najbardziej trafne wyniki wyszukiwania.",
+	// 		loadingMessage_2:
+	// 			"W naszej bazie danych znajduje się blisko 500 tłumaczy z całego świata."
+	// 	};
+
+	// 	setTimeout(() => {
+	// 		const interval = 1500; // how much time should the delay between two iterations be (in milliseconds)?
+	// 		let promise = Promise.resolve();
+	// 		Object.values(loadingMessages).forEach(function(value) {
+	// 			promise = promise.then(function() {
+	// 				console.log(value);
+
+	// 				let loadingMessage = document.createElement("DIV");
+	// 				loadingMessage.classList.add("search-loading-message");
+	// 				loadingMessage.textContent = value;
+	// 				searchButtonHolder.appendChild(loadingMessage);
+
+	// 				return new Promise(function(resolve) {
+	// 					setTimeout(() => {
+	// 						loadingMessage.classList.add("search-loading-message__show");
+	// 					}, 100);
+
+	// 					setTimeout(() => {
+	// 						loadingMessage.classList.remove("search-loading-message__show");
+	// 						loadingMessage.classList.add("search-loading-message__hide");
+	// 						resolve();
+	// 					}, interval);
+	// 				});
+	// 			});
+	// 		});
+
+	// 		promise.then(function() {
+	// 			console.log("Loop finished.");
+	// 		});
+	// 	}, 1000);
+	// }
+
 	document.addEventListener("click", e => {
 		// console.log(e);
 
 		/* Search Submit Button */
-
 		if (e.target.name === "_sf_submit") {
 			const searchButtonHolder = document.querySelector(".sf-field-submit");
 			searchButtonHolder.classList.add("search-button--clicked");
-
-			const loadingMessages = {
-				loadingMessage_1:
-					"Zbieramy dane aby dostarczyć Ci najbardziej trafne wyniki wyszukiwania.",
-				loadingMessage_2:
-					"W naszej bazie danych znajduje się blisko 500 tłumaczy z całego świata."
-			};
-
-			setTimeout(() => {
-				const interval = 1500; // how much time should the delay between two iterations be (in milliseconds)?
-				let promise = Promise.resolve();
-				Object.values(loadingMessages).forEach(function(value) {
-					promise = promise.then(function() {
-						console.log(value);
-
-						let loadingMessage = document.createElement("DIV");
-						loadingMessage.classList.add("search-loading-message");
-						loadingMessage.textContent = value;
-						searchButtonHolder.appendChild(loadingMessage);
-
-						return new Promise(function(resolve) {
-							setTimeout(() => {
-								loadingMessage.classList.add("search-loading-message__show");
-							}, 100);
-
-							setTimeout(() => {
-								loadingMessage.classList.remove("search-loading-message__show");
-								loadingMessage.classList.add("search-loading-message__hide");
-								resolve();
-							}, interval);
-						});
-					});
-				});
-
-				promise.then(function() {
-					console.log("Loop finished.");
-				});
-			}, 1000);
 		}
 
 		/* Scroll Down Button */

@@ -12,11 +12,13 @@ get_header();
 
 	<div id="primary" class="content-area">
 
-	<?php
-		if ( function_exists('yoast_breadcrumb') ) {
-			yoast_breadcrumb( '<p id="breadcrumbs">','</p>' );
-		}
-		?>
+	<div class="desktop-only">
+		<?php
+			if ( function_exists('yoast_breadcrumb') ) {
+				yoast_breadcrumb( '<p id="breadcrumbs">','</p>' );
+			}
+			?>
+	</div>
 
 		<main id="main" class="site-main single-translator">
 

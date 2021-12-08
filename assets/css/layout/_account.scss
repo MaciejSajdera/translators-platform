@@ -140,7 +140,7 @@
 .edit-box {
 	input[type="text"],
 	textarea {
-		color: $color__text--light-grey;
+		color: $color__text--dark-grey;
 		width: 100%;
 	}
 }
@@ -359,7 +359,7 @@ $profile_picture_width: 175px;
 	}
 
 	textarea {
-		min-height: 150px;
+		min-height: 100px;
 	}
 
 	&__settings {
@@ -727,9 +727,6 @@ $profile_picture_width: 175px;
 }
 
 .options {
-	margin: 0;
-	padding: 0;
-
 	li {
 		display: flex;
 		justify-content: space-between;

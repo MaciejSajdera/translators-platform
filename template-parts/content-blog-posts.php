@@ -91,7 +91,7 @@ get_header();
 								'post_type'             => 'post',
 								'posts_per_page'        => -1,
 								'post_status'           => 'publish',
-								'order' => 'ASC',
+								'order' => 'DESC',
 								'tax_query'             => array(
 															array(
 																'taxonomy' => 'category',
@@ -125,7 +125,7 @@ get_header();
 
 				endif;
 
-				the_posts_navigation();
+				// the_posts_navigation();
 
 			?>
 

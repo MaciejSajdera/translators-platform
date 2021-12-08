@@ -30,7 +30,7 @@ $circles_group_big = file_get_contents(get_template_directory() . "/dist/dist/sv
 	<div id="primary" class="content-area">
 		<main id="main" class="site-main about">
 
-		<div class="welcome-view welcome-view-subpage relative">
+		<section class="welcome-view welcome-view-subpage relative">
 
 			<div class="welcome-view__container image-content-row">
 
@@ -65,7 +65,7 @@ $circles_group_big = file_get_contents(get_template_directory() . "/dist/dist/sv
 
 			<?php get_template_part( 'template-parts/partials/scroll-down' ); ?>
 
-		</div>
+		</section>
 
 		<section class="about__section-2">
 
@@ -127,8 +127,6 @@ $circles_group_big = file_get_contents(get_template_directory() . "/dist/dist/sv
 					</div>
 
 				</div>
-
-			</div>
 
 			<div class="bg-decoration__holder">
 				<div class="bg-decoration__content">

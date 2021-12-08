@@ -198,7 +198,8 @@ $login-and-registration-height: 80vh;
 /* 	Animations */
 
 .animated-label-holder,
-.login-form p {
+.login-form .login-username,
+.login-form .login-password {
 	label {
 		// pointer-events: none;
 		position: absolute;

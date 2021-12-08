@@ -5,6 +5,8 @@ const ProgressBar = require("progressbar.js");
 jQuery(document).ready(function($) {
 	/*****ADDITIONAL FUNCTIONALITIES RELATED TO FORMS ********/
 
+	console.log("test2");
+
 	const accountNavigation = document.querySelector(".account__navigation");
 
 	if (accountNavigation) {

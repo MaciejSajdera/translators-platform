@@ -148,16 +148,16 @@ function my_admin_bar_css()
  */
 function pstk_scripts() {
 
-	wp_enqueue_style( 'pstk-style', get_template_directory_uri() . '/dist/css/style.css', array(), '1.29');
-	wp_enqueue_script( 'pstk-app', get_template_directory_uri() . '/dist/js/main.js', array(), '1.29', true );
+	wp_enqueue_style( 'pstk-style', get_template_directory_uri() . '/dist/css/style.css', array(), '1.40');
+	wp_enqueue_script( 'pstk-app', get_template_directory_uri() . '/dist/js/main.js', array(), '1.40', true );
 
 	if (is_page_template('registration-page-template.php') || is_page_template('user-account-page-template.php')) {
-		wp_enqueue_script( 'pstk-user-profile', get_template_directory_uri() . '/dist/js/user-profile.js', array(), '1.29', true );
+		wp_enqueue_script( 'pstk-user-profile', get_template_directory_uri() . '/dist/js/user-profile.js', array(), '1.40', true );
 	}
 
 	if (is_page_template('user-account-page-template.php') && is_user_logged_in()) {
 		wp_enqueue_script('jquery');
-		wp_register_script('ajax_forms', get_template_directory_uri() . '/dist/js/ajax-forms.js', array('jquery') ); 
+		wp_register_script('ajax_forms', get_template_directory_uri() . '/dist/js/ajax-forms.js', array('jquery'), '1.40', true );
 
 		wp_localize_script('ajax_forms', 'ajax_forms_params', 
 			array(
@@ -409,7 +409,30 @@ function search_form_title($title){
  
 }
 
-function distance($lat1, $lon1, $lat2, $lon2, $unit) {
+
+// function distance($lat1, $lon1, $lat2, $lon2, $unit) {
+// 	if (($lat1 == $lat2) && ($lon1 == $lon2)) {
+// 	  return 0;
+// 	}
+// 	else {
+// 	  $theta = $lon1 - $lon2;
+// 	  $dist = sin(deg2rad($lat1)) * sin(deg2rad($lat2)) +  cos(deg2rad($lat1)) * cos(deg2rad($lat2)) * cos(deg2rad($theta));
+// 	  $dist = acos($dist);
+// 	  $dist = rad2deg($dist);
+// 	  $miles = $dist * 60 * 1.1515;
+// 	  $unit = strtoupper($unit);
+  
+// 	  if ($unit == "K") {
+// 		return ($miles * 1.609344);
+// 	  } else if ($unit == "N") {
+// 		return ($miles * 0.8684);
+// 	  } else {
+// 		return $miles;
+// 	  }
+// 	}
+// }
+
+function geo_distance($lat1, $lon1, $lat2, $lon2, $unit) {
 	if (($lat1 == $lat2) && ($lon1 == $lon2)) {
 	  return 0;
 	}
@@ -429,6 +452,104 @@ function distance($lat1, $lon1, $lat2, $lon2, $unit) {
 		return $miles;
 	  }
 	}
+}
+
+function calculate_distance_from_each_location_to_target_location($array_of_location_objects, $target_location_name) {
+
+	/* Get geolocation of the city user was looking for */
+	$apiKey = 'AIzaSyAPJ8o7xD9vqydfgZ6XrJKvLdnhmL_YTxA'; // Google maps now requires an API key.
+
+	$ch_geo_target_location = curl_init();
+
+	$options_geo_target_location = [
+		CURLOPT_SSL_VERIFYPEER => false,
+		CURLOPT_RETURNTRANSFER => true,
+		CURLOPT_URL            => 'https://maps.googleapis.com/maps/api/geocode/json?address='.urlencode($target_location_name).'&sensor=false&key='.$apiKey
+	];
+
+	curl_setopt_array($ch_geo_target_location, $options_geo_target_location);
+
+	$data_curl_geo_target_location = json_decode(curl_exec($ch_geo_target_location));
+	curl_close($ch_geo_target_location);
+
+	$geo_target_location = $data_curl_geo_target_location;
+
+	$geo_target_location = json_decode(json_encode($geo_target_location), true); // Convert the JSON to an array
+
+	// var_dump(json_encode($geo_target_location['results'][0]['geometry']['location']['lat']));
+	// var_dump(json_encode($geo_target_location['results'][0]['geometry']['location']['lng']));
+
+	if (!isset($geo_target_location['status']) || ($geo_target_location['status'] != 'OK')) {
+		echo '<p class="text--error mb--6">Wystąpił błąd podczas próby uzyskania danych geolokalizacyjnych szukanego miasta, prosimy spróbować ponownie za parę minut.</p>';
+		return;
+	}
+
+	if (isset($geo_target_location['status']) && ($geo_target_location['status'] == 'OK')) {
+		$target_city_latitude = $geo_target_location['results'][0]['geometry']['location']['lat']; // Latitude
+		$target_city_longitude = $geo_target_location['results'][0]['geometry']['location']['lng']; // Longitude
+	} 
+
+
+	$locations_objects_arr = array();
+	$errors_arr = array();
+
+	foreach( $array_of_location_objects as $localization ) :
+
+		$location_name = $localization->name; // Address
+
+		$ch_geo_translator_city = curl_init();
+
+		$options_geo_translator_city = [
+			CURLOPT_SSL_VERIFYPEER => false,
+			CURLOPT_RETURNTRANSFER => true,
+			CURLOPT_URL            => 'https://maps.googleapis.com/maps/api/geocode/json?address='.urlencode($location_name).'&sensor=false&key='.$apiKey
+		];
+
+		curl_setopt_array($ch_geo_translator_city, $options_geo_translator_city);
+
+		$data_curl_geo_translator_city = json_decode(curl_exec($ch_geo_translator_city));
+		curl_close($ch_geo_translator_city);
+
+		$geo_translator_city = $data_curl_geo_translator_city;
+		$geo_translator_city = json_decode(json_encode($geo_translator_city), true); // Convert the JSON to an array
+
+		// var_dump(json_encode($geo_translator_city['results'][0]['geometry']['location']['lat']));
+		// var_dump(json_encode($geo_translator_city['results'][0]['geometry']['location']['lng']));
+
+		if (isset($geo_translator_city['status']) && ($geo_translator_city['status'] == 'OK')) {
+			$translator_city_latitude = $geo_translator_city['results'][0]['geometry']['location']['lat']; // Latitude
+			$translator_city_longitude = $geo_translator_city['results'][0]['geometry']['location']['lng']; // Longitude
+
+			$distance_from_target = geo_distance($target_city_latitude, $target_city_longitude, $translator_city_latitude, $translator_city_longitude, "K");
+
+			//   echo '<p>'.$translator_city_latitude.'</p>';
+			//   echo '<p>'.$translator_city_longitude.'</p>';
+			//   echo $distance_from_target . " Kilometers<br>";
+
+			$city_object = (object)[];
+
+			$city_object->city_name = $localization->name;
+			$city_object->distance_from_target = round($distance_from_target, 0);
+
+			array_push($locations_objects_arr, $city_object);
+		} 
+		elseif (isset($geo_translator_city['status']) && ($geo_translator_city['status'] != 'OK')) {
+			array_push($errors_arr, $geo_translator_city['status']);
+
+		}
+
+	endforeach;
+
+	usort($locations_objects_arr, function($first,$second){
+		return $first->distance_from_target > $second->distance_from_target;
+	});
+	
+	$result_object = (object) [
+		'locations_objects_arr' => $locations_objects_arr,
+		'errors_arr' => $errors_arr,
+	];
+
+	return $result_object;
 }
 
 /* ADDITIONAL DASHBOARD FUNCTIONALITIES */
@@ -576,6 +697,13 @@ function add_field_if_post_approved( $post_id, $post ) {
 		$is_approved = get_post_meta($post_id, 'is_approved', true);
 		if( !$is_approved ) {
 			add_post_meta( $post_id, 'is_approved', 'yes' );
+
+			$to = $post->translator_contact_email;
+			$subject = 'PSTK - Twój profil został opublikowany';
+			$body = 'Twój profil został opublikowany i można go teraz znaleźć za pośrednictwem naszej wyszukiwarki.';
+			$headers = array('Content-Type: text/html; charset=UTF-8','From: PSTK <pstk@pstktest.pl>');
+			
+			wp_mail( $to, $subject, $body, $headers );
 		}
 	}
 }
@@ -904,7 +1032,7 @@ function create_post_for_user( $user_id ) {
 
 		$to = $user_info->user_email;
 		$subject = 'Potwierdzenie założenia konta';
-		$body = 'Witamy w gronie tłumaczy PSTK';
+		$body = 'Dziękujemy za utworzenie profilu.';
 		$headers = array('Content-Type: text/html; charset=UTF-8','From: PSTK <pstk@pstktest.pl>');
 		
 		wp_mail( $to, $subject, $body, $headers );
@@ -1215,7 +1343,8 @@ function basic_user_data_form() {
 				<div class="info-box__subbox mb--3">
 					<p>
 						<label class="info-box__subbox-header mb--05" for="user_about_short"><?php _e('Jedno zdanie o mnie'); ?></label>
-						<textarea form="basic_user_data_form" name="user_about_short" id="user_about_short" class="user_about_short" type="text"><?php echo get_field("translator_about_short", $user_post_id) ?></textarea>
+						<textarea form="basic_user_data_form" name="user_about_short" id="user_about_short" class="user_about_short" type="text" maxlength="300"><?php echo get_field("translator_about_short", $user_post_id) ?></textarea>
+						<label class="characters-counter" for="user_about">0/300</label>
 					</p>
 				</div>
 

@@ -181,7 +181,7 @@ $cards = get_field('cards');
 													echo '<div class="text-wrapper">';
 				
 															if ($translator->post_title) {
-																echo '<p class="person-name text--center fs--600 fw--700 text--blue mb--1">'.$translator->post_title.'</p>';
+																echo '<p class="person-name text--center fs--600 fw--700 lh--125 text--blue mb--1">'.$translator->post_title.'</p>';
 															}
 	
 															if ($title) {

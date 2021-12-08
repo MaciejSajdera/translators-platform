@@ -24,21 +24,21 @@
 	padding-top: 6rem;
 
 	@media screen and (min-width: 1024px) {
-		padding-top: 12rem;
-	}
-}
-
-.home .site-content {
-	@media screen and (min-width: 1024px) {
 		padding-top: 10rem;
 	}
 }
 
-.single-post .site-content {
-	@media screen and (min-width: 1024px) {
-		padding-top: 10rem;
-	}
-}
+// .home .site-content {
+// 	@media screen and (min-width: 1024px) {
+// 		padding-top: 10rem;
+// 	}
+// }
+
+// .single-post .site-content {
+// 	@media screen and (min-width: 1024px) {
+// 		padding-top: 10rem;
+// 	}
+// }
 
 // .page-template-user-account-page-template .site-content,
 // .single-translator .site-content,
@@ -59,7 +59,8 @@
 	min-height: 65vh;
 
 	@media screen and (min-width: 1024px) {
-		min-height: 80vh;
+		min-height: 85vh;
+		padding-top: 4rem;
 	}
 
 	&__container {
@@ -116,7 +117,9 @@ section {
 }
 
 .list-item--classic {
-	padding: 1rem 0;
+	margin-bottom: 1rem;
+	padding-bottom: 0.25em;
+	width: fit-content;
 }
 
 .wrapper-flex-drow-mcol {
@@ -342,6 +345,10 @@ section {
 	flex-flow: row;
 }
 
+.column {
+	flex-flow: column;
+}
+
 .flex-row {
 	flex-flow: row;
 }
@@ -379,6 +386,10 @@ section {
 	@media screen and (min-width: 1024px) {
 		width: 50%;
 	}
+}
+
+.table-caption {
+	display: table-caption;
 }
 
 .padding {
@@ -581,23 +592,24 @@ section {
 				[data-sf-field-input-type="multiselect"] .sf-input-select,
 				[data-sf-field-input-type="select"] .sf-input-select {
 					min-height: 48px !important;
+					height: 100% !important;
 					width: 100% !important;
 					clip: unset !important;
 					clip-path: unset !important;
-					// z-index: 1;
+					z-index: 1;
 					opacity: 0;
 
 					label {
 						position: relative;
 					}
 
-					.select2-selection {
-						pointer-events: none;
-					}
-
 					.select2-search__field {
 						z-index: 1;
 					}
+				}
+
+				.select2-selection {
+					pointer-events: none;
 				}
 
 				// exceptions
@@ -616,7 +628,7 @@ section {
 	.searchandfilter {
 		h4 {
 			padding: 0 1.25em 0.618em 1.25em !important;
-
+			height: $h4_searchandfilter_height;
 			// @media screen and (min-width: 1024px) {
 			// 	padding: 0.618em 1.25em !important;
 			// }
@@ -635,7 +647,8 @@ section {
 			}
 
 			@media screen and (min-width: 1024px) {
-				flex: 1 1 30%;
+				// flex: 1 1 20%;
+				flex: 1 1 0;
 			}
 
 			// z-index: 1;
@@ -656,9 +669,9 @@ section {
 
 		.sf-field-sort_order {
 			@media screen and (min-width: 1024px) {
-				margin-left: 51%;
-				max-width: 200px;
-				padding-bottom: 0;
+				// margin-left: 51%;
+				// max-width: 150px;
+				// padding-bottom: 0;
 			}
 		}
 	}
@@ -688,8 +701,42 @@ section {
 		.select2-selection__rendered {
 			padding: 0;
 			display: flex !important;
-			flex-flow: column;
+			// flex-flow: column;
 			line-height: 1.5 !important;
+			flex-wrap: wrap;
+
+			li {
+				&:last-of-type {
+					display: none;
+				}
+
+				&:first-of-type {
+					display: block;
+				}
+			}
+
+			.select2-selection__choice {
+				// display: none !important;
+				margin: 2px !important;
+				padding-right: 1.5rem;
+				position: relative;
+				flex-flow: row;
+				flex: unset;
+				font-size: 12px;
+				width: fit-content;
+				padding: 2px 7px;
+				background: $color__main-theme--blue;
+				color: $color__text-white;
+				border: 0;
+
+				&__remove {
+					color: white;
+					// color: transparent;
+					// top: 0.45rem;
+					// right: 0.65rem;
+					margin-right: 5px;
+				}
+			}
 		}
 	}
 
@@ -701,6 +748,7 @@ section {
 		padding: $padding_search_input_mobile_y $padding_search_input_mobile_x !important;
 		font-size: $font_size_search_input_mobile;
 		min-height: 48px;
+		width: 100% !important;
 
 		@media screen and (min-width: 1024px) {
 			padding: $padding_search_input_desktop_y $padding_search_input_desktop_x !important;
@@ -788,13 +836,15 @@ section {
 				.select2-search__field {
 					outline: none;
 					border: none;
-					transform: translateY(-220%);
+					// transform: translateY(-220%);
+					transform: translateY(-32px);
 					line-height: 0 !important;
 					padding: 0;
 					margin-left: calc(
 						#{$padding_search_input_mobile_x} + 2px
 					) !important; //border width
-					position: absolute;
+					// position: absolute;
+					display: block;
 					max-width: 70%;
 					background-color: $color__background-body;
 					font-size: $font_size_search_input_mobile;
@@ -829,24 +879,6 @@ section {
 			&__arrow {
 				b {
 					display: none;
-				}
-			}
-
-			&__choice {
-				display: none !important;
-				margin: 2px !important;
-				padding-right: 1.5rem;
-				position: relative;
-
-				&__remove {
-					color: transparent;
-					top: 0.45rem;
-					right: 0.65rem;
-
-					&::after {
-						content: "";
-						background-image: url(../dist/img/spinner.gif);
-					}
 				}
 			}
 		}
@@ -966,14 +998,10 @@ section {
 
 	li.sf-field-submit {
 		position: relative;
-		flex: 1 1 0;
-		margin-top: 2rem;
-		padding-bottom: 0;
-		padding-top: 0;
-
-		@media screen and (min-width: 1024px) {
-			margin-top: 0;
-		}
+		// flex: 1 1 0;
+		min-width: 225px;
+		// padding-bottom: 0;
+		// padding-top: 0;
 
 		input {
 			color: $color__text-white;
@@ -990,17 +1018,25 @@ section {
 			visibility: hidden;
 		}
 
-		&::before {
+		&::before,
+		&::after {
 			content: "";
-			background-image: url(../dist/svg/zoom.svg);
-			height: 1rem;
-			width: 1rem;
 			position: absolute;
 			background-size: contain;
 			background-repeat: no-repeat;
-			top: 50%;
-			right: 2rem;
+			top: 60px;
 			transform: translateY(-50%);
+
+			@media screen and (min-width: 1024px) {
+				top: 72px;
+			}
+		}
+
+		&::before {
+			background-image: url(../dist/svg/zoom.svg);
+			height: 1rem;
+			width: 1rem;
+			right: 2rem;
 			transition: $transition_regular;
 
 			@media screen and (min-width: 1024px) {
@@ -1014,12 +1050,7 @@ section {
 			background-image: url(../dist/img/spinner.gif);
 			height: 3rem;
 			width: 3rem;
-			position: absolute;
-			background-size: contain;
-			background-repeat: no-repeat;
-			top: 50%;
 			right: 1.25rem;
-			transform: translateY(-50%);
 			transition: $transition_regular;
 			opacity: 0;
 		}
@@ -1049,29 +1080,22 @@ section {
 	.search-loading-message {
 		position: absolute;
 		padding: 0 2rem;
-		bottom: -6rem;
+		bottom: -4rem;
 		opacity: 0;
 		transition: all 0.5s ease;
-		transform: translateX(25%);
+		transform: translateX(0%);
 		font-weight: 300;
 		font-family: $font__secondary;
+		width: 200%;
 
 		&__show {
 			opacity: 1;
-			transform: translateX(0%);
+			transform: translateX(-25%);
 		}
 
 		&__hide {
 			opacity: 0;
-			transform: translateX(-25%);
-		}
-	}
-}
-
-.searchfilter__wrapper--basic {
-	li.sf-field-submit {
-		h4 {
-			display: none;
+			transform: translateX(-50%);
 		}
 	}
 }
@@ -1208,9 +1232,25 @@ section {
 .pseudo-decoration {
 	&::before,
 	&::after {
-		position: absolute;
 		content: "";
+		position: absolute;
 		background: $color__main-theme--turquoise;
+	}
+
+	&__hover-bottom {
+		&::before {
+			left: 0;
+			bottom: 0;
+			height: 2px;
+			width: 0%;
+			transition: all 0.75s ease-in;
+		}
+
+		&:hover {
+			&::before {
+				width: 100%;
+			}
+		}
 	}
 
 	&__lt {
@@ -1484,6 +1524,10 @@ section {
 }
 
 .pr {
+	&--05 {
+		padding-right: 0.5rem;
+	}
+
 	&--1 {
 		padding-right: 1rem;
 	}

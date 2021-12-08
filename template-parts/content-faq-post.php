@@ -7,13 +7,14 @@
  * @package pstk
  */
 $subheader = get_field('subheader');
+$author = get_field('author');
 ?>
 
 <article id="post-<?php the_ID(); ?>" <?php post_class(); ?>>
 	<header class="entry-header mb--2">
 		<?php
 		if ( is_singular() ) :
-			the_title( '<h1 class="entry-title fs--1200 fw--700 mb--2">', '</h1>' );
+			the_title( '<h1 class="entry-title text--blue fs--1200 fw--700 mb--2">', '</h1>' );
 		else :
 			the_title( '<h2 class="entry-title"><a href="' . esc_url( get_permalink() ) . '" rel="bookmark">', '</a></h2>' );
 		endif;
@@ -28,25 +29,31 @@ $subheader = get_field('subheader');
 
 				<div class="metadata-wrapper wrapper-flex-drow-mcol fw--300 fs--200">
 
-					<p class="author">
-						Autor:
-						<span class="text--blue fw--500">
-						<?php
-						$tags = get_the_tags($post->ID);
-						$i = 0;
-						if ($tags) {
-							foreach($tags as $my_tag) {
+					<?php if ($author) : ?>
 
-								echo $my_tag->name;
-								if (count($tags) > $i && count($tags) > 1 ) {
-									echo ", ";
-								}
-								$i++;
-							}
-						}
-						?>
-						</span>
-					</p>
+						<p class="author">
+							Autor:
+							<span class="text--blue fw--500">
+							<a href="<?php echo get_permalink($author->ID) ?>"><?php echo $author->post_title ?></a>
+							<?php
+							
+							// $tags = get_the_tags($post->ID);
+							// $i = 0;
+							// if ($tags) {
+							// 	foreach($tags as $my_tag) {
+
+							// 		echo $my_tag->name;
+							// 		if (count($tags) > $i && count($tags) > 1 ) {
+							// 			echo ", ";
+							// 		}
+							// 		$i++;
+							// 	}
+							// }
+							?>
+							</span>
+						</p>
+
+					<?php endif ?>
 
 					<p class="date">
 						<?php
@@ -69,10 +76,16 @@ $subheader = get_field('subheader');
 			</div><!-- .entry-meta -->
 		<?php endif; ?>
 	</header><!-- .entry-header -->
-
-	<div class="image-holder w--full mb--4">
-		<?php pstk_post_thumbnail(); ?>
-	</div>
+	
+	<?php
+		if (pstk_post_thumbnail()) {
+			?>
+			<div class="image-holder w--full mb--4">
+				<?php pstk_post_thumbnail(); ?>
+			</div>
+			<?php
+		}
+	?>
 
 	<div class="entry-content">
 		<?php

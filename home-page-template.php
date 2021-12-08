@@ -51,7 +51,7 @@ $circles_home_section_4 = file_get_contents(get_template_directory() . "/dist/di
 		<main id="main" class="site-main home">
 
 
-		<section class="home__section-1 relative">
+		<section class="home__section-1">
 
 			<div class="welcome-view__container">
 
@@ -93,6 +93,7 @@ $circles_home_section_4 = file_get_contents(get_template_directory() . "/dist/di
 		<section class="home__section-2">
 
 			<div class="wrapper-flex-drow-mcol content-between">
+				
 				<div class="bulletpoints-box">
 
 					<div class="bulletpoints-box__title">
@@ -126,7 +127,7 @@ $circles_home_section_4 = file_get_contents(get_template_directory() . "/dist/di
 					<?php
 						if ($section_2_image) {
 							?>
-							<img src="<?php echo $section_2_image['url'] ?>" alt="<?php echo $section_2_image['alt'] ?>" loading="lazy">
+							<img class="image-border-shadow" src="<?php echo $section_2_image['url'] ?>" alt="<?php echo $section_2_image['alt'] ?>" loading="lazy">
 							<?php
 						}
 					?>

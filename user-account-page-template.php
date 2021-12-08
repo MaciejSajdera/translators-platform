@@ -1058,7 +1058,7 @@ $cross_error = file_get_contents(get_template_directory() . "/dist/dist/svg/cros
 
 									<p class="info-box__tip mb--2">Adres ten służy do logowania do konta PSTK </p>
 				
-									<div class="info-box__subbox info-box__subbox--max-width account__box-container ajax-content-wrapper mb--3">
+									<div class="info-box__subbox info-box__subbox--max-width account__box-container ajax-content-wrapper">
 
 										<div class="my-ajax-loader">
 
@@ -1074,7 +1074,7 @@ $cross_error = file_get_contents(get_template_directory() . "/dist/dist/svg/cros
 											?>
 										</p>
 
-										<div id="edit-settings-login-email-address" class="edit-box info-box content-box">
+										<div id="edit-settings-login-email-address" class="edit-box content-box">
 
 											<?php echo settings_user_login_email_form(); ?>
 				
@@ -1099,7 +1099,7 @@ $cross_error = file_get_contents(get_template_directory() . "/dist/dist/svg/cros
 									<p class="info-box__tip mb--2">Hasło służy do logowania do konta PSTK. Musi zawierać minimum 8 znaków, w tym jedną wielką literę i jeden znak specjalny.</p>
 
 
-									<div class="info-box__subbox mb--3 info-box__subbox--max-width mb--3 account__box-container ajax-content-wrapper">
+									<div class="info-box__subbox info-box__subbox--max-width account__box-container ajax-content-wrapper">
 
 										<div class="my-ajax-loader">
 

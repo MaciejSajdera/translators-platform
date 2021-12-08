@@ -27,6 +27,7 @@ $at_symbol_icon = file_get_contents(get_template_directory() . "/dist/dist/svg/e
 $translator_city = get_field("translator_city");
 $translator_city_public = get_field("translator_city_public");
 $localization_icon = file_get_contents(get_template_directory() . "/dist/dist/svg/localization.svg");
+$approved_icon = file_get_contents(get_template_directory() . "/dist/dist/svg/approved_icon.svg");
 
 $radio_waves = file_get_contents(get_template_directory() . "/dist/dist/svg/radio-waves.svg");
 
@@ -159,11 +160,14 @@ $arrow_controls_right = file_get_contents(get_template_directory() . "/dist/dist
 
 					<div class="translator__middle mb--3">
 
-						<header class="entry-header mb--2">
+						<header class="entry-header w--fit-content relative pr--05">
 							
 							<?php
 								echo '
 									<h1 class="entry-title fs--1200 text--blue mb--05">'.$translator_first_name.' '. $translator_last_name.'</h1>
+									<div class="translator__icons-wrapper text--right account__approved">
+									'.$approved_icon.'
+									</div>
 								';
 
 							?>
@@ -286,11 +290,14 @@ $arrow_controls_right = file_get_contents(get_template_directory() . "/dist/dist
 
 					<div class="translator__middle">
 
-						<header class="entry-header mb--4">
+						<header class="entry-header relative w--fit-content pr--05">
 							
 							<?php
 								echo '
 									<h1 class="entry-title fs--800 text--blue mb--05">'.$translator_first_name.' '. $translator_last_name.'</h1>
+									<div class="translator__icons-wrapper text--right account__approved">
+									'.$approved_icon.'
+									</div>
 								';
 
 							?>

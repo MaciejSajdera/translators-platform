@@ -21,7 +21,7 @@ get_header();
 		// }
 	?>
 
-		<main id="main" class="site-main blog-posts">
+		<main id="main" class="site-main blog-posts1">
 
 			<div class="welcome-view welcome-view-subpage relative">
 
@@ -81,7 +81,7 @@ get_header();
 								'post_type'             => 'post',
 								'posts_per_page'        => -1, //specify yours
 								'post_status'           => 'publish',
-								'order' => 'ASC',
+								'order' => 'DESC',
 								'tax_query'             => array(
 															array(
 																'taxonomy' => 'category',
@@ -115,7 +115,7 @@ get_header();
 
 				endif;
 
-				the_posts_navigation();
+				// the_posts_navigation();
 
 			?>
 

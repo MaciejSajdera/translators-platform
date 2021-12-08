@@ -32,7 +32,7 @@ get_header();
 		// yoast_breadcrumb( '<p id="breadcrumbs">','</p>' );
 		// }
 	?>
-		<main id="main" class="site-main faq-archive">
+		<main id="main" class="site-main faq-archive mb--6">
 
 
 		<div class="faq-archive__section-1 welcome-view welcome-view-subpage relative">
@@ -115,7 +115,7 @@ get_header();
 				if( $posts->have_posts() ) :
 					while( $posts->have_posts() ) : $posts->the_post();
 
-						echo '<li class="fs--500 list-item--classic">';
+						echo '<li class="fs--500 list-item--classic relative pseudo-decoration pseudo-decoration__hover-bottom">';
 
 						echo '<a href="'.get_permalink().'">'. get_the_title() .'</a>';
 
@@ -131,8 +131,6 @@ get_header();
 		endforeach;
 
 		echo '</ol>';
-
-		the_posts_navigation();
 
 		endif;
 
