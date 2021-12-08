@@ -71,7 +71,7 @@ $circles_home_section_4 = file_get_contents(get_template_directory() . "/dist/di
 						?>
 					</div>
 
-					<h2 class="fs--800 fw--700 text--turquoise ff--secondary"><?php echo $h2 ?></h2>
+					<h2 class="fs--600 fw--700 text--turquoise ff--secondary"><?php echo $h2 ?></h2>
 
 					<?php
 						get_template_part( 'template-parts/searchfilter-basic' );

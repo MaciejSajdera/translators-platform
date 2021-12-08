@@ -28,6 +28,60 @@
 	}
 }
 
+.single-post {
+
+	.site-main {
+		background: $color__background-body;
+	}
+}
+
+.single-post {
+	.site-content, .site-header {
+	
+		@media screen and (min-width: 1280px) {
+			padding-left: calc(#{$padding-site-content-1280} - 2.5%);
+			padding-right: calc(#{$padding-site-content-1280} - 2.5%);
+		}
+	
+		@media screen and (min-width: 1536px) {
+			padding-left: calc(#{$padding-site-content-1536} - 2.5%);
+			padding-right: calc(#{$padding-site-content-1536} - 2.5%);
+		}
+	
+	}
+
+	.site-main {
+		padding: 2rem 1.75rem;
+	
+		@media screen and (min-width: 1024px) {
+			padding: 3rem 3.5rem;
+		}
+	}
+	
+	.site-content {
+		@media screen and (min-width: 1024px) {
+			padding-top: 8rem;
+		}
+	}
+}
+
+.page-template-user-account-page-template.logged-in {
+
+	.site-main {
+		@media screen and (min-width: 1024px) {
+			padding: 5rem 3.5rem;
+			background: $color__background-body;
+
+			box-shadow: $box-shadow_standard--black;
+			border-radius: 5px;
+			overflow: hidden;
+
+		}
+	}
+
+}
+
+
 // .home .site-content {
 // 	@media screen and (min-width: 1024px) {
 // 		padding-top: 10rem;
@@ -169,6 +223,17 @@ section {
 	flex-flow: row;
 	flex-wrap: wrap;
 	column-gap: 2rem;
+}
+
+.blog-promo-posts {
+	.blog-posts-grid {
+		grid-template-columns: 1fr;
+		row-gap: 2rem;
+	}
+
+	.blog-post-excerpt {
+		display: none;
+	}
 }
 
 .blog-post-tile {
@@ -627,12 +692,20 @@ section {
 
 	.searchandfilter {
 		h4 {
-			padding: 0 1.25em 0.618em 1.25em !important;
-			height: $h4_searchandfilter_height;
+			padding: 0 1.25rem 0.5rem 1.25rem !important;
+			// height: $h4_searchandfilter_height;
 			// @media screen and (min-width: 1024px) {
 			// 	padding: 0.618em 1.25em !important;
 			// }
 			color: $color__main-theme--blue;
+		}
+
+		> ul {
+			@media screen and (max-width: 1024px) {
+				display: flex;
+				flex-flow: column;
+				row-gap: 1rem;
+			}
 		}
 
 		li {
@@ -705,37 +778,47 @@ section {
 			line-height: 1.5 !important;
 			flex-wrap: wrap;
 
-			li {
-				&:last-of-type {
-					display: none;
-				}
+			// li {
+			// 	&:last-of-type {
+			// 		display: none;
+			// 	}
 
-				&:first-of-type {
-					display: block;
-				}
-			}
+			// 	&:first-of-type {
+			// 		display: flex;
+			// 	}
+			// }
 
 			.select2-selection__choice {
-				// display: none !important;
-				margin: 2px !important;
-				padding-right: 1.5rem;
-				position: relative;
-				flex-flow: row;
-				flex: unset;
-				font-size: 12px;
-				width: fit-content;
-				padding: 2px 7px;
-				background: $color__main-theme--blue;
-				color: $color__text-white;
-				border: 0;
+				// @media screen and (max-width: 1023px) {
+				display: none !important;
+				// }
 
-				&__remove {
-					color: white;
-					// color: transparent;
-					// top: 0.45rem;
-					// right: 0.65rem;
-					margin-right: 5px;
-				}
+				// margin: 2px !important;
+				// padding-right: 1.5rem;
+				// position: relative;
+				// flex-flow: row;
+				// align-items: center;
+				// flex: unset;
+				// font-size: 12px;
+				// width: fit-content;
+				// padding: 2px 7px;
+				// background: $color__main-theme--blue;
+				// color: $color__text-white;
+				// border: 0;
+
+				// &__remove {
+				// 	color: white;
+				// 	// color: transparent;
+				// 	// top: 0.45rem;
+				// 	// right: 0.65rem;
+				// 	margin-right: 7px;
+				// 	font-size: 0;
+				// 	background-image: url(../dist/svg/remove-white.svg);
+				// 	background-repeat: no-repeat;
+				// 	background-size: cover;
+				// 	width: 15px;
+				// 	height: 15px;
+				// }
 			}
 		}
 	}
@@ -1002,6 +1085,7 @@ section {
 		min-width: 225px;
 		// padding-bottom: 0;
 		// padding-top: 0;
+		// margin-top: -#{$h4_searchandfilter_height};
 
 		input {
 			color: $color__text-white;
@@ -1016,6 +1100,7 @@ section {
 
 		h4 {
 			visibility: hidden;
+			height: $h4_searchandfilter_height;
 		}
 
 		&::before,
@@ -1729,14 +1814,19 @@ section {
 
 #breadcrumbs {
 	font-weight: 500;
+	font-size: 14px;
+
+	a, a:visited, .breadcrumb_last {
+		color: $color__text--light-grey;
+	}
 
 	span {
 		color: $color__main-theme--turquoise;
 	}
 
-	.breadcrumb_last {
-		color: $color__text-black;
-	}
+	// .breadcrumb_last {
+	// 	color: $color__text-black;
+	// }
 }
 
 .welcome-section-scroll-down {

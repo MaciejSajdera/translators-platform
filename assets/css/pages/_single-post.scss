@@ -1,4 +1,5 @@
 .single {
+
 	article.type-post {
 		// @media screen and (min-width: 1024px) {
 		// 	max-width: 80%;
@@ -51,6 +52,9 @@
 	}
 
 	.entry-content {
+
+		margin-bottom: 6rem;
+
 		ol,
 		ul {
 			padding-left: 2em;
@@ -88,6 +92,16 @@
 			color: $color__main-theme--blue;
 			border-bottom: 1px solid $color__main-theme--blue;
 		}
+	}
+
+	.blog-promo-posts {
+		@media screen and (min-width: 1023px) {
+			margin-bottom: 2rem;
+			width: 330px;
+			min-width: 330px;
+			padding-left: 2rem;
+		}
+
 	}
 
 	.div.heateor_sss_follow_ul a,

@@ -10,18 +10,17 @@
 get_header();
 
 ?>
-
 	<div id="primary" class="content-area">
 
-		<div class="breadcrumbs-wrapper mb--4">
-			<?php
-				if ( function_exists('yoast_breadcrumb') ) {
-					yoast_breadcrumb( '<p id="breadcrumbs">','</p>' );
-				}
-			?>
-		</div>
+		<main id="main" class="site-main image-border-shadow">
 
-		<main id="main" class="site-main">
+			<div class="breadcrumbs-wrapper mb--2 desktop-only">
+				<?php
+					if ( function_exists('yoast_breadcrumb') ) {
+						yoast_breadcrumb( '<p id="breadcrumbs">','</p>' );
+					}
+				?>
+			</div>
 
 		<?php
 		while ( have_posts() ) :

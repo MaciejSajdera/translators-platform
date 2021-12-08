@@ -28,9 +28,14 @@ body {
 	);
 }
 
-body.page-template-user-account-page-template,
 body.page-template-registration-page-template {
 	background: $color__background-body;
+}
+
+body.page-template-user-account-page-template {
+	@media screen and (max-width: 1024px) {
+		background: $color__background-body;
+	}
 }
 
 #control-height {
@@ -39,16 +44,6 @@ body.page-template-registration-page-template {
 	position: fixed;
 	pointer-events: none;
 }
-
-// .page.gradient {
-// 	background: linear-gradient(
-// 		200deg,
-// 		rgba(22, 83, 140, 0.159) 4.5%,
-// 		rgba(22, 83, 140, 0.045) 30%,
-// 		rgba(24, 160, 170, 0.024) 60%,
-// 		rgba(225, 243, 244, 0.092) 100%
-// 	);
-// }
 
 blockquote,
 q {

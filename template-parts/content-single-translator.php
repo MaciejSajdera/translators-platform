@@ -842,7 +842,8 @@ $arrow_controls_right = file_get_contents(get_template_directory() . "/dist/dist
 			}
 		}
 
-		if (($single_translator_pictures_gallery || $single_translator_videos_repeater) && !$is_video_gallery_empty) :
+		// if (($single_translator_pictures_gallery || $single_translator_videos_repeater) && !$is_video_gallery_empty) :
+	if (($single_translator_pictures_gallery || $single_translator_videos_repeater)) :
 	 ?>
 
 	<section class="single-translator__section single-translator__section--4">

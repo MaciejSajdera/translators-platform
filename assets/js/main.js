@@ -136,6 +136,44 @@ document.addEventListener("DOMContentLoaded", () => {
 			});
 		});
 
+	//display choices in place other then default
+
+	// const relocateChoices = () => {
+	// 	const select2SelectionRendered = document.querySelectorAll(
+	// 		".select2-selection__rendered"
+	// 	);
+
+	// 	select2SelectionRendered &&
+	// 		select2SelectionRendered.forEach(selection => {
+	// 			const selectionContainer = selection.closest(
+	// 				'[data-sf-field-input-type="multiselect"]'
+	// 			);
+
+	// 			console.log(selectionContainer);
+
+	// 			if (selectionContainer) {
+	// 				const selectionLabel = selectionContainer.querySelector("H4")
+	// 					.textContent;
+
+	// 				const newLocationOfChoices = document.createElement("DIV");
+	// 				newLocationOfChoices.classList.add("new-location-of-choices");
+
+	// 				selectionContainer.appendChild(newLocationOfChoices);
+
+	// 				const allSelectedChoicesIntheContainer = selection.querySelectorAll(
+	// 					".select2-selection__choice"
+	// 				);
+
+	// 				allSelectedChoicesIntheContainer &&
+	// 					allSelectedChoicesIntheContainer.forEach(choice => {
+	// 						newLocationOfChoices.appendChild(choice);
+	// 					});
+
+	// 				console.log(selectionLabel);
+	// 			}
+	// 		});
+	// };
+
 	function handleSearchSelectBoxesDesktop() {
 		setTimeout(() => {
 			const allComboboxes = document.querySelectorAll(
@@ -236,6 +274,8 @@ document.addEventListener("DOMContentLoaded", () => {
 						boxSearchField.placeholder = `${boxTitle} (${allOptionsChosen.length})`;
 					}
 				});
+
+			// relocateChoices();
 		}, 300);
 	}
 
@@ -373,6 +413,8 @@ document.addEventListener("DOMContentLoaded", () => {
 						boxSearchField.placeholder = `${boxTitle} (${allOptionsChosen.length})`;
 					}
 				});
+
+			// relocateChoices();
 		}, 300);
 	}
 
@@ -589,7 +631,7 @@ document.addEventListener("DOMContentLoaded", () => {
 	// }
 
 	document.addEventListener("click", e => {
-		// console.log(e);
+		console.log(e);
 
 		/* Search Submit Button */
 		if (e.target.name === "_sf_submit") {
