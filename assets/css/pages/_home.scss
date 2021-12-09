@@ -84,22 +84,6 @@
 					width: 100%;
 					transform: translateY(-1rem);
 				}
-
-				li.sf-field-submit {
-					position: relative;
-					padding: 0;
-					margin-top: 2rem;
-
-					@media screen and (min-width: 1024px) {
-						margin-top: 3rem;
-					}
-
-					h4 {
-						// color: transparent;
-						// height: 1rem;
-						display: none;
-					}
-				}
 			}
 
 			.prizes-wrapper {
@@ -134,10 +118,6 @@
 	}
 
 	&__section-2 {
-		img {
-			margin-top: 6rem;
-		}
-
 		.bulletpoints-box {
 			@media screen and (min-width: 1024px) {
 				width: 60%;
@@ -149,6 +129,12 @@
 				@media screen and (min-width: 1024px) {
 					padding-right: 20%;
 				}
+			}
+		}
+
+		img {
+			@media screen and (max-width: 1023px) {
+				margin-top: 6rem;
 			}
 		}
 
@@ -164,7 +150,7 @@
 			&__content {
 				right: 0;
 				bottom: 0;
-				transform: translateY(50%);
+				transform: translate(25%, 0);
 
 				svg {
 					height: 35rem;
@@ -179,6 +165,12 @@
 				transform: translateX(10%);
 			}
 
+			&:nth-of-type(even) {
+				@media screen and (min-width: 1024px) {
+					margin-top: 0rem;
+				}
+			}
+
 			&__wrapper {
 				// @media screen and (min-width: 1024px) {
 				// 	margin-left: 5%;
@@ -189,7 +181,7 @@
 					position: relative;
 
 					@media screen and (min-width: 1024px) {
-						padding: 1.5rem 2rem;
+						padding: 1.25rem 1.75rem;
 					}
 				}
 			}
@@ -198,18 +190,16 @@
 				text-align: center;
 
 				@media screen and (min-width: 1024px) {
-					width: 75%;
+					width: 60%;
 					// text-align: right;
 				}
 
 				img {
-					width: 6.5rem;
-					height: 6.5rem;
+					width: 5rem;
+					height: 5rem;
 					object-fit: contain;
 
 					@media screen and (min-width: 1024px) {
-						width: 7.5rem;
-						height: 7.5rem;
 						transform: translateX(50%);
 					}
 				}
@@ -231,10 +221,6 @@
 		.bg-decoration {
 			&__holder {
 				margin-top: 4rem;
-
-				@media screen and (min-width: 1024px) {
-					margin-bottom: 15rem;
-				}
 			}
 
 			&__content {
@@ -250,11 +236,21 @@
 	}
 
 	&__section-4 {
+		.bg-decoration__holder {
+			@media screen and (max-width: 1023px) {
+				display: none;
+			}
+		}
+
+		.bg-decoration__content {
+			transform: translate(-25%, -10%);
+		}
+
 		.section-4 {
 			&__title {
 				p,
 				h2 {
-					padding-left: 4rem;
+					padding-left: 1em;
 				}
 			}
 
@@ -266,6 +262,10 @@
 
 				@media screen and (min-width: 1024px) {
 					width: 65%;
+				}
+
+				img {
+					max-height: 360px;
 				}
 
 				&::before {
@@ -315,11 +315,11 @@
 
 		.blog-new-posts {
 			margin-bottom: 6rem;
-			padding-bottom: 9rem;
+			padding-bottom: 6rem;
 			border-bottom: 1px solid $color__main-theme--blue-transparent;
 
 			margin-top: 6rem;
-			padding-top: 9rem;
+			padding-top: 6rem;
 			border-top: 1px solid $color__main-theme--blue-transparent;
 		}
 	}

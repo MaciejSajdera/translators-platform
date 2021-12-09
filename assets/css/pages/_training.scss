@@ -1,13 +1,26 @@
 .training {
-	img {
-		max-height: 400px;
-	}
-
 	&__section-3 {
 		.bulletpoints-box {
 			@media screen and (min-width: 1024px) {
 				width: 50%;
 			}
+		}
+
+		.image-holder {
+			img {
+				max-height: 150px;
+				max-width: 150px;
+
+				@media screen and (min-width: 1024px) {
+					max-height: 400px;
+					max-width: 400px;
+				}
+			}
+		}
+
+		.image-holder.mobile-only {
+			margin-top: 1.5rem;
+			margin-bottom: 1.5rem;
 		}
 	}
 

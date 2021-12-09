@@ -21,7 +21,7 @@ get_header();
 		// }
 	?>
 
-		<main id="main" class="site-main blog-posts">
+		<main id="main" class="site-main blog-posts1">
 
 			<div class="welcome-view welcome-view-subpage relative">
 
@@ -35,7 +35,7 @@ get_header();
 							?> 
 						</div><!-- .entry-header -->
 
-						<p class="fs--800 fw--500 ff--secondary text--turquoise"><?php echo $section_1_paragraph ?></p>
+						<p class="fs--800 fw--700 ff--secondary text--turquoise"><?php echo $section_1_paragraph ?></p>
 
 					</div>
 
@@ -81,7 +81,7 @@ get_header();
 								'post_type'             => 'post',
 								'posts_per_page'        => -1, //specify yours
 								'post_status'           => 'publish',
-								'order' => 'ASC',
+								'order' => 'DESC',
 								'tax_query'             => array(
 															array(
 																'taxonomy' => 'category',
@@ -115,7 +115,7 @@ get_header();
 
 				endif;
 
-				the_posts_navigation();
+				// the_posts_navigation();
 
 			?>
 

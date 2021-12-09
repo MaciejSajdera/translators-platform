@@ -24,7 +24,7 @@
 		padding: 0;
 		background: $color__background-body;
 		box-shadow: $box-shadow_standard--black;
-		border-radius: 5px;
+		border-radius: $border-radius--standard;
 
 		p {
 			margin-top: 0;
@@ -67,13 +67,6 @@
 }
 
 .blog-new-posts {
-	.text--big-header,
-	.title-paragraph {
-		@media screen and (min-width: 1024px) {
-			max-width: 50%;
-		}
-	}
-
 	.text--big-header {
 		margin: 0 0 3rem;
 	}
@@ -83,7 +76,7 @@
 	display: flex;
 	flex-flow: column;
 	justify-content: space-between;
-	padding: 0.75rem 1.25rem 1.25rem;
+	padding: 1rem 1.25rem 1.25rem;
 	margin: -1.5rem auto 0 auto;
 	width: 90%;
 	background: $color__background-body;

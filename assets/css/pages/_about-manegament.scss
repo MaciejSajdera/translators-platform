@@ -148,6 +148,13 @@
 		@media screen and (min-width: 1024px) {
 			margin-bottom: 2rem;
 		}
+
+		p {
+			text-align: center;
+			@media screen and (min-width: 1024px) {
+				text-align: left;
+			}
+		}
 	}
 
 	&__person {
@@ -230,6 +237,7 @@
 	flex-wrap: wrap;
 	justify-content: space-around;
 	margin-bottom: 6rem;
+	column-gap: 5%;
 
 	.tab-menu__position {
 		cursor: pointer;
@@ -243,7 +251,7 @@
 		margin-bottom: 1.5rem;
 
 		@media screen and (min-width: 1024px) {
-			width: 25%;
+			flex: 1 1 27.5%;
 			margin-bottom: 0;
 		}
 
@@ -253,10 +261,8 @@
 			overflow: hidden;
 			text-transform: uppercase;
 			white-space: nowrap;
-			font-weight: 600;
-			line-height: 3;
-			padding: 0 1em;
-			@include fluid-type($min_width, $max_width, 12px, 14px);
+			padding: 0.75rem 1rem;
+			@include fluid-type($min_width, $max_width, 12px, 18px);
 			user-select: none;
 		}
 

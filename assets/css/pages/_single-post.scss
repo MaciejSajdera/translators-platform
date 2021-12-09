@@ -1,8 +1,8 @@
-.single-post {
+.single {
 	article.type-post {
-		@media screen and (min-width: 1024px) {
-			max-width: 80%;
-		}
+		// @media screen and (min-width: 1024px) {
+		// 	max-width: 80%;
+		// }
 
 		.post-thumbnail {
 			width: 100%;
@@ -10,6 +10,34 @@
 			img {
 				width: 100%;
 				object-fit: contain;
+			}
+		}
+
+		.entry-header {
+			@media screen and (min-width: 1024px) {
+				justify-content: space-between;
+			}
+
+			&__text-holder,
+			&__image-holder {
+				@media screen and (min-width: 1024px) {
+					width: 45%;
+				}
+			}
+		}
+
+		.entry-meta {
+			@media screen and (max-width: 1023px) {
+				margin-bottom: 2rem;
+			}
+
+			.heateor_sss_sharing_container {
+				span {
+					@media screen and (max-width: 1024px) {
+						width: 30px !important;
+						height: 30px !important;
+					}
+				}
 			}
 		}
 	}
@@ -23,12 +51,14 @@
 	}
 
 	.entry-content {
+		margin-bottom: 6rem;
+
 		ol,
 		ul {
 			padding-left: 2em;
 			margin: 1.5rem 0;
 			li {
-				margin-bottom: 2rem;
+				margin-bottom: 1rem;
 			}
 		}
 
@@ -59,6 +89,19 @@
 		a {
 			color: $color__main-theme--blue;
 			border-bottom: 1px solid $color__main-theme--blue;
+		}
+	}
+
+	.blog-promo-posts {
+		@media screen and (min-width: 1023px) {
+			margin-bottom: 2rem;
+			width: 330px;
+			min-width: 330px;
+			padding: 2rem;
+			display: flex;
+			flex-flow: column;
+			height: 100%;
+			// border: 1px solid $color__border-element;
 		}
 	}
 
@@ -117,7 +160,7 @@
 
 	&__prev,
 	&__next {
-		color: $color__text--light-grey;
+		color: $color__text--dark-grey;
 		font-weight: 300;
 
 		@include fluid-type($min_width, $max_width, 16px, 18x);
@@ -187,5 +230,15 @@
 				width: 100%;
 			}
 		}
+	}
+}
+
+.faq-post {
+	.post-navigation {
+		width: 100%;
+	}
+
+	.post-navigation--wide {
+		animation: none;
 	}
 }

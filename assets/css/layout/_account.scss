@@ -140,7 +140,7 @@
 .edit-box {
 	input[type="text"],
 	textarea {
-		color: $color__text--light-grey;
+		color: $color__text--dark-grey;
 		width: 100%;
 	}
 }
@@ -359,7 +359,7 @@ $profile_picture_width: 175px;
 	}
 
 	textarea {
-		min-height: 150px;
+		min-height: 100px;
 	}
 
 	&__settings {
@@ -405,7 +405,6 @@ $profile_picture_width: 175px;
 				border-radius: 100%;
 				height: $profile_picture_height;
 				width: $profile_picture_width;
-				object-fit: contain;
 			}
 
 			&__wrapper {
@@ -520,7 +519,7 @@ $profile_picture_width: 175px;
 					transition: $transition__button--standard;
 					height: $profile_picture_height;
 					width: $profile_picture_width;
-					object-fit: contain;
+					object-fit: cover;
 					visibility: hidden;
 				}
 
@@ -573,7 +572,7 @@ $profile_picture_width: 175px;
 				transform: translateY(-50%);
 				margin-top: calc(#{$padding__content-box} * -1);
 				background: white;
-				padding: 0 0.35em;
+				padding: 0 $padding__info-box-header-title;
 
 				@media screen and (min-width: 1024px) {
 					margin-top: calc(#{$padding__content-box-1024} * -1);
@@ -584,11 +583,12 @@ $profile_picture_width: 175px;
 
 	.content-box {
 		padding: $padding__content-box $padding__content-box $padding__content-box
-			$padding__content-box;
+			calc(#{$padding__content-box} + #{$padding__info-box-header-title});
 
 		@media screen and (min-width: 1024px) {
 			padding: $padding__content-box-1024 $padding__content-box-1024
-				$padding__content-box-1024 $padding__content-box-1024;
+				$padding__content-box-1024
+				calc(#{$padding__content-box-1024} + #{$padding__info-box-header-title});
 		}
 	}
 }
@@ -727,9 +727,6 @@ $profile_picture_width: 175px;
 }
 
 .options {
-	margin: 0;
-	padding: 0;
-
 	li {
 		display: flex;
 		justify-content: space-between;

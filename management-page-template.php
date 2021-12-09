@@ -36,7 +36,7 @@ $cards = get_field('cards');
 
 					<div class="entry-header">
 						<?php
-							the_title( '<h1 class="entry-title fs--1800 mb--4">', '</h1>' );
+							the_title( '<h1 class="entry-title fs--1800 mb--2">', '</h1>' );
 						?> 
 					</div><!-- .entry-header -->
 
@@ -53,7 +53,7 @@ $cards = get_field('cards');
 				</div>
 
 				<div class="welcome-view__right">
-					<p class="fs--800 fw--500 ff--secondary"><?php echo $h2 ?></p>
+					<p class="fs--800 fw--700 text--turquoise ff--secondary"><?php echo $h2 ?></p>
 				</div>
 
 			</div>
@@ -82,8 +82,8 @@ $cards = get_field('cards');
 							}
 	
 							echo '
-								<div class="tab-menu__position tab-menu__position'.$card_state.'" data-tab="tab-'.$tabs_menu_counter.'">
-									<p class="management__tab-title">'.$card['title'].'</p>
+								<div class="flex items-center content-center tab-menu__position tab-menu__position'.$card_state.'" data-tab="tab-'.$tabs_menu_counter.'">
+									<p class="management__tab-title fw--700">'.$card['title'].'</p>
 								</div>
 							';
 	
@@ -114,8 +114,8 @@ $cards = get_field('cards');
 								<div id="tab-'.$tabs_counter.'" class="management__card-content management__card-content--card-'.$tabs_counter.' tab'.$tab_state.' tab--loaded">
 	
 									<div class="management__card-title">
-										<p class="fs--1200 uppercase fw--900 text--outline-blue">'.$card['title'].'</p>
-										<p class="fs--1200 uppercase fw--900 text--blue">'.$card['years'].'</p>
+										<p class="fs--1800 uppercase fw--900 text--outline-blue">'.$card['title'].'</p>
+										<p class="fs--1800 uppercase fw--900 text--blue">'.$card['years'].'</p>
 									</div>
 				
 									<div class="management__squad">
@@ -131,8 +131,6 @@ $cards = get_field('cards');
 				
 											$translator = $row['translator'];
 
-											//TODO
-	
 											if (!$translator) {
 												$image_url = get_stylesheet_directory_uri(). '/dist/dist/img/avatarplaceholder.jpg';
 												$title = 'Członek zarządu';
@@ -145,6 +143,10 @@ $cards = get_field('cards');
 												$title = $row['title'];
 												$translator_link = get_the_permalink($translator->ID);
 												$translator_email = get_field("translator_contact_email", $translator->ID);
+											}
+
+											if (!$image_url) {
+												$image_url = get_stylesheet_directory_uri(). '/dist/dist/img/avatarplaceholder.jpg';
 											}
 	
 											$order_status = '';
@@ -179,11 +181,11 @@ $cards = get_field('cards');
 													echo '<div class="text-wrapper">';
 				
 															if ($translator->post_title) {
-																echo '<p class="person-name fs--600 fw--700 text--blue mb--1">'.$translator->post_title.'</p>';
+																echo '<p class="person-name text--center fs--600 fw--700 lh--125 text--blue mb--1">'.$translator->post_title.'</p>';
 															}
 	
 															if ($title) {
-																echo '<p class="person-role fs--400 fw--500 mb--2">'.$title.'</p>';
+																echo '<p class="person-role text--center fs--400 fw--500 mb--2">'.$title.'</p>';
 															}
 	
 															if ($translator_link) {

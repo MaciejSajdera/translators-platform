@@ -43,13 +43,15 @@ $circles_group_big = file_get_contents(get_template_directory() . "/dist/dist/sv
 $linkedin_icon = file_get_contents(get_template_directory() . "/dist/dist/svg/linkedin.svg");
 $email_icon_blue = file_get_contents(get_template_directory() . "/dist/dist/svg/email_blue.svg");
 
+$circles_home_section_4 = file_get_contents(get_template_directory() . "/dist/dist/svg/circles_home_section_4.svg");
+
 ?>
 
 	<div id="primary" class="content-area">
 		<main id="main" class="site-main home">
 
 
-		<section class="home__section-1 relative">
+		<section class="home__section-1">
 
 			<div class="welcome-view__container">
 
@@ -69,7 +71,7 @@ $email_icon_blue = file_get_contents(get_template_directory() . "/dist/dist/svg/
 						?>
 					</div>
 
-					<h2 class="fs--800 text--turquoise ff--secondary"><?php echo $h2 ?></h2>
+					<h2 class="fs--600 fw--700 text--turquoise ff--secondary"><?php echo $h2 ?></h2>
 
 					<?php
 						get_template_part( 'template-parts/searchfilter-basic' );
@@ -91,13 +93,14 @@ $email_icon_blue = file_get_contents(get_template_directory() . "/dist/dist/svg/
 		<section class="home__section-2">
 
 			<div class="wrapper-flex-drow-mcol content-between">
+				
 				<div class="bulletpoints-box">
 
 					<div class="bulletpoints-box__title">
 						<h2 class="text--turquoise fw--700 fs--1200"><?php echo $section_2_title ?></h2>
 					</div>
 
-					<div class="bulletpoints-box__list-holder">
+					<div class="bulletpoints-box__list-holder fs--600">
 						<?php
 
 						if ($section_2_repeater_fields) {
@@ -120,11 +123,11 @@ $email_icon_blue = file_get_contents(get_template_directory() . "/dist/dist/svg/
 
 				</div>
 
-				<div class="text--right">
+				<div class="text--center">
 					<?php
 						if ($section_2_image) {
 							?>
-							<img src="<?php echo $section_2_image['url'] ?>" alt="<?php echo $section_2_image['alt'] ?>" loading="lazy">
+							<img class="image-border-shadow" src="<?php echo $section_2_image['url'] ?>" alt="<?php echo $section_2_image['alt'] ?>" loading="lazy">
 							<?php
 						}
 					?>
@@ -144,7 +147,7 @@ $email_icon_blue = file_get_contents(get_template_directory() . "/dist/dist/svg/
 		<section class="home__section-3">
 
 			<div class="section-3__title">
-				<h2 class="text--big-header text--blue"><span class=""><?php echo $section_3_title_part_1 ?></span> <span class=""><?php echo $section_3_title_part_2 ?></span></h2>
+				<h2 class="text--big-header text--center text--blue"><span class=""><?php echo $section_3_title_part_1 ?></span> <span class=""><?php echo $section_3_title_part_2 ?></span></h2>
 			</div>
 
 			<div class="advantages">
@@ -163,7 +166,7 @@ $email_icon_blue = file_get_contents(get_template_directory() . "/dist/dist/svg/
 								<div class="advantage__wrapper">
 									<div class="advantage__img-wrapper pseudo-decoration pseudo-decoration__rb"><img src="'.$icon["url"].'" alt="'.$icon["alt"].'"></div>
 									<div class="advantage__title-wrapper pseudo-decoration pseudo-decoration__lb"><p class="fw--700 fs--600">'.$title.'</p></div>
-									<div class="advantage__paragraph-wrapper pseudo-decoration pseudo-decoration__rb-half"><p class="fw--700 fs--400">'.$paragraph.'</p></div>
+									<div class="advantage__paragraph-wrapper pseudo-decoration pseudo-decoration__rb-half"><p class="fw--500 fs--400">'.$paragraph.'</p></div>
 								</div>
 							</div>';
 
@@ -188,20 +191,28 @@ $email_icon_blue = file_get_contents(get_template_directory() . "/dist/dist/svg/
 		<section class="home__section-4">
 
 			<div class="section-4__title">
-				<div class="section-4__bg image-border-shadow">
+				<div class="section-4__bg">
 
 					<?php
 						if ($section_4_image) {
 							?>
-							<img width="100%" height="100%" src="<?php echo $section_4_image['url'] ?>" alt="<?php echo $section_4_image['url'] ?>" loading="lazy"/>
+							<img class="image-border-shadow" width="100%" height="100%" src="<?php echo $section_4_image['url'] ?>" alt="<?php echo $section_4_image['url'] ?>" loading="lazy"/>
 							<?php
 						}
 					?>
 
-					<h2 class="fs--1200 fw--700 text--white"><?php echo $section_4_title_part_1 ?></h2>
+					<h2 class="text--big-header pb--1 text--white"><?php echo $section_4_title_part_1 ?></h2>
 				</div>
-				<p class="fs--1200 fw--700 text--blue"><?php echo $section_4_title_part_2 ?></p>
+				<p class="text--big-header pt--1 text--blue"><?php echo $section_4_title_part_2 ?></p>
 
+			</div>
+
+			<div class="bg-decoration__holder">
+				<div class="bg-decoration__content">
+					<?php
+						echo $circles_home_section_4;
+					?>
+				</div>
 			</div>
 
 			<div class="section-4__paragraph-wrapper">
@@ -209,7 +220,7 @@ $email_icon_blue = file_get_contents(get_template_directory() . "/dist/dist/svg/
 			</div>
 
 			<div class="section-4__cta-wrapper text--center">
-				<a href="<?php echo $section_4_link ?>" class="read-more m--auto button button__filled--turquoise button--readmore">Czytaj więcej</a>
+				<a href="<?php echo $section_4_link ?>" class="read-more fs--600 m--auto button button__filled--turquoise button--readmore">Czytaj więcej</a>
 			</div>
 
 
@@ -328,7 +339,13 @@ $email_icon_blue = file_get_contents(get_template_directory() . "/dist/dist/svg/
 
 											<div class="corner__decoration corner__decoration--left"></div>
 
-											<img src="<?php echo get_the_post_thumbnail_url($management_member_of_the_month->ID) ?>" loading="lazy">
+											<?php
+												if(get_the_post_thumbnail_url($management_member_of_the_month->ID)) {
+														echo '<img src="'.get_the_post_thumbnail_url($management_member_of_the_month->ID).'" loading="lazy">';
+												} else {
+														echo '<img src="'.get_stylesheet_directory_uri(). '/dist/dist/img/avatarplaceholder.jpg" loading="lazy">';
+												}
+											?>
 
 											<div class="corner__decoration corner__decoration--right"></div>
 

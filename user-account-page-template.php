@@ -14,12 +14,13 @@ get_header();
 $fields_for_login_page = get_field("fields_for_login_page", 1705);
 $fields_for_login_page_image = $fields_for_login_page['image'];
 $fields_for_login_page_paragraph = $fields_for_login_page['paragraph'];
+$check_success = file_get_contents(get_template_directory() . "/dist/dist/svg/check_success.svg");
+$cross_error = file_get_contents(get_template_directory() . "/dist/dist/svg/cross_error.svg");
 
 // var_dump($_POST);
 // echo '<br>';
 // var_dump($_FILES);
 ?>
-
 
 	<div id="primary" class="content-area">
 		<main id="main" class="site-main account">
@@ -38,12 +39,7 @@ $fields_for_login_page_paragraph = $fields_for_login_page['paragraph'];
 
 					<div class="login-panel sign-in-wrapper form-active form-activated">
 						<?php get_template_part( 'template-parts/custom-login-form' ); ?>
-						<p id="switch-sign-up" class="text--turquoise fw--500">Nie masz konta? Dołącz do PSTK</p>
-					</div>
-
-					<div class="registration-panel sign-up-wrapper form-deactivated">
-						<?php echo do_shortcode("[register_form]"); ?>
-						<p id="switch-sign-in" class="text--turquoise fw--500">Masz już konto? Zaloguj się</p>
+						<p id="switch-sign-up"><a class="text--turquoise fw--500" href="<?php echo get_page_url('registration-page-template'); ?>">Nie masz konta? Dołącz do PSTK</a></p>
 					</div>
 
 				</div>
@@ -751,7 +747,7 @@ $fields_for_login_page_paragraph = $fields_for_login_page['paragraph'];
 													$placeholder_mode = 'placeholder_mode';
 												}
 
-												echo '<p id="user_linkedin_text" class="info-box__content '.$placeholder_mode.'">'.$translator_linkedin_link.'</p>';
+												echo '<p id="user_linkedin_text" class="info-box__content '.$placeholder_mode.'"><a href="'.$translator_linkedin_link.'" target="_blank">'.$translator_linkedin_link.'</a></p>';
 
 											echo '</div>';
 
@@ -862,7 +858,7 @@ $fields_for_login_page_paragraph = $fields_for_login_page['paragraph'];
 
 											/* IMAGES GALLERY PANEL */
 
-												echo '<div class="my-pictures__wrapper ajax-content-wrapper">';
+												echo '<div class="my-pictures__wrapper w--full ajax-content-wrapper">';
 													
 													echo '<div class="my-pictures__gallery">';
 
@@ -1062,7 +1058,7 @@ $fields_for_login_page_paragraph = $fields_for_login_page['paragraph'];
 
 									<p class="info-box__tip mb--2">Adres ten służy do logowania do konta PSTK </p>
 				
-									<div class="info-box__subbox info-box__subbox--max-width account__box-container ajax-content-wrapper mb--3">
+									<div class="info-box__subbox info-box__subbox--max-width account__box-container ajax-content-wrapper">
 
 										<div class="my-ajax-loader">
 
@@ -1078,7 +1074,7 @@ $fields_for_login_page_paragraph = $fields_for_login_page['paragraph'];
 											?>
 										</p>
 
-										<div id="edit-settings-login-email-address" class="edit-box info-box content-box">
+										<div id="edit-settings-login-email-address" class="edit-box content-box">
 
 											<?php echo settings_user_login_email_form(); ?>
 				
@@ -1103,7 +1099,7 @@ $fields_for_login_page_paragraph = $fields_for_login_page['paragraph'];
 									<p class="info-box__tip mb--2">Hasło służy do logowania do konta PSTK. Musi zawierać minimum 8 znaków, w tym jedną wielką literę i jeden znak specjalny.</p>
 
 
-									<div class="info-box__subbox mb--3 info-box__subbox--max-width mb--3 account__box-container ajax-content-wrapper">
+									<div class="info-box__subbox info-box__subbox--max-width account__box-container ajax-content-wrapper">
 
 										<div class="my-ajax-loader">
 
@@ -1123,7 +1119,10 @@ $fields_for_login_page_paragraph = $fields_for_login_page['paragraph'];
 													// var_dump($errors);
 													
 													if (isset( $_POST['submit_user_new_password']) && empty($errors)) {
-														echo '<p class="php-success__text">Hasło zostało zmienione</p>';
+														echo '<p class="php-success__text php-success__text--in-modal text--center fw--500
+																<span class="svg-holder block">'.$check_success.'</span>
+																Hasło zostało zmienione
+															</p>';
 													} 
 
 
@@ -1133,7 +1132,10 @@ $fields_for_login_page_paragraph = $fields_for_login_page['paragraph'];
 
 														foreach($errors as $error) :
 
-															echo '<p class="php-error__text show-in-modal">'.$error.'</p>';
+															echo '<p class="php-error__text flex show-in-modal fw--500">
+																	<span class="svg-holder">'.$cross_error.'</span>
+																	'.$error.'
+																  </p>';
 
 														endforeach;
 

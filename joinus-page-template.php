@@ -50,11 +50,11 @@ $circles_pair_bg = file_get_contents(get_template_directory() . "/dist/dist/svg/
 
 					<div class="entry-header">
 
-						<h1 class="entry-title uppercase fs--1800 mb--2"><?php echo $section_1_h1_part_1 . ' <span class="text--outline-blue">'.$section_1_h1_part_2.'<span>' ?>
+						<h1 class="text--blue entry-title uppercase fs--1800 mb--1"><?php echo $section_1_h1_part_1 . ' <span class="text--outline-blue">'.$section_1_h1_part_2.'<span>' ?>
 
 					</div><!-- .entry-header -->
 
-					<h2 class="fs--800 fw--500 lh--150 ff--secondary text--turquoise"><?php echo $section_1_h2 ?></h2>
+					<h2 class="fs--800 fw--700 lh--150 ff--secondary text--turquoise"><?php echo $section_1_h2 ?></h2>
 
 				</div>
 
@@ -242,8 +242,8 @@ $circles_pair_bg = file_get_contents(get_template_directory() . "/dist/dist/svg/
 										<div class="corner__decoration corner__decoration--right"></div>
 									</div>
 
-									<div class="advantage__title-wrapper"><p class="fw--700 fs--600 text--turquoise">'.$title.'</p></div>
-									<div class="advantage__paragraph-wrapper pd--standard relative"><p class="fw--700">'.$paragraph.'</p></div>
+									<div class="advantage__title-wrapper"><p class="fs--800 fw--700 text--turquoise">'.$title.'</p></div>
+									<div class="advantage__paragraph-wrapper pd--standard relative"><p class="fs--600 fw--500">'.$paragraph.'</p></div>
 								</div>
 							</div>';
 

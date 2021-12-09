@@ -5,16 +5,436 @@ const ProgressBar = require("progressbar.js");
 jQuery(document).ready(function($) {
 	/*****ADDITIONAL FUNCTIONALITIES RELATED TO FORMS ********/
 
-	/* 	For handling previews of files added by repeaters */
+	console.log("test2");
+
+	const accountNavigation = document.querySelector(".account__navigation");
+
+	if (accountNavigation) {
+		const allAccountNavigationLinks = accountNavigation.querySelectorAll("A");
+
+		allAccountNavigationLinks.forEach(link => {
+			let linkClicked = false;
+
+			link.addEventListener("click", function() {
+				linkClicked = true;
+
+				allAccountNavigationLinks.forEach(link => {
+					link.classList.contains("active")
+						? link.classList.remove("active")
+						: "";
+				});
+
+				linkClicked ? link.classList.toggle("active") : "";
+
+				let sectionId = this.dataset.profileSection;
+				let targetSection = document.querySelector(`#${sectionId}`);
+
+				if (sectionId && targetSection) {
+					const activeProfileSection = document.querySelector(
+						".profile-section--active"
+					);
+
+					activeProfileSection?.classList.remove("profile-section--active");
+					activeProfileSection?.classList.add("profile-section--not-active");
+
+					targetSection?.classList.remove("profile-section--not-active");
+					targetSection?.classList.add("profile-section--active");
+
+					localStorage?.setItem("activeProfileSectionID", sectionId);
+				}
+			});
+		});
+	}
+
+	//keep the right tab active after page reload
+
+	if (localStorage.activeProfileSectionID && accountNavigation) {
+		const activeProfileSectionID = document.querySelector(
+			".profile-section--active"
+		).id;
+
+		const lastChosenProfileSectionID = localStorage.getItem(
+			"activeProfileSectionID"
+		);
+
+		const profileSectionNavigationLink = document.querySelector(
+			`a[data-profile-section="${lastChosenProfileSectionID}"]`
+		);
+
+		profileSectionNavigationLink.classList.add("active");
+
+		if (activeProfileSectionID !== lastChosenProfileSectionID) {
+			const activeProfileSection = document.querySelector(
+				`#${activeProfileSectionID}`
+			);
+
+			const lastChosenProfileSection = document.querySelector(
+				`#${lastChosenProfileSectionID}`
+			);
+
+			activeProfileSection?.classList.remove("profile-section--active");
+			activeProfileSection?.classList.add("profile-section--not-active");
+
+			lastChosenProfileSection?.classList.remove("profile-section--not-active");
+			lastChosenProfileSection?.classList.add("profile-section--active");
+		}
+	}
+
+	const allButtonsEditAccountContent = document.querySelectorAll(
+		".button__edit-account-content"
+	);
+
+	let editContentButtonClicked = false;
+
+	if (allButtonsEditAccountContent) {
+		allButtonsEditAccountContent.forEach(button => {
+			button.addEventListener("click", function(e) {
+				e.preventDefault();
+				editContentButtonClicked = !editContentButtonClicked;
+
+				const editBoxId = this.dataset.profileEdit;
+				const editBox = document.querySelector(`#${editBoxId}`);
+				const contentBox = this.closest(".info-box").querySelector(
+					".content-box"
+				);
+
+				const closestTextInput = editBox.querySelector('input[type="text"]');
+				const closestTextarea = editBox.querySelector("textarea");
+
+				if (editBox && contentBox) {
+					editBox.classList.toggle("box--active");
+					contentBox.classList.toggle("box--not-active");
+					this.classList.toggle("button__edit-account-content--back");
+				}
+
+				if (editContentButtonClicked) {
+					this.innerHTML = `Powrót`;
+				}
+
+				if (!editContentButtonClicked) {
+					this.innerHTML = `Edytuj`;
+				}
+
+				if (closestTextInput) {
+					closestTextInput.focus();
+					return;
+				}
+
+				if (closestTextarea) {
+					closestTextarea.focus();
+					return;
+				}
+			});
+		});
+	}
+
+	const allButtonsSaveAccountContent = document.querySelectorAll(
+		".edit-box input[type='submit']"
+	);
+
+	if (allButtonsSaveAccountContent) {
+		allButtonsSaveAccountContent.forEach(button => {
+			button.addEventListener("click", function() {
+				const editContentButton = this.closest(
+					".account__box-container"
+				).querySelector(".button__edit-account-content");
+
+				const editBoxId = editContentButton.dataset.profileEdit;
+
+				const editBox = document.querySelector(`#${editBoxId}`);
+				const contentBox = this.closest(
+					".account__box-container"
+				).querySelector(".content-box");
+
+				if (editBox && contentBox) {
+					editBox.classList.toggle("box--active");
+					contentBox.classList.toggle("box--not-active");
+				}
+
+				if (
+					editContentButton &&
+					editContentButton.classList.contains(
+						"button__edit-account-content--back"
+					)
+				) {
+					editContentButton.classList.remove(
+						"button__edit-account-content--back"
+					);
+					editContentButton.innerHTML = `Edytuj`;
+					editContentButtonClicked = false;
+				}
+			});
+		});
+	}
+
+	//Character limit counter for all textareas with "maxlength" attribute
+
+	document.addEventListener("input", function(e) {
+		if (
+			e.target.nodeName === "TEXTAREA" &&
+			e.target.getAttribute("maxlength") &&
+			e.target.closest("FIELDSET")
+		) {
+			const textarea = e.target;
+			const thisTextareaField = textarea.closest("FIELDSET");
+			const thisTextareaCharactersCounter = thisTextareaField.querySelector(
+				".characters-counter"
+			);
+			const thisTextareaMaxlength = textarea.getAttribute("maxlength");
+
+			thisTextareaCharactersCounter
+				? (thisTextareaCharactersCounter.innerHTML = `${textarea.value.length}/${thisTextareaMaxlength}`)
+				: "";
+		}
+	});
+
+	//Picture Gallery
+
+	const galleryWrapper = document.querySelector(".my-pictures__wrapper");
+
+	const imageToGalleryInput = galleryWrapper?.querySelector(
+		"#image-to-gallery__input"
+	);
+
+	const picturesToDeleteArray = [];
+	const picturesToDeleteInput = document.querySelector("#pictures_to_delete");
+
+	galleryWrapper &&
+		galleryWrapper.addEventListener("mouseover", function(e) {
+			if (e.target.classList.contains("my-pictures__gallery-attachment")) {
+				// console.log(e.target);
+				e.target.classList.add("my-pictures__gallery-attachment--hovered");
+
+				e.target.addEventListener("mouseleave", e => {
+					e.target.classList.contains(
+						"my-pictures__gallery-attachment--hovered"
+					)
+						? e.target.classList.remove(
+								"my-pictures__gallery-attachment--hovered"
+						  )
+						: "";
+				});
+			}
+
+			if (e.target.classList.contains("remove-item")) {
+				e.target.addEventListener("click", e => {
+					e.preventDefault();
+
+					let thisPictureWrapper = e.target.closest(
+						".my-pictures__gallery-attachment"
+					);
+
+					let thisUploadFileButton;
+
+					if (
+						e.target.closest(".repeater__field") &&
+						e.target
+							.closest(".repeater__field")
+							.querySelector(".button--upload-file")
+					) {
+						thisUploadFileButton = e.target
+							.closest(".repeater__field")
+							.querySelector(".button--upload-file");
+					}
+
+					if (
+						thisUploadFileButton &&
+						thisUploadFileButton.classList.contains("dnone")
+					) {
+						thisUploadFileButton.classList.remove("dnone");
+					}
+
+					let pictureId = e.target.dataset.id;
+
+					if (
+						thisPictureWrapper &&
+						thisPictureWrapper.classList.contains(
+							"newImageInGalleryPlaceholder"
+						)
+					) {
+						console.log("clear");
+						imageToGalleryInput.value = null;
+						thisPictureWrapper.style.display = "none";
+						thisPictureWrapper.querySelector("IMG").src = null;
+
+						return;
+					}
+
+					if (pictureId) {
+						!picturesToDeleteArray.includes(pictureId)
+							? picturesToDeleteArray.push(pictureId)
+							: "";
+
+						console.log(picturesToDeleteArray);
+						picturesToDeleteInput.value = picturesToDeleteArray;
+					}
+
+					thisPictureWrapper && thisPictureWrapper.remove();
+				});
+			}
+		});
+
+	//Video Gallery
+
+	const videosGalleryWrapper = document.querySelector(".my-videos__wrapper");
+
+	const videoToGalleryInput = videosGalleryWrapper?.querySelector(
+		"#video-to-gallery__input"
+	);
+
+	const videosToDeleteArray = [];
+	const videosToDeleteInput = document.querySelector("#videos_to_delete");
+
+	videosGalleryWrapper &&
+		videosGalleryWrapper.addEventListener("mouseover", function(e) {
+			if (e.target.classList.contains("my-videos__gallery-attachment")) {
+				console.log(e.target);
+				e.target.classList.add("my-videos__gallery-attachment--hovered");
+
+				e.target.addEventListener("mouseleave", e => {
+					e.target.classList.contains("my-videos__gallery-attachment--hovered")
+						? e.target.classList.remove(
+								"my-videos__gallery-attachment--hovered"
+						  )
+						: "";
+				});
+			}
+
+			if (e.target.classList.contains("remove-item")) {
+				e.target.addEventListener("click", e => {
+					e.preventDefault();
+
+					let thisVideoWrapper = e.target.closest(
+						".my-videos__gallery-attachment"
+					);
+
+					let videoId = e.target.dataset.id;
+
+					if (thisVideoWrapper.id === "newVideoInGalleryPlaceholder") {
+						console.log("clear");
+						videoToGalleryInput.value = null;
+						thisVideoWrapper.style.display = "none";
+						thisVideoWrapper.querySelector("p").innerText = null;
+
+						return;
+					}
+
+					if (videoId) {
+						!videosToDeleteArray.includes(videoId)
+							? videosToDeleteArray.push(videoId)
+							: "";
+
+						console.log(videosToDeleteArray);
+						videosToDeleteInput.value = videosToDeleteArray;
+					}
+
+					thisVideoWrapper.remove();
+				});
+			}
+		});
+
+	// Fields to be filled
+
+	const fillTheseFieldsButton = document.querySelector("#fillTheseFields");
+	const emptyProfileFieldsLabels = document.querySelector(
+		"#emptyProfileFieldsLabels"
+	);
+
+	fillTheseFieldsButton &&
+		fillTheseFieldsButton.addEventListener("click", e => {
+			emptyProfileFieldsLabels.classList.toggle("show-empty-fields");
+		});
 
 	const allRepeaterHolders = document.querySelectorAll(".repeater__holder");
 
-	allRepeaterHolders.forEach(wrapper => {
-		let repeaterFieldWrapper = wrapper.querySelector(
+	let i = 1;
+
+	allRepeaterHolders.forEach(holder => {
+		// Node repeater
+
+		holder.addEventListener("click", function(e) {
+			if (e.target.classList.contains("repeater__button--add")) {
+				e.preventDefault();
+
+				console.log(this);
+
+				const container = e.target
+					.closest(".repeater__holder")
+					.querySelector(".repeater__field-wrapper");
+
+				let clonedField = e.target
+					.closest(".repeater__holder")
+					.querySelector(".repeater__field")
+					.cloneNode(true);
+
+				clonedField.dataset.repeaterId = i;
+
+				i++;
+
+				let deleteFieldButton = document.createElement("BUTTON");
+
+				deleteFieldButton.classList.add(
+					"repeater__button--delete",
+					"remove",
+					"remove-item"
+				);
+
+				deleteFieldButton.innerText = "";
+
+				clonedField.appendChild(deleteFieldButton);
+
+				//clearings
+
+				let allInputsOfClonedField = clonedField.querySelectorAll("INPUT");
+
+				let allTextAreasOfClonedField = clonedField.querySelectorAll(
+					"TEXTAREA"
+				);
+
+				allInputsOfClonedField &&
+					allInputsOfClonedField.forEach(clonedInput => {
+						clonedInput.value = "";
+					});
+
+				allTextAreasOfClonedField &&
+					allTextAreasOfClonedField.forEach(clonedTextArea => {
+						clonedTextArea.value = "";
+					});
+
+				let clonedFieldNewAttachmentPlaceholder = clonedField.querySelector(
+					".new-attachment__placeholder"
+				);
+
+				clonedFieldNewAttachmentPlaceholder &&
+				clonedFieldNewAttachmentPlaceholder
+					? (clonedFieldNewAttachmentPlaceholder.src = "")
+					: "";
+
+				clonedFieldNewAttachmentPlaceholder &&
+					clonedFieldNewAttachmentPlaceholder
+						.querySelector(".new-attachment__preview")
+						?.remove();
+
+				if (clonedFieldNewAttachmentPlaceholder) {
+					clonedFieldNewAttachmentPlaceholder.style.display = "none";
+				}
+
+				container.appendChild(clonedField);
+			}
+
+			if (e.target.classList.contains("repeater__button--delete")) {
+				e.preventDefault();
+				e.target.closest(".repeater__field").remove();
+			}
+		});
+
+		/* 	For handling previews of files added by repeaters */
+
+		const repeaterFieldWrapper = holder.querySelector(
 			".repeater__field-wrapper"
 		);
 
-		const allOriginalInputs = wrapper.querySelectorAll(".input-preview__src");
+		const allOriginalInputs = holder.querySelectorAll(".input-preview__src");
 
 		//static for already existing inputs
 		allOriginalInputs.forEach(thisInput => {
@@ -151,7 +571,7 @@ jQuery(document).ready(function($) {
 				console.log(mutation);
 
 				if (mutation.type === "childList") {
-					const allFileInputs = wrapper.querySelectorAll(".input-preview__src");
+					const allFileInputs = holder.querySelectorAll(".input-preview__src");
 
 					allFileInputs.forEach(thisInput => {
 						thisInput.addEventListener("change", function(e) {
@@ -394,6 +814,11 @@ jQuery(document).ready(function($) {
 		const percentValueOfAccountFillCompletnessHolder = document.querySelector(
 			"#percentValueOfAccountFillCompletness"
 		);
+
+		const emptyProfileFieldsWrapper = document.querySelector(
+			"#emptyProfileFieldsLabels"
+		);
+
 		const emptyProfileFieldsLabelsContainer = document.querySelector(
 			"#emptyProfileFieldsLabels .empty-fields-labels"
 		);
@@ -411,18 +836,18 @@ jQuery(document).ready(function($) {
 
 		if (
 			percentValueOfAccountFillCompletness < 100 &&
-			emptyProfileFieldsLabelsContainer.classList.contains("no-empty-fields")
+			emptyProfileFieldsWrapper.classList.contains("no-empty-fields")
 		) {
-			emptyProfileFieldsLabelsContainer.classList.remove("no-empty-fields");
-			emptyProfileFieldsLabelsContainer.classList.add("empty-fields");
+			emptyProfileFieldsWrapper.classList.remove("no-empty-fields");
+			emptyProfileFieldsWrapper.classList.add("empty-fields");
 		}
 
 		if (
 			percentValueOfAccountFillCompletness === 100 &&
-			emptyProfileFieldsLabelsContainer.classList.contains("empty-fields")
+			emptyProfileFieldsWrapper.classList.contains("empty-fields")
 		) {
-			emptyProfileFieldsLabelsContainer.classList.remove("empty-fields");
-			emptyProfileFieldsLabelsContainer.classList.add("no-empty-fields");
+			emptyProfileFieldsWrapper.classList.remove("empty-fields");
+			emptyProfileFieldsWrapper.classList.add("no-empty-fields");
 		}
 
 		// if (progressHistory.length > 0) {
@@ -445,8 +870,8 @@ jQuery(document).ready(function($) {
 					const congratulationsMessage = `
 					<div class="text--center relative">
 						<span class="confetti-target"></span>
-						<p class="fs--1200 fw--900 ff--secondary text--center text--turquoise">GRATULACJE!</p>
-						<p class="fs--800 fw--500">Twój profil jest kompletny w 100%!</p>
+						<p class="fs--1200 fw--900 ff--secondary text--center text--turquoise mb--1">GRATULACJE!</p>
+						<p class="fs--800 fw--500 text--center">Twój profil jest kompletny w 100%!</p>
 					</div>
 					`;
 
@@ -990,17 +1415,7 @@ jQuery(document).ready(function($) {
 			processData: false,
 
 			beforeSend: function() {
-				// Before we send the request, remove the .hidden class from the spinner and default to inline-block.
 				thisAjaxLoader.classList.add("my-ajax-loader--active");
-
-				// And scroll intro view
-				// uploadSoundToGalleryForm
-				// 	.closest(".account__box-container")
-				// 	.scrollIntoView({
-				// 		behavior: "smooth",
-				// 		block: "start",
-				// 		inline: "nearest"
-				// 	});
 			},
 
 			complete: function(data) {
@@ -1155,53 +1570,49 @@ jQuery(document).ready(function($) {
 		"#linkedin_user_data_form"
 	);
 
-	$(linkedinUserDataForm).submit(function(event) {
-		event.preventDefault();
+	if (linkedinUserDataForm) {
+		$(linkedinUserDataForm).submit(function(event) {
+			event.preventDefault();
 
-		const thisAjaxLoader = this.closest(".ajax-content-wrapper").querySelector(
-			".my-ajax-loader"
-		);
+			const thisAjaxLoader = this.closest(
+				".ajax-content-wrapper"
+			).querySelector(".my-ajax-loader");
 
-		$.ajax({
-			url: ajaxurl + "?action=add_linkedin_user_data_with_ajax",
-			type: "post",
-			data: $(linkedinUserDataForm).serialize(),
-			beforeSend: function() {
-				// Before we send the request, remove the .hidden class from the spinner and default to inline-block.
-				thisAjaxLoader.classList.add("my-ajax-loader--active");
+			$.ajax({
+				url: ajaxurl + "?action=add_linkedin_user_data_with_ajax",
+				type: "post",
+				data: $(linkedinUserDataForm).serialize(),
+				beforeSend: function() {
+					thisAjaxLoader.classList.add("my-ajax-loader--active");
+				},
 
-				// And scroll intro view
-				// linkedinUserDataForm.closest(".account__box-container").scrollIntoView({
-				// 	behavior: "smooth",
-				// 	block: "start",
-				// 	inline: "nearest"
-				// });
-			},
+				complete: function() {
+					thisAjaxLoader.classList.remove("my-ajax-loader--active");
+				},
 
-			complete: function() {
-				thisAjaxLoader.classList.remove("my-ajax-loader--active");
-			},
+				success: function(data) {
+					console.log("SUCCESS!");
+					// console.log(data);
 
-			success: function(data) {
-				console.log("SUCCESS!");
-				// console.log(data);
+					const dataJSON = JSON.parse(data);
 
-				const dataJSON = JSON.parse(data);
+					const userlinkedinText = document.querySelector(
+						"#user_linkedin_text"
+					);
 
-				const userlinkedinText = document.querySelector("#user_linkedin_text");
+					userlinkedinText.innerText = `${dataJSON.user_linkedin}`;
 
-				userlinkedinText.innerText = `${dataJSON.user_linkedin}`;
+					updateProfileCompletness(dataJSON);
 
-				updateProfileCompletness(dataJSON);
-
-				return data;
-			},
-			error: function(err) {
-				console.log("FAILURE");
-				console.log(err);
-			}
+					return data;
+				},
+				error: function(err) {
+					console.log("FAILURE");
+					console.log(err);
+				}
+			});
 		});
-	});
+	}
 
 	/* 	User work Form */
 
@@ -1219,15 +1630,7 @@ jQuery(document).ready(function($) {
 			type: "post",
 			data: $(workUserDataForm).serialize(),
 			beforeSend: function() {
-				// Before we send the request, remove the .hidden class from the spinner and default to inline-block.
 				thisAjaxLoader.classList.add("my-ajax-loader--active");
-
-				// And scroll intro view
-				// workUserDataForm.closest(".account__box-container").scrollIntoView({
-				// 	behavior: "smooth",
-				// 	block: "start",
-				// 	inline: "nearest"
-				// });
 			},
 
 			complete: function() {
@@ -1254,75 +1657,111 @@ jQuery(document).ready(function($) {
 		"#upload_profile_picture_form"
 	);
 
-	$(uploadProfilePictureForm).submit(function(event) {
-		event.preventDefault();
-
-		const submitButton = this.querySelector("input[type='submit']");
-		submitButton.classList.remove("reveal-button");
-		const originalImage = document.querySelector(
-			".profile-picture__wrapper .post-thumbnail img"
-		);
-		const uploadPicturePreview = this.querySelector(".input-preview__wrapper");
-
-		const thisAjaxLoader = this.closest(".ajax-content-wrapper").querySelector(
-			".my-ajax-loader"
+	if (uploadProfilePictureForm) {
+		//New profile picture sneakpeak when uploading file
+		const fileImage = uploadProfilePictureForm.querySelector(
+			".input-preview__src"
 		);
 
-		var profilePictureformData = new FormData(this);
+		fileImage.onchange = function() {
+			const originalImage = document.querySelector(
+				".profile-picture__wrapper img"
+			);
 
-		$.ajax({
-			url: ajaxurl + "?action=handle_profile_picture_upload",
-			type: "POST",
-			data: profilePictureformData,
-			async: true,
-			cache: false,
-			contentType: false,
-			enctype: "multipart/form-data",
-			processData: false,
+			const filePreviewWrapper = uploadProfilePictureForm.querySelector(
+				".input-preview__wrapper"
+			);
+			const filePreview = uploadProfilePictureForm.querySelector(
+				".input-preview"
+			);
+			const submitButton = uploadProfilePictureForm.querySelector(
+				"input[type='submit']"
+			);
 
-			beforeSend: function() {
-				// Before we send the request, remove the .hidden class from the spinner and default to inline-block.
-				thisAjaxLoader.classList.add("my-ajax-loader--active");
-			},
+			const reader = new FileReader();
 
-			complete: function() {
-				thisAjaxLoader.classList.remove("my-ajax-loader--active");
-				// uploadPicturePreview.classList.remove("has-image");
-				uploadPicturePreview.classList.remove("preview-mode");
-			},
+			reader.onload = function(e) {
+				originalImage.style.opacity = 0;
+				submitButton.classList.add("reveal-button");
+				// get loaded data and render thumbnail.
+				filePreview.src = e.target.result;
+				filePreviewWrapper.classList.add("has-image");
+				filePreviewWrapper.classList.add("preview-mode");
+			};
 
-			success: function(data) {
-				console.log("SUCCESS!");
-				const dataJSON = JSON.parse(data);
-				updateProfileCompletness(dataJSON);
-			},
-			error: function(jqXHR, textStatus, errorThrown) {
-				console.log(jqXHR);
-				console.log(textStatus);
-				console.log(errorThrown);
+			// read the image file as a data URL.
+			reader.readAsDataURL(this.files[0]);
+		};
 
-				let errorMessage = jqXHR.responseText;
+		// TODO: Delete profile picture option
 
-				console.log(errorMessage);
+		$(uploadProfilePictureForm).submit(function(event) {
+			event.preventDefault();
 
-				let errorMessageNode = $.parseHTML(errorMessage);
+			const submitButton = this.querySelector("input[type='submit']");
+			submitButton.classList.remove("reveal-button");
+			const originalImage = document.querySelector(
+				".profile-picture__wrapper .post-thumbnail img"
+			);
+			const uploadPicturePreview = this.querySelector(
+				".input-preview__wrapper"
+			);
 
-				console.log(errorMessageNode);
+			const thisAjaxLoader = this.closest(
+				".ajax-content-wrapper"
+			).querySelector(".my-ajax-loader");
 
-				// modalMessageHolder.appendChild(errorMessageNode[0]);
+			var profilePictureformData = new FormData(this);
 
-				// showModal();
+			$.ajax({
+				url: ajaxurl + "?action=handle_profile_picture_upload",
+				type: "POST",
+				data: profilePictureformData,
+				async: true,
+				cache: false,
+				contentType: false,
+				enctype: "multipart/form-data",
+				processData: false,
 
-				let modalMessage = errorMessageNode[0];
+				beforeSend: function() {
+					// Before we send the request, remove the .hidden class from the spinner and default to inline-block.
+					thisAjaxLoader.classList.add("my-ajax-loader--active");
+				},
 
-				handleModal(modalMessage);
+				complete: function() {
+					thisAjaxLoader.classList.remove("my-ajax-loader--active");
+					uploadPicturePreview.classList.remove("preview-mode");
+				},
 
-				originalImage.style.opacity = "1";
-				uploadPicturePreview.classList.remove("has-image");
-				uploadPicturePreview.classList.remove("preview-mode");
-			}
+				success: function(data) {
+					console.log("SUCCESS!");
+					const dataJSON = JSON.parse(data);
+					updateProfileCompletness(dataJSON);
+				},
+				error: function(jqXHR, textStatus, errorThrown) {
+					console.log(jqXHR);
+					console.log(textStatus);
+					console.log(errorThrown);
+
+					let errorMessage = jqXHR.responseText;
+
+					console.log(errorMessage);
+
+					let errorMessageNode = $.parseHTML(errorMessage);
+
+					console.log(errorMessageNode);
+
+					let modalMessage = errorMessageNode[0];
+
+					handleModal(modalMessage);
+
+					originalImage.style.opacity = "1";
+					uploadPicturePreview.classList.remove("has-image");
+					uploadPicturePreview.classList.remove("preview-mode");
+				}
+			});
 		});
-	});
+	}
 
 	/* 	Upload image to gallery Form */
 
@@ -1374,7 +1813,6 @@ jQuery(document).ready(function($) {
 			processData: false,
 
 			beforeSend: function() {
-				// Before we send the request, remove the .hidden class from the spinner and default to inline-block.
 				thisAjaxLoader.classList.add("my-ajax-loader--active");
 			},
 
@@ -1431,14 +1869,6 @@ jQuery(document).ready(function($) {
 					}
 				});
 
-				// let allNewAttachmentWrappersInThisForm = $(
-				// 	"#upload_image_to_gallery_form .new-attachment__wrapper"
-				// );
-
-				// allNewAttachmentWrappersInThisForm.each(function(index) {
-
-				// });
-
 				//clearings
 
 				$(uploadImageToGalleryForm).trigger("reset");
@@ -1494,16 +1924,9 @@ jQuery(document).ready(function($) {
 
 				console.log(errorMessageNode);
 
-				// modalMessageHolder.appendChild(errorMessageNode[0]);
-
-				// showModal();
-
 				let modalMessage = errorMessageNode[0];
 
 				handleModal(modalMessage);
-
-				// jsonValue = jQuery.parseJSON( jqXHR.responseText );
-				// console.log(jsonValue.Message);
 			}
 		});
 	});
@@ -1563,16 +1986,7 @@ jQuery(document).ready(function($) {
 			processData: false,
 
 			beforeSend: function() {
-				// Before we send the request, remove the .hidden class from the spinner and default to inline-block.
 				thisAjaxLoader.classList.add("my-ajax-loader--active");
-
-				// uploadVideoToGalleryForm
-				// 	.closest(".account__box-container")
-				// 	.scrollIntoView({
-				// 		behavior: "smooth",
-				// 		block: "start",
-				// 		inline: "nearest"
-				// 	});
 			},
 
 			complete: function(data) {
@@ -1649,16 +2063,9 @@ jQuery(document).ready(function($) {
 
 				console.log(errorMessageNode);
 
-				// modalMessageHolder.appendChild(errorMessageNode[0]);
-
 				let modalMessage = errorMessageNode[0];
 
 				handleModal(modalMessage);
-
-				// showModal();
-
-				// jsonValue = jQuery.parseJSON( jqXHR.responseText );
-				// console.log(jsonValue.Message);
 			}
 		});
 	});
@@ -1695,16 +2102,7 @@ jQuery(document).ready(function($) {
 			processData: false,
 
 			beforeSend: function() {
-				// Before we send the request, remove the .hidden class from the spinner and default to inline-block.
 				thisAjaxLoader.classList.add("my-ajax-loader--active");
-
-				// changeSettingsUserLoginEmail
-				// 	.closest(".account__box-container")
-				// 	.scrollIntoView({
-				// 		behavior: "smooth",
-				// 		block: "start",
-				// 		inline: "nearest"
-				// 	});
 			},
 
 			complete: function() {
@@ -1736,16 +2134,9 @@ jQuery(document).ready(function($) {
 
 				console.log(errorMessageNode);
 
-				// modalMessageHolder.appendChild(errorMessageNode[0]);
-
-				// showModal();
-
 				let modalMessage = errorMessageNode[0];
 
 				handleModal(modalMessage);
-
-				// jsonValue = jQuery.parseJSON( jqXHR.responseText );
-				// console.log(jsonValue.Message);
 			}
 		});
 	});
@@ -1768,16 +2159,7 @@ jQuery(document).ready(function($) {
 			type: "post",
 			data: $(userDataVisibilityForm).serialize(),
 			beforeSend: function() {
-				// Before we send the request, remove the .hidden class from the spinner and default to inline-block.
 				thisAjaxLoader.classList.add("my-ajax-loader--active");
-
-				// userDataVisibilityForm
-				// 	.closest(".account__box-container")
-				// 	.scrollIntoView({
-				// 		behavior: "smooth",
-				// 		block: "start",
-				// 		inline: "nearest"
-				// 	});
 			},
 
 			complete: function() {
@@ -1795,22 +2177,12 @@ jQuery(document).ready(function($) {
 				);
 
 				if (isProfilePublic && isProfilePublicStatus) {
-					// profileStatusIcon.style.fill = "green";
 					isProfilePublicStatus.classList.remove("account__private");
 					isProfilePublicStatus.classList.add("account__public");
 				} else {
-					// profileStatusIcon.style.fill = "#cacaca";
 					isProfilePublicStatus.classList.remove("account__public");
 					isProfilePublicStatus.classList.add("account__private");
 				}
-
-				// accountIsPublicIcon.style.
-
-				// const dataJSON = JSON.parse(data);
-
-				// const userworkText = document.querySelector("#user_work_text");
-
-				// userworkText.innerText = `${dataJSON.user_work}`;
 
 				return data;
 			},
@@ -1821,7 +2193,7 @@ jQuery(document).ready(function($) {
 		});
 	});
 
-	// Prevent form resubmission whe user reload the page
+	// Prevent form resubmission when user reload the page
 
 	if (window.history.replaceState) {
 		window.history.replaceState(null, null, window.location.href);

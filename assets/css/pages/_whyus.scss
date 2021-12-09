@@ -1,14 +1,11 @@
 .whyus {
-	&__section-2 {
-		.content {
-			padding: 2rem 1rem 2rem 0;
-
-			@media screen and (min-width: 1024px) {
-				padding: 2rem 3rem 4rem 0rem;
-				width: 50%;
-			}
+	.welcome-view {
+		.bg-decoration__content {
+			transform: translate(25%, -25%);
 		}
+	}
 
+	&__section-2 {
 		svg {
 			display: none;
 
@@ -24,14 +21,17 @@
 	}
 
 	&__section-3 {
-		.advantages {
-			.advantage {
-				&__paragraph-wrapper,
-				&__title-wrapper {
-					@media screen and (min-width: 1024px) {
-						width: 80%;
-					}
-				}
+		.cards-wrapper {
+			column-gap: 7.5%;
+			align-items: flex-start;
+			justify-content: space-around;
+
+			.card {
+				flex: 1 1 27.5%;
+			}
+
+			img {
+				max-height: 150px;
 			}
 		}
 	}

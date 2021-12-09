@@ -14,12 +14,16 @@ h6 {
 	@include fluid-type($min_width, $max_width, 11px, 13px);
 }
 
+.fs--300 {
+	@include fluid-type($min_width, $max_width, 14px, 15px);
+}
+
 .fs--400 {
 	@include fluid-type($min_width, $max_width, 16px, 18px);
 }
 
 .fs--600 {
-	@include fluid-type($min_width, $max_width, 16px, 22px);
+	@include fluid-type($min_width, $max_width, 16px, 21px);
 }
 
 .fs--800 {
@@ -173,82 +177,100 @@ big {
 	font-size: 125%;
 }
 
+//Primary
+
 @font-face {
-	font-family: "Gotham";
-	src: url(../dist/fonts/Gotham-Thin.otf);
+	font-family: "GothamBook";
+	src: url(../dist/fonts/Gotham-Book/Metropolis-Thin.otf);
 	font-weight: 100;
 	font-style: normal;
 }
 
 @font-face {
-	font-family: "Gotham";
-	src: url(../dist/fonts/Gotham-ThinItalic.otf);
+	font-family: "GothamBook";
+	src: url(../dist/fonts/Gotham-Book/Metropolis-ThinItalic.otf);
 	font-weight: 100;
 	font-style: italic;
 }
 
 @font-face {
-	font-family: "Gotham";
-	src: url(../dist/fonts/Gotham-Light.otf);
+	font-family: "GothamBook";
+	src: url(../dist/fonts/Gotham-Book/Metropolis-Light.otf);
 	font-weight: 300;
 	font-style: normal;
 }
 
 @font-face {
-	font-family: "Gotham";
-	src: url(../dist/fonts/Gotham-LightItalic.otf);
+	font-family: "GothamBook";
+	src: url(../dist/fonts/Gotham-Book/Metropolis-LightItalic.otf);
 	font-weight: 300;
 	font-style: italic;
 }
 
 @font-face {
-	font-family: "Gotham";
-	src: url(../dist/fonts/Gotham-Medium.otf);
+	font-family: "GothamBook";
+	src: url(../dist/fonts/Gotham-Book/Metropolis-Medium.otf);
 	font-weight: 500;
 	font-style: normal;
 }
 
 @font-face {
-	font-family: "Gotham";
-	src: url(../dist/fonts/Gotham-MediumItalic.otf);
+	font-family: "GothamBook";
+	src: url(../dist/fonts/Gotham-Book/Metropolis-MediumItalic.otf);
 	font-weight: 500;
 	font-style: italic;
 }
 
 @font-face {
-	font-family: "Gotham";
-	src: url(../dist/fonts/Gotham-Bold.otf);
+	font-family: "GothamBook";
+	src: url(../dist/fonts/Gotham-Book/Metropolis-Bold.otf);
 	font-weight: 700;
 	font-style: normal;
 }
 
 @font-face {
-	font-family: "Gotham";
-	src: url(../dist/fonts/Gotham-Black.otf);
+	font-family: "GothamBook";
+	src: url(../dist/fonts/Gotham-Book/Metropolis-Black.otf);
 	font-weight: 900;
 	font-style: normal;
 }
 
-// @font-face {
-// 	font-family: "Gotham";
-// 	src: url(../dist/fonts/Gotham-BlackItalic.otf);
-// 	font-weight: 700;
-// 	font-style: italic;
-// }
+//Secondary
 
-// @font-face {
-// 	font-family: "Gotham";
-// 	src: url(../dist/fonts/Gotham-Ultra.otf);
-// 	font-weight: 900;
-// 	font-style: normal;
-// }
+@font-face {
+	font-family: "RobotoSlab";
+	src: url(../dist/fonts/Roboto-Slab/RobotoSlab-Thin.ttf);
+	font-weight: 100;
+	font-style: normal;
+}
 
-// @font-face {
-// 	font-family: "Gotham";
-// 	src: url(../dist/fonts/Gotham-UltraItalic.otf);
-// 	font-weight: 900;
-// 	font-style: italic;
-// }
+@font-face {
+	font-family: "RobotoSlab";
+	src: url(../dist/fonts/Roboto-Slab/RobotoSlab-Light.ttf);
+	font-weight: 300;
+	font-style: normal;
+}
+
+@font-face {
+	font-family: "RobotoSlab";
+	src: url(../dist/fonts/Roboto-Slab/RobotoSlab-Regular.ttf);
+	font-weight: 400;
+	font-style: normal;
+}
+
+@font-face {
+	font-family: "RobotoSlab";
+	src: url(../dist/fonts/Roboto-Slab/RobotoSlab-Bold.ttf);
+	font-weight: 700;
+	font-style: normal;
+}
+
+@font-face {
+	font-family: "RobotoSlab";
+	src: url(../dist/fonts/Roboto-Slab/RobotoSlab-Black.ttf);
+	font-weight: 900;
+	font-style: normal;
+}
 
 .text {
 	&--center {
@@ -309,9 +331,9 @@ big {
 	&--big-header {
 		@include fluid-type($min_width, $max_width, 40px, 72px);
 		// text-align: center;
-		margin: 0 0 6rem;
+		margin: 0 0 4rem;
 		font-weight: 900;
-		line-height: 1;
+		line-height: 1.05;
 	}
 
 	&--error {

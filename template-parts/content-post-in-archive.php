@@ -31,11 +31,11 @@ echo '<article class="tile">';
 
 					echo '<div class="w--full mb--2">
 						<div class="flex flex-row w--full wrap content-between items-center fs--200 mb--2">
-							<p class="fs--600 fw--700">'.mb_strimwidth( get_the_title(), 0, 90, '...' ).'</p>
+							<p class="fs--600 fw--700 lh--125">'.mb_strimwidth( get_the_title(), 0, 90, '...' ).'</p>
 
 						</div>
 
-						<p class="w--full">'.mb_strimwidth( get_the_excerpt(), 0, 220, '...' ).'</p>
+						<p class="w--full blog-post-excerpt">'.mb_strimwidth( get_the_excerpt(), 0, 220, '...' ).'</p>
 					</div>';
 
 			if (!$file) {
@@ -45,7 +45,7 @@ echo '<article class="tile">';
 			echo '<div class="flex flex-row w--full wrap content-between fs--200">';
 
 				if ($file) {
-					echo '<a class="button button__filled--blue button--download" href="'.$file['url'].'" download>Pobierz</a>';
+					echo '<a class="button button__filled--turquoise button--download" href="'.$file['url'].'" download>Pobierz</a>';
 				} 
 
 				if (!$file) {

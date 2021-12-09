@@ -60,11 +60,11 @@ $section_7_slogan_4 = $section_7['slogan_4'];
 
 					<div class="entry-header">
 						<?php
-							the_title( '<h1 class="entry-title uppercase fs--1800 mb--2">', '</h1>' );
+							the_title( '<h1 class="text--blue entry-title uppercase fs--1800 mb--2">', '</h1>' );
 						?> 
 					</div><!-- .entry-header -->
 
-					<h2 class="fs--800 fw--500 lh--150 ff--secondary text--turquoise"><?php echo $section_1_h2 ?></h2>
+					<h2 class="fs--800 fw--700 lh--150 ff--secondary text--turquoise"><?php echo $section_1_h2 ?></h2>
 
 				</div>
 
@@ -137,17 +137,29 @@ $section_7_slogan_4 = $section_7['slogan_4'];
 				<div class="content-holder">
 					<h2 class="fs--1200 fw--700 text--blue mb--2"><?php echo $section_3_title ?></h2>
 
+					<div class="image-holder w--fit-content m--auto mt--2 mb--2 mobile-only">
+
+						<?php
+							if ($section_3_image) {
+								?>
+								<img src="<?php echo $section_3_image['url'] ?>" alt="<?php echo $section_3_image['alt'] ?>" loading="lazy" />
+								<?php
+							}
+						?>
+
+					</div>
+
 					<div class="paragraph-wrapper mb--5">
 						<p class="fs--600"><?php echo $section_3_paragraph ?></p>
 					</div>
 
 					<div class="cta-wrapper">
-						<a href="<?php echo $section_3_link ?>" class="read-more fs--600 button button__filled--turquoise">Czytaj więcej</a>
+						<a href="<?php echo $section_3_link ?>" class="read-more fs--600 button button__filled--turquoise button--readmore">Czytaj więcej</a>
 					</div>
 				</div>
 
 
-				<div class="image-holder w--fit-content image-to-the-left">
+				<div class="image-holder w--fit-content image-to-the-left desktop-only">
 
 					<?php
 						if ($section_3_image) {
@@ -210,7 +222,7 @@ $section_7_slogan_4 = $section_7['slogan_4'];
 			</div>
 
 			<div class="text--center">
-					<h2 class="text--turquoise fw--700 fs--1200 mb--2"><?php echo $section_4_title_2 ?></h2>
+					<h2 class="text--turquoise fw--700 fs--1200 mb--1"><?php echo $section_4_title_2 ?></h2>
 					<p class="fw--400 fs--600 pd--standard"> <?php echo $section_4_paragraph ?> </p>
 			</div>
 

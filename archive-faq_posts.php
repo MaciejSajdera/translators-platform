@@ -32,7 +32,7 @@ get_header();
 		// yoast_breadcrumb( '<p id="breadcrumbs">','</p>' );
 		// }
 	?>
-		<main id="main" class="site-main faq-archive">
+		<main id="main" class="site-main faq-archive mb--6">
 
 
 		<div class="faq-archive__section-1 welcome-view welcome-view-subpage relative">
@@ -43,7 +43,7 @@ get_header();
 
 					<div class="entry-header">
 
-						<h1 class="entry-title fs--1800 mb--2"><?php echo $faq_page_title ?></h1>
+						<h1 class="entry-title fs--1800 mb--1"><?php echo $faq_page_title ?></h1>
 
 					</div><!-- .entry-header -->
 
@@ -51,7 +51,7 @@ get_header();
 						<span class="fs--1400 fw--700 lh--125 text--blue"><?php echo $section_1_h2 ?></span>
 					</h2>
 
-					<div class="fs--1000 fw--600 ff--secondary"><?php echo $section_1_paragraph ?></div>
+					<div class="fs--1000 fw--700 ff--secondary"><?php echo $section_1_paragraph ?></div>
 
 				</div>
 
@@ -115,7 +115,7 @@ get_header();
 				if( $posts->have_posts() ) :
 					while( $posts->have_posts() ) : $posts->the_post();
 
-						echo '<li class="fs--500 list-item--classic">';
+						echo '<li class="fs--500 list-item--classic relative pseudo-decoration pseudo-decoration__hover-bottom">';
 
 						echo '<a href="'.get_permalink().'">'. get_the_title() .'</a>';
 
@@ -131,8 +131,6 @@ get_header();
 		endforeach;
 
 		echo '</ol>';
-
-		the_posts_navigation();
 
 		endif;
 

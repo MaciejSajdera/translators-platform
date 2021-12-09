@@ -2,13 +2,31 @@
  * Main JavaScript file.
  */
 import Navigation from "./navigation.js";
-import {isElementInViewport} from "./helperFunctions.js";
+import smoothscroll from "smoothscroll-polyfill";
+import { isElementInViewport, handleModal } from "./helperFunctions.js";
 
 document.addEventListener("DOMContentLoaded", () => {
 	// Loading Page scripts
 
 	const myPreloader = document.querySelector(".my-preloader");
 	const page = document.querySelector("#page");
+
+	// const controlHeightElement = document.querySelector("#control-height");
+
+	// const measureBrowsersBarHeight = fullHeightElement => {
+	// 	const actualHeight = window.innerHeight;
+	// 	const elementHeight = fullHeightElement.clientHeight;
+	// 	const barHeight = elementHeight - actualHeight;
+
+	// 	console.log(barHeight);
+	// 	return barHeight;
+	// };
+
+	// const adjustHorizontalPositionOfAnElement = element => {
+	// 	element.style.transform = `translateY(
+	// 		${measureBrowsersBarHeight(controlHeightElement)}px
+	// 	)`;
+	// };
 
 	setTimeout(() => {
 		myPreloader.classList.add("my-preloader-off");
@@ -46,6 +64,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
 	const navigation = new Navigation();
 	navigation.setupNavigation();
+	smoothscroll.polyfill();
 
 	const mediaQueryDesktop = window.matchMedia("(min-width: 992px)");
 	const asideDesktopMenu = document.querySelector("#desktop-menu");
@@ -74,16 +93,24 @@ document.addEventListener("DOMContentLoaded", () => {
 		}
 	}
 
-	mediaQueryMobile.matches
-		? handleMobileChange(mediaQueryMobile)
-		: handleDesktopChange(mediaQueryDesktop);
+	if (mediaQueryMobile.matches) {
+		handleMobileChange(mediaQueryMobile);
+		handleSearchSelectBoxesMobile();
+	}
+
+	if (!mediaQueryMobile.matches) {
+		handleDesktopChange(mediaQueryDesktop);
+		handleSearchSelectBoxesDesktop();
+	}
 
 	mediaQueryMobile.addEventListener("change", () => {
 		handleMobileChange(mediaQueryMobile);
+		handleSearchSelectBoxesMobile();
 	});
 
 	mediaQueryDesktop.addEventListener("change", () => {
 		handleDesktopChange(mediaQueryDesktop);
+		handleSearchSelectBoxesDesktop();
 	});
 
 	/* 	HEADER */
@@ -91,18 +118,6 @@ document.addEventListener("DOMContentLoaded", () => {
 	window.onscroll = function() {
 		navigation.makeNavSticky();
 	};
-
-	// Animations for specific pages
-
-	const managementPage = document.querySelector(".management");
-
-	if (managementPage) {
-		const welcomeSVGsHolder = document.querySelector(
-			".welcome-view__left .svg-holder"
-		);
-		welcomeSVGsHolder &&
-			welcomeSVGsHolder.classList.add("svg-holder--animated");
-	}
 
 	/* SEARCH AND FILTER PRO PLUGIN FIX */
 
@@ -121,91 +136,127 @@ document.addEventListener("DOMContentLoaded", () => {
 			});
 		});
 
-	setTimeout(() => {
-		const allComboboxes = document.querySelectorAll(
-			'[data-sf-field-input-type="multiselect"], .sf-field-taxonomy-translator_localization'
-		);
+	//display choices in place other then default
 
-		allComboboxes &&
-			allComboboxes.forEach(box => {
-				// console.log(box);
+	// const relocateChoices = () => {
+	// 	const select2SelectionRendered = document.querySelectorAll(
+	// 		".select2-selection__rendered"
+	// 	);
 
-				const selectionCounter = document.createElement("SPAN");
-				selectionCounter.classList.add("my-selection-counter");
-				let boxSelection = box.querySelector(".select2-selection"); //Desktop
-				boxSelection.appendChild(selectionCounter);
-				let boxSearchField = box.querySelector(".select2-search__field");
+	// 	select2SelectionRendered &&
+	// 		select2SelectionRendered.forEach(selection => {
+	// 			const selectionContainer = selection.closest(
+	// 				'[data-sf-field-input-type="multiselect"]'
+	// 			);
 
-				//Dynamic - DESKTOP
-				const observer = new MutationObserver(function(mutations) {
-					mutations.forEach(function(mutation) {
-						if (mutation.type === "attributes") {
-							// console.log(mutation);
-							// console.log("attribute aria-expanded changed");
+	// 			console.log(selectionContainer);
 
-							const select2Dropdown = document.querySelector(
-								".select2-dropdown"
-							);
+	// 			if (selectionContainer) {
+	// 				const selectionLabel = selectionContainer.querySelector("H4")
+	// 					.textContent;
 
-							if (
+	// 				const newLocationOfChoices = document.createElement("DIV");
+	// 				newLocationOfChoices.classList.add("new-location-of-choices");
+
+	// 				selectionContainer.appendChild(newLocationOfChoices);
+
+	// 				const allSelectedChoicesIntheContainer = selection.querySelectorAll(
+	// 					".select2-selection__choice"
+	// 				);
+
+	// 				allSelectedChoicesIntheContainer &&
+	// 					allSelectedChoicesIntheContainer.forEach(choice => {
+	// 						newLocationOfChoices.appendChild(choice);
+	// 					});
+
+	// 				console.log(selectionLabel);
+	// 			}
+	// 		});
+	// };
+
+	function handleSearchSelectBoxesDesktop() {
+		setTimeout(() => {
+			const allComboboxes = document.querySelectorAll(
+				'[data-sf-field-input-type="multiselect"], .sf-field-taxonomy-translator_localization'
+			);
+
+			allComboboxes &&
+				allComboboxes.forEach(box => {
+					// console.log(box);
+
+					const selectionCounter = document.createElement("SPAN");
+					selectionCounter.classList.add("my-selection-counter");
+					let boxSelection = box.querySelector(".select2-selection"); //Desktop
+					boxSelection.appendChild(selectionCounter);
+					let boxSearchField = box.querySelector(".select2-search__field");
+
+					//Dynamic - DESKTOP
+					const observer = new MutationObserver(function(mutations) {
+						mutations.forEach(function(mutation) {
+							if (mutation.type === "attributes") {
+								// console.log(mutation);
+								// console.log("attribute aria-expanded changed");
+
+								const select2Dropdown = document.querySelector(
+									".select2-dropdown"
+								);
+
+								if (
+									select2Dropdown &&
+									select2Dropdown.classList.contains("show-dropdown")
+								) {
+									select2Dropdown.classList.remove("show-dropdown");
+								}
+
 								select2Dropdown &&
-								select2Dropdown.classList.contains("show-dropdown")
-							) {
-								select2Dropdown.classList.remove("show-dropdown");
+									select2Dropdown.classList.add("show-dropdown");
+
+								let allOptionsChosen = box.querySelectorAll(
+									".select2-selection__choice"
+								);
+
+								let boxTitle = box.querySelector("H4").innerHTML;
+
+								if (allOptionsChosen.length === 1) {
+									console.log(allOptionsChosen[0].title.trim().split("("));
+									boxSearchField.placeholder = `${
+										allOptionsChosen[0].title.trim().split("(")[0]
+									}`;
+								}
+
+								if (allOptionsChosen.length > 1) {
+									boxSearchField.placeholder = `${boxTitle} (${allOptionsChosen.length})`;
+								}
+
+								// setTimeout(() => {
+
+								const searchField = select2Dropdown?.querySelector(
+									".select2-search__field"
+								);
+
+								searchField?.focus();
+
+								if (searchField) {
+									searchField.placeholder = "Wpisz miasto...";
+								}
+								// }, 0);
 							}
 
-							select2Dropdown && select2Dropdown.classList.add("show-dropdown");
-
-							let allOptionsChosen = box.querySelectorAll(
-								".select2-selection__choice"
-							);
-
-							let boxTitle = box.querySelector("H4").innerHTML;
-
-							if (allOptionsChosen.length === 1) {
-								console.log(allOptionsChosen[0].title.trim().split("("));
-								boxSearchField.placeholder = `${
-									allOptionsChosen[0].title.trim().split("(")[0]
-								}`;
-							}
-
-							if (allOptionsChosen.length > 1) {
-								boxSearchField.placeholder = `${boxTitle} (${allOptionsChosen.length})`;
-							}
-
-							// setTimeout(() => {
-
-							const searchField = select2Dropdown?.querySelector(
-								".select2-search__field"
-							);
-
-							searchField?.focus();
-
-							if (searchField) {
-								searchField.placeholder = "Wpisz miasto...";
-							}
-							// }, 0);
-						}
-
-						// if (
-						// 	mutation.type === "attributes" &&
-						// 	mutation.target.ariaExpanded === "false"
-						// ) {
-						// 	boxSearchField.blur();
-						// }
+							// if (
+							// 	mutation.type === "attributes" &&
+							// 	mutation.target.ariaExpanded === "false"
+							// ) {
+							// 	boxSearchField.blur();
+							// }
+						});
 					});
-				});
 
-				observer.observe(boxSelection, {
-					attributes: true //configure it to listen to attribute changes
-				});
+					observer.observe(boxSelection, {
+						attributes: true //configure it to listen to attribute changes
+					});
 
-				// //Dynamic - 	MOBILE
+					// Static - to display allOptionsChosen counter after form is submitted and page is loaded again
 
-				let optionSelection = box.querySelector("SELECT");
-				console.log(optionSelection);
-
-				optionSelection.addEventListener("change", e => {
 					let allOptionsChosen = box.querySelectorAll(
 						".select2-selection__choice"
 					);
@@ -224,26 +275,217 @@ document.addEventListener("DOMContentLoaded", () => {
 					}
 				});
 
-				// Static - to display allOptionsChosen counter after form is submitted and page is loaded again
+			// relocateChoices();
+		}, 300);
+	}
 
-				let allOptionsChosen = box.querySelectorAll(
-					".select2-selection__choice"
-				);
+	function handleSearchSelectBoxesMobile() {
+		setTimeout(() => {
+			const allComboboxes = document.querySelectorAll(
+				'[data-sf-field-input-type="multiselect"], .sf-field-taxonomy-translator_localization'
+			);
 
-				let boxTitle = box.querySelector("H4").innerHTML;
+			allComboboxes &&
+				allComboboxes.forEach(box => {
+					// console.log(box);
 
-				if (allOptionsChosen.length === 1) {
-					console.log(allOptionsChosen[0].title.trim().split("("));
-					boxSearchField.placeholder = `${
-						allOptionsChosen[0].title.trim().split("(")[0]
-					}`;
-				}
+					const selectionCounter = document.createElement("SPAN");
+					selectionCounter.classList.add("my-selection-counter");
+					const boxSelection = box.querySelector(".select2-selection"); //Desktop
+					boxSelection.appendChild(selectionCounter);
+					const boxSearchField = box.querySelector(".select2-search__field");
 
-				if (allOptionsChosen.length > 1) {
-					boxSearchField.placeholder = `${boxTitle} (${allOptionsChosen.length})`;
-				}
-			});
-	}, 300);
+					const observer = new MutationObserver(function(mutations) {
+						mutations.forEach(function(mutation) {
+							if (mutation.type === "attributes") {
+								// console.log(mutation);
+								// console.log("attribute aria-expanded changed");
+
+								const select2Dropdown = document.querySelector(
+									".select2-dropdown"
+								);
+
+								if (
+									select2Dropdown &&
+									select2Dropdown.classList.contains("show-dropdown")
+								) {
+									select2Dropdown.classList.remove("show-dropdown");
+								}
+
+								select2Dropdown &&
+									select2Dropdown.classList.add("show-dropdown");
+
+								// const select2DropdownAbsoluteContainer = select2Dropdown?.closest(
+								// 	".select2-container"
+								// );
+
+								// console.log(select2DropdownAbsoluteContainer);
+
+								// select2DropdownAbsoluteContainer &&
+								// 	adjustHorizontalPositionOfAnElement(
+								// 		select2DropdownAbsoluteContainer
+								// 	);
+
+								let allOptionsChosen = box.querySelectorAll(
+									".select2-selection__choice"
+								);
+
+								let boxTitle = box.querySelector("H4").innerHTML;
+
+								if (allOptionsChosen.length === 1) {
+									console.log(allOptionsChosen[0].title.trim().split("("));
+									boxSearchField.placeholder = `${
+										allOptionsChosen[0].title.trim().split("(")[0]
+									}`;
+								}
+
+								if (allOptionsChosen.length > 1) {
+									boxSearchField.placeholder = `${boxTitle} (${allOptionsChosen.length})`;
+								}
+
+								// setTimeout(() => {
+
+								const searchField = select2Dropdown?.querySelector(
+									".select2-search__field"
+								);
+
+								searchField?.focus();
+
+								if (searchField) {
+									searchField.placeholder = "Wpisz miasto...";
+								}
+								// }, 0);
+							}
+
+							// if (
+							// 	mutation.type === "attributes" &&
+							// 	mutation.target.ariaExpanded === "false"
+							// ) {
+							// 	boxSearchField.blur();
+							// }
+						});
+					});
+
+					observer.observe(boxSelection, {
+						attributes: true //configure it to listen to attribute changes
+					});
+
+					// //Dynamic - 	MOBILE
+
+					let optionSelection = box.querySelector("SELECT");
+					console.log(optionSelection);
+
+					optionSelection.addEventListener("change", e => {
+						let allOptionsChosen = box.querySelectorAll(
+							".select2-selection__choice"
+						);
+
+						let boxTitle = box.querySelector("H4").innerHTML;
+
+						if (allOptionsChosen.length === 1) {
+							console.log(allOptionsChosen[0].title.trim().split("("));
+							boxSearchField.placeholder = `${
+								allOptionsChosen[0].title.trim().split("(")[0]
+							}`;
+						}
+
+						if (allOptionsChosen.length > 1) {
+							boxSearchField.placeholder = `${boxTitle} (${allOptionsChosen.length})`;
+						}
+					});
+
+					// Static - to display allOptionsChosen counter after form is submitted and page is loaded again
+
+					let allOptionsChosen = box.querySelectorAll(
+						".select2-selection__choice"
+					);
+
+					let boxTitle = box.querySelector("H4").innerHTML;
+
+					if (allOptionsChosen.length === 1) {
+						console.log(allOptionsChosen[0].title.trim().split("("));
+						boxSearchField.placeholder = `${
+							allOptionsChosen[0].title.trim().split("(")[0]
+						}`;
+					}
+
+					if (allOptionsChosen.length > 1) {
+						boxSearchField.placeholder = `${boxTitle} (${allOptionsChosen.length})`;
+					}
+				});
+
+			// relocateChoices();
+		}, 300);
+	}
+
+	// Modal for errors displayed on page reload
+	const allphpErrorContentainers = document.querySelectorAll(
+		".php-error__text"
+	);
+
+	if (allphpErrorContentainers.length > 0) {
+		const errorsWrapperForModal = document.createElement("DIV");
+		errorsWrapperForModal.classList.add("errors-wrapper-for-modal");
+		document.querySelector("BODY").appendChild(errorsWrapperForModal);
+
+		allphpErrorContentainers.forEach(container => {
+			errorsWrapperForModal.appendChild(container);
+		});
+
+		handleModal(errorsWrapperForModal);
+	}
+
+	// Modal for success messages displayed on page reload
+
+	const allphpSuccessContentainers = document.querySelectorAll(
+		".php-success__text--in-modal"
+	);
+
+	if (allphpSuccessContentainers.length > 0) {
+		const successMessagesWrapperForModal = document.createElement("DIV");
+		successMessagesWrapperForModal.classList.add(
+			"success-messages-wrapper-for-modal"
+		);
+		document.querySelector("BODY").appendChild(successMessagesWrapperForModal);
+
+		allphpSuccessContentainers.forEach(container => {
+			successMessagesWrapperForModal.appendChild(container);
+		});
+
+		// check if there are no errors to avoid mixed message
+		if (allphpErrorContentainers.length > 0) {
+			successMessagesWrapperForModal.style.display = "none";
+		}
+
+		handleModal(successMessagesWrapperForModal);
+	}
+
+	// Animations for specific pages
+
+	const managementPage = document.querySelector(".management");
+
+	if (managementPage) {
+		const welcomeSVGsHolder = document.querySelector(
+			".welcome-view__left .svg-holder"
+		);
+		welcomeSVGsHolder &&
+			welcomeSVGsHolder.classList.add("svg-holder--animated");
+	}
+
+	//single post page
+	setTimeout(() => {
+		postNavigation && isElementInViewport(postNavigation)
+			? postNavigation.classList.add("post-navigation--wide")
+			: "";
+	}, 800);
+
+	const singleAnimationsSinglePost = () => {
+		postNavigation && isElementInViewport(postNavigation)
+			? postNavigation.classList.add("post-navigation--wide")
+			: "";
+	};
+
+	//info pop up
 
 	let isPopUpActive = false;
 
@@ -253,9 +495,9 @@ document.addEventListener("DOMContentLoaded", () => {
 		}
 
 		if (!parentContainer) {
-			console.error(
-				"No parentContainer passed to the showInfoPopUp function call."
-			);
+			// console.error(
+			// 	"No parentContainer passed to the showInfoPopUp function call."
+			// );
 			return;
 		}
 
@@ -304,147 +546,139 @@ document.addEventListener("DOMContentLoaded", () => {
 			: "";
 	};
 
+	const handleInfoPopUp = e => {
+		let isOneOfTargets;
 
-	//single post page
-	setTimeout(() => {
-		postNavigation && isElementInViewport(postNavigation)
-			? postNavigation.classList.add("post-navigation--wide")
-			: "";
-	}, 800);
+		const optionsToBeApproved = document.querySelector(
+			".options__to-be-approved"
+		);
 
-	const singleAnimationsSinglePost = () => {
-		postNavigation && isElementInViewport(postNavigation)
-			? postNavigation.classList.add("post-navigation--wide")
-			: "";
+		if (
+			(e.target && e.target.classList.contains("options__to-be-approved")) ||
+			(e.target && e.target.closest(".options__to-be-approved"))
+		) {
+			isOneOfTargets = true;
+			showInfoPopUp(
+				optionsToBeApproved,
+				"Twój profil nie został jeszcze opublikowany. Zmiana widoczności profilu będzie możliwa po aktywacji konta."
+			);
+		}
+
+		const accountPrivacyStatus = document.querySelector(
+			".account__privacy-status"
+		);
+
+		if (
+			(e.target && e.target.classList.contains("account__public")) ||
+			(e.target && e.target.closest(".account__public"))
+		) {
+			isOneOfTargets = true;
+			showInfoPopUp(
+				accountPrivacyStatus,
+				"Twój profil jest publicznie dostępny."
+			);
+		}
+
+		if (
+			(e.target && e.target.classList.contains("account__private")) ||
+			(e.target && e.target.closest(".account__private"))
+		) {
+			isOneOfTargets = true;
+			showInfoPopUp(
+				accountPrivacyStatus,
+				"Twój profil nie jest publicznie dostępny."
+			);
+		}
+
+		const accountApprovalStatus = document.querySelector(
+			".account__approval-status"
+		);
+
+		if (
+			(e.target && e.target.classList.contains("account__approved")) ||
+			(e.target && e.target.closest(".account__approved"))
+		) {
+			isOneOfTargets = true;
+			showInfoPopUp(accountApprovalStatus, "Twój profil jest zweryfikowany.");
+		}
+
+		if (
+			(e.target && e.target.classList.contains("account__not-approved")) ||
+			(e.target && e.target.closest(".account__not-approved"))
+		) {
+			isOneOfTargets = true;
+			showInfoPopUp(
+				accountApprovalStatus,
+				"Twój profil nie jest jeszcze zweryfikowany."
+			);
+		}
+
+		if (!isOneOfTargets) {
+			hideInfoPopUp();
+		}
 	};
 
 	/* Global mouseover event listener */
 
 	document.addEventListener("mouseover", e => {
 		// console.log(e.target);
-
-		const handleInfoPopUp = e => {
-			let isOneOfTargets;
-
-			const optionsToBeApproved = document.querySelector(
-				".options__to-be-approved"
-			);
-
-			if (
-				(e.target && e.target.classList.contains("options__to-be-approved")) ||
-				(e.target && e.target.closest(".options__to-be-approved"))
-			) {
-				isOneOfTargets = true;
-				showInfoPopUp(
-					optionsToBeApproved,
-					"Twój profil nie został jeszcze opublikowany. Zmiana widoczności profilu będzie możliwa po aktywacji konta."
-				);
-			}
-
-			const accountPrivacyStatus = document.querySelector(
-				".account__privacy-status"
-			);
-
-			if (
-				(e.target && e.target.classList.contains("account__public")) ||
-				(e.target && e.target.closest(".account__public"))
-			) {
-				isOneOfTargets = true;
-				showInfoPopUp(
-					accountPrivacyStatus,
-					"Twój profil jest publicznie dostępny."
-				);
-			}
-
-			if (
-				(e.target && e.target.classList.contains("account__private")) ||
-				(e.target && e.target.closest(".account__private"))
-			) {
-				isOneOfTargets = true;
-				showInfoPopUp(
-					accountPrivacyStatus,
-					"Twój profil nie jest publicznie dostępny."
-				);
-			}
-
-			const accountApprovalStatus = document.querySelector(
-				".account__approval-status"
-			);
-
-			if (
-				(e.target && e.target.classList.contains("account__approved")) ||
-				(e.target && e.target.closest(".account__approved"))
-			) {
-				isOneOfTargets = true;
-				showInfoPopUp(accountApprovalStatus, "Twój profil jest zweryfikowany.");
-			}
-
-			if (
-				(e.target && e.target.classList.contains("account__not-approved")) ||
-				(e.target && e.target.closest(".account__not-approved"))
-			) {
-				isOneOfTargets = true;
-				showInfoPopUp(
-					accountApprovalStatus,
-					"Twój profil nie jest jeszcze zweryfikowany."
-				);
-			}
-
-			if (!isOneOfTargets) {
-				hideInfoPopUp();
-			}
-		};
 		handleInfoPopUp(e);
 	});
 
 	/* Global click event listener */
 
+	/* Search Submit Button */
+
+	// if (e.target.name === "_sf_submit") {
+	// 	const searchButtonHolder = document.querySelector(".sf-field-submit");
+	// 	searchButtonHolder.classList.add("search-button--clicked");
+
+	// 	const loadingMessages = {
+	// 		loadingMessage_1:
+	// 			"Zbieramy dane aby dostarczyć Ci najbardziej trafne wyniki wyszukiwania.",
+	// 		loadingMessage_2:
+	// 			"W naszej bazie danych znajduje się blisko 500 tłumaczy z całego świata."
+	// 	};
+
+	// 	setTimeout(() => {
+	// 		const interval = 1500; // how much time should the delay between two iterations be (in milliseconds)?
+	// 		let promise = Promise.resolve();
+	// 		Object.values(loadingMessages).forEach(function(value) {
+	// 			promise = promise.then(function() {
+	// 				console.log(value);
+
+	// 				let loadingMessage = document.createElement("DIV");
+	// 				loadingMessage.classList.add("search-loading-message");
+	// 				loadingMessage.textContent = value;
+	// 				searchButtonHolder.appendChild(loadingMessage);
+
+	// 				return new Promise(function(resolve) {
+	// 					setTimeout(() => {
+	// 						loadingMessage.classList.add("search-loading-message__show");
+	// 					}, 100);
+
+	// 					setTimeout(() => {
+	// 						loadingMessage.classList.remove("search-loading-message__show");
+	// 						loadingMessage.classList.add("search-loading-message__hide");
+	// 						resolve();
+	// 					}, interval);
+	// 				});
+	// 			});
+	// 		});
+
+	// 		promise.then(function() {
+	// 			console.log("Loop finished.");
+	// 		});
+	// 	}, 1000);
+	// }
+
 	document.addEventListener("click", e => {
 		console.log(e);
 
 		/* Search Submit Button */
-
 		if (e.target.name === "_sf_submit") {
 			const searchButtonHolder = document.querySelector(".sf-field-submit");
 			searchButtonHolder.classList.add("search-button--clicked");
-
-			const loadingMessages = {
-				loadingMessage_1:
-					"Zbieramy dane aby dostarczyć Ci najbardziej trafne wyniki wyszukiwania.",
-				loadingMessage_2:
-					"W naszej bazie danych znajduje się blisko 500 tłumaczy z całego świata."
-			};
-
-			setTimeout(() => {
-				const interval = 1500; // how much time should the delay between two iterations be (in milliseconds)?
-				let promise = Promise.resolve();
-				Object.values(loadingMessages).forEach(function(value) {
-					promise = promise.then(function() {
-						console.log(value);
-
-						let loadingMessage = document.createElement("DIV");
-						loadingMessage.classList.add("search-loading-message");
-						loadingMessage.textContent = value;
-						searchButtonHolder.appendChild(loadingMessage);
-
-						return new Promise(function(resolve) {
-							setTimeout(() => {
-								loadingMessage.classList.add("search-loading-message__show");
-							}, 100);
-
-							setTimeout(() => {
-								loadingMessage.classList.remove("search-loading-message__show");
-								loadingMessage.classList.add("search-loading-message__hide");
-								resolve();
-							}, interval);
-						});
-					});
-				});
-
-				promise.then(function() {
-					console.log("Loop finished.");
-				});
-			}, 1000);
 		}
 
 		/* Scroll Down Button */
@@ -465,7 +699,6 @@ document.addEventListener("DOMContentLoaded", () => {
 	const scrollToTopBtn = document.querySelector(".scrollToTopBtn");
 
 	document.addEventListener("scroll", () => {
-
 		if (scrollToTopBtn) {
 			if (pageYOffset > window.innerHeight) {
 				scrollToTopBtn.classList.add("showBtn");

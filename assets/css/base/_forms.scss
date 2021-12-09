@@ -21,7 +21,7 @@ select,
 textarea {
 	border: none;
 	border-bottom: 1px solid $color__main-theme--blue-transparent;
-
+	background: transparent;
 	// &:focus {
 	// 	color: $color__text-input-focus;
 	// }
@@ -103,6 +103,7 @@ $login-and-registration-height: 80vh;
 		.login-username {
 			label {
 				cursor: initial;
+				@include fluid-type($min_width, $max_width, 14px, 15px);
 			}
 		}
 
@@ -137,7 +138,6 @@ $login-and-registration-height: 80vh;
 
 		#switch-sign-in,
 		#switch-sign-up {
-			cursor: pointer;
 			text-align: center;
 		}
 
@@ -199,7 +199,8 @@ $login-and-registration-height: 80vh;
 /* 	Animations */
 
 .animated-label-holder,
-.login-form p {
+.login-form .login-username,
+.login-form .login-password {
 	label {
 		// pointer-events: none;
 		position: absolute;
@@ -208,6 +209,9 @@ $login-and-registration-height: 80vh;
 		background-clip: content-box;
 		background-color: $color__background-body;
 		transition: all 150ms ease-out;
+		width: 100%;
+		cursor: text;
+		pointer-events: none;
 	}
 
 	input {
@@ -410,6 +414,15 @@ label {
 #settings_user_password_form {
 	display: flex;
 	flex-flow: column;
+}
+
+#password-lost-form-wrapper {
+	max-width: 90%;
+	margin: 4rem auto;
+
+	@media screen and (min-width: 1024px) {
+		max-width: 500px;
+	}
 }
 
 /* Profile Picture Form */

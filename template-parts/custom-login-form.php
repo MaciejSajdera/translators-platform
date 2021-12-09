@@ -1,3 +1,8 @@
+<?php
+$check_success = file_get_contents(get_template_directory() . "/dist/dist/svg/check_success.svg");
+$cross_error = file_get_contents(get_template_directory() . "/dist/dist/svg/cross_error.svg");
+?>
+
 
 <div class="custom-login-form__container">
 
@@ -18,16 +23,25 @@
 
 
             if ($login === "failed" ) {
-                echo '<p class="login-msg php-error__text">Niepoprawny login lub hasło.</p>';
-                // Invalid username and/or password.
+                    echo '<p class="php-error__text flex show-in-modal fw--500">
+                    <span class="svg-holder">'.$cross_error.'</span>
+                    Niepoprawny login lub hasło
+                    </p>';
+                    // Invalid username and/or password.
             }
 
             if ( $login === "empty" ) {
-                echo '<p class="login-msg php-error__text">Pole z nazwą lub hasłem jest puste.</p>';
+                    echo '<p class="php-error__text flex show-in-modal fw--500">
+                    <span class="svg-holder">'.$cross_error.'</span>
+                     Pole z nazwą lub hasłem jest puste
+                    </p>';
             }
 
             if ($login === "logged-out" ) {
-                echo '<p class="login-msg php-success__text">Zostałeś pomyślnie wylogowany.</p>';
+                    echo '<p class="php-success__text php-success__text--in-modal text--center fw--500">
+                            <span class="svg-holder block">'.$check_success.'</span>
+                            Zostałeś pomyślnie wylogowany
+                            </p>';
             }
 
 
@@ -36,21 +50,22 @@
             /* Check if email with reset password link has been sent */
             $lost_password_sent = isset( $_REQUEST['checkemail'] ) && $_REQUEST['checkemail'] == 'confirm';
 
-            if ( $lost_password_sent ) : ?>
-                <p class="login-info php-success__text">
-                    <?php _e( 'Check your email for a link to reset your password.', 'personalize-login' ); ?>
-                </p>
-            <?php endif;
+            if ( $lost_password_sent ) :
+                echo '<p class="php-success__text php-success__text--in-modal text--center fw--500">
+                            <span class="svg-holder block">'.$check_success.'</span>
+                            Link dzięki któremu zresetujesz hasło został wysłany na podany adres e-mail
+                        </p>';
+            endif;
 
             /* Check if user just updated password */
             $password_updated = isset( $_REQUEST['password'] ) && $_REQUEST['password'] == 'changed';
 
-            if ( $password_updated ) : ?>
-                <p class="login-info php-success__text">
-                    <?php _e( 'Your password has been changed. You can sign in now.', 'personalize-login' ); ?>
-                </p>
-            <?php endif;
-
+            if ( $password_updated ) :
+                echo '<p class="php-success__text php-success__text--in-modal text--center fw--500">
+                            <span class="svg-holder block">'.$check_success.'</span>
+                            Twoje hasło zostało zmienione, zapraszamy do zalogowania się z użycien nowego hasła
+                        </p>';
+            endif;
 
             //Form
             $login_page  = get_permalink(18);

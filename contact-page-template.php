@@ -47,7 +47,7 @@ $circles_3_bg = file_get_contents(get_template_directory() . "/dist/dist/svg/cir
 
 					<div class="entry-header">
 						<?php
-							the_title( '<h1 class="entry-title fs--1800 mb--2">', '</h1>' );
+							the_title( '<h1 class="entry-title fs--1800 mb--1">', '</h1>' );
 						?> 
 					</div><!-- .entry-header -->
 

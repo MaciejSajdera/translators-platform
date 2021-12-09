@@ -27,6 +27,7 @@ $at_symbol_icon = file_get_contents(get_template_directory() . "/dist/dist/svg/e
 $translator_city = get_field("translator_city");
 $translator_city_public = get_field("translator_city_public");
 $localization_icon = file_get_contents(get_template_directory() . "/dist/dist/svg/localization.svg");
+$approved_icon = file_get_contents(get_template_directory() . "/dist/dist/svg/approved_icon.svg");
 
 $radio_waves = file_get_contents(get_template_directory() . "/dist/dist/svg/radio-waves.svg");
 
@@ -49,7 +50,13 @@ $arrow_controls_right = file_get_contents(get_template_directory() . "/dist/dist
 
 							<div class="corner__decoration corner__decoration--left"></div>
 
-							<img src="<?php echo get_the_post_thumbnail_url() ?>" loading="lazy" />
+							<?php
+								if(get_the_post_thumbnail_url()) {
+										echo '<img src="'.get_the_post_thumbnail_url().'" loading="lazy">';
+								} else {
+										echo '<img src="'.get_stylesheet_directory_uri(). '/dist/dist/img/avatarplaceholder.jpg" loading="lazy">';
+								}
+							?>
 
 							<div class="corner__decoration corner__decoration--right"></div>
 
@@ -153,11 +160,14 @@ $arrow_controls_right = file_get_contents(get_template_directory() . "/dist/dist
 
 					<div class="translator__middle mb--3">
 
-						<header class="entry-header mb--2">
+						<header id="translatorName" class="entry-header w--fit-content relative pr--05">
 							
 							<?php
 								echo '
 									<h1 class="entry-title fs--1200 text--blue mb--05">'.$translator_first_name.' '. $translator_last_name.'</h1>
+									<div class="translator__icons-wrapper text--right account__approved">
+									'.$approved_icon.'
+									</div>
 								';
 
 							?>
@@ -168,7 +178,7 @@ $arrow_controls_right = file_get_contents(get_template_directory() . "/dist/dist
 							if (strlen($translator_about_short) > 0) {
 							?>
 
-							<div>
+							<div id="translatorAboutShort">
 								<h2 class="info-tile text--turquoise fw--700 fs--600 mb--05 border--standard">
 									Jedno zdanie o mnie
 								</h2>
@@ -185,7 +195,7 @@ $arrow_controls_right = file_get_contents(get_template_directory() . "/dist/dist
 
 					</div>
 
-					<div class="wrapper-flex translator__languages mb--3">
+					<div id="translatorLanguages" class="wrapper-flex translator__languages mb--3">
 						<?php
 
 						$tax_label_languages = get_taxonomy('translator_language')->label;
@@ -264,7 +274,15 @@ $arrow_controls_right = file_get_contents(get_template_directory() . "/dist/dist
 
 							<div class="corner__decoration corner__decoration--left"></div>
 
-							<img src="<?php echo get_the_post_thumbnail_url() ?>" loading="lazy" />
+							<?php
+
+							if(get_the_post_thumbnail_url()) {
+									echo '<img src="'.get_the_post_thumbnail_url().'" loading="lazy">';
+							} else {
+									echo '<img src="'.get_stylesheet_directory_uri(). '/dist/dist/img/avatarplaceholder.jpg" loading="lazy">';
+							}
+
+							?>
 
 							<div class="corner__decoration corner__decoration--right"></div>
 
@@ -272,11 +290,14 @@ $arrow_controls_right = file_get_contents(get_template_directory() . "/dist/dist
 
 					<div class="translator__middle">
 
-						<header class="entry-header mb--4">
+						<header class="entry-header relative w--fit-content pr--05">
 							
 							<?php
 								echo '
 									<h1 class="entry-title fs--800 text--blue mb--05">'.$translator_first_name.' '. $translator_last_name.'</h1>
+									<div class="translator__icons-wrapper text--right account__approved">
+									'.$approved_icon.'
+									</div>
 								';
 
 							?>
@@ -807,7 +828,7 @@ $arrow_controls_right = file_get_contents(get_template_directory() . "/dist/dist
 		$single_translator_videos_repeater = get_field("translator_video_gallery");
 
 		$video_gallery_title_array = [];
-		$is_video_gallery_empty;
+		$is_video_gallery_empty = true;
 
 		if ($single_translator_videos_repeater) {
 		   foreach($single_translator_videos_repeater as $repeater_field) :
@@ -818,12 +839,11 @@ $arrow_controls_right = file_get_contents(get_template_directory() . "/dist/dist
    
 			if (count($video_gallery_title_array) > 0) {
 			   $is_video_gallery_empty = false;
-			} else {
-			   $is_video_gallery_empty = true;
 			}
 		}
 
-		if (($single_translator_pictures_gallery || $single_translator_videos_repeater) && !$is_video_gallery_empty) :
+		// if (($single_translator_pictures_gallery || $single_translator_videos_repeater) && !$is_video_gallery_empty) :
+	if (($single_translator_pictures_gallery || $single_translator_videos_repeater)) :
 	 ?>
 
 	<section class="single-translator__section single-translator__section--4">
@@ -929,6 +949,9 @@ $arrow_controls_right = file_get_contents(get_template_directory() . "/dist/dist
 														$videos_proper_formats = array('mp4','mov','wmv','mpg');
 			
 														//to recognize which one is which
+
+														$picture_element = '';
+														$video_element = '';
 			
 														if (in_array($longer_array_element_extension, $pictures_proper_formats) ) {
 															$picture_element = $longer_array_element;
@@ -1031,7 +1054,7 @@ $arrow_controls_right = file_get_contents(get_template_directory() . "/dist/dist
 
 		<div class="wrapper-flex">
 				<div class="text-content-holder">
-					<h2 class="fs--1000 text--blue text--center mb--2">
+					<h2 class="fs--1000 text--blue text--center mb--4">
 						Moje publikacje
 					</h2>
 				</div>
@@ -1086,7 +1109,7 @@ $arrow_controls_right = file_get_contents(get_template_directory() . "/dist/dist
 	?>
 	<!-- end of section-6 -->
 
-	<div class="dnone">
+	<div class="">
 		<p>Click the button to create a new PDF document with <code>pdf-lib</code></p>
 		<button id="createPDFTrigger">Create PDF</button>
 		<p class="small">(Your browser will download the resulting file)</p>

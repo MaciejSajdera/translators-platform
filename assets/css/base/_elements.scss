@@ -16,11 +16,9 @@ body {
 	font-family: $font__main;
 	@include font-size(1);
 	line-height: $font__line-height-body;
-	background: $color__background-body;
 	margin: 0;
-}
-
-body {
+	position: relative;
+	background: $color__background-body;
 	background: linear-gradient(
 		230deg,
 		rgba(22, 83, 140, 0.212) 0.53%,
@@ -30,19 +28,19 @@ body {
 	);
 }
 
-body.page-template-user-account-page-template {
-	background: $color__background-body;
+body.page-template-user-account-page-template,
+body.page-template-registration-page-template {
+	@media screen and (max-width: 1024px) {
+		background: $color__background-body;
+	}
 }
 
-// .page.gradient {
-// 	background: linear-gradient(
-// 		200deg,
-// 		rgba(22, 83, 140, 0.159) 4.5%,
-// 		rgba(22, 83, 140, 0.045) 30%,
-// 		rgba(24, 160, 170, 0.024) 60%,
-// 		rgba(225, 243, 244, 0.092) 100%
-// 	);
-// }
+#control-height {
+	height: 100vh;
+	width: 0;
+	position: fixed;
+	pointer-events: none;
+}
 
 blockquote,
 q {
@@ -386,7 +384,6 @@ table {
 /* BUTTONS */
 
 .button,
-.lostpassword-submit,
 .lostpassword-submit input {
 	cursor: pointer;
 	transition: $transition__button--standard;
@@ -485,6 +482,12 @@ table {
 			background-color: darken($color__main-theme--blue, 7);
 			border-color: darken($color__main-theme--blue, 7);
 		}
+	}
+
+	&__outline--blue.active {
+		color: $color__text-white;
+		background-color: $color__main-theme--blue;
+		border-color: $color__main-theme--blue;
 	}
 
 	&__filled--blue,

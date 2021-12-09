@@ -10,13 +10,15 @@
 	}
 
 	&__section-2 {
+		.advantage {
+			@media screen and (min-width: 1024px) {
+				max-width: 40%;
+			}
+		}
+
 		.text-holder {
 			width: 75%;
 			margin: auto;
-		}
-
-		.advantages {
-			column-gap: 6rem;
 		}
 
 		.image-holder {
@@ -36,7 +38,7 @@
 			.advantage {
 				@media screen and (min-width: 1024px) {
 					flex: 50%;
-					padding: 0 10%;
+					padding: 0 5%;
 				}
 
 				img {

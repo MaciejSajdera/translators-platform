@@ -11,15 +11,11 @@ document.addEventListener("DOMContentLoaded", () => {
 		const errorsWrapperForModal = document.createElement("DIV");
 		errorsWrapperForModal.classList.add("errors-wrapper-for-modal");
 		document.querySelector("BODY").appendChild(errorsWrapperForModal);
-		console.log(errorsWrapperForModal);
 
 		allFormErrorContainers.forEach(container => {
-			// const singleErrors = container.querySelectorAll(".php-error__text");
-			// showModal(singleErrors);
 			errorsWrapperForModal.appendChild(container);
 		});
 
-		console.log(errorsWrapperForModal);
 		handleModal(errorsWrapperForModal);
 	}
 });
