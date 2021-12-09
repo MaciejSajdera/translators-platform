@@ -29,35 +29,33 @@
 }
 
 .single-post {
-
 	.site-main {
 		background: $color__background-body;
 	}
 }
 
 .single-post {
-	.site-content, .site-header {
-	
+	.site-content,
+	.site-header {
 		@media screen and (min-width: 1280px) {
 			padding-left: calc(#{$padding-site-content-1280} - 2.5%);
 			padding-right: calc(#{$padding-site-content-1280} - 2.5%);
 		}
-	
+
 		@media screen and (min-width: 1536px) {
 			padding-left: calc(#{$padding-site-content-1536} - 2.5%);
 			padding-right: calc(#{$padding-site-content-1536} - 2.5%);
 		}
-	
 	}
 
 	.site-main {
 		padding: 2rem 1.75rem;
-	
+
 		@media screen and (min-width: 1024px) {
 			padding: 3rem 3.5rem;
 		}
 	}
-	
+
 	.site-content {
 		@media screen and (min-width: 1024px) {
 			padding-top: 8rem;
@@ -65,8 +63,7 @@
 	}
 }
 
-.page-template-user-account-page-template.logged-in {
-
+.page-template-user-account-page-template, .page-template-registration-page-template {
 	.site-main {
 		@media screen and (min-width: 1024px) {
 			padding: 5rem 3.5rem;
@@ -75,12 +72,9 @@
 			box-shadow: $box-shadow_standard--black;
 			border-radius: 5px;
 			overflow: hidden;
-
 		}
 	}
-
 }
-
 
 // .home .site-content {
 // 	@media screen and (min-width: 1024px) {
@@ -494,8 +488,12 @@ section {
 	background-color: white;
 	padding: 1rem 1.5rem;
 	width: fit-content;
-	min-width: 450px;
 	border-radius: 0.5rem;
+	max-width: 90%;
+
+	@media screen and (min-width: 1024px) {
+		min-width: 450px;
+	 }
 
 	.php-success__text {
 		.svg-holder {
@@ -661,7 +659,7 @@ section {
 					width: 100% !important;
 					clip: unset !important;
 					clip-path: unset !important;
-					z-index: 1;
+					// z-index: 1;
 					opacity: 0;
 
 					label {
@@ -673,9 +671,9 @@ section {
 					}
 				}
 
-				.select2-selection {
-					pointer-events: none;
-				}
+				// .select2-selection {
+				// 	pointer-events: none;
+				// }
 
 				// exceptions
 
@@ -832,6 +830,7 @@ section {
 		font-size: $font_size_search_input_mobile;
 		min-height: 48px;
 		width: 100% !important;
+		touch-action: manipulation;
 
 		@media screen and (min-width: 1024px) {
 			padding: $padding_search_input_desktop_y $padding_search_input_desktop_x !important;
@@ -1816,7 +1815,9 @@ section {
 	font-weight: 500;
 	font-size: 14px;
 
-	a, a:visited, .breadcrumb_last {
+	a,
+	a:visited,
+	.breadcrumb_last {
 		color: $color__text--light-grey;
 	}
 

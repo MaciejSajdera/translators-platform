@@ -160,7 +160,7 @@ $arrow_controls_right = file_get_contents(get_template_directory() . "/dist/dist
 
 					<div class="translator__middle mb--3">
 
-						<header class="entry-header w--fit-content relative pr--05">
+						<header id="translatorName" class="entry-header w--fit-content relative pr--05">
 							
 							<?php
 								echo '
@@ -178,7 +178,7 @@ $arrow_controls_right = file_get_contents(get_template_directory() . "/dist/dist
 							if (strlen($translator_about_short) > 0) {
 							?>
 
-							<div>
+							<div id="translatorAboutShort">
 								<h2 class="info-tile text--turquoise fw--700 fs--600 mb--05 border--standard">
 									Jedno zdanie o mnie
 								</h2>
@@ -195,7 +195,7 @@ $arrow_controls_right = file_get_contents(get_template_directory() . "/dist/dist
 
 					</div>
 
-					<div class="wrapper-flex translator__languages mb--3">
+					<div id="translatorLanguages" class="wrapper-flex translator__languages mb--3">
 						<?php
 
 						$tax_label_languages = get_taxonomy('translator_language')->label;
@@ -949,6 +949,9 @@ $arrow_controls_right = file_get_contents(get_template_directory() . "/dist/dist
 														$videos_proper_formats = array('mp4','mov','wmv','mpg');
 			
 														//to recognize which one is which
+
+														$picture_element = '';
+														$video_element = '';
 			
 														if (in_array($longer_array_element_extension, $pictures_proper_formats) ) {
 															$picture_element = $longer_array_element;
@@ -1106,7 +1109,7 @@ $arrow_controls_right = file_get_contents(get_template_directory() . "/dist/dist
 	?>
 	<!-- end of section-6 -->
 
-	<div class="dnone">
+	<div class="">
 		<p>Click the button to create a new PDF document with <code>pdf-lib</code></p>
 		<button id="createPDFTrigger">Create PDF</button>
 		<p class="small">(Your browser will download the resulting file)</p>

@@ -103,6 +103,7 @@ $login-and-registration-height: 80vh;
 		.login-username {
 			label {
 				cursor: initial;
+				@include fluid-type($min_width, $max_width, 14px, 15px);
 			}
 		}
 
@@ -413,6 +414,15 @@ label {
 #settings_user_password_form {
 	display: flex;
 	flex-flow: column;
+}
+
+#password-lost-form-wrapper {
+	max-width: 90%;
+	margin: 4rem auto;
+
+	@media screen and (min-width: 1024px) {
+		max-width: 500px;
+	}
 }
 
 /* Profile Picture Form */

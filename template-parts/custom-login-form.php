@@ -53,7 +53,7 @@ $cross_error = file_get_contents(get_template_directory() . "/dist/dist/svg/cros
             if ( $lost_password_sent ) :
                 echo '<p class="php-success__text php-success__text--in-modal text--center fw--500">
                             <span class="svg-holder block">'.$check_success.'</span>
-                            '._e( 'Link dzięki któremu zresetujesz hasło został wysłany na podany adres e-mail', 'personalize-login' ).'
+                            Link dzięki któremu zresetujesz hasło został wysłany na podany adres e-mail
                         </p>';
             endif;
 
@@ -63,7 +63,7 @@ $cross_error = file_get_contents(get_template_directory() . "/dist/dist/svg/cros
             if ( $password_updated ) :
                 echo '<p class="php-success__text php-success__text--in-modal text--center fw--500">
                             <span class="svg-holder block">'.$check_success.'</span>
-                            '._e( 'Twoje hasło zostało zmienione, zapraszamy do zalogowania się z użycien nowego hasła', 'personalize-login' ).'
+                            Twoje hasło zostało zmienione, zapraszamy do zalogowania się z użycien nowego hasła
                         </p>';
             endif;
 

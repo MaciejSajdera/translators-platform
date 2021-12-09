@@ -1,5 +1,4 @@
 .single {
-
 	article.type-post {
 		// @media screen and (min-width: 1024px) {
 		// 	max-width: 80%;
@@ -52,7 +51,6 @@
 	}
 
 	.entry-content {
-
 		margin-bottom: 6rem;
 
 		ol,
@@ -99,9 +97,12 @@
 			margin-bottom: 2rem;
 			width: 330px;
 			min-width: 330px;
-			padding-left: 2rem;
+			padding: 2rem;
+			display: flex;
+			flex-flow: column;
+			height: 100%;
+			// border: 1px solid $color__border-element;
 		}
-
 	}
 
 	.div.heateor_sss_follow_ul a,

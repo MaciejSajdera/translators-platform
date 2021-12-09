@@ -1,0 +1,16 @@
+.admission-criteria {
+	&__section-3 {
+		.advantages {
+			@media screen and (min-width: 1024px) {
+				column-gap: 5%;
+			}
+			.advantage {
+				margin: 0 !important;
+
+				@media screen and (min-width: 1024px) {
+					flex: 1 1 30%;
+				}
+			}
+		}
+	}
+}

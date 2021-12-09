@@ -13,7 +13,19 @@ jQuery(document).ready(function($) {
 		const allAccountNavigationLinks = accountNavigation.querySelectorAll("A");
 
 		allAccountNavigationLinks.forEach(link => {
+			let linkClicked = false;
+
 			link.addEventListener("click", function() {
+				linkClicked = true;
+
+				allAccountNavigationLinks.forEach(link => {
+					link.classList.contains("active")
+						? link.classList.remove("active")
+						: "";
+				});
+
+				linkClicked ? link.classList.toggle("active") : "";
+
 				let sectionId = this.dataset.profileSection;
 				let targetSection = document.querySelector(`#${sectionId}`);
 
@@ -44,6 +56,12 @@ jQuery(document).ready(function($) {
 		const lastChosenProfileSectionID = localStorage.getItem(
 			"activeProfileSectionID"
 		);
+
+		const profileSectionNavigationLink = document.querySelector(
+			`a[data-profile-section="${lastChosenProfileSectionID}"]`
+		);
+
+		profileSectionNavigationLink.classList.add("active");
 
 		if (activeProfileSectionID !== lastChosenProfileSectionID) {
 			const activeProfileSection = document.querySelector(
@@ -796,6 +814,11 @@ jQuery(document).ready(function($) {
 		const percentValueOfAccountFillCompletnessHolder = document.querySelector(
 			"#percentValueOfAccountFillCompletness"
 		);
+
+		const emptyProfileFieldsWrapper = document.querySelector(
+			"#emptyProfileFieldsLabels"
+		);
+
 		const emptyProfileFieldsLabelsContainer = document.querySelector(
 			"#emptyProfileFieldsLabels .empty-fields-labels"
 		);
@@ -813,18 +836,18 @@ jQuery(document).ready(function($) {
 
 		if (
 			percentValueOfAccountFillCompletness < 100 &&
-			emptyProfileFieldsLabelsContainer.classList.contains("no-empty-fields")
+			emptyProfileFieldsWrapper.classList.contains("no-empty-fields")
 		) {
-			emptyProfileFieldsLabelsContainer.classList.remove("no-empty-fields");
-			emptyProfileFieldsLabelsContainer.classList.add("empty-fields");
+			emptyProfileFieldsWrapper.classList.remove("no-empty-fields");
+			emptyProfileFieldsWrapper.classList.add("empty-fields");
 		}
 
 		if (
 			percentValueOfAccountFillCompletness === 100 &&
-			emptyProfileFieldsLabelsContainer.classList.contains("empty-fields")
+			emptyProfileFieldsWrapper.classList.contains("empty-fields")
 		) {
-			emptyProfileFieldsLabelsContainer.classList.remove("empty-fields");
-			emptyProfileFieldsLabelsContainer.classList.add("no-empty-fields");
+			emptyProfileFieldsWrapper.classList.remove("empty-fields");
+			emptyProfileFieldsWrapper.classList.add("no-empty-fields");
 		}
 
 		// if (progressHistory.length > 0) {
@@ -847,8 +870,8 @@ jQuery(document).ready(function($) {
 					const congratulationsMessage = `
 					<div class="text--center relative">
 						<span class="confetti-target"></span>
-						<p class="fs--1200 fw--900 ff--secondary text--center text--turquoise">GRATULACJE!</p>
-						<p class="fs--800 fw--500">Twój profil jest kompletny w 100%!</p>
+						<p class="fs--1200 fw--900 ff--secondary text--center text--turquoise mb--1">GRATULACJE!</p>
+						<p class="fs--800 fw--500 text--center">Twój profil jest kompletny w 100%!</p>
 					</div>
 					`;
 

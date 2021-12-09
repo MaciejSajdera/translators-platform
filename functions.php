@@ -148,16 +148,16 @@ function my_admin_bar_css()
  */
 function pstk_scripts() {
 
-	wp_enqueue_style( 'pstk-style', get_template_directory_uri() . '/dist/css/style.css', array(), '1.40');
-	wp_enqueue_script( 'pstk-app', get_template_directory_uri() . '/dist/js/main.js', array(), '1.40', true );
+	wp_enqueue_style( 'pstk-style', get_template_directory_uri() . '/dist/css/style.css', array(), '1.47');
+	wp_enqueue_script( 'pstk-app', get_template_directory_uri() . '/dist/js/main.js', array(), '1.47', true );
 
 	if (is_page_template('registration-page-template.php') || is_page_template('user-account-page-template.php')) {
-		wp_enqueue_script( 'pstk-user-profile', get_template_directory_uri() . '/dist/js/user-profile.js', array(), '1.40', true );
+		wp_enqueue_script( 'pstk-user-profile', get_template_directory_uri() . '/dist/js/user-profile.js', array(), '1.47', true );
 	}
 
 	if (is_page_template('user-account-page-template.php') && is_user_logged_in()) {
 		wp_enqueue_script('jquery');
-		wp_register_script('ajax_forms', get_template_directory_uri() . '/dist/js/ajax-forms.js', array('jquery'), '1.40', true );
+		wp_register_script('ajax_forms', get_template_directory_uri() . '/dist/js/ajax-forms.js', array('jquery'), '1.47', true );
 
 		wp_localize_script('ajax_forms', 'ajax_forms_params', 
 			array(
@@ -824,10 +824,40 @@ function prefix_add_button_after_menu_item_children( $item_output, $item, $depth
 		$item_output = str_replace( $args->link_after . '</a>', $args->link_after . '</a><span class="show-submenu" aria-expanded="false" aria-pressed="false"></span>', $item_output );
 	}
 
+	if ($depth == 1) {
+		$classes[] = 'relative pseudo-decoration pseudo-decoration__hover-bottom';
+	}
+
 return $item_output;
 }
 add_filter( 'walker_nav_menu_start_el', 'prefix_add_button_after_menu_item_children', 10, 4 );
 
+
+// function add_custom_class_to_menu_item ( $classes, $item, $args, $depth ){
+
+// 	if ($depth == 1) {
+// 		$classes[] = 'relative pseudo-decoration pseudo-decoration__hover-bottom';
+// 	}
+	
+// 	return $classes;
+// }
+// add_filter ( 'nav_menu_css_class', 'add_custom_class_to_menu_item', 10, 4 );
+
+
+// function add_classes_to_submenu_items( $classes, $args, $depth ){
+
+// 	if ($depth == 1) {
+// 		foreach ( $classes as $key => $class ) {
+
+// 				$classes[ $key ] = 'your-class';
+
+// 		} 
+// 	}
+
+//     return $classes;
+// }
+
+// add_filter('nav_menu_submenu_css_class','add_classes_to_submenu_items', 10, 3 );
 
 class Has_Child_Walker_Nav_Menu extends Walker_Nav_Menu {
     public function display_element( $element, &$children_elements, $max_depth, $depth, $args, &$output ) {
